@@ -1,0 +1,16 @@
+{
+  "created": "2026-10-07T22:44:22",
+  "rule": "one random clip per source video, then N random sources; seeded numpy RandomState",
+  "seed": 42,
+  "n": 400,
+  "source_csv": "metadata-real.csv",
+  "source_csv_sha256": "a3d06073353a7fedff140b652d025135f017860a240cad693990f5288c6c0ec9",
+  "source_csv_rows": 2027,
+  "rows_after_file_check": 2027,
+  "distinct_sources_available": 1944,
+  "output": "real_test_set.csv",
+  "output_sha256": "521a5cf62cbee5e897b4ebf99f1c4297a5af06f4a8c985eeb4e91f60b28c2c7c",
+  "python": "3.14.6",
+  "pandas": "2.3.3",
+  "numpy": "2.4.2"
+}
