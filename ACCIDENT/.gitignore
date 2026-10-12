@@ -62,3 +62,4 @@ AGENTS.md
 generation/carla-simulation/out/
 
 /ACCIDENT-git-backup/
+inference-yolo11x-real-test/
