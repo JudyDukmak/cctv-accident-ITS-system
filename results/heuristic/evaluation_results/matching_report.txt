@@ -1,0 +1,32 @@
+HEURISTIC EVALUATION REPORT
+============================================================
+Ground-truth videos: 400
+Videos shared by ground truth and all four methods: 400
+Valid videos used for metrics: 400
+Rows excluded due to missing/invalid numeric values: 0
+
+Input prediction file counts:
+Ground Truth: 400
+Naive: 400
+Optical Flow: 400
+Bounding-Box Dynamics: 400
+Ensemble: 400
+
+Mean ground-truth bounding-box width: 0.13087649
+Mean ground-truth bounding-box height: 0.12262892
+
+Metric definitions:
+- Temporal accuracy: mean exp(-(prediction error^2)/(2*sigma^2)).
+- Spatial accuracy: Gaussian score of normalized center errors.
+- Spatial sigma uses mean ground-truth box width/height multiplied by sigma.
+- All four methods are evaluated on the same valid matched videos.
+
+Ground-truth videos missing from the common intersection:
+
+Ground-truth videos without Naive predictions: 0
+
+Ground-truth videos without Optical Flow predictions: 0
+
+Ground-truth videos without Bounding-Box Dynamics predictions: 0
+
+Ground-truth videos without Ensemble predictions: 0

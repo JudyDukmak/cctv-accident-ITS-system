@@ -1,0 +1,29 @@
+ENSEMBLE TEST EVALUATION
+========================
+Prediction file: C:\Users\LOQ\Desktop\Senior 2\cctv-accident-ITS-system\ACCIDENT\baselines\heuristic\output_ensemble_test.csv
+Ground-truth rows available: 2027
+Ensemble predictions: 400
+Matched videos: 400
+
+TEMPORAL ACCURACY
+-----------------
+Temporal task:
+____________________
+| Sigma | Accuracy |
+| 0.50  | 0.166    |
+| 1.00  | 0.287    |
+| 2.00  | 0.487    |
+
+
+
+SPATIAL ACCURACY
+----------------
+Spatial task:
+Normalized sigmas:  0.13087649006699523 0.1226289247383957
+____________________
+| Sigma | Accuracy |
+| 0.50  | 0.121    |
+| 1.00  | 0.281    |
+| 2.00  | 0.549    |
+
+

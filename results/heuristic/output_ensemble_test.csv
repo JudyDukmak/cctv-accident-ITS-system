@@ -1,0 +1,3 @@
+method,task,sigma_0.5,sigma_1.0,sigma_2.0,matched_videos
+ensemble,temporal,0.166,0.287,0.487,400
+ensemble,spatial,0.121,0.281,0.549,400
