@@ -1,7 +1,7 @@
 import sys, os
 import pandas as pd
 
-csv = sys.argv[1] if len(sys.argv) > 1 else "Dataset/metadata-real.csv"
+csv = sys.argv[1] if len(sys.argv) > 1 else "../Dataset/metadata-real.csv"
 root = sys.argv[2] if len(sys.argv) > 2 else None   # folder that contains real_videos/
 df = pd.read_csv(csv)
 
