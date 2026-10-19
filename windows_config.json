@@ -1,0 +1,20 @@
+{
+  "model_fps": 8,
+  "window_frames": 16,
+  "stride_s": 0.5,
+  "ignore_margin_s": 1.0,
+  "frame_index_rule": "floor(t * fps_video + 0.5), fps_video = no_frames / duration",
+  "label_rule": {
+    "0 pre": "t_end < t_star - margin",
+    "-1 gap": "t_star - margin <= t_end < t_star",
+    "1 onset": "t_end >= t_star and t_start < t_star",
+    "1 post": "t_start >= t_star"
+  },
+  "inputs": {
+    "split": "synthetic_split.csv",
+    "metadata": "C:\\Users\\ASUS\\Documents\\Uni\\Senior 2\\cctv-accident-ITS-system\\ACCIDENT\\dataset\\metadata-synthetic.csv"
+  },
+  "output": "synthetic_windows.csv",
+  "n_clips": 2211,
+  "n_windows": 70730
+}

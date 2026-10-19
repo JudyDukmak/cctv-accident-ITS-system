@@ -1,0 +1,110 @@
+Synthetic sliding windows
+config: {"model_fps": 8, "window_frames": 16, "stride_s": 0.5, "ignore_margin_s": 1.0}
+metadata: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\ACCIDENT\dataset\metadata-synthetic.csv
+
+0. Input checks
+   fps_video = no_frames / duration, rounded to 0.1:
+   fps
+   20.0    2211
+   clips with |accident_frame/fps_video - accident_time| > 0.026: 0 (kept)
+
+1. Total windows: 70730
+   per label:
+              n   pct
+   label             
+   -1      4392   6.2
+    0     22073  31.2
+    1     44265  62.6
+   per phase:
+              n   pct
+   phase             
+   gap     4392   6.2
+   onset   8113  11.5
+   post   36152  51.1
+   pre    22073  31.2
+
+2. val_fold x label
+label       -1      0      1    All
+val_fold                           
+0         1331   4437  17782  23550
+1         1699   6595  17857  26151
+2         1362  11041   8626  21029
+All       4392  22073  44265  70730
+   type x label
+label        -1      0      1    All
+type                                
+head-on    1156   5318  13505  19979
+rear-end   1581   7916  14662  24159
+sideswipe   810   6140   5998  12948
+single      130    498   1205   1833
+t-bone      715   2201   8895  11811
+All        4392  22073  44265  70730
+
+3. Windows per clip: min 8 / median 32 / max 61
+   accident_time (s): min 1.05 / median 6.90 / max 20.75
+
+4. Clips with ZERO label-0 windows: 62
+   5 clips with the smallest accident_time:
+     Town03_head-on_clear_36: accident_time 1.05s, label-0 windows 0
+     Town03_head-on_wet_24: accident_time 1.45s, label-0 windows 0
+     Town03_head-on_night_06: accident_time 1.85s, label-0 windows 0
+     Town03_head-on_sunset_23: accident_time 1.85s, label-0 windows 0
+     Town04_rear-end_sunset_49: accident_time 1.90s, label-0 windows 0
+   Clips with ZERO label-1 windows: 0 (should be 0)
+
+5. Timeline of Town05_sideswipe_rain_44
+   t_star 9.55s, fps_video 20.000, no_frames 391
+ window_idx  t_start  t_end  label phase
+          0      0.0  1.875      0   pre
+          1      0.5  2.375      0   pre
+          2      1.0  2.875      0   pre
+          3      1.5  3.375      0   pre
+          4      2.0  3.875      0   pre
+          5      2.5  4.375      0   pre
+          6      3.0  4.875      0   pre
+          7      3.5  5.375      0   pre
+          8      4.0  5.875      0   pre
+          9      4.5  6.375      0   pre
+         10      5.0  6.875      0   pre
+         11      5.5  7.375      0   pre
+         12      6.0  7.875      0   pre
+         13      6.5  8.375      0   pre
+         14      7.0  8.875     -1   gap
+         15      7.5  9.375     -1   gap
+         16      8.0  9.875      1 onset
+         17      8.5 10.375      1 onset
+         18      9.0 10.875      1 onset
+         19      9.5 11.375      1 onset
+         20     10.0 11.875      1  post
+         21     10.5 12.375      1  post
+         22     11.0 12.875      1  post
+         23     11.5 13.375      1  post
+         24     12.0 13.875      1  post
+         25     12.5 14.375      1  post
+         26     13.0 14.875      1  post
+         27     13.5 15.375      1  post
+         28     14.0 15.875      1  post
+         29     14.5 16.375      1  post
+         30     15.0 16.875      1  post
+         31     15.5 17.375      1  post
+         32     16.0 17.875      1  post
+         33     16.5 18.375      1  post
+         34     17.0 18.875      1  post
+         35     17.5 19.375      1  post
+   frame indices of window 16 (t_start 8.0s, onset):
+     [160, 163, 165, 168, 170, 173, 175, 178, 180, 183, 185, 188, 190, 193, 195, 198]
+     spacing: [3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3, 2, 3]
+
+6. EXPECTED comparison (warnings only)
+   OK       Town05_sideswipe_rain_44 windows: got 36, expected 36
+   OK       Town05_sideswipe_rain_44 label0: got 14, expected 14
+   OK       Town05_sideswipe_rain_44 label_m1: got 2, expected 2
+   OK       Town05_sideswipe_rain_44 label1: got 20, expected 20
+   OK       Town05_sideswipe_rain_44 onset: got 4, expected 4
+   OK       Town05_sideswipe_rain_44 post: got 16, expected 16
+   OK       Town05_sideswipe_clear_00 windows: got 38, expected 38
+   OK       Town05_sideswipe_clear_00 label0: got 12, expected 12
+   OK       Town05_sideswipe_clear_00 label_m1: got 2, expected 2
+   OK       Town05_sideswipe_clear_00 label1: got 24, expected 24
+   OK       Town05_sideswipe_clear_00 onset: got 4, expected 4
+   OK       Town05_sideswipe_clear_00 post: got 20, expected 20
