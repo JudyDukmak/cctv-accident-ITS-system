@@ -10,9 +10,12 @@ Per clip (t_star = accident time):
   * t_neg: negative time in which a false alarm is possible, t_star - M - T_FIRST
     (the first window can only end at T_FIRST).
 
-Aggregated: miss rate MR, delay statistics, early-alarm rate EAR_d, false alarms
-per hour FAH, false-alarm clip rate FAC, and the rule-of-three upper bound on FAH
-when no false alarm is observed.
+Aggregated: miss rate MR, delay statistics, timely-detection rate
+TDR(d) = (1/K) * count(hit and delay <= d), false alarms per hour FAH, false-alarm
+clip rate FAC, and the rule-of-three upper bound on FAH when no false alarm is
+observed.
+
+Secondary deployment view only. Frozen: no new metrics.
 
 The constants below are fixed by design and must not be tuned on real data.
 This module never reads real_test_set.csv.
@@ -62,7 +65,7 @@ def clip_outcome(t_end, score, t_star, tau):
 
 
 def aggregate(outcomes, budgets=(0.5, 1.0, 2.0)):
-    """Aggregate clip outcomes into MR, delay stats, EAR_d, FAH, FAC, rule-of-three bound."""
+    """Aggregate clip outcomes into MR, delay stats, TDR_d, FAH, FAC, rule-of-three bound."""
     k = len(outcomes)
     if k == 0:
         raise ValueError("aggregate() needs at least one clip outcome")
@@ -85,7 +88,7 @@ def aggregate(outcomes, budgets=(0.5, 1.0, 2.0)):
         "rule_of_three_upper": (3.0 / hours) if (fa_total == 0 and t_neg_total > 0) else None,
     }
     for d in budgets:
-        res[f"EAR_{d:g}"] = float(np.sum(delays <= d + EPS)) / k
+        res[f"TDR_{d:g}"] = float(np.sum(delays <= d + EPS)) / k
     return res
 
 
@@ -145,16 +148,15 @@ def selftest():
         "late_by_2": lambda t, lab, ts: (t >= ts + 2 - EPS).astype(float),
         "oracle_plus_1_false_alarm": plus_fa,
     }
-    expected_fa, expected_t_neg = 2, 12.45
-    expected_fah = 3600 * expected_fa / expected_t_neg
+    # One self-contained dict per detector; FAH = 3600 * FA / T_neg with FA = 2, T_neg = 12.45 s.
     expected = {
         "always_off": {"MR": 1.0, "FA_total": 0, "delay_A": None, "delay_B": None},
-        "always_on": {"MR": 0.0, "FA_total": expected_fa, "T_neg_total": expected_t_neg, "FAH": expected_fah,
+        "always_on": {"MR": 0.0, "FA_total": 2, "T_neg_total": 12.45, "FAH": 3600 * 2 / 12.45,
                       "delay_A": -0.675, "delay_B": -0.775},
-        "oracle": {"MR": 0.0, "FA_total": 0, "delay_A": 0.325, "delay_B": 0.225, "EAR_0": 0.0, "EAR_1": 1.0},
+        "oracle": {"MR": 0.0, "FA_total": 0, "delay_A": 0.325, "delay_B": 0.225, "TDR_0": 0.0, "TDR_1": 1.0},
         "oracle_with_gap": {"MR": 0.0, "FA_total": 0, "delay_A": -0.675, "delay_B": -0.775},
-        "late_by_2": {"MR": 0.0, "FA_total": 0, "delay_A": 2.325, "delay_B": 2.225, "EAR_2": 0.0},
-        "oracle_plus_1_false_alarm": {"FA_total": expected_fa, "FAH": expected_fah},
+        "late_by_2": {"MR": 0.0, "FA_total": 0, "delay_A": 2.325, "delay_B": 2.225, "TDR_2": 0.0},
+        "oracle_plus_1_false_alarm": {"FA_total": 2, "FAH": 3600 * 2 / 12.45},
     }
 
     print(f"windows: A {len(win['A'][0])} (t_end {win['A'][0][0]}..{win['A'][0][-1]}), "
