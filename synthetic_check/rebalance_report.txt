@@ -1,0 +1,55 @@
+Fold rebalance report (synthetic only)
+inputs: scenario_table.csv, synthetic_split.csv; seed 0, 200000 draws per run
+scenario order (index -> scenario_id, map, ctype, n_clips, accident_time):
+   0 Town03_head-on    Town03    head-on     212   3.65
+   1 Town03_t-bone     Town03    t-bone      184   5.80
+   2 Town04_rear-end   Town04    rear-end    245   4.95
+   3 Town04_sideswipe  Town04    sideswipe   139   9.75
+   4 Town05_head-on    Town05    head-on     174   6.05
+   5 Town05_rear-end   Town05    rear-end    277  10.05
+   6 Town05_sideswipe  Town05    sideswipe   107   7.30
+   7 Town06_head-on    Town06    head-on     202  11.50
+   8 Town06_sideswipe  Town06    sideswipe   159  13.25
+   9 Town07_rear-end   Town07    rear-end    272   8.05
+  10 Town07_single     Town07    single       13  12.80
+  11 Town07_t-bone     Town07    t-bone       43   5.45
+  12 Town10HD_single   Town10HD  single       53   4.85
+  13 Town10HD_t-bone   Town10HD  t-bone      131   6.00
+global_median (median of the 14 scenario medians): 6.6750s
+
+== CURRENT split (val_fold from synthetic_split.csv)
+   assignment (scenario order above): [2, 1, 0, 0, 1, 1, 1, 0, 2, 2, 1, 2, 0, 0]
+   total cost 7.3950 = size 1.0200 + timing 1.3750 + type penalty 5.0000
+   maps shared across folds: True
+   fold 0: n_clips 770, median scenario accident_time 6.000s, types ['head-on', 'rear-end', 'sideswipe', 'single', 't-bone']
+           scenarios: Town04_rear-end, Town04_sideswipe, Town06_head-on, Town10HD_single, Town10HD_t-bone
+   fold 1: n_clips 755, median scenario accident_time 7.300s, types ['head-on', 'rear-end', 'sideswipe', 'single', 't-bone']
+           scenarios: Town03_t-bone, Town05_head-on, Town05_rear-end, Town05_sideswipe, Town07_single
+   fold 2: n_clips 686, median scenario accident_time 6.750s, types ['head-on', 'rear-end', 'sideswipe', 't-bone']
+           scenarios: Town03_head-on, Town06_sideswipe, Town07_rear-end, Town07_t-bone
+
+== RUN 1 best - scenario split (197893 valid assignments)
+   assignment (scenario order above): [2, 1, 0, 0, 1, 1, 1, 0, 2, 2, 1, 2, 0, 0]
+   total cost 7.3950 = size 1.0200 + timing 1.3750 + type penalty 5.0000
+   maps shared across folds: True
+   fold 0: n_clips 770, median scenario accident_time 6.000s, types ['head-on', 'rear-end', 'sideswipe', 'single', 't-bone']
+           scenarios: Town04_rear-end, Town04_sideswipe, Town06_head-on, Town10HD_single, Town10HD_t-bone
+   fold 1: n_clips 755, median scenario accident_time 7.300s, types ['head-on', 'rear-end', 'sideswipe', 'single', 't-bone']
+           scenarios: Town03_t-bone, Town05_head-on, Town05_rear-end, Town05_sideswipe, Town07_single
+   fold 2: n_clips 686, median scenario accident_time 6.750s, types ['head-on', 'rear-end', 'sideswipe', 't-bone']
+           scenarios: Town03_head-on, Town06_sideswipe, Town07_rear-end, Town07_t-bone
+
+== RUN 2 best - map split (17 valid assignments)
+   assignment (scenario order above): [0, 0, 0, 0, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1]
+   total cost 21.8800 = size 3.5800 + timing 3.3000 + type penalty 15.0000
+   maps shared across folds: False
+   fold 0: n_clips 780, median scenario accident_time 5.375s, types ['head-on', 'rear-end', 'sideswipe', 't-bone']
+           scenarios: Town03_head-on, Town03_t-bone, Town04_rear-end, Town04_sideswipe
+   fold 1: n_clips 873, median scenario accident_time 8.050s, types ['head-on', 'rear-end', 'sideswipe', 'single', 't-bone']
+           scenarios: Town06_head-on, Town06_sideswipe, Town07_rear-end, Town07_single, Town07_t-bone, Town10HD_single, Town10HD_t-bone
+   fold 2: n_clips 558, median scenario accident_time 7.300s, types ['head-on', 'rear-end', 'sideswipe']
+           scenarios: Town05_head-on, Town05_rear-end, Town05_sideswipe
+
+Run 2 evaluated 17 valid assignments (of 200000 draws).
+current split == run 1 best (as partitions): True
+current split == run 2 best (as partitions): False

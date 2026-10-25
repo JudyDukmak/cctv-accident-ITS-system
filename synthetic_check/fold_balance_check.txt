@@ -1,0 +1,30 @@
+Fold balance check (synthetic only)
+synthetic_windows.csv columns: ['rgb_path', 'scenario_id', 'val_fold', 'split_dev', 'window_idx', 't_start', 't_end', 'frame_first', 'frame_last', 't_star', 'label', 'phase', 'split_version']
+join: each window carries rgb_path and scenario_id; scenario_id is used directly and
+      cross-checked against metadata map + '_' + type via rgb_path.
+      The evaluated fold of a window = assignment[scenario_id] (its val_fold column is not used).
+  windows: 70730, clips with windows: 2211, clips not in metadata: 0, scenario_id mismatches vs metadata: 0
+  clips whose val_fold in synthetic_windows.csv differs from synthetic_split.csv: 0
+  V1_HANDMADE from archive\split_v1_handmade\synthetic_split_v1_handmade.csv
+  V2_ACTIVE   from synthetic_split.csv
+
+1. Self-checks: label-1 share per validation fold, definition (a) = label-1 / all windows
+   OK       V1_HANDMADE  got 75.5 / 68.3 / 41.0   expected 75.5 / 68.3 / 41.0
+   OK       V2_ACTIVE    got 64.4 / 63.4 / 59.1   expected 64.4 / 63.4 / 59.1
+
+2. Per validation fold
+   V1_HANDMADE
+    val_fold  n_clips  median_accident_time_s  win_-1  win_0  win_1  label1_share_pct  mean_label0_per_clip  clips_zero_label0
+           0      670                     5.7    1331   4437  17782              75.5                  6.62                 19
+           1      860                     6.3    1699   6595  17857              68.3                  7.67                 41
+           2      681                    11.0    1362  11041   8626              41.0                 16.21                  2
+
+   V2_ACTIVE
+    val_fold  n_clips  median_accident_time_s  win_-1  win_0  win_1  label1_share_pct  mean_label0_per_clip  clips_zero_label0
+           0      770                    6.55    1531   7709  16748              64.4                 10.01                 19
+           1      755                    7.05    1507   7664  15870              63.4                 10.15                  9
+           2      686                    7.10    1354   6700  11647              59.1                  9.77                 34
+
+3. label-1 share spread across folds (max - min, definition (a))
+   V1_HANDMADE  34.5 percentage points
+   V2_ACTIVE    5.3 percentage points

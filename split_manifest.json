@@ -1,0 +1,48 @@
+{
+  "split_version": "v2_rebalanced",
+  "created_at": "2026-10-24T20:22:46+00:00",
+  "method": "Week 3 evaluation Section 5.4 random search, seed 0, 200000 draws, best of run 1 (scenario-level)",
+  "grouping_rule": "Scenario-level grouping. Same-map scenarios are separate crash sites (76-758 m apart). Map-level split rejected: the best of all 540 map-level splits costs 12.71 (timing term 6.75, one fold with median accident time 11.5 s) vs 7.395 for the scenario-level split, so maps are not enough for 3 balanced folds. Map sharing is stated as a limitation.",
+  "global_median_definition": "median of the 14 scenario medians (6.675 s)",
+  "cost": {
+    "total": 7.395,
+    "size": 1.02,
+    "timing": 1.375,
+    "type_penalty": 5.0
+  },
+  "previous_version": {
+    "name": "v1_handmade",
+    "cost": 13.06,
+    "archived_in": "archive/split_v1_handmade/"
+  },
+  "folds": {
+    "0": [
+      "Town04_rear-end",
+      "Town04_sideswipe",
+      "Town06_head-on",
+      "Town10HD_single",
+      "Town10HD_t-bone"
+    ],
+    "1": [
+      "Town03_t-bone",
+      "Town05_head-on",
+      "Town05_rear-end",
+      "Town05_sideswipe",
+      "Town07_single"
+    ],
+    "2": [
+      "Town03_head-on",
+      "Town06_sideswipe",
+      "Town07_rear-end",
+      "Town07_t-bone"
+    ]
+  },
+  "val_sizes": {
+    "0": 770,
+    "1": 755,
+    "2": 686
+  },
+  "split_sha256": "965e1104208e3e7e53e64ebcac8f8d467c6647797c706560fb71fe503ad8fb19",
+  "frozen": true,
+  "windows_sha256": "36866a3009097928654957f48bb88bd0a3565a8853ef8439da4fc81a67d1abad"
+}

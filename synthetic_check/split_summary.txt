@@ -1,98 +1,99 @@
-Synthetic scenario-grouped split
+Synthetic scenario-grouped split (v2_rebalanced)
 metadata: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\ACCIDENT\dataset\metadata-synthetic.csv
 output  : C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\synthetic_split.csv
+sha256  : 965e1104208e3e7e53e64ebcac8f8d467c6647797c706560fb71fe503ad8fb19
 
 1. Total clips: 2211
 
 2. Folds (fold k: val = val_fold == k, train = the rest)
--- fold 0: train 1541, val 670 (30.3%)   <- split_dev
+-- fold 0: train 1441, val 770 (34.8%)   <- split_dev
    val types:
                 n   pct
    type                
-   rear-end   245  36.6
-   head-on    174  26.0
-   t-bone     131  19.6
-   sideswipe  107  16.0
-   single      13   1.9
+   rear-end   245  31.8
+   head-on    202  26.2
+   sideswipe  139  18.1
+   t-bone     131  17.0
+   single      53   6.9
    val weathers:
               n   pct
    weather           
-   sunset   160  23.9
-   clear    159  23.7
-   night    130  19.4
-   wet      123  18.4
-   rain      98  14.6
+   clear    185  24.0
+   sunset   174  22.6
+   wet      171  22.2
+   night    163  21.2
+   rain      77  10.0
 
--- fold 1: train 1351, val 860 (38.9%)
+-- fold 1: train 1456, val 755 (34.1%)
    val types:
                 n   pct
    type                
-   rear-end   272  31.6
-   head-on    212  24.7
-   t-bone     184  21.4
-   sideswipe  139  16.2
-   single      53   6.2
+   rear-end   277  36.7
+   t-bone     184  24.4
+   head-on    174  23.0
+   sideswipe  107  14.2
+   single      13   1.7
    val weathers:
               n   pct
    weather           
-   clear    186  21.6
-   night    179  20.8
-   wet      168  19.5
-   sunset   166  19.3
-   rain     161  18.7
+   clear    157  20.8
+   night    156  20.7
+   sunset   152  20.1
+   wet      147  19.5
+   rain     143  18.9
 
--- fold 2: train 1530, val 681 (30.8%)
+-- fold 2: train 1525, val 686 (31.0%)
    val types:
                 n   pct
    type                
-   rear-end   277  40.7
-   head-on    202  29.7
-   sideswipe  159  23.3
+   rear-end   272  39.7
+   head-on    212  30.9
+   sideswipe  159  23.2
    t-bone      43   6.3
    val weathers:
               n   pct
    weather           
-   clear    170  25.0
-   wet      153  22.5
-   night    140  20.6
-   sunset   135  19.8
-   rain      83  12.2
+   clear    173  25.2
+   sunset   135  19.7
+   night    130  19.0
+   wet      126  18.4
+   rain     122  17.8
 
 3. Scenarios
                   n_clips  val_fold
 scenario_id                        
 Town04_rear-end       245         0
-Town05_head-on        174         0
+Town06_head-on        202         0
+Town04_sideswipe      139         0
 Town10HD_t-bone       131         0
-Town05_sideswipe      107         0
-Town07_single          13         0
-Town07_rear-end       272         1
-Town03_head-on        212         1
+Town10HD_single        53         0
+Town05_rear-end       277         1
 Town03_t-bone         184         1
-Town04_sideswipe      139         1
-Town10HD_single        53         1
-Town05_rear-end       277         2
-Town06_head-on        202         2
+Town05_head-on        174         1
+Town05_sideswipe      107         1
+Town07_single          13         1
+Town07_rear-end       272         2
+Town03_head-on        212         2
 Town06_sideswipe      159         2
 Town07_t-bone          43         2
 
 4. EXPECTED comparison (warnings only)
    OK       total clips: got 2211, expected 2211
-   OK       fold 0 val size: got 670, expected 670
-   OK       fold 1 val size: got 860, expected 860
-   OK       fold 2 val size: got 681, expected 681
+   OK       fold 0 val size: got 770, expected 770
+   OK       fold 1 val size: got 755, expected 755
+   OK       fold 2 val size: got 686, expected 686
    OK       fold 0 val rear-end: got 245, expected 245
-   OK       fold 0 val head-on: got 174, expected 174
+   OK       fold 0 val head-on: got 202, expected 202
+   OK       fold 0 val sideswipe: got 139, expected 139
    OK       fold 0 val t-bone: got 131, expected 131
-   OK       fold 0 val sideswipe: got 107, expected 107
-   OK       fold 0 val single: got 13, expected 13
-   OK       fold 1 val rear-end: got 272, expected 272
-   OK       fold 1 val head-on: got 212, expected 212
+   OK       fold 0 val single: got 53, expected 53
+   OK       fold 1 val rear-end: got 277, expected 277
    OK       fold 1 val t-bone: got 184, expected 184
-   OK       fold 1 val sideswipe: got 139, expected 139
-   OK       fold 1 val single: got 53, expected 53
-   OK       fold 2 val rear-end: got 277, expected 277
-   OK       fold 2 val head-on: got 202, expected 202
+   OK       fold 1 val head-on: got 174, expected 174
+   OK       fold 1 val sideswipe: got 107, expected 107
+   OK       fold 1 val single: got 13, expected 13
+   OK       fold 2 val rear-end: got 272, expected 272
+   OK       fold 2 val head-on: got 212, expected 212
    OK       fold 2 val sideswipe: got 159, expected 159
    OK       fold 2 val t-bone: got 43, expected 43
    OK       fold 2 val single: got 0, expected 0

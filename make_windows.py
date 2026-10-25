@@ -15,12 +15,17 @@ Labels (t_star = accident_time, m = ignore_margin_s):
 
 window_frame_indices() is importable by the training code.
 
+The split is checked against split_manifest.json (split_sha256) before any window is
+built; split_version is copied into every window row. After writing, the SHA-256 of
+synthetic_windows.csv is stored in the manifest as windows_sha256.
+
 Usage:
     py make_windows.py [--dataset-path PATH] [--model-fps 8] [--window-frames 16]
                        [--stride-s 0.5] [--ignore-margin-s 1.0] [--overwrite]
 """
 
 import argparse
+import hashlib
 import json
 import math
 import sys
@@ -34,6 +39,7 @@ DEFAULT_DATASET = Path(
 )
 REPO_ROOT = Path(__file__).resolve().parent
 SPLIT_CSV = REPO_ROOT / "synthetic_split.csv"
+SPLIT_MANIFEST = REPO_ROOT / "split_manifest.json"
 OUT_CSV = REPO_ROOT / "synthetic_windows.csv"
 OUT_CONFIG = REPO_ROOT / "windows_config.json"
 OUT_SUMMARY = REPO_ROOT / "synthetic_check" / "windows_summary.txt"
@@ -42,7 +48,7 @@ FRAME_TIME_TOL = 0.026  # s, about half a frame at 20 fps
 TIME_DECIMALS = 6  # window times are rounded to remove float noise (e.g. 9.55 - 1.0)
 LABEL_ORDER = {0: 0, -1: 1, 1: 2}  # labels may only move forward in this order
 OUT_COLUMNS = ["rgb_path", "scenario_id", "val_fold", "split_dev", "window_idx", "t_start", "t_end",
-               "frame_first", "frame_last", "t_star", "label", "phase"]
+               "frame_first", "frame_last", "t_star", "label", "phase", "split_version"]
 EXPECTED_CLIPS = {
     "Town05_sideswipe_rain_44": dict(windows=36, label0=14, label_m1=2, label1=20, onset=4, post=16),
     "Town05_sideswipe_clear_00": dict(windows=38, label0=12, label_m1=2, label1=24, onset=4, post=20),
@@ -52,6 +58,40 @@ TIMELINE_CLIP = "Town05_sideswipe_rain_44"
 
 def fail(msg):
     sys.exit(f"ERROR: {msg}")
+
+
+def sha256_file(path):
+    return hashlib.sha256(path.read_bytes()).hexdigest()
+
+
+def check_split_against_manifest():
+    """Stop unless synthetic_split.csv has the SHA-256 recorded in split_manifest.json."""
+    if not SPLIT_MANIFEST.is_file():
+        fail(f"{SPLIT_MANIFEST} not found - run make_synthetic_split.py first")
+    if not SPLIT_CSV.is_file():
+        fail(f"{SPLIT_CSV} not found - run make_synthetic_split.py first")
+    try:
+        manifest = json.loads(SPLIT_MANIFEST.read_text(encoding="ascii"))
+    except (OSError, ValueError) as e:
+        fail(f"cannot read {SPLIT_MANIFEST}: {e}")
+    expected = manifest.get("split_sha256")
+    got = sha256_file(SPLIT_CSV)
+    if got != expected:
+        fail(f"{SPLIT_CSV.name} SHA-256 {got} does not match split_sha256 {expected} in "
+             f"{SPLIT_MANIFEST.name}. The split changed since it was frozen; nothing written.")
+    return manifest, got
+
+
+def add_windows_sha_to_manifest(windows_sha):
+    """Set manifest['windows_sha256']; every other key is kept exactly as it was."""
+    before = json.loads(SPLIT_MANIFEST.read_text(encoding="ascii"))
+    after = dict(before)
+    after["windows_sha256"] = windows_sha
+    SPLIT_MANIFEST.write_text(json.dumps(after, indent=2) + "\n", encoding="ascii", newline="\n")
+    reread = json.loads(SPLIT_MANIFEST.read_text(encoding="ascii"))
+    changed = [k for k in set(before) | set(reread) if k != "windows_sha256" and before.get(k) != reread.get(k)]
+    if changed or reread.get("windows_sha256") != windows_sha:
+        fail(f"manifest update changed other keys: {changed}")
 
 
 def frame_index(t, fps_video):
@@ -94,7 +134,7 @@ def clip_windows(row, cfg):
             "rgb_path": row["rgb_path"], "scenario_id": row["scenario_id"],
             "val_fold": row["val_fold"], "split_dev": row["split_dev"], "window_idx": j,
             "t_start": ts, "t_end": te, "frame_first": frames[0], "frame_last": frames[-1],
-            "t_star": t_star, "label": label, "phase": phase,
+            "t_star": t_star, "label": label, "phase": phase, "split_version": row["split_version"],
         })
         j += 1
     return out
@@ -107,6 +147,8 @@ def load_inputs(dataset_root):
     if not SPLIT_CSV.is_file():
         fail(f"{SPLIT_CSV} not found - run make_synthetic_split.py first")
     split = pd.read_csv(SPLIT_CSV)
+    if "split_version" not in split.columns or split["split_version"].isna().any():
+        fail(f"{SPLIT_CSV.name} has no complete split_version column - rerun make_synthetic_split.py")
     meta = pd.read_csv(meta_csv)
     need = ["rgb_path", "accident_time", "accident_frame", "no_frames", "duration"]
     missing = [c for c in need if c not in meta.columns]
@@ -264,11 +306,20 @@ def main():
     cfg = {"model_fps": args.model_fps, "window_frames": args.window_frames,
            "stride_s": args.stride_s, "ignore_margin_s": args.ignore_margin_s}
 
+    manifest, split_sha = check_split_against_manifest()
     df, meta_csv = load_inputs(dataset_root)
+    versions = sorted(df["split_version"].unique())
+    split_version = versions[0] if len(versions) == 1 else ",".join(versions)
+    if split_version != manifest.get("split_version"):
+        print(f"WARNING: split_version in {SPLIT_CSV.name} ({split_version}) differs from the "
+              f"manifest ({manifest.get('split_version')})")
+    print(f"split check OK: {SPLIT_CSV.name} sha256 {split_sha} == manifest split_sha256 "
+          f"(split_version {split_version})")
     rows = []
     for _, r in df.iterrows():
         rows.extend(clip_windows(r, cfg))
     win = pd.DataFrame(rows, columns=OUT_COLUMNS)
+    win = win.sort_values(["rgb_path", "window_idx"], kind="mergesort").reset_index(drop=True)
     check_windows(win, df, cfg["ignore_margin_s"])
 
     config = {
@@ -284,7 +335,13 @@ def main():
     write_guarded(OUT_CSV, win.to_csv(index=False, lineterminator="\n"), args.overwrite)
     write_guarded(OUT_CONFIG, json.dumps(config, indent=2) + "\n", args.overwrite)
 
-    text = (f"Synthetic sliding windows\nconfig: {json.dumps(cfg)}\nmetadata: {meta_csv}\n\n"
+    windows_sha = sha256_file(OUT_CSV)
+    add_windows_sha_to_manifest(windows_sha)
+    print(f"{SPLIT_MANIFEST.name}: windows_sha256 = {windows_sha}")
+
+    text = (f"Synthetic sliding windows\nconfig: {json.dumps(cfg)}\nmetadata: {meta_csv}\n"
+            f"split_version: {split_version}\nsplit_sha256: {split_sha}\n"
+            f"windows_sha256: {windows_sha}\n\n"
             + summarize(win, df, cfg) + "\n")
     print()
     print(text)

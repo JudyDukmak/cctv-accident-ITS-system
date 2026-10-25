@@ -1,6 +1,9 @@
 Synthetic sliding windows
 config: {"model_fps": 8, "window_frames": 16, "stride_s": 0.5, "ignore_margin_s": 1.0}
 metadata: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\ACCIDENT\dataset\metadata-synthetic.csv
+split_version: v2_rebalanced
+split_sha256: 965e1104208e3e7e53e64ebcac8f8d467c6647797c706560fb71fe503ad8fb19
+windows_sha256: 36866a3009097928654957f48bb88bd0a3565a8853ef8439da4fc81a67d1abad
 
 0. Input checks
    fps_video = no_frames / duration, rounded to 0.1:
@@ -26,9 +29,9 @@ metadata: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\ACCIDENT
 2. val_fold x label
 label       -1      0      1    All
 val_fold                           
-0         1331   4437  17782  23550
-1         1699   6595  17857  26151
-2         1362  11041   8626  21029
+0         1531   7709  16748  25988
+1         1507   7664  15870  25041
+2         1354   6700  11647  19701
 All       4392  22073  44265  70730
    type x label
 label        -1      0      1    All
