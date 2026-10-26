@@ -1,0 +1,27 @@
+VideoMAE GPU memory test (random inputs, no dataset)
+time: 2026-10-26T12:49:10+00:00
+GPU: NVIDIA GeForce RTX 5060 Laptop GPU, total memory 7.96 GB; OVER_VRAM threshold 7.72 GB
+torch 2.10.0+cu128, CUDA 12.8, transformers 5.20.2, python 3.12.2
+model: MCG-NJU/videomae-base-finetuned-kinetics, classifier -> Linear(hidden, 1); input (B, 16, 3, 224, 224); bf16 autocast
+parameters: 86,227,969 (trainable 86,227,969); hidden_size 768
+
+1. Training step (AdamW lr=3e-05 wd=0.05, BCEWithLogits, clip 1.0; 2 warm-up + 5 timed steps)
+ grad_ckpt = False
+  batch  8  FITS       peak alloc  5.73 GB  peak reserved  6.12 GB  0.556 s/step   14.38 windows/s
+ grad_ckpt = True
+  batch  8  FITS       peak alloc  1.91 GB  peak reserved  2.22 GB  0.669 s/step   11.95 windows/s
+
+2. Inference (eval, no_grad, bf16; 2 warm-up + 5 timed passes)
+  batch 32  FITS       peak alloc  1.95 GB  peak reserved  2.48 GB  0.621 s/step   51.57 windows/s
+
+3. Largest fitting training batch
+   grad_ckpt False: batch 8 (14.38 windows/s, peak reserved 6.12 GB)
+   grad_ckpt True : batch 8 (11.95 windows/s, peak reserved 2.22 GB)
+   suggested: batch 8, grad_ckpt False
+
+4. Time estimates (data loading assumed not to be the bottleneck)
+   training 14.38 windows/s (batch 8, grad_ckpt False); inference 51.57 windows/s (batch 32)
+   fold  train windows  min/train epoch  val windows  min/val pass
+   0             19817             23.0        25988           8.4
+   1             19903             23.1        25041           8.1
+   2             21114             24.5        19701           6.4

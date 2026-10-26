@@ -1,0 +1,81 @@
+{
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "total_memory_gb": 7.95953369140625,
+  "over_vram_frac": 0.97,
+  "torch": "2.10.0+cu128",
+  "cuda": "12.8",
+  "transformers": "5.20.2",
+  "model": "MCG-NJU/videomae-base-finetuned-kinetics",
+  "n_params": 86227969,
+  "input": [
+    16,
+    3,
+    224,
+    224
+  ],
+  "amp": "bf16",
+  "results": [
+    {
+      "phase": "train",
+      "grad_ckpt": false,
+      "batch": 8,
+      "peak_alloc_gb": 5.733405590057373,
+      "peak_reserved_gb": 6.125,
+      "sec_per_step": 0.5564409399998113,
+      "windows_per_sec": 14.377087350910438,
+      "status": "FITS"
+    },
+    {
+      "phase": "train",
+      "grad_ckpt": true,
+      "batch": 8,
+      "peak_alloc_gb": 1.906104564666748,
+      "peak_reserved_gb": 2.21875,
+      "sec_per_step": 0.669216679999954,
+      "windows_per_sec": 11.954274660339532,
+      "status": "FITS"
+    },
+    {
+      "phase": "infer",
+      "grad_ckpt": false,
+      "batch": 32,
+      "peak_alloc_gb": 1.9530792236328125,
+      "peak_reserved_gb": 2.478515625,
+      "sec_per_step": 0.6205374799999845,
+      "windows_per_sec": 51.56819858810268,
+      "status": "FITS"
+    }
+  ],
+  "largest_fitting": {
+    "False": 8,
+    "True": 8
+  },
+  "suggested": {
+    "batch": 8,
+    "grad_ckpt": false
+  },
+  "inference": {
+    "batch": 32,
+    "windows_per_sec": 51.56819858810268
+  },
+  "estimates": {
+    "0": {
+      "train_windows": 19817,
+      "min_per_train_epoch": 22.972896058283872,
+      "val_windows": 25988,
+      "min_per_val_pass": 8.399233349083124
+    },
+    "1": {
+      "train_windows": 19903,
+      "min_per_train_epoch": 23.07259172670051,
+      "val_windows": 25041,
+      "min_per_val_pass": 8.093166164937298
+    },
+    "2": {
+      "train_windows": 21114,
+      "min_per_train_epoch": 24.4764458482417,
+      "val_windows": 19701,
+      "min_per_val_pass": 6.367296298687341
+    }
+  }
+}

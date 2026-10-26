@@ -1,0 +1,27 @@
+Scorer validation on the naive baseline (all real clips)
+metadata: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\ACCIDENT\dataset\metadata-real.csv
+metadata sha256: a3d06073353a7fedff140b652d025135f017860a240cad693990f5288c6c0ec9
+clips: 2027
+
+1. sigma_x = 0.127199, sigma_y = 0.118818  (mean box width / height, all 2027 clips)
+2. most frequent type: single (680 / 2027 = 0.3355)
+   type counts: single 680, t-bone 657, rear-end 328, sideswipe 245, head-on 117
+
+3. score_all on N = 2027 clips (ACCS uses sigma_t = 1.0, spatial k = 1.0)
+   component      ours    paper   |diff|  status
+   T@0.5        0.1068    0.107   0.0002  OK
+   T@1          0.1896    0.190   0.0004  OK
+   T@2          0.2952    0.295   0.0002  OK
+   S            0.2505    0.250   0.0005  OK
+   C            0.3355    0.335   0.0005  OK
+   ACCS         0.2449    0.245   0.0001  OK
+   tolerance |diff| <= 0.005
+   per-class type accuracy (no paper value):
+     head-on    0.0000
+     rear-end   0.0000
+     sideswipe  0.0000
+     single     1.0000
+     t-bone     0.0000
+   macro type accuracy (no paper value): 0.2000
+
+4. wrote C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\scorer_config.json
