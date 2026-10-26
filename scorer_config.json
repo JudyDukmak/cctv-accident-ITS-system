@@ -1,0 +1,14 @@
+{
+  "sigma_x": 0.1271988418398835,
+  "sigma_y": 0.11881774725886773,
+  "sigma_scope": "mean over all 2027 real clips",
+  "spatial_k": 1.0,
+  "accs_sigma_t": 1.0,
+  "sigmas_t": [
+    0.5,
+    1.0,
+    2.0
+  ],
+  "source": "paper arXiv 2604.09819 Sec. 5, footnote 4; validated on naive baseline",
+  "metadata_real_sha256": "a3d06073353a7fedff140b652d025135f017860a240cad693990f5288c6c0ec9"
+}
