@@ -3,3 +3,34 @@
 .requirements-ml.txt
 cache/
 runs/
+
+# Python
+__pycache__/
+*.pyc
+.venv-ml/
+
+# Dataset, caches, run outputs (large or licensed; never commit)
+archive/
+cache/
+runs/
+logs/
+audit_output/
+*.mp4
+*.avi
+
+# Generated data tables (rebuild with the scripts)
+synthetic_windows.csv
+synthetic_window_labels.csv
+fps_audit*.csv
+
+# Generated check outputs (keep the .txt summaries)
+synthetic_check/*.png
+synthetic_check/*.csv
+real_check/*.png
+real_check/*.csv
+
+# Future model files
+*.pt
+*.pth
+*.ckpt
+*.safetensors
