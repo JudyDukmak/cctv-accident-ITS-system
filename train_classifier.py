@@ -245,6 +245,7 @@ def clip_predictions(val_rows, scores, smooth_window, exclude):
         out.append({"rgb_path": path, "t_star": float(g["t_star"].iloc[0]),
                     "t_hat": float(g["t_centre"].iloc[p]), "confidence": conf})
     pred = pd.DataFrame(out)
+    pred["t_hat_minus_t_star"] = pred["t_hat"] - pred["t_star"]  # diagnostic only, positive = late
     for s_ in SIGMAS_T:
         pred[f"T_i_{s_:g}"] = temporal_per_clip(pred["t_hat"], pred["t_star"], s_)
     return df, pred
@@ -521,15 +522,19 @@ def main():
             "epoch": state["epoch"], "global_step": state["global_step"],
             "train_loss": state["loss_sum"] / max(1, state["loss_n"]), "val_loss": val_loss,
             "val_T_0.5": T[0.5], "val_T_1": T[1.0], "val_T_2": T[2.0],
+            "val_signed_err_mean": float(pred["t_hat_minus_t_star"].mean()),  # reported only
+            "val_signed_err_median": float(pred["t_hat_minus_t_star"].median()),
             "lr_backbone": optimizer.param_groups[0]["lr"], "minutes": minutes,
-            "windows_per_s": state["windows"] / max(1e-9, state["train_time"]),
+            "windows_per_s": state["windows"] / max(1e-9, state["wait"] + state["train_time"]),
             "peak_gpu_mem_gb": torch.cuda.max_memory_reserved(device) / 2 ** 30,
-            "data_wait_share": state["wait"] / max(1e-9, state["train_time"]),
+            "data_wait_share": state["wait"] / max(1e-9, state["wait"] + state["train_time"]),
             "best": improved,
         }
         pd.DataFrame([row]).to_csv(metrics_path, mode="a", header=not metrics_path.exists(), index=False)
         log(f"epoch {state['epoch']} done: train loss {row['train_loss']:.4f}, val loss {val_loss:.4f}, "
-            f"val T@0.5/1/2 {T[0.5]:.4f} / {T[1.0]:.4f} / {T[2.0]:.4f}, {minutes:.2f} min, "
+            f"val T@0.5/1/2 {T[0.5]:.4f} / {T[1.0]:.4f} / {T[2.0]:.4f}, "
+            f"signed err mean/median {row['val_signed_err_mean']:+.3f} / {row['val_signed_err_median']:+.3f} s, "
+            f"{minutes:.2f} min, "
             f"{row['windows_per_s']:.1f} windows/s, data wait {100 * row['data_wait_share']:.0f}%, "
             f"peak {row['peak_gpu_mem_gb']:.2f} GB{'  [best]' if improved else ''}")
         if improved:
@@ -575,8 +580,9 @@ def main():
                     logits = model(pixel_values=x).logits.squeeze(-1)
                 loss = criterion(logits.float(), y)
                 (loss / group_size).backward()
-                micro_losses.append(float(loss))
-                state["loss_sum"] += float(loss) * len(y)
+                loss_value = loss.item()
+                micro_losses.append(loss_value)
+                state["loss_sum"] += loss_value * len(y)
                 state["loss_n"] += len(y)
                 state["windows"] += len(y)
                 if b + 1 - group_start == group_size:  # end of an accumulation group
