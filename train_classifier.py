@@ -13,7 +13,8 @@ Val:    per clip, sort by t_centre, 3-window moving average, t_hat = t_centre at
         confidence = peak - max smoothed score outside +-2 windows (evaluation document,
         Section 6.4); T at sigma_t = 0.5 / 1 / 2 s with accs_scorer.temporal.
 Early stopping on val T@1 s (patience 2, min delta 0.002). Checkpoints: last.pt (every
-epoch), step_latest.pt (every 500 optimizer steps and on Ctrl+C), best.pt (weights).
+epoch), step_latest.pt (every 500 optimizer steps, --step-ckpt-every, and on Ctrl+C),
+best.pt (weights).
 
 --overfit: train and validate on the first 2 training clips of the fold, no augmentation,
 constant lr 1e-4, 100 optimizer steps, then PASS if the mean training loss of the last
@@ -35,10 +36,12 @@ import json  # noqa: E402
 import math  # noqa: E402
 import platform  # noqa: E402
 import random  # noqa: E402
+import signal  # noqa: E402
 import subprocess  # noqa: E402
 import sys  # noqa: E402
 import time  # noqa: E402
 from collections import OrderedDict  # noqa: E402
+from contextlib import contextmanager  # noqa: E402
 from datetime import datetime, timezone  # noqa: E402
 from pathlib import Path  # noqa: E402
 
@@ -69,7 +72,7 @@ DEFAULTS = {
     "model_fps": 8,
     "batch_size": 8,
     "grad_accum": 2,
-    "val_batch_size": 32,
+    "val_batch_size": 16,
     "num_workers": 4,
     "lru_size": 8,
     "amp": "bf16",
@@ -104,9 +107,44 @@ class Logger:
         self.fh = open(path, "a", encoding="utf-8")
 
     def __call__(self, text=""):
-        print(text, flush=True)
+        # file first, so the record survives when the console pipe (e.g. Tee-Object) is gone
         self.fh.write(str(text) + "\n")
         self.fh.flush()
+        try:
+            print(text, flush=True)
+        except OSError:
+            pass
+
+    def close(self):
+        self.fh.flush()
+        os.fsync(self.fh.fileno())
+        self.fh.close()
+
+
+class InterruptGuard:
+    """Ctrl+C raises KeyboardInterrupt, except inside critical() blocks, where it is
+    deferred to the end of the block (so an optimizer step is never half recorded)."""
+
+    def __init__(self):
+        self.depth, self.pending = 0, False
+        signal.signal(signal.SIGINT, self._handler)
+
+    def _handler(self, signum, frame):
+        if self.depth:
+            self.pending = True
+        else:
+            raise KeyboardInterrupt
+
+    @contextmanager
+    def critical(self):
+        self.depth += 1
+        try:
+            yield
+        finally:
+            self.depth -= 1
+        if self.depth == 0 and self.pending:
+            self.pending = False
+            raise KeyboardInterrupt
 
 
 def fail(msg):
@@ -327,12 +365,18 @@ def main():
     ap.add_argument("--limit-train-clips", type=int, default=None)
     ap.add_argument("--limit-val-clips", type=int, default=None)
     ap.add_argument("--overfit", action="store_true")
+    ap.add_argument("--val-batch-size", type=int, default=None)
+    ap.add_argument("--step-ckpt-every", type=int, default=None, help="write step_latest.pt every N optimizer steps")
     args = ap.parse_args()
 
     cfg = dict(DEFAULTS)
     cfg["fold"] = args.fold
     if args.max_epochs is not None:
         cfg["max_epochs"] = args.max_epochs
+    if args.val_batch_size is not None:
+        cfg["val_batch_size"] = args.val_batch_size
+    if args.step_ckpt_every is not None:
+        cfg["step_ckpt_every"] = args.step_ckpt_every
     if args.seed is not None:
         cfg["seed"] = args.seed
     cfg["aug_hflip"] = not (args.no_aug or args.overfit)
@@ -476,7 +520,8 @@ def main():
     criterion = nn.BCEWithLogitsLoss()
 
     state = {"epoch": 0, "batches_done": 0, "global_step": 0, "best": -math.inf, "no_improve": 0,
-             "loss_sum": 0.0, "loss_n": 0, "wait": 0.0, "train_time": 0.0, "windows": 0}
+             "loss_sum": 0.0, "loss_n": 0, "wait": 0.0, "train_time": 0.0, "windows": 0,
+             "lr_backbone_used": None, "lr_head_used": None}  # lr of the last optimizer step
 
     def save_ckpt(path):
         atomic_save({"model": model.state_dict(), "optimizer": optimizer.state_dict(),
@@ -500,18 +545,31 @@ def main():
         scheduler.load_state_dict(ck["scheduler"])
         state.update(ck["state"])
         set_rng_states(ck["rng"])
-        log(f"resumed from {name}: epoch {state['epoch']}, batch {state['batches_done']}, "
-            f"global step {state['global_step']}, best {state['best']:.4f}")
+        log(f"resumed from {ckpt_dir / name}: epoch {state['epoch']}, batches_done {state['batches_done']}, "
+            f"global step {state['global_step']}, best {state['best']:.4f}; skipping {state['batches_done']} "
+            f"of {n_batches} batches already applied in epoch {state['epoch']}")
         del ck
 
     metrics_path = out_dir / "metrics.csv"
     step_losses = []  # unscaled mean loss per optimizer step
-    last_step_batch = state["batches_done"]
+    resume_argv = [a for a in sys.argv[1:]]
+    if "--resume" not in resume_argv:
+        resume_argv.append("--resume")
+    resume_cmd = subprocess.list2cmdline([".venv-ml\\Scripts\\python.exe", Path(sys.argv[0]).name] + resume_argv)
 
     def finish_epoch(epoch_minutes_start):
         """Validate, write metrics, checkpoints; returns True if training should stop."""
+        peak_train = torch.cuda.max_memory_reserved(device) / 2 ** 30
+        torch.cuda.empty_cache()
+        torch.cuda.reset_peak_memory_stats(device)
         val_loss, T, win_df, pred = validate(model, val_loader, val_sampler, val_rows, cfg, device)
+        peak_val = torch.cuda.max_memory_reserved(device) / 2 ** 30
+        torch.cuda.empty_cache()
         minutes = (time.perf_counter() - epoch_minutes_start) / 60
+        with guard.critical():  # metrics row, best.pt, epoch counter and last.pt are recorded together
+            return record_epoch(val_loss, T, win_df, pred, minutes, peak_train, peak_val)
+
+    def record_epoch(val_loss, T, win_df, pred, minutes, peak_train, peak_val):
         monitor = T[1.0]
         improved = monitor > state["best"] + cfg["min_delta"]
         if improved:
@@ -524,9 +582,10 @@ def main():
             "val_T_0.5": T[0.5], "val_T_1": T[1.0], "val_T_2": T[2.0],
             "val_signed_err_mean": float(pred["t_hat_minus_t_star"].mean()),  # reported only
             "val_signed_err_median": float(pred["t_hat_minus_t_star"].median()),
-            "lr_backbone": optimizer.param_groups[0]["lr"], "minutes": minutes,
+            "lr_backbone": state["lr_backbone_used"], "lr_head": state["lr_head_used"], "minutes": minutes,
             "windows_per_s": state["windows"] / max(1e-9, state["wait"] + state["train_time"]),
-            "peak_gpu_mem_gb": torch.cuda.max_memory_reserved(device) / 2 ** 30,
+            "peak_gpu_mem_gb": max(peak_train, peak_val),
+            "peak_train_gb": peak_train, "peak_val_gb": peak_val,
             "data_wait_share": state["wait"] / max(1e-9, state["wait"] + state["train_time"]),
             "best": improved,
         }
@@ -536,7 +595,8 @@ def main():
             f"signed err mean/median {row['val_signed_err_mean']:+.3f} / {row['val_signed_err_median']:+.3f} s, "
             f"{minutes:.2f} min, "
             f"{row['windows_per_s']:.1f} windows/s, data wait {100 * row['data_wait_share']:.0f}%, "
-            f"peak {row['peak_gpu_mem_gb']:.2f} GB{'  [best]' if improved else ''}")
+            f"peak {row['peak_gpu_mem_gb']:.2f} GB (train {peak_train:.2f}, val {peak_val:.2f})"
+            f"{'  [best]' if improved else ''}")
         if improved:
             win_df[["rgb_path", "window_idx", "t_centre", "label_B", "score"]].to_csv(
                 out_dir / "val_window_scores_best.csv", index=False)
@@ -557,6 +617,7 @@ def main():
 
     # ---------------- training loop ----------------
     val_loss = T = None
+    guard = InterruptGuard()
     try:
         stop = False
         while not stop:
@@ -568,7 +629,7 @@ def main():
             t_epoch = time.perf_counter()
             t_last = time.perf_counter()
             micro_losses = []
-            last_step_batch = start_b
+            pending = {"loss_sum": 0.0, "loss_n": 0, "windows": 0}  # added to state at the optimizer step
             for i, (x, y, _) in enumerate(train_loader):
                 b = start_b + i
                 t_got = time.perf_counter()
@@ -582,26 +643,32 @@ def main():
                 (loss / group_size).backward()
                 loss_value = loss.item()
                 micro_losses.append(loss_value)
-                state["loss_sum"] += loss_value * len(y)
-                state["loss_n"] += len(y)
-                state["windows"] += len(y)
+                pending["loss_sum"] += loss_value * len(y)
+                pending["loss_n"] += len(y)
+                pending["windows"] += len(y)
                 if b + 1 - group_start == group_size:  # end of an accumulation group
-                    torch.nn.utils.clip_grad_norm_(model.parameters(), cfg["grad_clip"])
-                    optimizer.step()
-                    scheduler.step()
-                    optimizer.zero_grad(set_to_none=True)
-                    state["global_step"] += 1
-                    state["batches_done"] = b + 1
-                    last_step_batch = b + 1
-                    step_losses.append(float(np.mean(micro_losses)))
-                    micro_losses = []
-                    gs = state["global_step"]
-                    if gs % cfg["log_every"] == 0:
-                        log(f"  step {gs:>6}  epoch {epoch}  batch {b + 1}/{n_batches}  "
-                            f"loss {np.mean(step_losses[-cfg['log_every']:]):.4f} (mean of last "
-                            f"{min(cfg['log_every'], len(step_losses))} steps)  lr {optimizer.param_groups[0]['lr']:.2e}")
-                    if not args.overfit and gs % cfg["step_ckpt_every"] == 0:
-                        save_ckpt(ckpt_dir / "step_latest.pt")
+                    with guard.critical():  # Ctrl+C waits until this step is fully recorded
+                        torch.nn.utils.clip_grad_norm_(model.parameters(), cfg["grad_clip"])
+                        lr_now = {g["name"].split("_")[0]: g["lr"] for g in optimizer.param_groups}
+                        state["lr_backbone_used"], state["lr_head_used"] = lr_now["backbone"], lr_now["head"]
+                        optimizer.step()
+                        scheduler.step()
+                        optimizer.zero_grad(set_to_none=True)
+                        state["global_step"] += 1
+                        state["batches_done"] = b + 1
+                        for k in pending:
+                            state[k] += pending[k]
+                        pending = dict.fromkeys(pending, 0)
+                        step_losses.append(float(np.mean(micro_losses)))
+                        micro_losses = []
+                        gs = state["global_step"]
+                        if gs % cfg["log_every"] == 0:
+                            log(f"  step {gs:>6}  epoch {epoch}  batch {b + 1}/{n_batches}  "
+                                f"loss {np.mean(step_losses[-cfg['log_every']:]):.4f} (mean of last "
+                                f"{min(cfg['log_every'], len(step_losses))} steps)  "
+                                f"lr {state['lr_backbone_used']:.2e}")
+                        if not args.overfit and gs % cfg["step_ckpt_every"] == 0:
+                            save_ckpt(ckpt_dir / "step_latest.pt")
                     if cfg["max_steps"] is not None and gs >= cfg["max_steps"]:
                         state["train_time"] += time.perf_counter() - t_got
                         break
@@ -610,12 +677,16 @@ def main():
             torch.cuda.synchronize()
             stop, val_loss, T = finish_epoch(t_epoch)
     except KeyboardInterrupt:
-        state["batches_done"] = last_step_batch
+        # state only changes at optimizer-step boundaries, so it already counts fully applied
+        # batches; gradients of an unfinished accumulation group are discarded
+        optimizer.zero_grad(set_to_none=True)
+        log(f"\ninterrupted: epoch {state['epoch']}, batches_done {state['batches_done']}/{n_batches}, "
+            f"global step {state['global_step']}; saving {ckpt_dir / 'step_latest.pt'} ...")
         save_ckpt(ckpt_dir / "step_latest.pt")
-        log(f"\ninterrupted: saved {ckpt_dir / 'step_latest.pt'} (epoch {state['epoch']}, batch "
+        log(f"saved {ckpt_dir / 'step_latest.pt'} (epoch {state['epoch']}, batches_done "
             f"{state['batches_done']}, global step {state['global_step']})")
-        log(f"resume with: .venv-ml\\Scripts\\python.exe train_classifier.py --fold {args.fold} "
-            f"--run-name {run_name} --resume" + (" --no-aug" if args.no_aug else ""))
+        log(f"resume with: {resume_cmd}")
+        log.close()
         sys.exit(130)
 
     if args.overfit:

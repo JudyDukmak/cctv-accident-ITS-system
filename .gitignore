@@ -7,7 +7,6 @@ runs/
 # Python
 __pycache__/
 *.pyc
-.venv-ml/
 
 # Dataset, caches, run outputs (large or licensed; never commit)
 archive/
