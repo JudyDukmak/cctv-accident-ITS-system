@@ -6,20 +6,27 @@ Data:   synthetic_window_labels.csv (hash-checked against split_manifest.json) a
         frame cache cache/frames224_v1/<clip>.npz (build_frame_cache.py). Window frames =
         grid positions 8*t_start .. 8*t_start+15, normalised with the VideoMAE processor
         mean/std (frames are already 224x224 full-frame squashes; no further resize/crop).
-Fold k: train = label_B in {0, 1} and val_fold != k (label_B = -1 is ignored);
-        validation = ALL windows with val_fold == k.
+Fold k: validation = ALL windows with val_fold == k. Training windows (val_fold != k) depend on
+        the config's label scheme:
+          B: windows with label_B 0/1, target label_B (label_B = -1 is not used);
+          C: every window, soft target from column weight_C_text (the evaluation document's text
+             rule: label_B 0 windows 0, windows containing t* 1, Gaussian decay sigma 0.5 s).
 Model:  VideoMAE-base (Kinetics fine-tuned), classifier -> Linear(hidden, 1), bf16 autocast.
-        Loss per window = type weight * BCEWithLogits(logit, label_B, pos_weight), mean over the
-        micro-batch; pos_weight = n0/n1 and collision-type weights (sqrt inverse frequency, clipped,
-        mean 1) from the fold's training windows. AdamW with layer-wise lr decay; linear warmup,
+        Loss per window = type weight * BCEWithLogits(logit, target, pos_weight), mean over the
+        micro-batch; pos_weight = sum(1 - target) / sum(target) (= n0/n1 for B) and collision-type
+        weights (sqrt inverse frequency, clipped, mean 1) from the windows that enter the loss.
+        val_loss is BCE on the label_B 0/1 validation windows for both schemes. AdamW with layer-wise lr decay; linear warmup,
         then cosine to 0. Augmentation profile "standard" (hflip) or "cctv" (hflip + frame-rate
         drop, blur, downscale, colour, JPEG); validation is never augmented.
 Val:    per clip, sort by t_centre, 3-window moving average, t_hat = t_centre at the peak,
         confidence = peak - max smoothed score outside +-2 windows (evaluation document,
         Section 6.4); T at sigma_t = 0.5 / 1 / 2 s with accs_scorer.temporal.
-Early stopping on val T@1 s. Checkpoints: last.pt (every epoch), best.pt (weights),
-step_latest.pt (every step_ckpt_every updates, on Ctrl+C, at --max-hours and when an
-out-of-memory error cannot be recovered). All hyperparameters come from the config file.
+Validation checks: once per epoch (v1, "patience" in epochs) or every validate_every_updates
+updates and at the end of training ("patience_checks"); one metrics.csv row per check. Early
+stopping on val T@1 s. Checkpoints: last.pt (every epoch), best.pt (weights of the best check),
+step_latest.pt (every step_ckpt_every updates, after each check every N updates, on Ctrl+C, at
+--max-hours and when an out-of-memory error cannot be recovered). All hyperparameters come from
+the config file.
 
 Usage (training environment):
     .venv-ml\\Scripts\\python.exe train_classifier.py --plan
@@ -71,7 +78,6 @@ DEFAULT_CONFIG = REPO_ROOT / "configs" / "videomae_v1.json"
 SPLIT_VERSION = "v2_rebalanced"
 SIGMAS_T = (0.5, 1.0, 2.0)
 SMOKE = {"train_clips": 20, "val_clips": 10, "max_epochs": 2, "step_ckpt_every": 4}
-PLAN_RATES = (9, 14)  # windows/s used for the --plan time estimates
 OOM_CHUNKS = (4, 2)
 TYPES = ("head-on", "rear-end", "sideswipe", "single", "t-bone")  # collision type = folder in rgb_path
 AUG_PREVIEW_DIR = RUNS_DIR / "aug_preview"
@@ -121,17 +127,21 @@ def git_info() -> tuple[str, bool | None]:
 """All hyperparameters are read from a JSON config file; the CLI only selects the run."""
 
 REQUIRED_KEYS = (
-    "model_id", "frames", "model_fps", "label", "micro_batch", "grad_accum", "val_batch", "num_workers",
+    "model_id", "frames", "model_fps", "micro_batch", "grad_accum", "val_batch", "num_workers",
     "lru_size", "amp", "optimizer", "betas", "weight_decay", "base_lr", "lr_scaling", "layer_decay",
     "warmup_fraction", "schedule", "max_epochs", "grad_clip", "drop_path", "pos_weight", "type_weight",
-    "augmentation", "hflip_p", "cctv_aug", "monitor", "patience", "min_delta", "step_ckpt_every", "log_every",
+    "augmentation", "hflip_p", "cctv_aug", "monitor", "min_delta", "step_ckpt_every", "log_every",
     "smooth_window", "confidence_exclude", "gpu_pause_temp_c", "gpu_resume_temp_c",
 )
+# label: "label" (v1, must be "label_B") or "label_scheme" ("B" | "C");
+# validation: "patience" (epochs, validate once per epoch; v1) or "validate_every_updates" + "patience_checks"
+CHOICE_KEYS = ("label", "label_scheme", "patience", "validate_every_updates", "patience_checks")
 CCTV_AUG_KEYS = ("p", "fps_drop", "blur_sigma", "downscale", "brightness", "contrast", "saturation", "hue",
                  "grayscale_p", "jpeg_quality")
 # values this script implements; anything else in the config would be silently ignored
-FIXED_VALUES = {"label": "label_B", "amp": "bf16", "optimizer": "AdamW", "monitor": "val_T_1",
+FIXED_VALUES = {"amp": "bf16", "optimizer": "AdamW", "monitor": "val_T_1",
                 "schedule": "cosine to 0", "lr_scaling": "base_lr * effective_batch / 256"}
+TRAIN_RATE, VAL_RATE = 15, 51  # windows/s used for the --plan time estimates
 
 
 def load_config(path: Path) -> tuple[dict, str]:
@@ -140,12 +150,23 @@ def load_config(path: Path) -> tuple[dict, str]:
         fail(f"config file not found: {path}")
     cfg = json.loads(path.read_text(encoding="utf-8"))
     missing = [k for k in REQUIRED_KEYS if k not in cfg]
-    unknown = [k for k in cfg if k not in REQUIRED_KEYS]
+    unknown = [k for k in cfg if k not in REQUIRED_KEYS + CHOICE_KEYS]
     if missing or unknown:
         fail(f"{path.name}: missing keys {missing}, unknown keys {unknown}")
     for k, v in FIXED_VALUES.items():
         if cfg[k] != v:
             fail(f"{path.name}: {k} must be {v!r} (got {cfg[k]!r})")
+    if ("label" in cfg) == ("label_scheme" in cfg):
+        fail(f"{path.name}: give exactly one of \"label\" (v1, \"label_B\") and \"label_scheme\" (\"B\" | \"C\")")
+    if cfg.get("label", "label_B") != "label_B" or cfg.get("label_scheme", "B") not in ("B", "C"):
+        fail(f"{path.name}: label must be \"label_B\" / label_scheme must be \"B\" or \"C\"")
+    v = cfg.get("validate_every_updates")
+    if v is None:
+        if "patience" not in cfg or cfg.get("patience_checks") is not None:
+            fail(f"{path.name}: validating once per epoch needs \"patience\" (epochs) and no patience_checks")
+    elif not (isinstance(v, int) and v > 0 and isinstance(cfg.get("patience_checks"), int) and "patience" not in cfg):
+        fail(f"{path.name}: validate_every_updates must be a positive integer, with patience_checks (an integer) "
+             "instead of patience")
     if cfg["gpu_resume_temp_c"] >= cfg["gpu_pause_temp_c"]:
         fail(f"{path.name}: gpu_resume_temp_c must be below gpu_pause_temp_c")
     if not (cfg["pos_weight"] == "auto" or isinstance(cfg["pos_weight"], (int, float))):
@@ -158,6 +179,21 @@ def load_config(path: Path) -> tuple[dict, str]:
     if set(cfg["cctv_aug"]) != set(CCTV_AUG_KEYS):
         fail(f"{path.name}: cctv_aug must have exactly the keys {CCTV_AUG_KEYS}")
     return cfg, canonical_hash(cfg)
+
+
+def label_scheme(cfg: dict) -> str:
+    return cfg.get("label_scheme", "B")
+
+
+def check_schedule(cfg: dict) -> tuple[int | None, int]:
+    """(validate_every_updates or None for once per epoch, patience counted in checks)."""
+    v = cfg.get("validate_every_updates")
+    return (None, cfg["patience"]) if v is None else (v, cfg["patience_checks"])
+
+
+def n_checks(total_updates: int, max_epochs: int, every: int | None) -> int:
+    """Validation checks of a full run: every `every` updates plus one at the end (or one per epoch)."""
+    return max_epochs if every is None else math.ceil(total_updates / every)
 
 
 def scaled_lr(cfg: dict) -> float:
@@ -175,13 +211,16 @@ def schedule_sizes(n_train_windows: int, cfg: dict, max_epochs: int) -> dict:
 
 
 def loss_weights(train_rows: pd.DataFrame, cfg: dict) -> dict:
-    """pos_weight = n_label0 / n_label1 and collision-type weights w_c = sqrt(N / (5 n_c)), clipped, then
-    rescaled so the mean weight over all training windows is normalise_mean (types absent: no weight)."""
+    """pos_weight = sum(1 - target) / sum(target) over the training windows (= n_label0 / n_label1 for
+    scheme B) and collision-type weights w_c = sqrt(N / (5 n_c)), clipped, then rescaled so the mean weight
+    over all training windows is normalise_mean (types absent: no weight)."""
     lab = train_rows["label_B"]
     n0, n1 = int((lab == 0).sum()), int((lab == 1).sum())
-    if n1 == 0:
-        fail("no positive training windows")
-    pos_weight = n0 / n1 if cfg["pos_weight"] == "auto" else float(cfg["pos_weight"])
+    tsum = float(train_rows["target"].sum())
+    nsum = float((1.0 - train_rows["target"]).sum())
+    if tsum == 0:
+        fail("no positive training targets")
+    pos_weight = nsum / tsum if cfg["pos_weight"] == "auto" else float(cfg["pos_weight"])
     tw = cfg["type_weight"]
     lo, hi = tw["clip"]
     n = len(train_rows)
@@ -189,8 +228,8 @@ def loss_weights(train_rows: pd.DataFrame, cfg: dict) -> dict:
     clipped = {t: min(max(math.sqrt(n / (len(TYPES) * c)), lo), hi) for t, c in counts.items() if c}
     mean_w = sum(counts[t] * w for t, w in clipped.items()) / n
     weights = {t: w * tw["normalise_mean"] / mean_w for t, w in clipped.items()}
-    return {"n_label0": n0, "n_label1": n1, "pos_weight": pos_weight, "type_counts": counts,
-            "type_weights_clipped": clipped, "type_weights": weights}
+    return {"n_label0": n0, "n_label1": n1, "target_sum_neg": nsum, "target_sum_pos": tsum,
+            "pos_weight": pos_weight, "type_counts": counts, "type_weights_clipped": clipped, "type_weights": weights}
 
 
 def format_type_weights(lw: dict) -> str:
@@ -228,10 +267,20 @@ def load_labels(model_fps: int) -> tuple[pd.DataFrame, dict, dict]:
     return data, manifest, {"window_labels_sha256": labels_sha, "split_sha256": split_sha}
 
 
-def split_fold(data: pd.DataFrame, fold: int, smoke: bool) -> tuple[pd.DataFrame, pd.DataFrame]:
-    """Train = labelled windows (label_B 0/1) outside the fold; validation = all windows of the fold.
+def split_fold(data: pd.DataFrame, fold: int, smoke: bool,
+               scheme: str = "B") -> tuple[pd.DataFrame, pd.DataFrame]:
+    """Validation = all windows of the fold. Train (outside the fold), with a "target" column:
+      B: windows with label_B 0/1, target = label_B (label_B -1 is not used);
+      C: all windows, soft target = weight_C_text (the evaluation document's text rule: label_B 0 windows 0,
+         windows containing t* 1, Gaussian decay with sigma 0.5 s before and after).
     The smoke test keeps the first clips in sorted rgb_path order."""
-    train_all = data[(data["val_fold"] != fold) & data["label_B"].isin([0, 1])]
+    outside = data["val_fold"] != fold
+    if scheme == "B":
+        train_all = data[outside & data["label_B"].isin([0, 1])].assign(target=lambda d: d["label_B"].astype(float))
+    else:
+        train_all = data[outside].assign(target=lambda d: d["weight_C_text"].astype(float))
+        if train_all["target"].isna().any() or not train_all["target"].between(0, 1).all():
+            fail("weight_C_text must be in [0, 1] for every training window")
     val_all = data[data["val_fold"] == fold]
     tr_clips = sorted(train_all["rgb_path"].unique())
     va_clips = sorted(val_all["rgb_path"].unique())
@@ -769,35 +818,42 @@ def plan(cfg: dict, cfg_path: Path, cfg_hash: str) -> None:
     data, _, _ = load_labels(cfg["model_fps"])
     lr = scaled_lr(cfg)
     eff = cfg["micro_batch"] * cfg["grad_accum"]
+    scheme = label_scheme(cfg)
+    every, patience = check_schedule(cfg)
     print(f"config {cfg_path} (sha256 {cfg_hash[:12]}...)")
-    print(f"effective batch {cfg['micro_batch']} x {cfg['grad_accum']} = {eff}; scaled lr = {cfg['base_lr']:g} * "
-          f"{eff} / 256 = {lr:.4g}; max_epochs {cfg['max_epochs']}; warmup_fraction {cfg['warmup_fraction']}")
+    print(f"label scheme {scheme}; effective batch {cfg['micro_batch']} x {cfg['grad_accum']} = {eff}; scaled lr = "
+          f"{cfg['base_lr']:g} * {eff} / 256 = {lr:.4g}; max_epochs {cfg['max_epochs']}; warmup_fraction "
+          f"{cfg['warmup_fraction']}; validation "
+          + ("once per epoch" if every is None else f"every {every} updates and at the end")
+          + f"; early stopping after {patience} checks without improvement > {cfg['min_delta']}")
     rows = []
     for fold in (0, 1, 2):
-        tr, va = split_fold(data, fold, smoke=False)
+        tr, va = split_fold(data, fold, smoke=False, scheme=scheme)
         s = schedule_sizes(len(tr), cfg, cfg["max_epochs"])
         lw = loss_weights(tr, cfg)
+        checks = n_checks(s["total_updates"], cfg["max_epochs"], every)
+        hours = (len(tr) * cfg["max_epochs"] / TRAIN_RATE + checks * len(va) / VAL_RATE) / 3600
         rows.append({"fold": fold, "train_clips": tr["rgb_path"].nunique(), "train_windows": len(tr),
-                     "positives": int((tr["label_B"] == 1).sum()), "val_clips": va["rgb_path"].nunique(),
+                     "target_sum": round(lw["target_sum_pos"], 1), "val_clips": va["rgb_path"].nunique(),
                      "val_windows": len(va), "updates/epoch": s["updates_per_epoch"],
-                     "total_updates": s["total_updates"], "warmup": s["warmup_updates"], "scaled_lr": f"{lr:.4g}",
-                     **{f"hours@{r}w/s": f"{len(tr) * cfg['max_epochs'] / r / 3600:.2f}" for r in PLAN_RATES},
-                     "pos_weight": f"{lw['pos_weight']:.3f}",
+                     "total_updates": s["total_updates"], "warmup": s["warmup_updates"], "checks": checks,
+                     "hours": f"{hours:.2f}", "pos_weight": f"{lw['pos_weight']:.3f}",
                      **{f"w_{t}": f"{lw['type_weights'][t]:.3f}" if t in lw["type_weights"] else "n/a"
                         for t in TYPES}})
     print(pd.DataFrame(rows).to_string(index=False))
-    print(f"loss weights from each fold's training windows: pos_weight = n_label0 / n_label1; type weight "
-          f"sqrt(N / (5 n_c)) clipped to {cfg['type_weight']['clip']}, then mean "
-          f"{cfg['type_weight']['normalise_mean']} over training windows")
-    print(f"hours = train windows x {cfg['max_epochs']} epochs / rate; validation passes and GPU-guard pauses "
-          "are not included")
+    print(f"target_sum = sum of training targets (= positives for scheme B); pos_weight = sum(1 - target) / "
+          f"sum(target); type weight sqrt(N / (5 n_c)) clipped to {cfg['type_weight']['clip']}, then mean "
+          f"{cfg['type_weight']['normalise_mean']}, over the windows that enter the loss")
+    print(f"hours = training {cfg['max_epochs']} epochs at {TRAIN_RATE} windows/s + {'' if every else 'one '}"
+          f"validation{' per check' if every else ' per epoch'} at {VAL_RATE} windows/s, for the full "
+          f"{cfg['max_epochs']} epochs (early stopping can end sooner); GPU-guard pauses not included")
 
 
 def preview_aug(args: argparse.Namespace, cfg: dict, cfg_path: Path) -> None:
     """Save N training windows of the fold as a PNG grid: per window one row of original frames
     0/5/10/15 and one row with the config's augmentation profile. No model, no GPU, no training."""
     data, manifest, _ = load_labels(cfg["model_fps"])
-    train_rows, val_rows = split_fold(data, args.fold, smoke=False)
+    train_rows, val_rows = split_fold(data, args.fold, smoke=False, scheme=label_scheme(cfg))
     codes = epoch_codes(len(train_rows), args.seed, 0, cfg["hflip_p"])[:args.preview_aug]
     check_cache(train_rows.iloc[[c // 2 for c in codes]], val_rows.iloc[:0], manifest, partial=True)
     ds = WindowDataset(train_rows["stem"], train_rows["k0"], train_rows["label_B"], None, [0, 0, 0], [1, 1, 1],
@@ -841,8 +897,10 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
     log = Logger(out_dir / "train_log.txt")
 
     # ---------------- data and environment checks ----------------
+    scheme = label_scheme(cfg)
+    every, patience = check_schedule(cfg)
     data, manifest, data_hashes = load_labels(cfg["model_fps"])
-    train_rows, val_rows = split_fold(data, args.fold, smoke)
+    train_rows, val_rows = split_fold(data, args.fold, smoke, scheme)
     data_hashes["cache_manifest_sha256"] = check_cache(train_rows, val_rows, manifest, partial=smoke)
     if not torch.cuda.is_available():
         fail("CUDA is not available")
@@ -863,7 +921,9 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
     run_info = {
         "config_file": str(cfg_path), "config": cfg, "config_hash": cfg_hash,
         "fold": args.fold, "seed": args.seed, "smoke_test": smoke, "run_hash": run_hash,
-        "effective": {"max_epochs": max_epochs, "step_ckpt_every": step_ckpt_every, "scaled_lr": lr0, **sizes},
+        "effective": {"max_epochs": max_epochs, "step_ckpt_every": step_ckpt_every, "scaled_lr": lr0, **sizes,
+                      "label_scheme": scheme, "validate_every_updates": every, "patience_checks": patience,
+                      "checks_full_run": n_checks(sizes["total_updates"], max_epochs, every)},
         "drop_path_applied": dp_field is not None,
         "drop_path_note": (f"set {dp_field} = {cfg['drop_path']}" if dp_field else
                            f"transformers {transformers.__version__} VideoMAE has no drop path / stochastic depth "
@@ -887,6 +947,27 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
     else:
         info_path.write_text(json.dumps(run_info, indent=2) + "\n", encoding="utf-8")
 
+    resume_ck = None
+    if args.resume:
+        # a finished run (all updates applied and the final check made, or early stopping triggered) is not
+        # trained, validated or written again
+        resume_ck = latest_checkpoint(ckpt_dir)
+        s = resume_ck[1]["state"]
+        if s["no_improve"] >= patience:
+            reason = f"early stopping triggered ({s['no_improve']} checks without improvement)"
+        elif s["global_step"] >= sizes["total_updates"] and (
+                s["epoch"] >= max_epochs if every is None else s.get("last_check_step") == s["global_step"]):
+            reason = f"all {sizes['total_updates']} updates done"
+        else:
+            reason = None
+        if reason:
+            m = pd.read_csv(out_dir / "metrics.csv")
+            b = m[m["best"].astype(str) == "True"].iloc[-1]
+            k = int(b["check_idx"]) if "check_idx" in m and not pd.isna(b["check_idx"]) else int(b["epoch"])
+            print(f"run already complete: {reason}, best val T@1 {s['best']:.4f} at check {k} "
+                  f"(update {int(b['global_step'])}); {resume_ck[0]} not resumed, nothing written")
+            sys.exit(0)
+
     log(f"=== train_classifier.py  fold {args.fold}  run {run_name}  {'SMOKE TEST' if smoke else ''}")
     log(f"time {run_info['created_at']}; GPU {run_info['gpu']}; torch {torch.__version__}; "
         f"transformers {transformers.__version__}; git {head}{' (dirty)' if dirty else ''}")
@@ -899,8 +980,18 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
         f"{run_info['train_label_counts']}; val: {len(val_rows)} windows from {run_info['n_val_clips']} clips")
     log(f"drop path: {'applied, ' if dp_field else 'NOT applied: '}{run_info['drop_path_note']} "
         f"(drop_path_applied: {str(dp_field is not None).lower()})")
-    log(f"loss: pos_weight = n_label0 / n_label1 = {lw['n_label0']} / {lw['n_label1']} = {lw['pos_weight']:.4f}; "
-        f"type weights: {format_type_weights(lw)}")
+    if scheme == "B":
+        log(f"loss: pos_weight = n_label0 / n_label1 = {lw['n_label0']} / {lw['n_label1']} = {lw['pos_weight']:.4f}; "
+            f"type weights: {format_type_weights(lw)}")
+    else:
+        log(f"label scheme C: all {len(train_rows)} training windows, soft target weight_C_text (sum "
+            f"{lw['target_sum_pos']:.1f}; label_B counts {run_info['train_label_counts']})")
+        log(f"loss: pos_weight = sum(1 - target) / sum(target) = {lw['target_sum_neg']:.1f} / "
+            f"{lw['target_sum_pos']:.1f} = {lw['pos_weight']:.4f}; type weights: {format_type_weights(lw)}")
+    log("validation: " + (f"once per epoch; early stopping after {patience} epochs" if every is None else
+                          f"every {every} updates and at the end of training ({run_info['effective']['checks_full_run']}"
+                          f" checks in a full run); early stopping after {patience} checks")
+        + f" without improvement > {cfg['min_delta']} in val T@1")
     log(f"augmentation: {cfg['augmentation']} (hflip p {cfg['hflip_p']}"
         + (f"; then frame-rate drop, blur, downscale, colour, JPEG, each p {cfg['cctv_aug']['p']})"
            if cfg["augmentation"] == "cctv" else ")") + "; validation not augmented")
@@ -909,7 +1000,7 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
 
     # ---------------- data loaders ----------------
     mean, std = list(proc.image_mean), list(proc.image_std)
-    train_ds = WindowDataset(train_rows["stem"], train_rows["k0"], train_rows["label_B"], train_rows["w_type"],
+    train_ds = WindowDataset(train_rows["stem"], train_rows["k0"], train_rows["target"], train_rows["w_type"],
                              mean, std, cfg["frames"], cfg["model_fps"], cfg["lru_size"], cfg["augmentation"],
                              cfg["cctv_aug"])
     val_ds = WindowDataset(val_rows["stem"], val_rows["k0"], val_rows["label_B"].clip(lower=0), None,
@@ -938,9 +1029,11 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
     log(f"lr (peak, after warmup): head (layer {n_layers + 1}) {peak_lr[n_layers + 1]:.4g}, top block "
         f"(layer {n_layers}) {peak_lr[n_layers]:.4g}, embeddings (layer 0) {peak_lr[0]:.4g}")
 
+    # loss_sum .. oom_fallbacks count the updates since the last validation check
     state = {"epoch": 0, "batches_done": 0, "global_step": 0, "best": -math.inf, "no_improve": 0,
              "loss_sum": 0.0, "loss_n": 0, "wait": 0.0, "train_time": 0.0, "windows": 0, "oom_fallbacks": 0,
-             "lr_top_used": None, "lr_head_used": None}  # lr of the last optimizer step
+             "lr_top_used": None, "lr_head_used": None,  # lr of the last optimizer step
+             "checks_done": 0, "last_check_step": -1}
 
     def save_ckpt(path: Path) -> None:
         atomic_save({"model": model.state_dict(), "optimizer": optimizer.state_dict(),
@@ -948,7 +1041,8 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
                      "run_hash": run_hash, "config_hash": cfg_hash, "data_hashes": data_hashes}, path)
 
     if args.resume:
-        name, ck = latest_checkpoint(ckpt_dir)
+        name, ck = resume_ck
+        resume_ck = None
         if ck.get("run_hash") != run_hash or ck["data_hashes"] != data_hashes:
             fail(f"--resume: {name} was made with a different config, fold, seed or data")
         model.load_state_dict(ck["model"])
@@ -958,10 +1052,17 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
         set_rng_states(ck["rng"])
         log(f"resumed from {ckpt_dir / name}: epoch {state['epoch']}, batches_done {state['batches_done']}, "
             f"global step {state['global_step']}, best {state['best']:.4f}; skipping {state['batches_done']} "
-            f"of {n_batches} batches already applied in epoch {state['epoch']}")
+            f"of {n_batches} batches already applied in epoch {state['epoch']}; validation checks done "
+            f"{state['checks_done']} (last at update {state['last_check_step']})")
         del ck
 
     metrics_path = out_dir / "metrics.csv"
+    if args.resume and metrics_path.is_file():  # drop rows of checks made after the checkpoint (they are redone)
+        m = pd.read_csv(metrics_path)
+        if "check_idx" in m and (m["check_idx"] >= state["checks_done"]).any():
+            m[m["check_idx"] < state["checks_done"]].to_csv(metrics_path, index=False)
+            log(f"metrics.csv: removed {int((m['check_idx'] >= state['checks_done']).sum())} row(s) of checks after "
+                "the checkpoint; they are validated again")
     step_losses: list[float] = []  # unscaled mean loss per optimizer step
     resume_argv = [a for a in sys.argv[1:]]
     if "--resume" not in resume_argv:
@@ -986,8 +1087,10 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
         log.close()
         sys.exit(code)
 
-    def finish_epoch(epoch_start: float) -> bool:
-        """Validate, then record the epoch; returns True if training should stop."""
+    def validate_check(since: float, epoch_end: bool) -> bool:
+        """One validation check; returns True if early stopping triggers. Once-per-epoch checks (v1) are
+        recorded together with the end of the epoch and last.pt; checks every N updates together with
+        step_latest.pt, so a resumed run continues the check schedule exactly."""
         peak_train = torch.cuda.max_memory_reserved(device) / 2 ** 30
         torch.cuda.empty_cache()
         torch.cuda.reset_peak_memory_stats(device)
@@ -996,11 +1099,22 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
         torch.cuda.empty_cache()
         gpu.sample()
         state["oom_fallbacks"] += val_ooms
-        minutes = (time.perf_counter() - epoch_start) / 60
-        with guard.critical():  # metrics row, best.pt, epoch counter and last.pt are recorded together
-            return record_epoch(val_loss, T, win_df, pred, minutes, peak_train, peak_val)
+        minutes = (time.perf_counter() - since) / 60
+        with guard.critical():  # metrics row, best.pt, check counters and the checkpoint are recorded together
+            stop_early = record_check(val_loss, T, win_df, pred, minutes, peak_train, peak_val)
+            if epoch_end:
+                end_epoch()
+            else:
+                save_ckpt(ckpt_dir / "step_latest.pt")
+        torch.cuda.reset_peak_memory_stats(device)
+        gpu.reset_epoch()
+        return stop_early
 
-    def record_epoch(val_loss: float, T: dict, win_df: pd.DataFrame, pred: pd.DataFrame, minutes: float,
+    def end_epoch() -> None:
+        state.update(epoch=state["epoch"] + 1, batches_done=0)
+        save_ckpt(ckpt_dir / "last.pt")
+
+    def record_check(val_loss: float, T: dict, win_df: pd.DataFrame, pred: pd.DataFrame, minutes: float,
                      peak_train: float, peak_val: float) -> bool:
         monitor = T[1.0]
         improved = monitor > state["best"] + cfg["min_delta"]
@@ -1022,9 +1136,12 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
             "best": improved,
             "oom_fallbacks": state["oom_fallbacks"], "gpu_temp_max": gpu.temp_max, "gpu_clock_min": gpu.clock_min,
             "val_within_2s": float(pred["within_2s"].mean()),  # reported only
+            "check_idx": state["checks_done"], "epoch_fraction": state["global_step"] / updates_per_epoch,
         }
         pd.DataFrame([row]).to_csv(metrics_path, mode="a", header=not metrics_path.exists(), index=False)
-        log(f"epoch {state['epoch']} done: train loss {row['train_loss']:.4f}, val loss {val_loss:.4f}, "
+        head_ = (f"epoch {state['epoch']} done" if every is None else
+                 f"check {state['checks_done']} (update {state['global_step']}, epoch {row['epoch_fraction']:.2f})")
+        log(f"{head_}: train loss {row['train_loss']:.4f}, val loss {val_loss:.4f}, "
             f"val T@0.5/1/2 {T[0.5]:.4f} / {T[1.0]:.4f} / {T[2.0]:.4f}, "
             f"signed err mean/median {row['val_signed_err_mean']:+.3f} / {row['val_signed_err_median']:+.3f} s, "
             f"within 2 s {row['val_within_2s']:.3f}, {minutes:.2f} min, "
@@ -1037,29 +1154,39 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
                 out_dir / "val_window_scores_best.csv", index=False)
             pred.to_csv(out_dir / "val_clip_predictions_best.csv", index=False)
             atomic_save({"model": model.state_dict(), "epoch": state["epoch"], "val_T_1": monitor,
+                         "check_idx": state["checks_done"], "global_step": state["global_step"],
                          "run_hash": run_hash, "config_hash": cfg_hash, "data_hashes": data_hashes},
                         ckpt_dir / "best.pt")
-        # next epoch starts fresh
-        state.update(epoch=state["epoch"] + 1, batches_done=0, loss_sum=0.0, loss_n=0, wait=0.0,
-                     train_time=0.0, windows=0, oom_fallbacks=0)
-        save_ckpt(ckpt_dir / "last.pt")
-        stop_early = state["no_improve"] >= cfg["patience"]
+        # the next check interval starts fresh
+        state.update(loss_sum=0.0, loss_n=0, wait=0.0, train_time=0.0, windows=0, oom_fallbacks=0,
+                     checks_done=state["checks_done"] + 1, last_check_step=state["global_step"])
+        stop_early = state["no_improve"] >= patience
         if stop_early:
-            log(f"early stopping: no improvement > {cfg['min_delta']} in val T@1 for {cfg['patience']} epochs")
-        return stop_early or state["epoch"] >= max_epochs
+            log(f"early stopping: no improvement > {cfg['min_delta']} in val T@1 for {patience} "
+                f"{'epochs' if every is None else 'checks'}")
+        return stop_early
 
     # ---------------- training loop ----------------
     t_run = time.monotonic()
+    torch.cuda.reset_peak_memory_stats(device)
+    gpu.reset_epoch()
+    t_check = time.perf_counter()  # start of the current check interval
     try:
         stop = False
         while not stop:
             epoch = state["epoch"]
+            if epoch >= max_epochs:  # never start an epoch past the schedule
+                fail(f"internal error: about to start epoch {epoch} of {max_epochs}")
+            if every is not None and state["global_step"] >= (state["checks_done"] + 1) * every:
+                # resumed from a checkpoint saved while this check was validating: redo it first
+                stop = validate_check(t_check, epoch_end=False)
+                t_check = time.perf_counter()
+                if stop:
+                    break
             codes = epoch_codes(len(train_rows), args.seed, epoch, cfg["hflip_p"])
             start_b = state["batches_done"]
             train_sampler.set(codes[start_b * mb:])
-            torch.cuda.reset_peak_memory_stats(device)
-            gpu.reset_epoch()
-            t_epoch = t_last = time.perf_counter()
+            t_last = time.perf_counter()
             group: list[tuple[torch.Tensor, torch.Tensor, torch.Tensor]] = []  # CPU copies, for an OOM recompute
             group_losses: list[float] = []
             for i, (x, y, w, _) in enumerate(train_loader):
@@ -1083,6 +1210,8 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
                     group_losses.append(loss_value)
                 if b + 1 - group_start == group_size:  # end of an accumulation group
                     with guard.critical():  # Ctrl+C waits until this step is fully recorded
+                        if state["global_step"] >= sizes["total_updates"]:  # never update past the schedule
+                            fail(f"internal error: update {state['global_step'] + 1} > {sizes['total_updates']}")
                         torch.nn.utils.clip_grad_norm_(model.parameters(), cfg["grad_clip"])
                         lr_now = lr_by_layer(optimizer)
                         state["lr_top_used"], state["lr_head_used"] = lr_now[n_layers], lr_now[n_layers + 1]
@@ -1110,10 +1239,29 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
                     if args.max_hours is not None and time.monotonic() - t_run >= args.max_hours * 3600:
                         with guard.critical():
                             save_and_exit(f"--max-hours {args.max_hours} reached", 0)
+                    if every is not None and gs % every == 0:
+                        state["train_time"] += time.perf_counter() - t_got - paused  # this interval's share
+                        stop = validate_check(t_check, epoch_end=False)
+                        t_check = t_got = time.perf_counter()
+                        paused = 0.0
+                        if stop:
+                            break
                 t_last = time.perf_counter()
                 state["train_time"] += t_last - t_got - paused
+            if stop:
+                break
             torch.cuda.synchronize()
-            stop = finish_epoch(t_epoch)
+            if every is None:  # v1: validate once per epoch
+                stop = validate_check(t_check, epoch_end=True) or state["epoch"] >= max_epochs
+                t_check = time.perf_counter()
+            else:
+                if state["epoch"] == max_epochs - 1 and state["last_check_step"] != state["global_step"]:
+                    stop = validate_check(t_check, epoch_end=True)  # the check at the end of training
+                    t_check = time.perf_counter()
+                else:
+                    with guard.critical():
+                        end_epoch()
+                stop = stop or state["epoch"] >= max_epochs
     except KeyboardInterrupt:
         # state only changes at optimizer-step boundaries, so it already counts fully applied batches
         save_and_exit("interrupted", 130)

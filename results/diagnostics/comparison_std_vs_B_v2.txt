@@ -1,0 +1,18 @@
+fold 0, synthetic validation: 770 clips, 25988 windows
+                                               std_seed0 (best, ep0)  B_v2 (best, check1)  B_v2 (last, check7)
+val T@0.5                                                     0.3678               0.3671               0.3214
+val T@1                                                       0.4408               0.4400               0.3928
+val T@2                                                       0.5059               0.5057               0.4699
+within_2s                                                     0.4883               0.4870               0.4468
+signed err mean (s)                                           3.7303               3.7439               4.0595
+signed err median (s)                                         0.5875               0.6375               1.5875
+within_2s head-on (n=202)                                     0.6980               0.6931               0.6485
+within_2s rear-end (n=245)                                    0.1878               0.1878               0.1837
+within_2s sideswipe (n=139)                                   0.4892               0.4964               0.3741
+within_2s single (n=53)                                       0.7358               0.7358               0.7358
+within_2s t-bone (n=131)                                      0.6260               0.6183               0.5878
+within_2s Town04 rear-end all (n=245)                         0.1878               0.1878               0.1837
+within_2s Town04 rear-end night (n=52)                        0.0962               0.0962               0.0577
+within_2s Town04 rear-end clear (n=49)                        0.2245               0.2245               0.1633
+mean score aftermath, start > t*+5 s (n=6966)                 0.2523               0.2377               0.2717
+mean score pre-impact, end < t*-1 s (n=7709)                  0.0325               0.0299               0.0181

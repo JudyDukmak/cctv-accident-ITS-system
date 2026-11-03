@@ -1,9 +1,11 @@
 """Diagnose a fold's validation predictions at the best epoch and at the last epoch (SYNTHETIC ONLY:
 reads runs/<run>/fold_<k>/, synthetic_window_labels.csv and metadata-synthetic.csv; never opens real
 videos, metadata-real.csv or real_test_set.csv). Read-only on data and runs; no training.
+For runs that validate every N updates, "epoch" below means "check" (labels use check_idx).
 
-1. Scores all validation windows of the fold with the weights in checkpoints/last.pt (eval, bf16, the
-   run's val batch), with the training script's smoothing and peak rule (train_classifier.validate).
+1. Scores all validation windows of the fold with the checkpoint saved at the last metrics row's update
+   (last.pt or step_latest.pt; eval, bf16, the run's val batch), with the training script's smoothing
+   and peak rule (train_classifier.validate).
 2. Naive reference t_hat = duration / 2 on the same clips.
 3. For the best epoch (val_*_best.csv) and the last epoch: signed-error distribution, results by
    collision type / scenario / t_star tercile, mean window score by phase, late-peak share.
@@ -65,15 +67,27 @@ def load_run(run_dir: Path, fold: int) -> tuple[dict, pd.DataFrame, pd.DataFrame
     return info, val_rows, metrics
 
 
-def score_last(run_dir: Path, info: dict, val_rows: pd.DataFrame, win_csv: Path,
-               pred_csv: Path) -> tuple[pd.DataFrame, pd.DataFrame, dict]:
-    """Score the validation windows with checkpoints/last.pt; returns (windows, clip predictions, ckpt state)."""
+def score_last(run_dir: Path, info: dict, val_rows: pd.DataFrame, win_csv: Path, pred_csv: Path,
+               global_step: int) -> tuple[pd.DataFrame, pd.DataFrame, dict, str]:
+    """Score the validation windows with the checkpoint (last.pt or step_latest.pt) saved at `global_step`,
+    the update of the last metrics row; returns (windows, clip predictions, ckpt state, checkpoint name)."""
     import torch
     from transformers import VideoMAEImageProcessor
     cfg = info["config"]
-    ck = torch.load(run_dir / "checkpoints" / "last.pt", map_location="cpu", weights_only=False)
+    ck, name, seen = None, None, []
+    for n in ("last.pt", "step_latest.pt"):
+        p = run_dir / "checkpoints" / n
+        if p.is_file():
+            c = torch.load(p, map_location="cpu", weights_only=False)
+            seen.append(f"{n} at update {c['state']['global_step']}")
+            if c["state"]["global_step"] == global_step:
+                ck, name = c, n
+                break
+            del c
+    if ck is None:
+        fail(f"no checkpoint at update {global_step} (the last metrics row); found: {', '.join(seen) or 'none'}")
     if ck.get("run_hash") != info["run_hash"]:
-        fail("last.pt run_hash differs from config.json")
+        fail(f"{name} run_hash differs from config.json")
     if not torch.cuda.is_available():
         fail("CUDA is not available")
     device = torch.device("cuda")
@@ -87,11 +101,11 @@ def score_last(run_dir: Path, info: dict, val_rows: pd.DataFrame, win_csv: Path,
     state = ck["state"]
     del ck
     val_loss, T, win_df, pred, ooms = tc.validate(model, loader, sampler, val_rows, cfg, device, print)
-    print(f"scored {len(win_df)} windows with last.pt (state epoch {state['epoch']}, global step "
+    print(f"scored {len(win_df)} windows with {name} (state epoch {state['epoch']}, global step "
           f"{state['global_step']}); val loss {val_loss:.4f}; T@1 {T[1.0]:.4f}; OOM fallbacks {ooms}")
     win_df[["rgb_path", "window_idx", "t_centre", "label_B", "score"]].to_csv(win_csv, index=False)
     pred.to_csv(pred_csv, index=False)
-    return win_df[["rgb_path", "window_idx", "t_centre", "label_B", "score"]], pred, state
+    return win_df[["rgb_path", "window_idx", "t_centre", "label_B", "score"]], pred, state, name
 
 
 # --------------------------------------------------------------------------- #
@@ -228,19 +242,20 @@ def main() -> None:
     info, val_rows, metrics = load_run(run_dir, args.fold)
     cfg = info["config"]
 
-    # epoch labels from metrics.csv
-    best_epoch = int(metrics[metrics["best"].astype(str) == "True"]["epoch"].iloc[-1])
-    last_epoch = int(metrics["epoch"].iloc[-1])
-    lab_b, lab_l = f"epoch {best_epoch} (best)", f"epoch {last_epoch} (last)"
+    # labels from metrics.csv: epochs for once-per-epoch validation (v1), checks for validate_every_updates
+    unit, key = ("check", "check_idx") if cfg.get("validate_every_updates") else ("epoch", "epoch")
+    best_row = metrics[metrics["best"].astype(str) == "True"].iloc[-1]
+    last_row = metrics.iloc[-1]
+    best_epoch, last_epoch = int(best_row[key]), int(last_row[key])
+    lab_b, lab_l = f"{unit} {best_epoch} (best)", f"{unit} {last_epoch} (last)"
 
-    # 1. last-epoch scores
-    win_csv = out_dir / f"val_window_scores_epoch{last_epoch}.csv"
-    pred_csv = out_dir / f"val_clip_predictions_epoch{last_epoch}.csv"
+    # 1. last-check scores
+    win_csv = out_dir / f"val_window_scores_{unit}{last_epoch}.csv"
+    pred_csv = out_dir / f"val_clip_predictions_{unit}{last_epoch}.csv"
     if args.rescore or not (win_csv.is_file() and pred_csv.is_file()):
-        win_l, pred_l, state = score_last(run_dir, info, val_rows, win_csv, pred_csv)
-        if state["epoch"] - 1 != last_epoch:
-            fail(f"last.pt holds epoch {state['epoch'] - 1}, metrics.csv ends at epoch {last_epoch}")
-        scored_note = f"scored in this run (global step {state['global_step']})"
+        win_l, pred_l, state, ck_name = score_last(run_dir, info, val_rows, win_csv, pred_csv,
+                                                   int(last_row["global_step"]))
+        scored_note = f"{ck_name} (global step {state['global_step']}), scored in this run"
     else:
         win_l, pred_l = pd.read_csv(win_csv), pd.read_csv(pred_csv)
         scored_note = f"reused {win_csv.name} / {pred_csv.name} from an earlier run of this script"
@@ -262,7 +277,7 @@ def main() -> None:
                 lambda x: np.convolve(x.to_numpy(float), np.ones(cfg["smooth_window"]) / cfg["smooth_window"],
                                       mode="same")))
             gaps.append(s[-1] - s[-2])
-        logged = float(metrics.loc[metrics["epoch"] == ep, "val_T_1"].iloc[0])
+        logged = float(metrics.loc[metrics[key] == ep, "val_T_1"].iloc[0])
         t1 = float(temporal(pred["t_hat"], pred["t_star"], 1.0))
         peak_note = ("peaks recomputed from the window-score CSV match the clip predictions" if not len(differ) else
                      f"peaks recomputed from the window-score CSV differ in {len(differ)} clips, all ties "
@@ -297,8 +312,8 @@ def main() -> None:
     rep = [f"Prediction diagnostics: run {args.run}, fold {args.fold} (synthetic validation, "
            f"{len(clips)} clips, {len(val_rows)} windows)",
            f"config {Path(info['config_file']).name} (sha256 {info['config_hash'][:12]}...), seed {info['seed']}; "
-           f"best epoch {best_epoch} = val_*_best.csv from the run; last epoch {last_epoch} = checkpoints/last.pt, "
-           f"{scored_note}", "", "checks:"] + [f"  {c}" for c in checks] + [""]
+           f"best {unit} {best_epoch} = val_*_best.csv from the run; last {unit} {last_epoch} (update "
+           f"{int(last_row['global_step'])}) = {scored_note}", "", "checks:"] + [f"  {c}" for c in checks] + [""]
 
     # 2. reference
     naive = clips["duration"] / 2
