@@ -1,0 +1,19 @@
+fold 0, synthetic validation: 770 clips, 25988 windows
+                                               std_seed0 (best)  B_v2_seed0 (best)  C_v2_seed0 (best, check 2)  C_v2_seed0 (last, check 8)
+val T@0.5                                                0.3678             0.3671                      0.4631                      0.3483
+val T@1                                                  0.4408             0.4400                      0.5828                      0.4575
+val T@2                                                  0.5059             0.5057                      0.6700                      0.5499
+within_2s                                                0.4883             0.4870                      0.6584                      0.5390
+signed err mean (s)                                      3.7303             3.7439                      2.0842                      3.1283
+signed err median (s)                                    0.5875             0.6375                      0.4375                      0.6375
+within_2s head-on (n=202)                                0.6980             0.6931                      0.6436                      0.5842
+within_2s rear-end (n=245)                               0.1878             0.1878                      0.4367                      0.2816
+within_2s sideswipe (n=139)                              0.4892             0.4964                      0.6906                      0.4676
+within_2s single (n=53)                                  0.7358             0.7358                      0.9057                      0.9245
+within_2s t-bone (n=131)                                 0.6260             0.6183                      0.9618                      0.8702
+within_2s Town04 rear-end all (n=245)                    0.1878             0.1878                      0.4367                      0.2816
+within_2s Town04 rear-end night (n=52)                   0.0962             0.0962                      0.2692                      0.2308
+within_2s Town04 rear-end clear (n=49)                   0.2245             0.2245                      0.5306                      0.3061
+mean score aftermath, start > t*+5 s (n=6966)            0.2523             0.2377                      0.2496                      0.1922
+mean score pre-impact, end < t*-1 s (n=7709)             0.0325             0.0299                      0.1478                      0.0481
+share late peak > peak near t* (n=737)                   0.4993             0.5007                      0.3107                      0.4532

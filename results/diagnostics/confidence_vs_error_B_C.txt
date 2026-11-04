@@ -1,0 +1,17 @@
+fold 0, synthetic validation: 770 clips; confidence quartiles by pd.qcut
+
+=== C_v2_seed0 (best, check 2) (770 clips) ===
+ quartile   n  conf_min  conf_max  within_2s  median_abs_err_s    T@1
+ Q1 (low) 193    0.0003    0.0477     0.3731            3.0625 0.2859
+       Q2 192    0.0477    0.1565     0.5677            0.8500 0.4972
+       Q3 192    0.1570    0.3203     0.7396            0.4875 0.6621
+Q4 (high) 193    0.3205    0.7738     0.9534            0.2875 0.8861
+Spearman rho(confidence, |t_hat - t_star|) = -0.4510
+
+=== B_v2_seed0 (best, check 1) (770 clips) ===
+ quartile   n  conf_min  conf_max  within_2s  median_abs_err_s    T@1
+ Q1 (low) 193    0.0000    0.0097     0.4715            2.2625 0.3923
+       Q2 192    0.0101    0.0567     0.4948            2.1250 0.4587
+       Q3 192    0.0569    0.2334     0.4323            4.1375 0.4011
+Q4 (high) 193    0.2362    0.9657     0.5492            0.6375 0.5076
+Spearman rho(confidence, |t_hat - t_star|) = -0.0175

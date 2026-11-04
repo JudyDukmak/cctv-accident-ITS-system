@@ -2,7 +2,9 @@
 val_*_best.csv and the last-check CSVs written by analyse_predictions.py; no model, no GPU, writes nothing
 in runs/). Columns: T@0.5/1/2, within_2s, signed error mean/median, within_2s per collision type and for
 Town04 rear-end (all, night, clear), mean window score of windows starting more than 5 s after t*
-(aftermath) and of windows ending more than 1 s before t* (pre-impact, = label_B 0).
+(aftermath) and of windows ending more than 1 s before t* (pre-impact, = label_B 0), and the share of clips
+whose late peak beats the peak near t* (as analyse_predictions.late_peak_section: max smoothed score with window
+centre > t*+2 s vs within t* +-1 s, among clips that have both; smoothing = the run's smooth_window).
 Output: results/diagnostics/comparison_<name>.txt
 
 Usage:
@@ -16,6 +18,9 @@ import argparse
 import sys
 from pathlib import Path
 
+import json
+
+import numpy as np
 import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parent
@@ -37,10 +42,31 @@ def load(run: str, which: str, fold: int) -> tuple[pd.DataFrame, pd.DataFrame]:
     return pd.read_csv(d / w), pd.read_csv(d / p)
 
 
-def column(win: pd.DataFrame, pred: pd.DataFrame, val_rows: pd.DataFrame, clips: pd.DataFrame) -> dict:
+def smooth_window(run: str, fold: int) -> int:
+    return int(json.loads((tc.RUNS_DIR / run / f"fold_{fold}" / "config.json").read_text(encoding="utf-8"))
+               ["config"]["smooth_window"])
+
+
+def late_peak_share(w: pd.DataFrame, k: int) -> tuple[float, int]:
+    """Share of clips (with windows both within t* +-1 s and after t* + 2 s, by window centre) whose max
+    smoothed score after t* + 2 s exceeds the max within t* +-1 s; returns (share, number of such clips)."""
+    kernel = np.ones(k) / k
+    n = late = 0
+    for _, g in w.sort_values(["rgb_path", "t_centre"]).groupby("rgb_path", sort=True):
+        s = pd.Series(np.convolve(g["score"].to_numpy(float), kernel, mode="same"), index=g.index)
+        d = g["t_centre"] - g["t_star"]
+        near, after = s[d.abs() <= 1], s[d > 2]
+        if len(near) and len(after):
+            n += 1
+            late += int(after.max() > near.max())
+    return late / max(1, n), n
+
+
+def column(win: pd.DataFrame, pred: pd.DataFrame, val_rows: pd.DataFrame, clips: pd.DataFrame, k: int) -> dict:
     p = pred[["rgb_path", "t_hat"]].merge(clips, on="rgb_path", validate="one_to_one")
-    w = win[["rgb_path", "window_idx", "score"]].merge(val_rows[["rgb_path", "window_idx", "t_start", "t_end", "t_star"]],
-                                                       on=["rgb_path", "window_idx"], validate="one_to_one")
+    w = win[["rgb_path", "window_idx", "score"]].merge(
+        val_rows[["rgb_path", "window_idx", "t_start", "t_end", "t_centre", "t_star"]],
+        on=["rgb_path", "window_idx"], validate="one_to_one")
     if len(p) != len(clips) or len(w) != len(val_rows):
         tc.fail("predictions do not cover the fold's validation clips / windows")
     err = p["t_hat"] - p["t_star"]
@@ -58,6 +84,8 @@ def column(win: pd.DataFrame, pred: pd.DataFrame, val_rows: pd.DataFrame, clips:
     pre = w["t_end"] < w["t_star"] - 1
     out[f"mean score aftermath, start > t*+5 s (n={int(aft.sum())})"] = float(w.loc[aft, "score"].mean())
     out[f"mean score pre-impact, end < t*-1 s (n={int(pre.sum())})"] = float(w.loc[pre, "score"].mean())
+    share, n = late_peak_share(w, k)
+    out[f"share late peak > peak near t* (n={n})"] = share
     return out
 
 
@@ -78,7 +106,7 @@ def main() -> None:
     for item in args.items:
         label, spec = item.split("=", 1)
         run, which = spec.split(":", 1)
-        cols[label] = column(*load(run, which, args.fold), val_rows, clips)
+        cols[label] = column(*load(run, which, args.fold), val_rows, clips, smooth_window(run, args.fold))
     table = pd.DataFrame(cols)
     text = (f"fold {args.fold}, synthetic validation: {len(clips)} clips, {len(val_rows)} windows\n"
             + table.to_string(float_format=lambda v: f"{v:.4f}") + "\n")
