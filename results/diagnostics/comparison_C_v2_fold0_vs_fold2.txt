@@ -1,0 +1,17 @@
+synthetic validation, each column on its own fold
+                                     C_v2 fold 0 (best) C_v2 fold 2 (best)
+clips / windows                             770 / 25988        686 / 19701
+val T@0.5                                        0.4631             0.7512
+val T@1                                          0.5828             0.8518
+val T@2                                          0.6700             0.8972
+within_2s                                        0.6584             0.9023
+signed err median (s)                            0.4375             0.1375
+within_2s head-on                        0.6436 (n=202)     0.9764 (n=212)
+within_2s rear-end                       0.4367 (n=245)     0.8750 (n=272)
+within_2s sideswipe                      0.6906 (n=139)     0.8239 (n=159)
+within_2s single                          0.9057 (n=53)                n/a
+within_2s t-bone                         0.9618 (n=131)      1.0000 (n=43)
+mean score near t*, label_B 1           0.4515 (n=2891)    0.6029 (n=2603)
+mean score aftermath, start > t*+5 s    0.2496 (n=6966)    0.1150 (n=3913)
+mean score pre-impact, end < t*-1 s     0.1478 (n=7709)    0.0713 (n=6700)
+share late peak > peak near t*           0.3107 (n=737)     0.0401 (n=599)

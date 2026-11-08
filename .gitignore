@@ -3,6 +3,8 @@
 .requirements-ml.txt
 cache/
 runs/
+.venv-vlm/
+.requirements-vlm.txt
 
 # Python
 __pycache__/
@@ -33,3 +35,6 @@ real_check/*.csv
 *.pth
 *.ckpt
 *.safetensors
+
+incoming/
+results/diagnostics/*/frames/

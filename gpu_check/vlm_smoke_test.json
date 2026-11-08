@@ -1,0 +1,401 @@
+{
+  "started": "2026-11-05T11:51:56+00:00",
+  "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+  "driver": "595.71",
+  "total_gb": 7.9599609375,
+  "versions": {
+    "python": "3.12.2",
+    "torch": "2.10.0+cu128",
+    "torchvision": "0.25.0+cu128",
+    "transformers": "5.22.1",
+    "accelerate": "1.15.0",
+    "bitsandbytes": "0.50.2",
+    "peft": "0.21.2",
+    "qwen-vl-utils": "0.0.14",
+    "av": "19.0.2",
+    "pillow": "13.0.0",
+    "numpy": "2.5.4",
+    "nvidia-ml-py": "13.615.71",
+    "huggingface-hub": "2.4.0"
+  },
+  "clip": {
+    "rgb_path": "synthetic_videos/videos/head-on/Town06_head-on_clear_01.mp4",
+    "video": "C:\\Users\\ASUS\\Documents\\Uni\\Senior 2\\cctv-accident-ITS-system\\ACCIDENT\\dataset\\synthetic_videos\\videos\\head-on\\Town06_head-on_clear_01.mp4",
+    "scenario_id": "Town06_head-on",
+    "type": "head-on",
+    "t_star": 14.4,
+    "accident_frame": 288,
+    "no_frames": 356,
+    "duration": 17.8,
+    "width": 1920,
+    "height": 1080,
+    "center_x": 0.5408854166666667,
+    "center_y": 0.762962962962963
+  },
+  "half_window_s": 2.0,
+  "long_side": 448,
+  "prompt": "These frames come from a fixed traffic camera and show a collision. Answer with one JSON object and nothing else, in this exact form: {\"collision_type\": \"<one of head-on, rear-end, sideswipe, single, t-bone>\", \"x\": <number 0-1>, \"y\": <number 0-1>}. collision_type is the type of collision (single means a single-vehicle crash). x and y give the collision point in the image as fractions of the image width (x, from the left) and height (y, from the top).",
+  "max_new_tokens": 64,
+  "lora": {
+    "r": 16,
+    "alpha": 32,
+    "dropout": 0.05,
+    "target": ".*language_model.*\\.self_attn\\.(q_proj|k_proj|v_proj|o_proj)",
+    "lr": 0.0001
+  },
+  "over_vram_frac": 0.97,
+  "results": [
+    {
+      "test": "A",
+      "model": "2B",
+      "precision": "bf16",
+      "frames": 8,
+      "mode": "generate",
+      "model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "status": "OK",
+      "oom": false,
+      "frame_indices": [
+        248,
+        259,
+        271,
+        282,
+        294,
+        305,
+        317,
+        328
+      ],
+      "frame_times_s": [
+        12.4,
+        12.95,
+        13.55,
+        14.1,
+        14.7,
+        15.25,
+        15.85,
+        16.4
+      ],
+      "frame_size_in": [
+        448,
+        252
+      ],
+      "load_s": 4.003225899999961,
+      "alloc_after_load_gb": 3.9638290405273438,
+      "attn_implementation": "sdpa",
+      "video_grid_thw": [
+        4,
+        16,
+        28
+      ],
+      "frame_size_model": [
+        448,
+        256
+      ],
+      "visual_tokens": 448,
+      "vision_start_tokens": 4,
+      "input_tokens": 610,
+      "gen_s": 2.0079172000000653,
+      "new_tokens": 24,
+      "output": "{\"collision_type\": \"single\", \"x\": 0.4, \"y\": 0.1}",
+      "json_ok": true,
+      "keys_ok": true,
+      "values_ok": true,
+      "parsed": {
+        "collision_type": "single",
+        "x": 0.4,
+        "y": 0.1
+      },
+      "max_alloc_gb": 4.148751735687256,
+      "max_reserved_gb": 4.17578125,
+      "nvml_baseline_gb": 0.256256103515625,
+      "nvml_peak_gb": 4.555274963378906,
+      "total_gb": 7.95953369140625,
+      "torch_cuda": "12.8",
+      "transformers": "5.22.1",
+      "wall_s": 35.052321599999686,
+      "exit_code": 0
+    },
+    {
+      "test": "B",
+      "model": "2B",
+      "precision": "bf16",
+      "frames": 16,
+      "mode": "generate",
+      "model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "status": "OK",
+      "oom": false,
+      "frame_indices": [
+        248,
+        253,
+        259,
+        264,
+        269,
+        275,
+        280,
+        285,
+        291,
+        296,
+        301,
+        307,
+        312,
+        317,
+        323,
+        328
+      ],
+      "frame_times_s": [
+        12.4,
+        12.65,
+        12.95,
+        13.2,
+        13.45,
+        13.75,
+        14.0,
+        14.25,
+        14.55,
+        14.8,
+        15.05,
+        15.35,
+        15.6,
+        15.85,
+        16.15,
+        16.4
+      ],
+      "frame_size_in": [
+        448,
+        252
+      ],
+      "load_s": 3.0103564000000915,
+      "alloc_after_load_gb": 3.9638290405273438,
+      "attn_implementation": "sdpa",
+      "video_grid_thw": [
+        8,
+        16,
+        28
+      ],
+      "frame_size_model": [
+        448,
+        256
+      ],
+      "visual_tokens": 896,
+      "vision_start_tokens": 8,
+      "input_tokens": 1094,
+      "gen_s": 1.5480004999999437,
+      "new_tokens": 28,
+      "output": "```json\n{\"collision_type\": \"single\", \"x\": 0.2, \"y\": 0.1}\n```",
+      "json_ok": true,
+      "keys_ok": true,
+      "values_ok": true,
+      "parsed": {
+        "collision_type": "single",
+        "x": 0.2,
+        "y": 0.1
+      },
+      "max_alloc_gb": 4.362993240356445,
+      "max_reserved_gb": 4.408203125,
+      "nvml_baseline_gb": 0.256256103515625,
+      "nvml_peak_gb": 4.787696838378906,
+      "total_gb": 7.95953369140625,
+      "torch_cuda": "12.8",
+      "transformers": "5.22.1",
+      "wall_s": 10.145025799999985,
+      "exit_code": 0
+    },
+    {
+      "test": "C",
+      "model": "2B",
+      "precision": "nf4",
+      "frames": 16,
+      "mode": "generate",
+      "model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "status": "OK",
+      "oom": false,
+      "frame_indices": [
+        248,
+        253,
+        259,
+        264,
+        269,
+        275,
+        280,
+        285,
+        291,
+        296,
+        301,
+        307,
+        312,
+        317,
+        323,
+        328
+      ],
+      "frame_times_s": [
+        12.4,
+        12.65,
+        12.95,
+        13.2,
+        13.45,
+        13.75,
+        14.0,
+        14.25,
+        14.55,
+        14.8,
+        15.05,
+        15.35,
+        15.6,
+        15.85,
+        16.15,
+        16.4
+      ],
+      "frame_size_in": [
+        448,
+        252
+      ],
+      "load_s": 5.43330479999986,
+      "alloc_after_load_gb": 1.4701967239379883,
+      "attn_implementation": "sdpa",
+      "linear4bit_modules": {
+        "visual": 104,
+        "language_model": 196,
+        "other": 0
+      },
+      "video_grid_thw": [
+        8,
+        16,
+        28
+      ],
+      "frame_size_model": [
+        448,
+        256
+      ],
+      "visual_tokens": 896,
+      "vision_start_tokens": 8,
+      "input_tokens": 1094,
+      "gen_s": 1.5343264000002819,
+      "new_tokens": 25,
+      "output": "{\"collision_type\": \"single\", \"x\": 0.45, \"y\": 0.2}",
+      "json_ok": true,
+      "keys_ok": true,
+      "values_ok": true,
+      "parsed": {
+        "collision_type": "single",
+        "x": 0.45,
+        "y": 0.2
+      },
+      "max_alloc_gb": 1.8676671981811523,
+      "max_reserved_gb": 1.912109375,
+      "nvml_baseline_gb": 0.256256103515625,
+      "nvml_peak_gb": 2.2916030883789062,
+      "total_gb": 7.95953369140625,
+      "torch_cuda": "12.8",
+      "transformers": "5.22.1",
+      "wall_s": 13.321483700000044,
+      "exit_code": 0
+    },
+    {
+      "test": "D",
+      "model": "4B",
+      "precision": "nf4",
+      "frames": 8,
+      "mode": "generate",
+      "model_id": "Qwen/Qwen3-VL-4B-Instruct",
+      "status": "NOT RUN: 4B weights not downloaded (network timeout)",
+      "oom": null
+    },
+    {
+      "test": "E",
+      "model": "4B",
+      "precision": "nf4",
+      "frames": 16,
+      "mode": "generate",
+      "model_id": "Qwen/Qwen3-VL-4B-Instruct",
+      "status": "NOT RUN: 4B weights not downloaded (network timeout)",
+      "oom": null
+    },
+    {
+      "test": "F",
+      "model": "2B",
+      "precision": "nf4",
+      "frames": 8,
+      "mode": "qlora",
+      "model_id": "Qwen/Qwen3-VL-2B-Instruct",
+      "status": "OK",
+      "oom": false,
+      "frame_indices": [
+        248,
+        259,
+        271,
+        282,
+        294,
+        305,
+        317,
+        328
+      ],
+      "frame_times_s": [
+        12.4,
+        12.95,
+        13.55,
+        14.1,
+        14.7,
+        15.25,
+        15.85,
+        16.4
+      ],
+      "frame_size_in": [
+        448,
+        252
+      ],
+      "load_s": 4.420042799999919,
+      "alloc_after_load_gb": 1.4701967239379883,
+      "attn_implementation": "sdpa",
+      "linear4bit_modules": {
+        "visual": 104,
+        "language_model": 196,
+        "other": 0
+      },
+      "target": "{\"collision_type\": \"head-on\", \"x\": 0.541, \"y\": 0.763}",
+      "video_grid_thw": [
+        4,
+        16,
+        28
+      ],
+      "frame_size_model": [
+        448,
+        256
+      ],
+      "visual_tokens": 448,
+      "vision_start_tokens": 4,
+      "input_tokens": 640,
+      "trainable_params": 6422528,
+      "total_params": 1227984896,
+      "lora_modules": 112,
+      "target_tokens": 30,
+      "step_s": 1.134088199999951,
+      "loss": 0.9917923212051392,
+      "max_alloc_gb": 2.6723694801330566,
+      "max_reserved_gb": 3.07421875,
+      "nvml_baseline_gb": 0.256256103515625,
+      "nvml_peak_gb": 3.4634780883789062,
+      "total_gb": 7.95953369140625,
+      "torch_cuda": "12.8",
+      "transformers": "5.22.1",
+      "wall_s": 12.032356499999878,
+      "exit_code": 0
+    },
+    {
+      "test": "G",
+      "model": "4B",
+      "precision": "nf4",
+      "frames": 8,
+      "mode": "qlora",
+      "model_id": "Qwen/Qwen3-VL-4B-Instruct",
+      "status": "NOT RUN: 4B weights not downloaded (network timeout)",
+      "oom": null
+    }
+  ],
+  "notes": {
+    "chat_template_change": "Chat template change: the Hub chat template (chat_template.json of the model) renders a video as <|vision_start|><|video_pad|><|vision_end|>. The Qwen3VLProcessor in transformers 5.22.1 replaces only <|video_pad|> and adds its own <|vision_start|>...<|vision_end|> pair around every 2-frame group, so the prompt got double vision markers (one extra outer pair around all frames). The original Qwen3-VL processor replaces the whole triple, giving <t seconds><|vision_start|>pads<|vision_end|> per group with no outer pair. Why: keep the input in the format the model expects and avoid two stray vision tokens. How: the script replaces the triple with the bare <|video_pad|> in the rendered prompt text before the processor runs; the chat_template.json file itself is not modified.",
+    "not_run": {
+      "D": "NOT RUN: 4B weights not downloaded (network timeout)",
+      "E": "NOT RUN: 4B weights not downloaded (network timeout)",
+      "G": "NOT RUN: 4B weights not downloaded (network timeout)"
+    }
+  }
+}
