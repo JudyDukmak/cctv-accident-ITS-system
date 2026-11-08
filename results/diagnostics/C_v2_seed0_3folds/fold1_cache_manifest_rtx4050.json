@@ -1,0 +1,19 @@
+{
+  "complete": true,
+  "limit": null,
+  "clips_in_cache": 2211,
+  "clips_total": 2211,
+  "clips_this_run": 2211,
+  "written_this_run": 2211,
+  "skipped_this_run": 0,
+  "errors_this_run": 0,
+  "frames_this_run": 309452,
+  "bytes_in_cache": 6713850124,
+  "resize_rule": "full frame (no crop) resized to 224x224 with cv2.INTER_AREA, RGB",
+  "jpeg_quality": 95,
+  "model_fps": 8,
+  "grid_rule": "t_k = k/8, frame = floor(t_k * no_frames/duration + 0.5), K = 8*max(t_start) + 16",
+  "decoder": "PyAV 19.0.2, sequential, no seeking",
+  "windows_sha256": "36866a3009097928654957f48bb88bd0a3565a8853ef8439da4fc81a67d1abad",
+  "created_at": "2026-11-04T10:19:29+00:00"
+}

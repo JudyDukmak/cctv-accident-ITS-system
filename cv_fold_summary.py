@@ -1,10 +1,15 @@
 """Integrity check and 3-fold summary of one run name (SYNTHETIC ONLY; reads runs/<run>/fold_{0,1,2}/ config.json,
 train_log.txt, metrics.csv and val_*_best.csv, synthetic_split.csv and metadata-synthetic.csv; no model, no GPU,
-writes nothing in runs/). Unlike aggregate_runs.py it does NOT stop when config or data hashes differ between
-folds: it reports every difference and labels the summary PROVISIONAL instead.
+writes nothing in runs/). Fold consistency uses aggregate_runs.fold_consistency with the same options
+(--allow-config-diff, --run-cache-manifest); allowed differences are listed under "Documented deviations". Unlike
+aggregate_runs.py it does NOT stop when that check fails: it labels the summary PROVISIONAL instead.
 
 1. Integrity: config / data hashes, git, GPU, library versions, seed, scheme, schedule per fold; differing values
-   flagged; config keys that differ listed.
+   flagged; config keys that differ listed; documented deviations (incl. --deviation-note text and the last-check
+   T@1 rescored from the saved CSVs vs metrics.csv).
+1b. Window score by phase (analyse_predictions.phase_of) at the best and the last check per fold, ratios
+   near / aftermath and pre / near of the phase means, late-peak and early > 2 s shares; mean +- sample std.
+   The last-check CSVs come from analyse_predictions.py (results/diagnostics/<run>_fold<k>/).
 2. Per fold at the best check: epoch_fraction, T@0.5/1/2, within_2s, median error, early > 2 s share, late-peak
    share (compare_diagnostics.late_peak_share), naive t_hat = duration / 2 T@1 on the same clips; mean +- sample
    std (ddof 1, n = 3) over folds. Fold-0-only reference rows for other runs (--fold0-refs).
@@ -15,7 +20,8 @@ folds: it reports every difference and labels the summary PROVISIONAL instead.
 Outputs: results/diagnostics/<run>_3folds/ (summary.txt + CSVs).
 
 Usage (training environment, CPU):
-    .venv-ml\\Scripts\\python.exe cv_fold_summary.py --run C_v2_seed0 --fold0-refs B_v2_seed0 std_seed0
+    .venv-ml\\Scripts\\python.exe cv_fold_summary.py --run C_v2_seed0 --fold0-refs B_v2_seed0 std_seed0 \\
+        [--allow-config-diff micro_batch,grad_accum] [--run-cache-manifest FOLD=PATH] [--deviation-note TEXT ...]
 """
 
 import argparse
@@ -31,7 +37,8 @@ REPO_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT))
 import train_classifier as tc  # noqa: E402  (labels, split and constants only; no model, no CUDA)
 from accs_scorer import temporal  # noqa: E402
-from aggregate_runs import all_clips  # noqa: E402
+from aggregate_runs import BATCH_KEYS, all_clips, fold_consistency  # noqa: E402
+from analyse_predictions import phase_of, with_context  # noqa: E402
 from compare_diagnostics import DIAG_ROOT, METADATA_SYN, late_peak_share, load, smooth_window  # noqa: E402
 from confidence_vs_error import block as confidence_block  # noqa: E402
 
@@ -120,7 +127,31 @@ def fold_data(run: str, fold: int, data: pd.DataFrame, meta: pd.DataFrame) -> di
         tc.fail(f"{run} fold {fold}: best predictions do not cover the fold's validation clips / windows")
     m = pd.read_csv(tc.RUNS_DIR / run / f"fold_{fold}" / "metrics.csv")
     best = m[m["best"].astype(str) == "True"].iloc[-1]
-    return {"clips": clips, "pred": p, "win": w, "best": best, "k": smooth_window(run, fold)}
+    return {"clips": clips, "pred": p, "win": w, "best": best, "last": m.iloc[-1], "val_rows": val_rows,
+            "k": smooth_window(run, fold)}
+
+
+PHASES = {"pre (label_B 0)": "pre", "gap (label_B -1, ends < 1 s before t*)": "gap", "near (label_B 1)": "near",
+          "aftermath: starts 0-2 s after t*": "aft 0-2 s", "aftermath: starts 2-5 s after t*": "aft 2-5 s",
+          "aftermath: starts > 5 s after t*": "aft > 5 s"}
+
+
+def phase_row(run: str, fold: int, which: str, fd: dict) -> dict:
+    """Mean window score by phase (analyse_predictions.phase_of), the two ratios, late-peak and early shares, and
+    T@1 recomputed from the CSVs, for the best check ("best") or a saved last check ("checkN")."""
+    win, pred = load(run, which, fold)
+    w = with_context(win, fd["val_rows"], fd["k"])
+    ph = phase_of(w).map(PHASES)
+    means = w.groupby(ph)["score"].mean()
+    aftermath = float(w.loc[ph.str.startswith("aft"), "score"].mean())
+    p = pred[["rgb_path", "t_hat", "t_star"]].merge(fd["clips"][["rgb_path"]], on="rgb_path", validate="one_to_one")
+    if len(p) != len(fd["clips"]):
+        tc.fail(f"{run} fold {fold} {which}: clip predictions do not cover the fold's validation clips")
+    share, _ = late_peak_share(w, fd["k"])
+    return {**{v: float(means[v]) for v in PHASES.values()}, "aftermath all": aftermath,
+            "near / aftermath": float(means["near"]) / aftermath, "pre / near": float(means["pre"] / means["near"]),
+            "late-peak share": share, "early > 2 s": float(((p["t_hat"] - p["t_star"]) < -2).mean()),
+            "T@1 (from CSV)": float(temporal(p["t_hat"], p["t_star"], 1.0))}
 
 
 def metric_row(fd: dict) -> dict:
@@ -154,18 +185,55 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--run", default="C_v2_seed0")
     ap.add_argument("--fold0-refs", nargs="*", default=[], help="other runs shown as fold-0-only rows")
+    ap.add_argument("--allow-config-diff", default="", metavar="KEYS", help="as in aggregate_runs.py")
+    ap.add_argument("--run-cache-manifest", action="append", default=[], metavar="FOLD=PATH",
+                    help="the cache_manifest.json a fold was trained with (as in aggregate_runs.py)")
+    ap.add_argument("--deviation-note", action="append", default=[], metavar="TEXT",
+                    help="externally measured evidence for a documented deviation, copied into the summary")
     args = ap.parse_args()
     out_dir = DIAG_ROOT / f"{args.run}_3folds"
     out_dir.mkdir(parents=True, exist_ok=True)
 
     integ, cfg_diff, ok = integrity(args.run)
+    infos = [json.loads((tc.RUNS_DIR / args.run / f"fold_{k}" / "config.json").read_text(encoding="utf-8"))
+             for k in FOLDS]
+    allow = {k for k in args.allow_config_diff.split(",") if k}
+    manifests = {int(f): Path(p) for f, p in (item.split("=", 1) for item in args.run_cache_manifest)}
+    try:
+        if allow - set(BATCH_KEYS):
+            tc.fail(f"--allow-config-diff accepts only {','.join(BATCH_KEYS)}")
+        deviations = fold_consistency(args.run, infos, allow, manifests)
+        status = ""
+        if not ok:  # every flagged difference passed fold_consistency
+            integ["flag"] = integ["flag"].str.replace(r"^DIFFERS.*", "documented deviation", regex=True)
+    except SystemExit as e:
+        deviations = []
+        status = f"PROVISIONAL: {e} (aggregate_runs.py refuses this run with these options)"
     integ.to_csv(out_dir / "integrity.csv")
-    status = "" if ok else ("PROVISIONAL: config and/or data hashes differ between folds (see section 1); "
-                            "aggregate_runs.py refuses this run.")
 
     data, _, _ = tc.load_labels(8)
     meta = pd.read_csv(METADATA_SYN, usecols=["rgb_path", "duration"])
     fds = {k: fold_data(args.run, k, data, meta) for k in FOLDS}
+
+    # 1b. phases at the best and the last check
+    ph_rows, rescore = {}, []
+    for k, fd in fds.items():
+        b, last = int(fd["best"]["check_idx"]), int(fd["last"]["check_idx"])
+        ph_rows[(f"fold {k}", f"best (check {b})")] = phase_row(args.run, k, "best", fd)
+        ph_rows[(f"fold {k}", f"last (check {last})")] = phase_row(args.run, k, f"check{last}", fd)
+        t1 = ph_rows[(f"fold {k}", f"last (check {last})")]["T@1 (from CSV)"]
+        rescore.append(f"fold {k} last check {last}: T@1 rescored from the saved CSV {t1:.4f} vs metrics.csv "
+                       f"{float(fd['last']['val_T_1']):.4f} (diff {t1 - float(fd['last']['val_T_1']):+.4f})")
+    phases = pd.DataFrame(ph_rows).T
+    phases.index.names = ["fold", "check"]
+    ph_agg = {}
+    for which in ("best", "last"):
+        sub = phases[phases.index.get_level_values("check").str.startswith(which)].astype(float)
+        ph_agg[(which, "mean (n=3)")] = sub.mean()
+        ph_agg[(which, "sample std (ddof=1, n=3)")] = sub.std(ddof=1)
+    ph_agg = pd.DataFrame(ph_agg).T
+    phases.to_csv(out_dir / "phases_best_last.csv")
+    ph_agg.to_csv(out_dir / "phases_best_last_mean_std.csv")
 
     # 2. per fold + mean +- std
     per_fold = pd.DataFrame({f"fold {k}": metric_row(fd) for k, fd in fds.items()}).T
@@ -219,6 +287,14 @@ def main() -> None:
     lines += [f"  fold {k}: {integ.loc['files', f'fold {k}']}" for k in FOLDS]
     lines += [table(show), "", "config keys that differ between folds:"] + cfg_diff
     lines += ["output dirs (train_log): " + "; ".join(f"fold {k} {integ.loc['output_dir', f'fold {k}']}" for k in FOLDS)]
+    lines += ["", "Documented deviations (checked by aggregate_runs.fold_consistency unless marked as notes):"]
+    lines += [f"  - {d}" for d in deviations] or ["  none"]
+    lines += [f"  - note: {n}" for n in args.deviation_note]
+    lines += [f"  - last-check rescore: {r}" for r in rescore]
+    lines += ["", "=== 1b. window score by phase at the best and the last check ===",
+              "phases as analyse_predictions.phase_of (aftermath by window start relative to t*); aftermath all = "
+              "every window starting after t*; ratios of phase means; T@1 (from CSV) = recomputed from the saved "
+              "clip predictions", table(phases), "", table(ph_agg)]
     lines += ["", "=== 2. per fold (best check) and mean +- sample std over folds ===",
               table(per_fold), "", table(agg), "",
               "fold-0-only references (NOT 3-fold results; same 770 fold-0 clips):",

@@ -1,0 +1,91 @@
+Clip-edge description: run C_v2_seed0, best check per fold, out-of-fold, 2211 clips, 70730 windows (saved CSVs only; description, no rule or threshold fitted)
+window grid: first window centre per clip median 0.938 s (min 0.938); duration - last window centre median 1.213 s (p5 1.012, p95 1.462, min 1.012, max 1.463); t_hat is always a window centre
+
+=== 1. clips with t_hat / t* in the first 2 s (t < 2) or the last 2 s (duration - t <= 2) ===
+                              n  share    T@1  within_2s
+scope  clips                                            
+pooled t_hat in first 2 s    99 0.0448 0.1057     0.1414
+       t_hat in last 2 s     92 0.0416 0.3382     0.3913
+       t_hat elsewhere     2020 0.9136 0.7208     0.7842
+       t* in first 2 s        5 0.0023 0.7531     0.8000
+       t* in last 2 s        30 0.0136 0.3976     0.5000
+       t* elsewhere        2176 0.9842 0.6810     0.7422
+       all clips           2211 1.0000 0.6773     0.7390
+fold 0 t_hat in first 2 s    16 0.0208 0.1139     0.1875
+       t_hat in last 2 s     54 0.0701 0.1369     0.1667
+       t_hat elsewhere      700 0.9091 0.6280     0.7071
+       t* in first 2 s        1 0.0013 0.0000     0.0000
+       t* in last 2 s        15 0.0195 0.2877     0.4667
+       t* elsewhere         754 0.9792 0.5895     0.6631
+       all clips            770 1.0000 0.5828     0.6584
+fold 1 t_hat in first 2 s    58 0.0768 0.0106     0.0345
+       t_hat in last 2 s     11 0.0146 0.5009     0.5455
+       t_hat elsewhere      686 0.9086 0.6680     0.7289
+       t* in first 2 s        0 0.0000    NaN        NaN
+       t* in last 2 s         6 0.0079 0.4872     0.5000
+       t* elsewhere         749 0.9921 0.6161     0.6742
+       all clips            755 1.0000 0.6151     0.6728
+fold 2 t_hat in first 2 s    25 0.0364 0.3210     0.3600
+       t_hat in last 2 s     27 0.0394 0.6745     0.7778
+       t_hat elsewhere      634 0.9242 0.8803     0.9290
+       t* in first 2 s        4 0.0058 0.9413     1.0000
+       t* in last 2 s         9 0.0131 0.5211     0.5556
+       t* elsewhere         673 0.9810 0.8557     0.9064
+       all clips            686 1.0000 0.8518     0.9023
+
+pooled cross-table, clips:
+t* in last 2 s     False  True 
+t_hat in last 2 s              
+False               2101     18
+True                  80     12
+
+=== 2. mean smoothed window score, windows outside t* +- 2 s (|t_centre - t*| > 2) ===
+by time to clip end (duration - t_centre):
+            n                 mean                    n   mean
+fold        0      1      2      0      1      2 pooled pooled
+to end                                                        
+0-1 s       0      0      0    NaN    NaN    NaN      0    NaN
+1-2 s    1463   1448   1152 0.2279 0.1359 0.0909   4063 0.1563
+2-5 s    3983   3891   2720 0.2687 0.1720 0.1043  10594 0.1910
+> 5 s   14458  13701  10438 0.1867 0.2858 0.0841  38597 0.1941
+
+by time from clip start (t_centre):
+                n                mean                    n   mean
+fold            0      1     2      0      1      2 pooled pooled
+from start                                                       
+0-1 s         747    746   648 0.1041 0.2483 0.0680   2141 0.1434
+1-2 s        1423   1450  1147 0.1588 0.3820 0.0965   4020 0.2215
+2-5 s        2982   3378  2577 0.1530 0.4236 0.0791   8937 0.2340
+> 5 s       14752  13466  9938 0.2266 0.1939 0.0914  38156 0.1798
+
+=== 3. clips with |t_hat - t*| > 5 s ===
+by fold:
+      clips |err| > 5 s  of which t_hat in last 2 s  of which t_hat in first 2 s  of which late (err > 5 s)  share in last 2 s
+fold                                                                                                                          
+0                   172                          35                            9                        145             0.2035
+1                   150                           5                           43                         26             0.0333
+2                    41                           4                            9                          6             0.0976
+all                 363                          44                           61                        177             0.1212
+
+by collision type:
+           clips |err| > 5 s  of which t_hat in last 2 s  of which t_hat in first 2 s  of which late (err > 5 s)  share in last 2 s
+ctype                                                                                                                              
+head-on                   41                           2                            8                         15             0.0488
+rear-end                 230                          28                           34                        116             0.1217
+sideswipe                 75                          11                           18                         32             0.1467
+single                     5                           1                            0                          3             0.2000
+t-bone                    12                           2                            1                         11             0.1667
+all                      363                          44                           61                        177             0.1212
+
+=== 4. the 10 worst clips with |error| > 5 s and t_hat in the last 2 s ===
+ fold                      stem    ctype  duration  t_star   t_hat     err                                    plots
+    0  Town04_rear-end_night_32 rear-end   32.2000  4.2000 30.4375 26.2375 curve_worst_Town04_rear-end_night_32.png
+    0  Town04_rear-end_night_12 rear-end   26.1500  3.4500 24.4375 20.9875 curve_worst_Town04_rear-end_night_12.png
+    0  Town04_rear-end_night_13 rear-end   23.9500  3.3500 22.4375 19.0875                                        -
+    0 Town04_rear-end_sunset_31 rear-end   26.0000  5.6500 24.4375 18.7875                                        -
+    0  Town04_rear-end_night_40 rear-end   26.6000  6.4500 24.9375 18.4875                                        -
+    0  Town04_rear-end_night_49 rear-end   25.3500  5.4000 23.4375 18.0375                                        -
+    0  Town04_rear-end_clear_03 rear-end   23.9000  4.7500 21.9375 17.1875                                        -
+    0    Town04_rear-end_wet_00 rear-end   23.6500  6.4000 21.9375 15.5375                                        -
+    1    Town03_t-bone_clear_46   t-bone   24.1000  7.3500 22.4375 15.0875                                        -
+    0  Town04_rear-end_clear_29 rear-end   20.9500  4.5000 19.4375 14.9375                                        -

@@ -1,0 +1,7 @@
+ctype,clips |err| > 5 s,of which t_hat in last 2 s,of which t_hat in first 2 s,of which late (err > 5 s),share in last 2 s
+head-on,41,2,8,15,0.04878048780487805
+rear-end,230,28,34,116,0.12173913043478261
+sideswipe,75,11,18,32,0.14666666666666667
+single,5,1,0,3,0.2
+t-bone,12,2,1,11,0.16666666666666666
+all,363,44,61,177,0.12121212121212122

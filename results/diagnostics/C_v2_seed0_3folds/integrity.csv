@@ -1,0 +1,24 @@
+,fold 0,fold 1,fold 2,flag
+files,"checkpoints\best.pt, checkpoints\last.pt, checkpoints\step_latest.pt, config.json, metrics.csv, train_log.txt, val_clip_predictions_best.csv, val_window_scores_best.csv","checkpoints\best.pt, checkpoints\last.pt, checkpoints\step_latest.pt, config.json, metrics.csv, train_log.txt, val_clip_predictions_best.csv, val_window_scores_best.csv","checkpoints\best.pt, checkpoints\last.pt, checkpoints\step_latest.pt, config.json, metrics.csv, train_log.txt, val_clip_predictions_best.csv, val_window_scores_best.csv",
+config_file,videomae_v2_C.json,videomae_v2_C_rtx4050.json,videomae_v2_C.json,documented deviation
+config_hash,1edaaedfeea77ebfd4d77104acfda6cc29bb9d1be2d5c0da946af532f8f24b64,fe4f55dc1c2fee39d29363b71c140e23b684b1af45eaaff293981c7ec0020441,1edaaedfeea77ebfd4d77104acfda6cc29bb9d1be2d5c0da946af532f8f24b64,documented deviation
+window_labels_sha256,4487770a0d15531a2d8f37357428daa70513f4704e53b96af5fca9c570340e11,4487770a0d15531a2d8f37357428daa70513f4704e53b96af5fca9c570340e11,4487770a0d15531a2d8f37357428daa70513f4704e53b96af5fca9c570340e11,
+split_sha256,965e1104208e3e7e53e64ebcac8f8d467c6647797c706560fb71fe503ad8fb19,965e1104208e3e7e53e64ebcac8f8d467c6647797c706560fb71fe503ad8fb19,965e1104208e3e7e53e64ebcac8f8d467c6647797c706560fb71fe503ad8fb19,
+cache_manifest_sha256,4615b3475fb9ded82d12e3010f0e60dc52fc91553f83f415b809318da58589de,c76c46e6a09ec439f0052e4e1898a731b62d912c1fc3c296a086159d1940f107,4615b3475fb9ded82d12e3010f0e60dc52fc91553f83f415b809318da58589de,documented deviation
+git_commit,91bd110,e371121,e371121,differs (expected)
+git_dirty,True,True,True,
+gpu,NVIDIA GeForce RTX 5060 Laptop GPU,NVIDIA GeForce RTX 4050 Laptop GPU,NVIDIA GeForce RTX 5060 Laptop GPU,differs (expected)
+torch,2.10.0+cu128,2.10.0+cu128,2.10.0+cu128,
+transformers,5.20.2,5.20.2,5.20.2,
+python,3.12.2,3.14.0,3.12.2,documented deviation
+cuda,12.8,12.8,12.8,
+seed,0,0,0,
+label_scheme,C,C,C,
+updates_per_epoch,2797,2856,3190,differs (expected)
+warmup_updates,1398,1428,1595,differs (expected)
+total_updates,27970,28560,31900,differs (expected)
+n_train_windows,44742,45689,51029,differs (expected)
+n_val_clips,770,755,686,differs (expected)
+n_val_windows,25988,25041,19701,differs (expected)
+output_dir,C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\runs\C_v2_seed0\fold_0,C:\Users\LOQ\Desktop\Senior 2\cctv-accident-ITS-system\runs\C_v2_seed0_rtx4050\fold_1,C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\runs\C_v2_seed0\fold_2,differs (expected)
+train_log header agrees with config.json,True,True,True,

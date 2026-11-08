@@ -1,0 +1,17 @@
+Commands that produced the files in this folder and results/classifier_summary.{csv,md} (2026-11-08, CPU only,
+from cctv-accident-ITS-system/, environment .venv-ml; reads saved CSVs, configs and manifests only).
+
+copy (not move) of the fold-1 cache manifest, sha256 c76c46e6a09ec439f0052e4e1898a731b62d912c1fc3c296a086159d1940f107:
+    Copy-Item incoming\rtx4050\cache_manifest.json results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json
+
+official 3-fold aggregation (results/classifier_summary.csv / .md):
+    .venv-ml\Scripts\python.exe aggregate_runs.py C_v2_seed0 --overwrite --allow-config-diff micro_batch,grad_accum --run-cache-manifest "C_v2_seed0:1=results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json"
+
+3-fold summary (summary.txt, integrity.csv, per_fold*.csv, phases_best_last*.csv, within_2s_by_type.csv, pooled_out_of_fold*.csv, fold0_only_references.csv):
+    .venv-ml\Scripts\python.exe cv_fold_summary.py --run C_v2_seed0 --fold0-refs B_v2_seed0 std_seed0 --allow-config-diff micro_batch,grad_accum --run-cache-manifest "1=results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json" --deviation-note "frame cache: 5 of 5 sampled .npz files from the RTX 4050 cache (Town03_head-on_clear_00/01/03/04/10) are byte-identical to ours (same sha256; 0 differing decoded pixels); sample only, not all 2211 files" --deviation-note "fold 1 check-8 checkpoint (step_latest.pt, update 5580): val T@1 0.5501 logged on the RTX 4050, 0.5498 when rescored on the RTX 5060 (difference 0.0003)" --deviation-note "fold 1 OpenCV version on the RTX 4050 machine not recorded (ours 5.0.0); PyAV 19.0.2 on both (cache manifests)"
+
+clip-edge description (clip_edge.txt, clip_edge_*.csv):
+    .venv-ml\Scripts\python.exe clip_edge_analysis.py --run C_v2_seed0
+
+Inputs not in this repo's run folders: results/diagnostics/C_v2_seed0_fold{0,1,2}/val_*_check{8,8,12}.csv from
+analyse_predictions.py (fold 1 run with --run-cache-manifest incoming\rtx4050\cache_manifest.json).

@@ -15,6 +15,8 @@ Outputs go to results/diagnostics/<run>_fold<k>/ (report.txt, CSVs, PNGs); nothi
 
 Usage (training environment, uses the GPU for step 1):
     .venv-ml\\Scripts\\python.exe analyse_predictions.py [--run std_seed0] [--fold 0] [--rescore]
+        [--run-cache-manifest PATH]  (only for a run whose frame cache was built on another machine; see
+                                      cache_manifest_check.py)
 """
 
 import argparse
@@ -33,6 +35,7 @@ REPO_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT))
 import train_classifier as tc  # noqa: E402
 from accs_scorer import temporal  # noqa: E402
+from cache_manifest_check import check_cache_manifest  # noqa: E402
 
 METADATA_SYN = REPO_ROOT / "ACCIDENT" / "dataset" / "metadata-synthetic.csv"
 OUT_ROOT = REPO_ROOT / "results" / "diagnostics"
@@ -52,8 +55,11 @@ def table(df: pd.DataFrame, floatfmt: str = "{:.4f}") -> str:
 # --------------------------------------------------------------------------- #
 # Inputs and checks
 # --------------------------------------------------------------------------- #
-def load_run(run_dir: Path, fold: int) -> tuple[dict, pd.DataFrame, pd.DataFrame]:
-    """Run info, validation rows of the fold (with scenario, type, t_start) and metrics; checks the data hashes."""
+def load_run(run_dir: Path, fold: int, run_cache_manifest: Path | None = None
+             ) -> tuple[dict, pd.DataFrame, pd.DataFrame, str | None]:
+    """Run info, validation rows of the fold (with scenario, type, t_start), metrics and the cache-deviation note
+    (None if the cache manifest hash matches); labels and split hashes must match exactly, the cache manifest
+    through cache_manifest_check."""
     info = json.loads((run_dir / "config.json").read_text(encoding="utf-8"))
     if info.get("fold") != fold or info.get("smoke_test"):
         fail(f"{run_dir}: not a full fold-{fold} run")
@@ -61,10 +67,18 @@ def load_run(run_dir: Path, fold: int) -> tuple[dict, pd.DataFrame, pd.DataFrame
     data, manifest, data_hashes = tc.load_labels(cfg["model_fps"])
     _, val_rows = tc.split_fold(data, fold, smoke=False)
     data_hashes["cache_manifest_sha256"] = tc.check_cache(val_rows.iloc[:0], val_rows, manifest, partial=False)
-    if data_hashes != info["data_hashes"]:
-        fail("current labels / split / cache hashes differ from the run's")
+    recorded = info["data_hashes"]
+    if recorded.keys() != data_hashes.keys() or any(recorded[k] != v for k, v in data_hashes.items()
+                                                    if k != "cache_manifest_sha256"):
+        fail("current labels / split hashes differ from the run's")
+    try:
+        cache_note = check_cache_manifest(recorded["cache_manifest_sha256"], tc.CACHE_MANIFEST, run_cache_manifest)
+    except ValueError as e:
+        fail(str(e))
+    if cache_note:
+        print(cache_note)
     metrics = pd.read_csv(run_dir / "metrics.csv")
-    return info, val_rows, metrics
+    return info, val_rows, metrics, cache_note
 
 
 def score_last(run_dir: Path, info: dict, val_rows: pd.DataFrame, win_csv: Path, pred_csv: Path,
@@ -234,12 +248,14 @@ def main() -> None:
     ap.add_argument("--run", default="std_seed0")
     ap.add_argument("--fold", type=int, default=0, choices=[0, 1, 2])
     ap.add_argument("--rescore", action="store_true", help="score again even if the last-epoch CSVs exist")
+    ap.add_argument("--run-cache-manifest", type=Path, default=None,
+                    help="the run's own cache_manifest.json, if its frame cache was built on another machine")
     args = ap.parse_args()
 
     run_dir = tc.RUNS_DIR / args.run / f"fold_{args.fold}"
     out_dir = OUT_ROOT / f"{args.run}_fold{args.fold}"
+    info, val_rows, metrics, cache_note = load_run(run_dir, args.fold, args.run_cache_manifest)
     out_dir.mkdir(parents=True, exist_ok=True)
-    info, val_rows, metrics = load_run(run_dir, args.fold)
     cfg = info["config"]
 
     # labels from metrics.csv: epochs for once-per-epoch validation (v1), checks for validate_every_updates
@@ -313,7 +329,8 @@ def main() -> None:
            f"{len(clips)} clips, {len(val_rows)} windows)",
            f"config {Path(info['config_file']).name} (sha256 {info['config_hash'][:12]}...), seed {info['seed']}; "
            f"best {unit} {best_epoch} = val_*_best.csv from the run; last {unit} {last_epoch} (update "
-           f"{int(last_row['global_step'])}) = {scored_note}", "", "checks:"] + [f"  {c}" for c in checks] + [""]
+           f"{int(last_row['global_step'])}) = {scored_note}", "", "checks:"] + [f"  {c}" for c in checks]
+    rep += ([f"  {cache_note}"] if cache_note else []) + [""]
 
     # 2. reference
     naive = clips["duration"] / 2

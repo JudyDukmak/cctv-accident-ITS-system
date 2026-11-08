@@ -1,0 +1,11 @@
+fold,stem,ctype,duration,t_star,t_hat,err,plots
+0,Town04_rear-end_night_32,rear-end,32.2,4.2,30.4375,26.2375,curve_worst_Town04_rear-end_night_32.png
+0,Town04_rear-end_night_12,rear-end,26.15,3.45,24.4375,20.9875,curve_worst_Town04_rear-end_night_12.png
+0,Town04_rear-end_night_13,rear-end,23.95,3.35,22.4375,19.0875,-
+0,Town04_rear-end_sunset_31,rear-end,26.0,5.65,24.4375,18.7875,-
+0,Town04_rear-end_night_40,rear-end,26.6,6.45,24.9375,18.4875,-
+0,Town04_rear-end_night_49,rear-end,25.35,5.4,23.4375,18.0375,-
+0,Town04_rear-end_clear_03,rear-end,23.9,4.75,21.9375,17.1875,-
+0,Town04_rear-end_wet_00,rear-end,23.65,6.4,21.9375,15.5375,-
+1,Town03_t-bone_clear_46,t-bone,24.1,7.35,22.4375,15.0875,-
+0,Town04_rear-end_clear_29,rear-end,20.95,4.5,19.4375,14.9375,-

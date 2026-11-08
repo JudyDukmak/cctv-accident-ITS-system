@@ -1,0 +1,5 @@
+fold,clips |err| > 5 s,of which t_hat in last 2 s,of which t_hat in first 2 s,of which late (err > 5 s),share in last 2 s
+0,172,35,9,145,0.20348837209302326
+1,150,5,43,26,0.03333333333333333
+2,41,4,9,6,0.0975609756097561
+all,363,44,61,177,0.12121212121212122

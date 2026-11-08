@@ -1,0 +1,44 @@
+Overfitting vs learning rate too high: existing validation checks (synthetic validation; no training)
+Runs: B_v2_seed0 fold 0 = runs\B_v2_seed0\fold_0; C_v2_seed0 fold 0 = runs\C_v2_seed0\fold_0; C_v2_seed0 fold 2 = runs\C_v2_seed0\fold_2
+(runs\B_v2_seed0 has no metrics.csv of its own; the B_v2 run is fold_0.)
+
+                                                              B_v2_seed0 fold 0                  C_v2_seed0 fold 0                  C_v2_seed0 fold 2
+label scheme                                                                  B                                  C                                  C
+checks                                                                        8                                  9                                 13
+updates/epoch, warmup, total updates                           1239, 620, 12390                  2797, 1398, 27970                  3190, 1595, 31900
+peak lr (head)                                                        3.125e-05                          3.125e-05                          3.125e-05
+warmup ends at epoch_fraction                                             0.500                              0.500                              0.500
+lr source                                                                logged                             logged                             logged
+max |logged - recomputed| lr / peak                                    0.00e+00                           0.00e+00                           0.00e+00
+best check (max val T@1)                                                      1                                  2                                  6
+best val T@1                                                             0.4400                             0.5828                             0.8518
+best: update / epoch_fraction                                      1240 / 1.001                       1860 / 0.665                       4340 / 1.361
+best: lr / peak lr                                                        0.993                              0.999                              0.980
+last check: epoch_fraction, lr / peak lr                           4.003, 0.701                       1.995, 0.940                       2.527, 0.892
+from best on: n points in fit                                                 7                                  7                                  7
+from best on: slope T@1 per epoch                                       -0.0142                            -0.0952                            -0.0150
+from best on: residual std                                               0.0188                             0.0192                             0.0096
+sign changes of dT@1, whole run                                 6 of 6 possible                    4 of 7 possible                   7 of 11 possible
+sign changes of dT@1, from best on                              5 of 5 possible                    3 of 5 possible                    4 of 5 possible
+largest drop (check a -> b)                                    -0.0583 (1 -> 2)                   -0.0613 (3 -> 4)                   -0.0204 (7 -> 8)
+largest rise (check a -> b)                                    +0.0320 (2 -> 3)                   +0.2257 (0 -> 1)                   +0.3512 (0 -> 1)
+train loss: first / at best / last check               0.7886 / 0.4293 / 0.1116           1.0942 / 0.7746 / 0.4691           1.1313 / 0.5871 / 0.4069
+val loss: first / at best / min / last check  0.6521 / 0.8260 / 0.6521 / 1.4671  0.6410 / 0.4333 / 0.4333 / 0.7457  0.6232 / 0.3540 / 0.3423 / 0.4109
+
+Notes:
+- Training T (T@sigma on training clips) is not logged; training loss (mean over the windows of the
+  updates since the previous check) is used as the proxy for fit to the training data.
+- B and C training losses are not on the same scale (B: hard label_B 0/1 targets; C: soft weight_C_text
+  targets over all windows, different pos_weight). val_loss is BCE on label_B 0/1 validation windows for
+  both schemes.
+- Per-check checkpoints do not exist: each run keeps only best.pt (weights of the best check), last.pt
+  (end of the last completed epoch) and step_latest.pt (the latest check / step). Intermediate checks
+  cannot be re-scored.
+- lr = head (peak lr group) lr used at the last update before the check, as logged in metrics.csv
+  (lr_head); it was also recomputed from config.json (warmup then cosine to 0) and the maximum difference
+  is listed above. Lower layers use layer decay 0.7 per layer below the head.
+- Fit from the best check on includes the best check itself; residual std = population std (ddof 0) of
+  the residuals. Sign changes ignore zero differences. Each check is one value on one validation fold,
+  one seed: check-to-check noise is not separated from trends.
+
+C_v2_seed0 fold 0 schedule (config.json 'effective'): updates_per_epoch 2797, warmup_updates 1398, total_updates 27970 (max_epochs 10, warmup_fraction 0.05).
