@@ -17,7 +17,9 @@ Model:  VideoMAE-base (Kinetics fine-tuned), classifier -> Linear(hidden, 1), bf
         weights (sqrt inverse frequency, clipped, mean 1) from the windows that enter the loss.
         val_loss is BCE on the label_B 0/1 validation windows for both schemes. AdamW with layer-wise lr decay; linear warmup,
         then cosine to 0. Augmentation profile "standard" (hflip) or "cctv" (hflip + frame-rate
-        drop, blur, downscale, colour, JPEG); validation is never augmented.
+        drop, blur, downscale, colour, JPEG; optional night_guard: windows darker than dark_luma are
+        never darkened by the colour shift) or "cctv_v2" (each degradation p 0.3, at most 2 per window,
+        1 for dark windows, milder ranges; fixed in CCTV_V2); validation is never augmented.
 Val:    per clip, sort by t_centre, 3-window moving average, t_hat = t_centre at the peak,
         confidence = peak - max smoothed score outside +-2 windows (evaluation document,
         Section 6.4); T at sigma_t = 0.5 / 1 / 2 s with accs_scorer.temporal.
@@ -136,6 +138,11 @@ REQUIRED_KEYS = (
 # label: "label" (v1, must be "label_B") or "label_scheme" ("B" | "C");
 # validation: "patience" (epochs, validate once per epoch; v1) or "validate_every_updates" + "patience_checks"
 CHOICE_KEYS = ("label", "label_scheme", "patience", "validate_every_updates", "patience_checks")
+# optional; absent = previous behaviour (so the canonical hash of configs without it is unchanged)
+#   night_guard {"dark_luma": Y}: cctv colour shift draws the brightness factor from [NIGHT_GUARD_MIN_BRIGHTNESS,
+#   brightness max] instead of the full range when the window's mean luma before the colour shift is below Y
+OPTIONAL_KEYS = ("night_guard",)
+NIGHT_GUARD_MIN_BRIGHTNESS = 1.0  # never darken a window that is already dark
 CCTV_AUG_KEYS = ("p", "fps_drop", "blur_sigma", "downscale", "brightness", "contrast", "saturation", "hue",
                  "grayscale_p", "jpeg_quality")
 # values this script implements; anything else in the config would be silently ignored
@@ -150,7 +157,7 @@ def load_config(path: Path) -> tuple[dict, str]:
         fail(f"config file not found: {path}")
     cfg = json.loads(path.read_text(encoding="utf-8"))
     missing = [k for k in REQUIRED_KEYS if k not in cfg]
-    unknown = [k for k in cfg if k not in REQUIRED_KEYS + CHOICE_KEYS]
+    unknown = [k for k in cfg if k not in REQUIRED_KEYS + CHOICE_KEYS + OPTIONAL_KEYS]
     if missing or unknown:
         fail(f"{path.name}: missing keys {missing}, unknown keys {unknown}")
     for k, v in FIXED_VALUES.items():
@@ -174,11 +181,28 @@ def load_config(path: Path) -> tuple[dict, str]:
     tw = cfg["type_weight"]
     if set(tw) != {"scheme", "clip", "normalise_mean"} or tw["scheme"] != "sqrt_inverse_frequency":
         fail(f"{path.name}: type_weight must have scheme sqrt_inverse_frequency, clip and normalise_mean")
-    if cfg["augmentation"] not in ("standard", "cctv"):
-        fail(f"{path.name}: augmentation must be \"standard\" or \"cctv\"")
+    if cfg["augmentation"] not in ("standard", "cctv", "cctv_v2"):
+        fail(f"{path.name}: augmentation must be \"standard\", \"cctv\" or \"cctv_v2\"")
+    if cfg["augmentation"] == "cctv_v2" and "night_guard" not in cfg:
+        fail(f"{path.name}: augmentation \"cctv_v2\" needs night_guard {{\"dark_luma\": Y}} (its dark-window rules)")
     if set(cfg["cctv_aug"]) != set(CCTV_AUG_KEYS):
         fail(f"{path.name}: cctv_aug must have exactly the keys {CCTV_AUG_KEYS}")
+    if "night_guard" in cfg:
+        ng = cfg["night_guard"]
+        if cfg["augmentation"] not in ("cctv", "cctv_v2"):
+            fail(f"{path.name}: night_guard only applies to augmentation \"cctv\" or \"cctv_v2\"")
+        if not (isinstance(ng, dict) and set(ng) == {"dark_luma"} and isinstance(ng["dark_luma"], (int, float))
+                and 0 < ng["dark_luma"] <= 255):
+            fail(f"{path.name}: night_guard must be {{\"dark_luma\": Y}} with 0 < Y <= 255")
+        if cfg["augmentation"] == "cctv" and cfg["cctv_aug"]["brightness"][1] <= NIGHT_GUARD_MIN_BRIGHTNESS:
+            fail(f"{path.name}: night_guard needs a brightness maximum above {NIGHT_GUARD_MIN_BRIGHTNESS}")
     return cfg, canonical_hash(cfg)
+
+
+def dark_luma_of(cfg: dict) -> float | None:
+    """night_guard dark_luma, or None without the guard (previous behaviour)."""
+    ng = cfg.get("night_guard")
+    return None if ng is None else float(ng["dark_luma"])
 
 
 def label_scheme(cfg: dict) -> str:
@@ -318,11 +342,32 @@ def gray_of(f: np.ndarray) -> np.ndarray:
     return f[..., 0] * 0.299 + f[..., 1] * 0.587 + f[..., 2] * 0.114
 
 
-def colour_jitter(x: np.ndarray, rng: np.random.Generator, c: dict, applied: list[str]) -> np.ndarray:
-    """Brightness, contrast, saturation, hue, then grayscale (p grayscale_p); one draw per window."""
-    b, ct, s = (rng.uniform(*c[k]) for k in ("brightness", "contrast", "saturation"))
+def window_luma(x: np.ndarray) -> float:
+    """Mean luma Y = 0.299 R + 0.587 G + 0.114 B over all frames and pixels of (T, H, W, 3) uint8 RGB, 0-255."""
+    return float(gray_of(x.astype(np.float32)).mean())
+
+
+def colour_jitter(x: np.ndarray, rng: np.random.Generator, c: dict, applied: list[str],
+                  dark_luma: float | None = None) -> np.ndarray:
+    """Brightness, contrast, saturation, hue, then grayscale (p grayscale_p); one draw per window.
+    Night guard (dark_luma not None): if the window's mean luma before the colour shift is below dark_luma, the
+    brightness factor comes from [NIGHT_GUARD_MIN_BRIGHTNESS, max] instead of [min, max]. It is the same single
+    uniform draw mapped to the narrower range, so the random-draw sequence is unchanged."""
+    lo, hi = c["brightness"]
+    dark = dark_luma is not None and window_luma(x) < dark_luma
+    if dark:
+        lo = NIGHT_GUARD_MIN_BRIGHTNESS
+    b = rng.uniform(lo, hi)
+    ct, s = (rng.uniform(*c[k]) for k in ("contrast", "saturation"))
     h = rng.uniform(-c["hue"], c["hue"])
     gray = rng.random() < c["grayscale_p"]
+    applied.append(f"colour b{b:.2f} c{ct:.2f} s{s:.2f} h{h:+.3f}{' dark' if dark else ''}{' gray' if gray else ''}")
+    return apply_colour(x, b, ct, s, h, gray)
+
+
+def apply_colour(x: np.ndarray, b: float, ct: float, s: float, h: float, gray: bool) -> np.ndarray:
+    """Brightness x b, contrast x ct around each frame's mean grey, saturation x s, hue + h (fraction of the circle),
+    then grayscale if gray; the same parameters for every frame."""
     f = np.clip(x.astype(np.float32) / 255.0 * b, 0, 1)
     m = gray_of(f).mean(axis=(1, 2)).reshape(-1, 1, 1, 1)
     f = np.clip((f - m) * ct + m, 0, 1)
@@ -335,47 +380,108 @@ def colour_jitter(x: np.ndarray, rng: np.random.Generator, c: dict, applied: lis
     f = np.clip(f, 0, 1)
     if gray:
         f = np.repeat(gray_of(f)[..., None], 3, axis=-1)
-    applied.append(f"colour b{b:.2f} c{ct:.2f} s{s:.2f} h{h:+.3f}{' gray' if gray else ''}")
     return (f * 255.0 + 0.5).astype(np.uint8)
 
 
-def cctv_after_load(x: np.ndarray, rng: np.random.Generator, c: dict, applied: list[str]) -> np.ndarray:
-    """cctv steps b-e on (T, H, W, 3) uint8 RGB frames, each with probability p, one draw per window."""
+def apply_blur(x: np.ndarray, sigma: float) -> np.ndarray:
+    return np.stack([cv2.GaussianBlur(fr, (0, 0), sigma) for fr in x])
+
+
+def apply_downscale(x: np.ndarray, s: float) -> np.ndarray:
+    """Downscale every frame to round(s * size) (area), then back up (bilinear)."""
+    h, w = x.shape[1:3]
+    small = (max(1, round(w * s)), max(1, round(h * s)))
+    return np.stack([cv2.resize(cv2.resize(fr, small, interpolation=cv2.INTER_AREA), (w, h),
+                                interpolation=cv2.INTER_LINEAR) for fr in x])
+
+
+def apply_jpeg(x: np.ndarray, q: int) -> np.ndarray:
+    enc = [cv2.imencode(".jpg", cv2.cvtColor(fr, cv2.COLOR_RGB2BGR), [cv2.IMWRITE_JPEG_QUALITY, q])[1] for fr in x]
+    return np.stack([cv2.cvtColor(cv2.imdecode(e, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB) for e in enc])
+
+
+def cctv_after_load(x: np.ndarray, rng: np.random.Generator, c: dict, applied: list[str],
+                    dark_luma: float | None = None) -> np.ndarray:
+    """cctv steps b-e on (T, H, W, 3) uint8 RGB frames, each with probability p, one draw per window
+    (dark_luma: night guard of the colour shift, None = off)."""
     if rng.random() < c["p"]:
         sigma = rng.uniform(*c["blur_sigma"])
-        x = np.stack([cv2.GaussianBlur(fr, (0, 0), sigma) for fr in x])
+        x = apply_blur(x, sigma)
         applied.append(f"blur {sigma:.2f}px")
     if rng.random() < c["p"]:
         s = rng.uniform(*c["downscale"])
-        h, w = x.shape[1:3]
-        small = (max(1, round(w * s)), max(1, round(h * s)))
-        x = np.stack([cv2.resize(cv2.resize(fr, small, interpolation=cv2.INTER_AREA), (w, h),
-                                 interpolation=cv2.INTER_LINEAR) for fr in x])
+        x = apply_downscale(x, s)
         applied.append(f"downscale {s:.2f}")
     if rng.random() < c["p"]:
-        x = colour_jitter(x, rng, c, applied)
+        x = colour_jitter(x, rng, c, applied, dark_luma)
     if rng.random() < c["p"]:
         q = int(rng.integers(c["jpeg_quality"][0], c["jpeg_quality"][1] + 1))
-        enc = [cv2.imencode(".jpg", cv2.cvtColor(fr, cv2.COLOR_RGB2BGR), [cv2.IMWRITE_JPEG_QUALITY, q])[1]
-               for fr in x]
-        x = np.stack([cv2.cvtColor(cv2.imdecode(e, cv2.IMREAD_COLOR), cv2.COLOR_BGR2RGB) for e in enc])
+        x = apply_jpeg(x, q)
         applied.append(f"jpeg q{q}")
     return x
 
 
+# Ablation 1, profile v2 (augmentation "cctv_v2"). Fixed in code: the config only selects the profile, so a cctv_v2
+# config differs from its standard counterpart only in the augmentation key and night_guard; cctv_aug is not used.
+# Label-preserving: each degradation p 0.3, at most 2 per window (1 for protected windows), milder ranges than "cctv".
+# Protected ("dark") windows: mean luma of the unaugmented window < night_guard dark_luma; they are never darkened,
+# never lose contrast and get milder blur, downscale and JPEG (the *_dark ranges). A *_dark range is drawn with the same
+# single draw as the normal one (uniform: lo + (hi - lo) u; integers: one 32-bit draw mapped by multiply-high), so the
+# draw sequence does not depend on which range is used. fps drop, saturation, hue and grayscale are the same for all.
+CCTV_V2 = {"p": 0.3, "max_degradations": 2, "max_degradations_dark": 1, "fps_drop": [4, 5, 6],
+           "blur_sigma": [0.3, 1.0], "downscale": [0.5, 0.9], "brightness": [0.7, 1.3], "contrast": [0.8, 1.2],
+           "saturation": [0.7, 1.3], "hue": 0.02, "grayscale_p": 0.1, "jpeg_quality": [25, 50],
+           "brightness_dark": [1.0, 1.3], "contrast_dark": [1.0, 1.2], "blur_sigma_dark": [0.3, 0.7],
+           "downscale_dark": [0.7, 0.9], "jpeg_quality_dark": [35, 50]}
+CCTV_V2_OPS = ("fps", "blur", "downscale", "colour", "jpeg")  # application order (hflip after fps, as in "cctv")
+
+
+def cctv_v2_plan(rng: np.random.Generator, dark: bool) -> dict:
+    """All random choices of one window: a gate per degradation (p), then, if more are drawn than allowed, a random
+    subset of the allowed size (order kept), then the parameters of the kept degradations in application order."""
+    v = CCTV_V2
+    drawn = [op for op in CCTV_V2_OPS if rng.random() < v["p"]]
+    cap = v["max_degradations_dark"] if dark else v["max_degradations"]
+    kept = drawn
+    if len(drawn) > cap:
+        keep = {int(i) for i in rng.choice(len(drawn), size=cap, replace=False)}
+        kept = [op for i, op in enumerate(drawn) if i in keep]
+    plan: dict = {"drawn": drawn, "kept": kept, "dark": dark}
+    if "fps" in kept:
+        plan["fps"] = int(rng.choice(v["fps_drop"]))
+    sfx = "_dark" if dark else ""
+    if "blur" in kept:
+        plan["blur"] = float(rng.uniform(*v["blur_sigma" + sfx]))
+    if "downscale" in kept:
+        plan["downscale"] = float(rng.uniform(*v["downscale" + sfx]))
+    if "colour" in kept:
+        b = float(rng.uniform(*v["brightness_dark" if dark else "brightness"]))
+        ct = float(rng.uniform(*v["contrast_dark" if dark else "contrast"]))
+        s = float(rng.uniform(*v["saturation"]))
+        h = float(rng.uniform(-v["hue"], v["hue"]))
+        plan["colour"] = (b, ct, s, h, bool(rng.random() < v["grayscale_p"]))
+    if "jpeg" in kept:
+        lo, hi = v["jpeg_quality" + sfx]
+        plan["jpeg"] = int(rng.integers(lo, hi + 1))
+    return plan
+
+
 class WindowDataset(Dataset):
     """Index i encodes (row, flip) as i = 2*row + flip, so flips are decided in the main process.
-    The cctv profile draws its other augmentations from the worker's seeded generator (self.rng)."""
+    The cctv profiles draw their other augmentations from the worker's seeded generator (self.rng).
+    Items: (frames, label, weight, row, guard). cctv / standard: guard 0 = no colour shift, 1 = colour shift (night
+    guard off or window not dark), 2 = colour shift with the night guard's brightness range (window darker than
+    dark_luma). cctv_v2: guard 1 = window not dark, 2 = dark window (dark-window rules applied)."""
 
     def __init__(self, stems: pd.Series, k0: pd.Series, labels: pd.Series, weights: pd.Series | None,
                  mean: list[float], std: list[float], frames: int, model_fps: int, lru_size: int,
-                 aug: str = "none", aug_cfg: dict | None = None) -> None:
+                 aug: str = "none", aug_cfg: dict | None = None, dark_luma: float | None = None) -> None:
         self.stems, self.k0, self.labels = list(stems), np.asarray(k0, int), np.asarray(labels, np.float32)
         self.weights = np.ones(len(self.stems), np.float32) if weights is None else np.asarray(weights, np.float32)
         self.mean = torch.tensor(mean, dtype=torch.float32).view(1, 3, 1, 1)
         self.std = torch.tensor(std, dtype=torch.float32).view(1, 3, 1, 1)
         self.frames, self.model_fps, self.lru_size = frames, model_fps, lru_size
-        self.aug, self.aug_cfg = aug, aug_cfg
+        self.aug, self.aug_cfg, self.dark_luma = aug, aug_cfg, dark_luma
         self.rng: np.random.Generator | None = None  # set per worker by worker_init
         self._lru: OrderedDict = OrderedDict()
 
@@ -393,8 +499,45 @@ class WindowDataset(Dataset):
             self._lru.popitem(last=False)
         return item
 
+    def load_v2(self, row: int, flip: bool, rng: np.random.Generator | None,
+                make_plan: Callable[[np.random.Generator | None, bool], dict] = cctv_v2_plan
+                ) -> tuple[np.ndarray, list[str]]:
+        """cctv_v2: the window's unaugmented frames decide dark (mean luma < dark_luma), then the plan is drawn and
+        applied: frame-rate drop, hflip, blur, downscale, colour, JPEG. applied[0] describes the draw."""
+        z = self._clip(self.stems[row])
+        k0 = int(self.k0[row])
+        x = np.stack([read_cached_frame(z, k) for k in range(k0, k0 + self.frames)])
+        luma = window_luma(x)
+        dark = self.dark_luma is not None and luma < self.dark_luma
+        p = make_plan(rng, dark)
+        applied = [f"v2 drawn {'+'.join(p['drawn']) or '-'} kept {'+'.join(p['kept']) or '-'} luma {luma:.1f}"
+                   + (" dark" if p["dark"] else "")]
+        if "fps" in p["kept"]:
+            x = np.stack([read_cached_frame(z, k) for k in fps_drop_indices(k0, self.frames, p["fps"], self.model_fps)])
+            applied.append(f"fps {p['fps']}")
+        if flip:
+            x = np.ascontiguousarray(x[:, :, ::-1, :])
+            applied.append("hflip")
+        if "blur" in p["kept"]:
+            x = apply_blur(x, p["blur"])
+            applied.append(f"blur {p['blur']:.2f}px")
+        if "downscale" in p["kept"]:
+            x = apply_downscale(x, p["downscale"])
+            applied.append(f"downscale {p['downscale']:.2f}")
+        if "colour" in p["kept"]:
+            b, ct, s, h, gray = p["colour"]
+            x = apply_colour(x, b, ct, s, h, gray)
+            applied.append(f"colour b{b:.2f} c{ct:.2f} s{s:.2f} h{h:+.3f}{' dark' if p['dark'] else ''}"
+                           f"{' gray' if gray else ''}")
+        if "jpeg" in p["kept"]:
+            x = apply_jpeg(x, p["jpeg"])
+            applied.append(f"jpeg q{p['jpeg']}")
+        return x, applied
+
     def load(self, row: int, flip: bool, aug: str, rng: np.random.Generator | None) -> tuple[np.ndarray, list[str]]:
         """(T, H, W, 3) uint8 RGB frames of one window and the list of augmentations applied."""
+        if aug == "cctv_v2":
+            return self.load_v2(row, flip, rng)
         z = self._clip(self.stems[row])
         k0 = int(self.k0[row])
         idx, applied = list(range(k0, k0 + self.frames)), []
@@ -408,17 +551,22 @@ class WindowDataset(Dataset):
             x = np.ascontiguousarray(x[:, :, ::-1, :])
             applied.insert(0, "hflip")
         if aug == "cctv":
-            x = cctv_after_load(x, rng, c, applied)
+            x = cctv_after_load(x, rng, c, applied, self.dark_luma)
         return x, applied
 
-    def __getitem__(self, code: int) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, int]:
+    def __getitem__(self, code: int) -> tuple[torch.Tensor, torch.Tensor, torch.Tensor, int, int]:
         row, flip = divmod(int(code), 2)
-        if self.aug == "cctv" and self.rng is None:  # main process (num_workers 0)
+        if self.aug in ("cctv", "cctv_v2") and self.rng is None:  # main process (num_workers 0)
             self.rng = np.random.default_rng(torch.initial_seed() % 2 ** 32)
-        x, _ = self.load(row, bool(flip), self.aug, self.rng)
+        x, applied = self.load(row, bool(flip), self.aug, self.rng)
+        if self.aug == "cctv_v2":  # every window: 1 = not dark, 2 = dark (dark-window rules applied)
+            guard = 2 if applied[0].endswith(" dark") else 1
+        else:
+            colour = [a for a in applied if a.startswith("colour")]
+            guard = 0 if not colour else 2 if " dark" in colour[0] else 1
         x = torch.from_numpy(x).permute(0, 3, 1, 2).float().div_(255.0)
         x = (x - self.mean) / self.std
-        return x, torch.tensor(self.labels[row]), torch.tensor(self.weights[row]), row
+        return x, torch.tensor(self.labels[row]), torch.tensor(self.weights[row]), row, guard
 
 
 def worker_init(worker_id: int) -> None:
@@ -632,7 +780,7 @@ def validate(model: nn.Module, loader: DataLoader, sampler: ListSampler, val_row
     sampler.set(range(0, 2 * len(val_rows), 2))  # rows in order, no flip
     logits = np.empty(len(val_rows), dtype=np.float32)
     fallbacks = 0
-    for x, _, _, rows in loader:
+    for x, _, _, rows, _ in loader:
         out = None
         try:
             out = val_logits(model, x, device, len(x))
@@ -857,7 +1005,8 @@ def preview_aug(args: argparse.Namespace, cfg: dict, cfg_path: Path) -> None:
     codes = epoch_codes(len(train_rows), args.seed, 0, cfg["hflip_p"])[:args.preview_aug]
     check_cache(train_rows.iloc[[c // 2 for c in codes]], val_rows.iloc[:0], manifest, partial=True)
     ds = WindowDataset(train_rows["stem"], train_rows["k0"], train_rows["label_B"], None, [0, 0, 0], [1, 1, 1],
-                       cfg["frames"], cfg["model_fps"], cfg["lru_size"], cfg["augmentation"], cfg["cctv_aug"])
+                       cfg["frames"], cfg["model_fps"], cfg["lru_size"], cfg["augmentation"], cfg["cctv_aug"],
+                       dark_luma_of(cfg))
     rng = np.random.default_rng(args.seed)
     tiles, lines = [], []
     for i, code in enumerate(codes):
@@ -939,6 +1088,8 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
         "transformers": transformers.__version__, "python": platform.python_version(),
         "gpu": torch.cuda.get_device_name(0), "created_at": datetime.now(timezone.utc).isoformat(timespec="seconds"),
     }
+    if cfg["augmentation"] == "cctv_v2":  # the profile's ranges live in the code, not in the config
+        run_info["cctv_v2_profile"] = CCTV_V2
     info_path = out_dir / "config.json"
     if args.resume and info_path.is_file():
         old = json.loads(info_path.read_text(encoding="utf-8"))
@@ -992,9 +1143,30 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
                           f"every {every} updates and at the end of training ({run_info['effective']['checks_full_run']}"
                           f" checks in a full run); early stopping after {patience} checks")
         + f" without improvement > {cfg['min_delta']} in val T@1")
+    dark_luma = dark_luma_of(cfg)
+    v2 = cfg["augmentation"] == "cctv_v2"
     log(f"augmentation: {cfg['augmentation']} (hflip p {cfg['hflip_p']}"
         + (f"; then frame-rate drop, blur, downscale, colour, JPEG, each p {cfg['cctv_aug']['p']})"
-           if cfg["augmentation"] == "cctv" else ")") + "; validation not augmented")
+           if cfg["augmentation"] == "cctv" else
+           f"; then frame-rate drop, blur, downscale, colour, JPEG, each p {CCTV_V2['p']}, at most "
+           f"{CCTV_V2['max_degradations']} per window; profile in code: {json.dumps(CCTV_V2)})" if v2 else ")")
+        + "; validation not augmented")
+    if v2:
+        log(f"cctv_v2 protected windows (unaugmented mean luma < {dark_luma:g}): at most "
+            f"{CCTV_V2['max_degradations_dark']} degradation, brightness {CCTV_V2['brightness_dark']}, contrast "
+            f"{CCTV_V2['contrast_dark']}, blur {CCTV_V2['blur_sigma_dark']}, downscale {CCTV_V2['downscale_dark']}, "
+            f"JPEG {CCTV_V2['jpeg_quality_dark']}; cctv_aug in the config is not used; counts logged at every "
+            "validation check")
+    if dark_luma is not None and not v2:
+        log(f"night guard: windows with mean luma < {dark_luma:g} before the colour shift draw brightness from "
+            f"[{NIGHT_GUARD_MIN_BRIGHTNESS:g}, {cfg['cctv_aug']['brightness'][1]:g}] instead of "
+            f"{cfg['cctv_aug']['brightness']}; counts logged at every validation check")
+        weather_of = pd.read_csv(SPLIT_CSV, usecols=["rgb_path", "weather"]).assign(
+            stem=lambda d: d["rgb_path"].map(stem_of)).set_index("stem")["weather"]
+        row_weather = train_rows["stem"].map(weather_of).to_numpy()
+        if pd.isna(row_weather).any():
+            fail("night guard: weather missing for some training clips in synthetic_split.csv")
+    guard_counts: dict[str, list[int]] = {}  # weather -> [colour-shifted windows, guard fired], since the last check
     if args.max_hours is not None:
         log(f"--max-hours {args.max_hours}: stops after the first update past that time, saving step_latest.pt")
 
@@ -1002,7 +1174,7 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
     mean, std = list(proc.image_mean), list(proc.image_std)
     train_ds = WindowDataset(train_rows["stem"], train_rows["k0"], train_rows["target"], train_rows["w_type"],
                              mean, std, cfg["frames"], cfg["model_fps"], cfg["lru_size"], cfg["augmentation"],
-                             cfg["cctv_aug"])
+                             cfg["cctv_aug"], dark_luma)
     val_ds = WindowDataset(val_rows["stem"], val_rows["k0"], val_rows["label_B"].clip(lower=0), None,
                            mean, std, cfg["frames"], cfg["model_fps"], cfg["lru_size"])
     train_sampler, val_sampler = ListSampler(), ListSampler()
@@ -1102,6 +1274,8 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
         minutes = (time.perf_counter() - since) / 60
         with guard.critical():  # metrics row, best.pt, check counters and the checkpoint are recorded together
             stop_early = record_check(val_loss, T, win_df, pred, minutes, peak_train, peak_val)
+            if dark_luma is not None:
+                log_guard()
             if epoch_end:
                 end_epoch()
             else:
@@ -1109,6 +1283,20 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
         torch.cuda.reset_peak_memory_stats(device)
         gpu.reset_epoch()
         return stop_early
+
+    def log_guard() -> None:
+        """Night guard counts of the windows loaded since the last check (not checkpointed: after a resume they
+        start again from 0)."""
+        col = sum(v[0] for v in guard_counts.values())
+        fired = sum(v[1] for v in guard_counts.values())
+        by_w = ", ".join(f"{w} {v[1]}/{v[0]}" for w, v in sorted(guard_counts.items()))
+        if v2:
+            log(f"  cctv_v2 since the last check: {fired} of {col} training windows protected "
+                f"({100 * fired / max(1, col):.1f}%); by weather (protected/windows): {by_w or 'none'}")
+        else:
+            log(f"  night guard since the last check: fired {fired} of {col} colour-shifted windows "
+                f"({100 * fired / max(1, col):.1f}%); by weather (fired/colour-shifted): {by_w or 'none'}")
+        guard_counts.clear()
 
     def end_epoch() -> None:
         state.update(epoch=state["epoch"] + 1, batches_done=0)
@@ -1189,10 +1377,16 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
             t_last = time.perf_counter()
             group: list[tuple[torch.Tensor, torch.Tensor, torch.Tensor]] = []  # CPU copies, for an OOM recompute
             group_losses: list[float] = []
-            for i, (x, y, w, _) in enumerate(train_loader):
+            for i, (x, y, w, rows_b, guard_b) in enumerate(train_loader):
                 b = start_b + i
                 t_got = time.perf_counter()
                 state["wait"] += t_got - t_last
+                if dark_luma is not None:
+                    for r, gf in zip(rows_b.tolist(), guard_b.tolist()):
+                        if gf:
+                            cnt = guard_counts.setdefault(row_weather[r], [0, 0])
+                            cnt[0] += 1
+                            cnt[1] += gf == 2
                 paused = 0.0
                 group_start = (b // ga) * ga
                 group_size = min(ga, n_batches - group_start)
