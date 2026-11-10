@@ -1161,6 +1161,7 @@ def train(args: argparse.Namespace, cfg: dict, cfg_path: Path, cfg_hash: str) ->
         log(f"night guard: windows with mean luma < {dark_luma:g} before the colour shift draw brightness from "
             f"[{NIGHT_GUARD_MIN_BRIGHTNESS:g}, {cfg['cctv_aug']['brightness'][1]:g}] instead of "
             f"{cfg['cctv_aug']['brightness']}; counts logged at every validation check")
+    if dark_luma is not None:  # weather of every training row, for the night guard / cctv_v2 counts (both profiles)
         weather_of = pd.read_csv(SPLIT_CSV, usecols=["rgb_path", "weather"]).assign(
             stem=lambda d: d["rgb_path"].map(stem_of)).set_index("stem")["weather"]
         row_weather = train_rows["stem"].map(weather_of).to_numpy()

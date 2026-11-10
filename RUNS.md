@@ -72,3 +72,8 @@ night windows with luma >= 50 are from Town03_head-on. Night windows with 0 / 1 
 0.030 (17.9: 0.161 / 0.595 / 0.245); day unchanged. Configs: only night_guard.dark_luma 17.9 -> 50 (canonical
 922ea6fa -> c890b480, 201b2da4 -> 31e3e00c). Details: runs/aug_preview/C_v2_cctv_v2/PROFILE_V2_NOTE.txt; logs,
 tables, previews and benchmark: runs/aug_preview/C_v2_cctv_v2_night50.
+
+C_cctv_seed0 fold 0, first launch 2026-11-10 06:46 (git 665e26d, dirty): crashed on the first training batch with
+UnboundLocalError (row_weather) in the per-weather counting of protected windows: the weather map was built only for
+the old "cctv" night guard, not for cctv_v2. No optimizer update, no checkpoint, no validation, no result. Fixed in
+train_classifier.py (the weather map is built whenever night_guard is set); augmentation and training unchanged.
