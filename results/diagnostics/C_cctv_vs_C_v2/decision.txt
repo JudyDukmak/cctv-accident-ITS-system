@@ -1,0 +1,17 @@
+Ablation 1 (CCTV-style augmentation), pre-registered rule: the final configuration is the one with the higher pooled
+out-of-fold T@1 on synthetic validation (Section 6 of Training_Configuration_Classifier.docx; fixed before any result).
+
+Pooled out-of-fold T@1 (2211 clips, aggregate_runs.py, results/classifier_summary.md):
+  C_v2_seed0   0.6773   (videomae_v2_C.json; fold 1 videomae_v2_C_rtx4050.json)
+  C_cctv_seed0 0.6802   (videomae_v2_C_cctv.json; fold 1 videomae_v2_C_cctv_rtx4050.json)
+
+Decision (rule applied, nothing else): C_cctv (augmentation cctv_v2, night_guard dark_luma 50), pooled T@1 0.6802 > 0.6773.
+Difference C_cctv - C_v2 = +0.0029; clip bootstrap 95% [-0.0063, +0.0124] (optimistic: clips of a scenario are not
+independent); scenario-cluster bootstrap (14 scenarios) 95% [-0.0147, +0.0167].
+No measurable difference on synthetic validation (the scenario-bootstrap interval includes 0).
+
+Per fold (best check): fold 0 0.5828 -> 0.6032, fold 1 0.6151 -> 0.5986, fold 2 0.8518 -> 0.8564.
+Details: report.txt (compare_folds.py --paired), confidence_vs_error_C_v2_vs_C_cctv_best.txt, aggregate_runs.log.
+Deviation: C_cctv fold 1 last check (check 9) rescored on the RTX 5060 gives T@1 0.4995 vs 0.4985 logged on the RTX
+4050 (+0.0010; cross-GPU bf16, as documented for C_v2 fold 1); the best check reproduces exactly (0.5986) and the
+decision uses the run's saved best-check predictions only.

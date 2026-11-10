@@ -1,0 +1,47 @@
+Qwen3-VL smoke test (one synthetic clip; no real clip, no frozen test set)
+started: 2026-11-05T11:51:56+00:00
+GPU: NVIDIA GeForce RTX 5060 Laptop GPU, driver 595.71, total memory 7.96 GB; OVER_VRAM threshold 7.72 GB
+versions: python 3.12.2, torch 2.10.0+cu128, torchvision 0.25.0+cu128, transformers 5.22.1, accelerate 1.15.0, bitsandbytes 0.50.2, peft 0.21.2, qwen-vl-utils 0.0.14, av 19.0.2, pillow 13.0.0, numpy 2.5.4, nvidia-ml-py 13.615.71, huggingface-hub 2.4.0
+CUDA (torch build): 12.8
+clip: synthetic_videos/videos/head-on/Town06_head-on_clear_01.mp4 (fold 0 val, Town06_head-on); 1920x1080, 356 frames, 17.8 s; t* 14.4 s
+ground truth: type head-on, center (0.541, 0.763)
+window: t* +/- 2.0 s, frames resized to longer side 448 px (PIL bicubic)
+generate: greedy, max_new_tokens 64; QLoRA: r 16, alpha 32, dropout 0.05, targets .*language_model.*\.self_attn\.(q_proj|k_proj|v_proj|o_proj), AdamW lr 0.0001, batch 1, grad ckpt on
+4-bit: NF4, double quant, bf16 compute. Memory columns are peaks over the whole test (load included).
+JSON+keys: output parses as JSON (a ``` fence is allowed) and has collision_type, x, y.
+Chat template change: the Hub chat template (chat_template.json of the model) renders a video as
+  <|vision_start|><|video_pad|><|vision_end|>. The Qwen3VLProcessor in transformers 5.22.1 replaces only
+  <|video_pad|> and adds its own <|vision_start|>...<|vision_end|> pair around every 2-frame group, so the
+  prompt got double vision markers (one extra outer pair around all frames). The original Qwen3-VL processor
+  replaces the whole triple, giving <t seconds><|vision_start|>pads<|vision_end|> per group with no outer pair.
+  Why: keep the input in the format the model expects and avoid two stray vision tokens. How: the script
+  replaces the triple with the bare <|video_pad|> in the rendered prompt text before the processor runs;
+  the chat_template.json file itself is not modified.
+
+| Test | Model | Prec | Frames | Mode     | VisTok | Load s | Gen/step s | MaxAlloc GB | MaxRes GB | NVML pk GB | JSON+keys | OOM | Status                                               | Trainable |
+|------|-------|------|--------|----------|--------|--------|------------|-------------|-----------|------------|-----------|-----|------------------------------------------------------|-----------|
+| A    | 2B    | bf16 | 8      | generate | 448    | 4.0    | 2.01       | 4.15        | 4.18      | 4.56       | yes       | no  | OK                                                   | -         |
+| B    | 2B    | bf16 | 16     | generate | 896    | 3.0    | 1.55       | 4.36        | 4.41      | 4.79       | yes       | no  | OK                                                   | -         |
+| C    | 2B    | nf4  | 16     | generate | 896    | 5.4    | 1.53       | 1.87        | 1.91      | 2.29       | yes       | no  | OK                                                   | -         |
+| D    | 4B    | nf4  | 8      | generate | -      | -      | -          | -           | -         | -          | -         | -   | NOT RUN: 4B weights not downloaded (network timeout) | -         |
+| E    | 4B    | nf4  | 16     | generate | -      | -      | -          | -           | -         | -          | -         | -   | NOT RUN: 4B weights not downloaded (network timeout) | -         |
+| F    | 2B    | nf4  | 8      | qlora    | 448    | 4.4    | 1.13       | 2.67        | 3.07      | 3.46       | -         | no  | OK                                                   | 6,422,528 |
+| G    | 4B    | nf4  | 8      | qlora    | -      | -      | -          | -           | -         | -          | -         | -   | NOT RUN: 4B weights not downloaded (network timeout) | -         |
+
+Per test:
+ A: status OK, frames [248, 259, 271, 282, 294, 305, 317, 328] (model size [448, 256], grid_thw [4, 16, 28]), input tokens 610, NVML baseline 0.26 GB, alloc after load 3.96 GB
+    new tokens 24; json_ok True, keys_ok True, values_ok True
+    raw output: '{"collision_type": "single", "x": 0.4, "y": 0.1}'
+ B: status OK, frames [248, 253, 259, 264, 269, 275, 280, 285, 291, 296, 301, 307, 312, 317, 323, 328] (model size [448, 256], grid_thw [8, 16, 28]), input tokens 1094, NVML baseline 0.26 GB, alloc after load 3.96 GB
+    new tokens 28; json_ok True, keys_ok True, values_ok True
+    raw output: '```json\n{"collision_type": "single", "x": 0.2, "y": 0.1}\n```'
+ C: status OK, frames [248, 253, 259, 264, 269, 275, 280, 285, 291, 296, 301, 307, 312, 317, 323, 328] (model size [448, 256], grid_thw [8, 16, 28]), input tokens 1094, NVML baseline 0.26 GB, alloc after load 1.47 GB
+    Linear4bit modules: {'visual': 104, 'language_model': 196, 'other': 0}
+    new tokens 25; json_ok True, keys_ok True, values_ok True
+    raw output: '{"collision_type": "single", "x": 0.45, "y": 0.2}'
+ F: status OK, frames [248, 259, 271, 282, 294, 305, 317, 328] (model size [448, 256], grid_thw [4, 16, 28]), input tokens 640, NVML baseline 0.26 GB, alloc after load 1.47 GB
+    Linear4bit modules: {'visual': 104, 'language_model': 196, 'other': 0}
+    trainable 6,422,528 of 1,227,984,896 params (112 LoRA modules); target tokens 30; loss 0.9918; step 1.13 s (first step, includes warm-up)
+ D: NOT RUN: 4B weights not downloaded (network timeout)
+ E: NOT RUN: 4B weights not downloaded (network timeout)
+ G: NOT RUN: 4B weights not downloaded (network timeout)

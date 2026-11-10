@@ -10,6 +10,9 @@ Usage:
     .venv-ml\\Scripts\\python.exe confidence_vs_error.py --fold 0 --name B_C \\
         "B_v2_seed0 (best)=B_v2_seed0:best" "C_v2_seed0 (best)=C_v2_seed0:best"
 Items as in compare_diagnostics.py: LABEL=RUN:WHICH.
+Several folds: --folds 0,1,2 gives the blocks per fold and a pooled block (the folds' clips together, quartiles over
+the pooled clips); --out-dir writes confidence_vs_error_<name>.txt there instead of results/diagnostics/. Description
+only: no confidence threshold is chosen.
 """
 
 import argparse
@@ -45,19 +48,32 @@ def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("items", nargs="+", help="LABEL=RUN:WHICH")
     ap.add_argument("--fold", type=int, default=0, choices=[0, 1, 2])
+    ap.add_argument("--folds", default=None, help="comma-separated folds: per-fold blocks and a pooled block")
+    ap.add_argument("--out-dir", type=Path, default=None)
     ap.add_argument("--name", required=True)
     args = ap.parse_args()
 
     data, _, _ = tc.load_labels(8)
-    _, val_rows = tc.split_fold(data, args.fold, smoke=False)
-    clips = val_rows.groupby("rgb_path", sort=True).agg(t_star=("t_star", "first")).reset_index()
-    rep = [f"fold {args.fold}, synthetic validation: {len(clips)} clips; confidence quartiles by pd.qcut", ""]
-    for item in args.items:
-        label, spec = item.split("=", 1)
-        run, which = spec.split(":", 1)
-        rep += block(label, load(run, which, args.fold)[1], clips)
+    folds = [int(f) for f in args.folds.split(",")] if args.folds else [args.fold]
+    rep, pooled = [], {}
+    for k in folds:
+        _, val_rows = tc.split_fold(data, k, smoke=False)
+        clips = val_rows.groupby("rgb_path", sort=True).agg(t_star=("t_star", "first")).reset_index()
+        rep += [f"fold {k}, synthetic validation: {len(clips)} clips; confidence quartiles by pd.qcut", ""]
+        for item in args.items:
+            label, spec = item.split("=", 1)
+            run, which = spec.split(":", 1)
+            pred = load(run, which, k)[1]
+            rep += block(label, pred, clips)
+            pooled.setdefault(label, []).append((pred, clips))
+    if len(folds) > 1:
+        rep += [f"pooled folds {folds} (quartiles over the pooled clips; confidence scales of different folds' models "
+                "are mixed)", ""]
+        for label, parts in pooled.items():
+            rep += block(f"{label}, pooled", pd.concat([p for p, _ in parts], ignore_index=True),
+                         pd.concat([c for _, c in parts], ignore_index=True))
     text = "\n".join(rep)
-    out = DIAG_ROOT / f"confidence_vs_error_{args.name}.txt"
+    out = (args.out_dir or DIAG_ROOT) / f"confidence_vs_error_{args.name}.txt"
     out.write_text(text, encoding="utf-8")
     print(text)
     print(f"wrote {out}")

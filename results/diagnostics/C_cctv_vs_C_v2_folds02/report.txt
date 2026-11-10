@@ -1,0 +1,112 @@
+Paired comparison on the same synthetic validation clips: A = C_v2_seed0 (C_v2), B = C_cctv_seed0 (C_cctv); folds [0, 2]; differences are B - A. Descriptive only; nothing is chosen.
+
+=== 1. integrity ===
+fold 0: OK
+  C_v2_seed0: videomae_v2_C.json hash 1edaaedfeea7..., seed 0, git 91bd110 (dirty), NVIDIA GeForce RTX 5060 Laptop GPU
+  C_cctv_seed0: videomae_v2_C_cctv.json hash c890b4800516..., seed 0, git a66ce3d (dirty), NVIDIA GeForce RTX 5060 Laptop GPU
+  stored config differences (A -> B): augmentation: standard -> cctv_v2; night_guard.dark_luma: <absent> -> 50  [expected top-level keys ['augmentation', 'night_guard']; got ['augmentation', 'night_guard']]
+  data hashes equal: cache_manifest_sha256 yes, split_sha256 yes, window_labels_sha256 yes
+  cctv_v2_profile in config.json == train_classifier.CCTV_V2: yes
+fold 2: OK
+  C_v2_seed0: videomae_v2_C.json hash 1edaaedfeea7..., seed 0, git e371121 (dirty), NVIDIA GeForce RTX 5060 Laptop GPU
+  C_cctv_seed0: videomae_v2_C_cctv.json hash c890b4800516..., seed 0, git a66ce3d (dirty), NVIDIA GeForce RTX 5060 Laptop GPU
+  stored config differences (A -> B): augmentation: standard -> cctv_v2; night_guard.dark_luma: <absent> -> 50  [expected top-level keys ['augmentation', 'night_guard']; got ['augmentation', 'night_guard']]
+  data hashes equal: cache_manifest_sha256 yes, split_sha256 yes, window_labels_sha256 yes
+  cctv_v2_profile in config.json == train_classifier.CCTV_V2: yes
+
+=== 4a. per fold and pooled (best check of each run; pooled = clip-weighted over the folds) ===
+fold    run best check  epoch    update  last check  n_clips  T@0.5    T@1    T@2  within_2s  median_err_s  early>2s  late>2s
+   0   C_v2          2 0.6650 1860.0000      8.0000      770 0.4631 0.5828 0.6700     0.6584        0.4375    0.0792   0.2623
+   0 C_cctv          2 0.6650 1860.0000      8.0000      770 0.4734 0.6032 0.6869     0.6857        0.4375    0.0753   0.2390
+   2   C_v2          6 1.3605 4340.0000     12.0000      686 0.7512 0.8518 0.8972     0.9023        0.1375    0.0787   0.0190
+   2 C_cctv          6 1.3605 4340.0000     12.0000      686 0.7453 0.8564 0.9032     0.9096        0.1875    0.0714   0.0190
+ 0+2   C_v2   per fold    NaN       NaN         NaN     1456 0.5988 0.7096 0.7770     0.7734        0.2375    0.0790   0.1477
+ 0+2 C_cctv   per fold    NaN       NaN         NaN     1456 0.6015 0.7225 0.7888     0.7912        0.2875    0.0735   0.1353
+
+differences B - A:
+fold   T@0.5    T@1    T@2  within_2s  median_err_s  early>2s  late>2s
+   0  0.0103 0.0204 0.0169     0.0273        0.0000   -0.0039  -0.0234
+   2 -0.0059 0.0046 0.0060     0.0073        0.0500   -0.0073   0.0000
+ 0+2  0.0027 0.0130 0.0118     0.0179        0.0500   -0.0055  -0.0124
+
+=== 4b. per weather (best check) ===
+  fold weather   n  T@1 C_v2  T@1 C_cctv    dT@1  within_2s C_v2  within_2s C_cctv  dwithin_2s
+     0   clear 185    0.6470      0.6726  0.0256          0.7297            0.7459      0.0162
+     0  sunset 174    0.6052      0.6271  0.0219          0.6782            0.7126      0.0345
+     0     wet 171    0.6366      0.6514  0.0148          0.7135            0.7368      0.0234
+     0    rain  77    0.5548      0.5825  0.0277          0.6494            0.6883      0.0390
+     0   night 163    0.4430      0.4584  0.0154          0.5031            0.5337      0.0307
+     2   clear 173    0.8622      0.8520 -0.0102          0.9075            0.9133      0.0058
+     2  sunset 135    0.8616      0.8675  0.0058          0.9111            0.9259      0.0148
+     2     wet 126    0.8712      0.8912  0.0200          0.9286            0.9444      0.0159
+     2    rain 122    0.8732      0.8818  0.0087          0.9262            0.9344      0.0082
+     2   night 130    0.7891      0.7934  0.0043          0.8385            0.8308     -0.0077
+pooled   clear 358    0.7510      0.7593  0.0083          0.8156            0.8268      0.0112
+pooled  sunset 309    0.7173      0.7321  0.0149          0.7799            0.8058      0.0259
+pooled     wet 297    0.7362      0.7531  0.0170          0.8047            0.8249      0.0202
+pooled    rain 199    0.7500      0.7660  0.0160          0.8191            0.8392      0.0201
+pooled   night 293    0.5965      0.6070  0.0105          0.6519            0.6655      0.0137
+
+=== 4c. per collision type (pooled) ===
+    ctype   n  T@1 C_v2  T@1 C_cctv    dT@1  within_2s C_v2  within_2s C_cctv  dwithin_2s
+  head-on 414    0.7685      0.7775  0.0090          0.8140            0.8357      0.0217
+ rear-end 517    0.6055      0.6255  0.0200          0.6673            0.6905      0.0232
+sideswipe 298    0.6635      0.7027  0.0392          0.7617            0.7953      0.0336
+   single  53    0.8769      0.8545 -0.0224          0.9057            0.8868     -0.0189
+   t-bone 174    0.9066      0.8740 -0.0326          0.9713            0.9483     -0.0230
+
+per scenario (scenarios belong to one validation fold):
+ fold      scenario_id   n  T@1 C_v2  T@1 C_cctv    dT@1  within_2s C_v2  within_2s C_cctv  dwithin_2s
+    0  Town04_rear-end 245    0.3408      0.3767  0.0359          0.4367            0.4776      0.0408
+    0 Town04_sideswipe 139    0.5996      0.6425  0.0430          0.6906            0.7338      0.0432
+    0   Town06_head-on 202    0.5883      0.6194  0.0312          0.6436            0.6931      0.0495
+    0  Town10HD_single  53    0.8769      0.8545 -0.0224          0.9057            0.8868     -0.0189
+    0  Town10HD_t-bone 131    0.8905      0.8586 -0.0319          0.9618            0.9313     -0.0305
+    2   Town03_head-on 212    0.9402      0.9281 -0.0121          0.9764            0.9717     -0.0047
+    2 Town06_sideswipe 159    0.7193      0.7553  0.0359          0.8239            0.8491      0.0252
+    2  Town07_rear-end 272    0.8439      0.8495  0.0056          0.8750            0.8824      0.0074
+    2    Town07_t-bone  43    0.9557      0.9209 -0.0348          1.0000            1.0000      0.0000
+
+highlight Town04_rear-end night / clear:
+ fold     scenario_id weather  n  T@1 C_v2  T@1 C_cctv   dT@1  within_2s C_v2  within_2s C_cctv  dwithin_2s
+    0 Town04_rear-end   clear 49    0.3982      0.4556 0.0574          0.5306            0.5510      0.0204
+    0 Town04_rear-end   night 52    0.2102      0.2272 0.0170          0.2692            0.3077      0.0385
+
+=== 4d. clips whose |t_hat - t*| changed by more than 1 s (B vs A, best checks) ===
+         fold    n  improved > 1 s  worse > 1 s  within +-1 s  t_hat identical
+            0  770          0.0675       0.0468        0.8857           0.7714
+            2  686          0.0306       0.0204        0.9490           0.8367
+       pooled 1456          0.0501       0.0343        0.9155           0.8022
+ pooled clear  358          0.0391       0.0335        0.9274           0.7849
+pooled sunset  309          0.0421       0.0291        0.9288           0.8155
+   pooled wet  297          0.0572       0.0370        0.9057           0.8249
+  pooled rain  199          0.0402       0.0251        0.9347           0.8241
+ pooled night  293          0.0717       0.0444        0.8840           0.7713
+
+=== 4e. paired bootstrap of the T@1 difference, folds pooled ===
+observed mean per-clip T@1 difference (B - A) = +0.0130 over 1456 clips (= pooled T@1 B - pooled T@1 A)
+clip bootstrap (2000 resamples, seed 0, clips resampled within each fold): 95% percentile interval [+0.0017, +0.0243]; share of resamples <= 0: 0.011
+  clips within a scenario (same map, collision type, camera positions) are not independent, so this interval is optimistic (too narrow).
+for reference, scenario-cluster bootstrap (9 scenario clusters resampled within each fold, seed 1): [-0.0059, +0.0272]; share <= 0: 0.086 (few clusters: rough)
+
+=== 5. mean window score by phase, near / aftermath ratio and late-peak share (best and last check) ===
+phases as analyse_predictions.phase_of; aftermath bins by window start relative to t*; pooled = windows of both folds together (window-weighted); late-peak share = compare_diagnostics.late_peak_share
+fold            run / check    pre    gap   near  aft 0-2 s  aft 2-5 s  aft > 5 s  near / aftermath (all)  near / aftermath > 5 s  late-peak share  late-peak n
+   0    C_v2 best (check 2) 0.1478 0.2163 0.4515     0.2737     0.2558     0.2496                  1.7599                  1.8085           0.3107          737
+   0    C_v2 last (check 8) 0.0481 0.1055 0.3165     0.1736     0.1742     0.1922                  1.7285                  1.6468           0.4532          737
+   0  C_cctv best (check 2) 0.1750 0.2438 0.4842     0.3025     0.2866     0.2773                  1.6969                  1.7458           0.2877          737
+   0  C_cctv last (check 8) 0.0671 0.1464 0.3602     0.2160     0.2154     0.2399                  1.5808                  1.5012           0.4437          737
+   2    C_v2 best (check 6) 0.0713 0.1776 0.6029     0.1298     0.1042     0.1150                  5.2034                  5.2426           0.0401          599
+   2   C_v2 last (check 12) 0.0652 0.1794 0.6194     0.1302     0.1028     0.1142                  5.3750                  5.4226           0.0618          599
+   2  C_cctv best (check 6) 0.0996 0.2254 0.6558     0.1911     0.1696     0.1930                  3.5335                  3.3975           0.0367          599
+   2 C_cctv last (check 12) 0.0589 0.1757 0.6365     0.1345     0.1156     0.1289                  5.0325                  4.9399           0.0501          599
+ 0+2              C_v2 best 0.1122 0.1981 0.5232     0.2083     0.1946     0.2012                  2.6034                  2.6004           0.1894         1336
+ 0+2              C_v2 last 0.0561 0.1402 0.4600     0.1539     0.1454     0.1642                  2.9429                  2.8022           0.2777         1336
+ 0+2            C_cctv best 0.1399 0.2351 0.5655     0.2518     0.2393     0.2470                  2.2993                  2.2894           0.1751         1336
+ 0+2            C_cctv last 0.0633 0.1602 0.4911     0.1790     0.1751     0.2000                  2.6147                  2.4558           0.2672         1336
+
+=== 6. C_cctv: protected training windows from train_log.txt (counts of windows loaded, summed over all validation-check intervals; a window is counted each time it is loaded) ===
+ fold  check lines  resumed night protected / loaded  night share non-night protected / loaded  non-night share  all share
+    0            9    False              19711/20944       0.9411                      0/68326           0.0000     0.2208
+    2           13    False              31819/31819       1.0000                      0/97119           0.0000     0.2468
+

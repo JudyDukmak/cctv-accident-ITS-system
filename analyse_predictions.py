@@ -17,6 +17,14 @@ Usage (training environment, uses the GPU for step 1):
     .venv-ml\\Scripts\\python.exe analyse_predictions.py [--run std_seed0] [--fold 0] [--rescore]
         [--run-cache-manifest PATH]  (only for a run whose frame cache was built on another machine; see
                                       cache_manifest_check.py)
+
+Best-checkpoint scoring for test-time augmentation (--score-best --out-dir DIR [--hflip]): no report; scores every
+validation window of the fold with checkpoints/best.pt (eval, bf16, the run's val batch and workers, as
+train_classifier.validate) with the original frames and, with --hflip, with all 16 frames horizontally flipped
+(WindowDataset flip code 2*row+1; same normalisation, nothing else changes). Writes DIR/fold_<k>/
+val_window_scores_orig.csv (and _hflip.csv), the reproduction check of the original-frame scores against the run's
+saved best-check predictions, and the GPU time of the classifier (forward incl. host-to-device copy, synchronised)
+per pass. Defaults (no --score-best) leave the behaviour above unchanged.
 """
 
 import argparse
@@ -120,6 +128,72 @@ def score_last(run_dir: Path, info: dict, val_rows: pd.DataFrame, win_csv: Path,
     win_df[["rgb_path", "window_idx", "t_centre", "label_B", "score"]].to_csv(win_csv, index=False)
     pred.to_csv(pred_csv, index=False)
     return win_df[["rgb_path", "window_idx", "t_centre", "label_B", "score"]], pred, state, name
+
+
+def score_best(run_dir: Path, info: dict, val_rows: pd.DataFrame, metrics: pd.DataFrame, fold: int,
+               out_dir: Path, hflip: bool) -> None:
+    """Score all validation windows with best.pt, original frames and (hflip) flipped frames; see module doc."""
+    import time
+    import torch
+    from transformers import VideoMAEImageProcessor
+    cfg = info["config"]
+    ck = torch.load(run_dir / "checkpoints" / "best.pt", map_location="cpu", weights_only=False)
+    best_row = metrics[metrics["best"].astype(str) == "True"].iloc[-1]
+    if ck.get("run_hash") != info["run_hash"]:
+        fail("best.pt run_hash differs from config.json")
+    if int(ck["global_step"]) != int(best_row["global_step"]):
+        fail(f"best.pt is from update {ck['global_step']}, the best metrics row from {int(best_row['global_step'])}")
+    if not torch.cuda.is_available():
+        fail("CUDA is not available")
+    device = torch.device("cuda")
+    proc = VideoMAEImageProcessor.from_pretrained(cfg["model_id"])
+    ds = tc.WindowDataset(val_rows["stem"], val_rows["k0"], val_rows["label_B"].clip(lower=0), None,
+                          list(proc.image_mean), list(proc.image_std), cfg["frames"], cfg["model_fps"], cfg["lru_size"])
+    sampler = tc.ListSampler()
+    loader = tc.make_loader(ds, cfg["val_batch"], cfg["num_workers"], sampler)
+    model = tc.build_model(cfg, device, None if not info["drop_path_applied"] else tc.drop_path_field())
+    model.load_state_dict(ck["model"])
+    model.eval()
+    fd = out_dir / f"fold_{fold}"
+    fd.mkdir(parents=True, exist_ok=True)
+    n_clips = val_rows["rgb_path"].nunique()
+    lines = [f"run {run_dir.parent.name} fold {fold}: best.pt (check {int(ck['check_idx'])}, update {int(ck['global_step'])}, "
+             f"val T@1 logged {float(ck['val_T_1']):.4f}); GPU {torch.cuda.get_device_name(0)}; {len(val_rows)} windows, "
+             f"{n_clips} clips; val batch {cfg['val_batch']}, workers {cfg['num_workers']}"]
+    win_cols = ["rgb_path", "window_idx", "t_centre", "label_B"]
+    for name, flip in (("orig", False), ("hflip", True)) if hflip else (("orig", False),):
+        sampler.set(range(int(flip), 2 * len(val_rows), 2))  # dataset codes 2*row + flip, rows in order
+        logits = np.empty(len(val_rows), dtype=np.float32)
+        gpu_s, t_wall = 0.0, time.perf_counter()
+        with torch.no_grad():
+            for x, _, _, rows, _ in loader:
+                torch.cuda.synchronize()
+                t0 = time.perf_counter()
+                logits[rows.numpy()] = tc.val_logits(model, x, device, len(x))  # returns on CPU: synchronised
+                gpu_s += time.perf_counter() - t0
+        wall = time.perf_counter() - t_wall
+        scores = 1.0 / (1.0 + np.exp(-logits))  # float32, as train_classifier.validate
+        win = val_rows[win_cols].assign(score=scores)
+        win.to_csv(fd / f"val_window_scores_{name}.csv", index=False)
+        lines.append(f"{name}: classifier time {gpu_s:.1f} s = {1000 * gpu_s / n_clips:.1f} ms per clip, "
+                     f"{1000 * gpu_s / len(val_rows):.2f} ms per window; wall time incl. data loading {wall:.1f} s "
+                     f"({len(val_rows) / wall:.1f} windows/s)")
+        if name == "orig":
+            saved_w = pd.read_csv(run_dir / "val_window_scores_best.csv")
+            mw = win.merge(saved_w[["rgb_path", "window_idx", "score"]], on=["rgb_path", "window_idx"],
+                           suffixes=("", "_saved"), validate="one_to_one")
+            _, pred = tc.clip_predictions(val_rows, scores, cfg["smooth_window"], cfg["confidence_exclude"])
+            saved = pd.read_csv(run_dir / "val_clip_predictions_best.csv")
+            mp = pred.merge(saved[["rgb_path", "t_hat"]], on="rgb_path", suffixes=("", "_saved"), validate="one_to_one")
+            t_new = float(temporal(mp["t_hat"], mp["t_star"], 1.0))
+            t_old = float(temporal(mp["t_hat_saved"], mp["t_star"], 1.0))
+            lines.append(f"reproduction (orig, default rule smooth {cfg['smooth_window']}, no interpolation): window "
+                         f"scores max |diff| vs saved {float((mw['score'] - mw['score_saved']).abs().max()):.2e} "
+                         f"({int((mw['score'] != mw['score_saved'].astype(np.float32)).sum())} of {len(mw)} differ); "
+                         f"t_hat equal in {int((mp['t_hat'] == mp['t_hat_saved']).sum())}/{len(mp)} clips; T@1 "
+                         f"{t_new:.4f} vs saved {t_old:.4f} (diff {t_new - t_old:+.4f}); logged {float(best_row['val_T_1']):.4f}")
+    (fd / "scoring_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+    print("\n".join(lines))
 
 
 # --------------------------------------------------------------------------- #
@@ -250,11 +324,23 @@ def main() -> None:
     ap.add_argument("--rescore", action="store_true", help="score again even if the last-epoch CSVs exist")
     ap.add_argument("--run-cache-manifest", type=Path, default=None,
                     help="the run's own cache_manifest.json, if its frame cache was built on another machine")
+    ap.add_argument("--score-best", action="store_true", help="score best.pt for TTA (see module doc); no report")
+    ap.add_argument("--hflip", action="store_true", help="with --score-best: also score horizontally flipped frames")
+    ap.add_argument("--out-dir", type=Path, default=None, help="with --score-best: output folder (under results/)")
     args = ap.parse_args()
 
     run_dir = tc.RUNS_DIR / args.run / f"fold_{args.fold}"
     out_dir = OUT_ROOT / f"{args.run}_fold{args.fold}"
     info, val_rows, metrics, cache_note = load_run(run_dir, args.fold, args.run_cache_manifest)
+    if args.score_best:
+        if args.out_dir is None:
+            fail("--score-best needs --out-dir")
+        if cache_note:
+            print(cache_note)
+        score_best(run_dir, info, val_rows, metrics, args.fold, args.out_dir, args.hflip)
+        return
+    if args.hflip:
+        fail("--hflip only applies with --score-best")
     out_dir.mkdir(parents=True, exist_ok=True)
     cfg = info["config"]
 

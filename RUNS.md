@@ -2,7 +2,7 @@
 | B_v2_seed0 | fold 0 only (no folds 1, 2) | configs/videomae_v2_B.json (sha256 5ee05e2f) | scheme B, standard aug, validation every 620 updates | best check 1 (epoch 1.00) | val T@1 0.4400 | within 2 s 0.487 | early stop after check 7 | diagnostics: results/diagnostics/B_v2_seed0_fold0 |
 | C_v2_seed0 | folds 0, 1, 2 | folds 0, 2: configs/videomae_v2_C.json (sha256 1edaaedf); fold 1: videomae_v2_C_rtx4050.json (sha256 fe4f55dc), documented deviation | scheme C, standard aug, validation every 620 updates | best checks 2 / 2 / 6 (epoch 0.67 / 0.65 / 1.36) | val T@1 0.5828 / 0.6151 / 0.8518; pooled out-of-fold 0.6773 (2211 clips) | within 2 s 0.658 / 0.673 / 0.902; pooled 0.739 | early stop after checks 8 / 8 / 12 | results/classifier_summary.md; results/diagnostics/C_v2_seed0_3folds; results/diagnostics/C_v2_seed0_fold0, _fold1, _fold2 |
 | C_cos3_seed0 | planned: folds 0, 1, 2 | folds 0, 2 (RTX 5060): configs/videomae_v2_C_cos3.json (sha256 56998505); fold 1 (RTX 4050): configs/videomae_v2_C_cos3_rtx4050.json (sha256 3fc8bd38) | scheme C, standard aug, cosine over 3 epochs, warmup 0.5 epoch, validation every 620 updates | - | - | - | - | not trained yet |
-| C_cctv_seed0 | planned: folds 0, 1, 2 | folds 0, 2 (RTX 5060): configs/videomae_v2_C_cctv.json (sha256 c890b480); fold 1 (RTX 4050): configs/videomae_v2_C_cctv_rtx4050.json (sha256 31e3e00c) | scheme C, cctv_v2 aug, night protection dark_luma 50, validation every 620 updates (Ablation 1) | - | - | - | - | not trained yet; preparation: runs/aug_preview/C_v2_cctv, _cctv_v2, _cctv_v2_night50 |
+| C_cctv_seed0 | folds 0, 1, 2 | folds 0, 2 (RTX 5060): configs/videomae_v2_C_cctv.json (sha256 c890b480); fold 1 (RTX 4050): configs/videomae_v2_C_cctv_rtx4050.json (sha256 31e3e00c), documented deviation as C_v2 | scheme C, cctv_v2 aug, night protection dark_luma 50, validation every 620 updates (Ablation 1) | best checks 2 / 3 / 6 (epoch 0.67 / 0.87 / 1.36) | val T@1 0.6032 / 0.5986 / 0.8564; pooled out-of-fold 0.6802 (2211 clips; C_v2 0.6773) | within 2 s 0.686 / 0.662 / 0.910; pooled 0.747 | early stop after checks 8 / 9 / 12 | DECISION (pre-registered rule, higher pooled T@1): C_cctv; +0.0029, scenario bootstrap [-0.0147, +0.0167]: no measurable difference on synthetic validation. results/classifier_summary.md; results/diagnostics/C_cctv_vs_C_v2; _fold0, _fold1, _fold2; preparation: runs/aug_preview/C_v2_cctv, _cctv_v2, _cctv_v2_night50 |
 
 Config sha256 = canonical config hash as recorded in runs/<run>/fold_<k>/config.json (first 8 hex digits).
 
@@ -77,3 +77,67 @@ C_cctv_seed0 fold 0, first launch 2026-11-10 06:46 (git 665e26d, dirty): crashed
 UnboundLocalError (row_weather) in the per-weather counting of protected windows: the weather map was built only for
 the old "cctv" night guard, not for cctv_v2. No optimizer update, no checkpoint, no validation, no result. Fixed in
 train_classifier.py (the weather map is built whenever night_guard is set); augmentation and training unchanged.
+
+C_cctv_seed0 partial (folds 0, 2), first analysis 2026-11-10, NO decision (fold 1 not analysed; the ablation is
+decided on pooled out-of-fold T@1 over all three folds, Section 6 of the training document). Folds 0 and 2 trained
+on the RTX 5060 from git a66ce3d (dirty: only results/diagnostics/std_seed0_fold0/report.txt and untracked
+preview / luma / smoke-test files; train_classifier.py and its imports equal a66ce3d and were not modified during
+the runs). Integrity vs C_v2_seed0 on the same folds: stored configs differ only in augmentation and night_guard;
+label, split and cache hashes equal; the cctv_v2 profile in config.json equals CCTV_V2. Same best checks as C_v2
+(2 and 6). Paired on the same 1456 clips (folds 0+2): T@1 0.7225 vs 0.7096 (+0.0130; clip bootstrap 95%
+[+0.0017, +0.0243], optimistic because clips of a scenario are not independent; scenario-cluster bootstrap
+[-0.0059, +0.0272]); within 2 s 0.791 vs 0.773. Protected training windows: fold 0 94.1% of night windows loaded,
+fold 2 100% (its training folds contain no Town03_head-on night clip), 0% of non-night. Details:
+results/diagnostics/C_cctv_vs_C_v2_folds02/report.txt (compare_folds.py --paired).
+
+C_cctv_seed0, all 3 folds, Ablation 1 decision (2026-11-10). Fold 1: RTX 4050, Python 3.14.0, git a66ce3d (dirty;
+the dirty file list is not recorded on that machine), micro_batch 4 x grad_accum 4 as C_v2 fold 1; stored config
+differs from C_v2 fold 1 only in augmentation and night_guard; labels and split hashes equal; cache c76c46e6 = the
+documented RTX 4050 manifest (results/diagnostics/C_v2_seed0_3folds/fold1_cache_manifest_rtx4050.json). Fold 1 was
+resumed twice from step_latest.pt at update 4617 (after check 6): augmentation draws after a resume come from new
+worker generators, and its protected-window counts restart at the resume. Best check reproduces exactly (0.5986);
+the last check (9) rescored on the RTX 5060 gives 0.4995 vs 0.4985 logged (+0.0010, cross-GPU bf16, as C_v2 fold 1).
+Pooled out-of-fold T@0.5 / 1 / 2 / within 2 s: C_v2 0.5728 / 0.6773 / 0.7477 / 0.7390; C_cctv 0.5627 / 0.6802 /
+0.7519 / 0.7472. Rule: final configuration = higher pooled out-of-fold T@1 -> C_cctv (0.6802 > 0.6773); difference
++0.0029, clip bootstrap [-0.0063, +0.0124] (optimistic), scenario-cluster bootstrap (14 scenarios) [-0.0147,
++0.0167]: no measurable difference on synthetic validation. Next: seeds 1 and 2 of C_cctv (C_cctv_seed1,
+C_cctv_seed2). Details: results/diagnostics/C_cctv_vs_C_v2/ (report.txt, decision.txt).
+
+## Post-processing (frozen on C_cctv_seed0 pooled out-of-fold)
+
+Frozen 2026-11-10 on synthetic validation only (no real data, no training, CPU): CHOICE = smoothing width 3 (centred
+moving average, zero-padded edges as in training) + parabolic peak interpolation. Parabola: with smoothed scores
+s-1, s0, s+1 around the peak, delta = 0.5 (s-1 - s+1) / (s-1 - 2 s0 + s+1), clipped to [-0.5, 0.5] windows, 0 at clip
+edges or if the denominator >= 0; t_hat = t0 + delta * 0.5 s. Confidence unchanged (peak minus highest smoothed score
+outside +-2 windows).
+Rule (stated before the results): primary = pooled out-of-fold T@1 of C_cctv_seed0 over 2211 clips; the best of the
+6 variants (width 1, 3, 5 x interpolation none, parabola) replaces the default (3, none) only if it beats it by >= 0.002;
+T@0.5 reported separately; C_v2_seed0 reference only.
+Numbers (C_cctv_seed0, best checks): default (3, none) T@0.5 / 1 / 2 = 0.5627 / 0.6802 / 0.7519 (reproduces the saved
+predictions in 2211/2211 clips); (3, parabola) 0.5768 / 0.6854 / 0.7534, gain +0.0052 T@1 (+0.0141 T@0.5); per fold
+T@1 0.6085 / 0.6053 / 0.8598 (default 0.6032 / 0.5986 / 0.8564); within 2 s 0.7458 (default 0.7472); median |error|
+0.378 s (0.438); Spearman rho(confidence, |error|) -0.375 (-0.377). Other variants: (1, none) 0.6251, (1, parabola)
+0.6473, (5, none) 0.6493, (5, parabola) 0.6586. Reference C_v2_seed0: (3, none) 0.6773 -> (3, parabola) 0.6815.
+Applied unchanged to seeds 1 and 2 and to the real test: aggregate_runs.py ... --smooth 3 --interp parabola (the
+default call keeps the saved predictions). Checkpoint selection during training is unchanged (best check by val T@1
+with the default rule); post-processing is applied to the best-check window scores afterwards. The choice was made on
+the same pooled out-of-fold predictions it is reported on, so +0.0052 is optimistic. Details:
+results/diagnostics/postproc_C_cctv_seed0/ (report.txt, postproc_variants.csv).
+
+Flip test-time augmentation (2026-11-10, synthetic validation only, RTX 5060): ADOPTED. TTA score per window = mean of
+the sigmoid scores of the original window and of the window with all 16 frames horizontally flipped (same
+normalisation), then smoothing 3 + parabola as above. Rule (stated before the results): adopt only if pooled
+out-of-fold T@1 over 2211 clips improves by >= 0.002 over no TTA, both arms scored with best.pt on the same GPU;
+T@0.5 / T@2 reported, not deciding. Reproduction of the original-frame scores vs the saved best-check predictions:
+folds 0 and 2 exact (t_hat 770/770 and 686/686, T@1 equal); fold 1 (trained on the RTX 4050) t_hat equal in
+749/755 clips, T@1 0.5974 vs 0.5986 (-0.0012, cross-GPU bf16). Pooled no TTA -> flip TTA: T@0.5 0.5767 -> 0.5826,
+T@1 0.6850 -> 0.6922 (+0.0072 >= 0.002), T@2 0.7532 -> 0.7612, within 2 s 0.7454 -> 0.7544, median |error| 0.379 ->
+0.378 s, Spearman rho(confidence, |error|) -0.375 -> -0.381. Per fold T@1: 0.6085 -> 0.6241, 0.6043 -> 0.5941
+(fold 1 worse), 0.8598 -> 0.8767. T@1 by weather: clear +0.012, sunset +0.006, wet +0.004, rain +0.005, night +0.008;
+by type: head-on +0.013, rear-end +0.008, sideswipe +0.012, single -0.031 (n 66), t-bone -0.002. Chosen on the same
+pooled predictions it is reported on, so the gain is optimistic. Cost (classifier only, bf16, val batch 16, incl.
+host-to-device copy; data loading overlapped by 4 workers): one pass 595.9 ms per clip (18.6 ms per window, mean 32
+windows per clip), two passes 1191.5 ms per clip (37.3 ms per window), i.e. 2x. Applied unchanged to seeds 1 and 2
+and to the real test: analyse_predictions.py --score-best --hflip --out-dir DIR, then aggregate_runs.py ...
+--scores-dir DIR --tta flip --smooth 3 --interp parabola. Details: results/diagnostics/postproc_C_cctv_seed0/tta/
+(tta_report.txt, tta_table.csv, tta_by_group.csv, fold_<k>/ scores and scoring_report.txt).

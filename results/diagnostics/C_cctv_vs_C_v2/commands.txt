@@ -1,0 +1,14 @@
+Commands of this analysis (2026-11-10), training environment, from cctv-accident-ITS-system\:
+.venv-ml\Scripts\python.exe analyse_predictions.py --run C_cctv_seed0 --fold 1 --run-cache-manifest results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json
+.venv-ml\Scripts\python.exe aggregate_runs.py C_v2_seed0 C_cctv_seed0 --overwrite --allow-config-diff micro_batch,grad_accum --run-cache-manifest C_v2_seed0:1=results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json --run-cache-manifest C_cctv_seed0:1=results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json
+.venv-ml\Scripts\python.exe confidence_vs_error.py --folds 0,1,2 --name C_v2_vs_C_cctv_best --out-dir results\diagnostics\C_cctv_vs_C_v2 "C_v2 (best)=C_v2_seed0:best" "C_cctv (best)=C_cctv_seed0:best"
+.venv-ml\Scripts\python.exe compare_folds.py --paired C_v2_seed0 C_cctv_seed0 --labels C_v2,C_cctv --folds 0,1,2 --name C_cctv_vs_C_v2 --expect-diff augmentation,night_guard --bootstrap 2000 --seed 0
+(folds 0 and 2 were analysed earlier with analyse_predictions.py --run C_cctv_seed0 --fold 0 / --fold 2)
+
+Next (not run): seeds 1 and 2 of the winner C_cctv
+RTX 5060, folds 0 then 2, one command per seed:
+.venv-ml\Scripts\python.exe train_classifier.py --config configs\videomae_v2_C_cctv.json --fold 0 --run-name C_cctv_seed1 --seed 1 --max-hours 6; if ($LASTEXITCODE -eq 0 -and (Select-String -Quiet '^training finished' runs\C_cctv_seed1\fold_0\train_log.txt)) { .venv-ml\Scripts\python.exe train_classifier.py --config configs\videomae_v2_C_cctv.json --fold 2 --run-name C_cctv_seed1 --seed 1 --max-hours 6 }
+.venv-ml\Scripts\python.exe train_classifier.py --config configs\videomae_v2_C_cctv.json --fold 0 --run-name C_cctv_seed2 --seed 2 --max-hours 6; if ($LASTEXITCODE -eq 0 -and (Select-String -Quiet '^training finished' runs\C_cctv_seed2\fold_0\train_log.txt)) { .venv-ml\Scripts\python.exe train_classifier.py --config configs\videomae_v2_C_cctv.json --fold 2 --run-name C_cctv_seed2 --seed 2 --max-hours 6 }
+RTX 4050, fold 1, one command per seed:
+.venv-ml\Scripts\python.exe train_classifier.py --config configs\videomae_v2_C_cctv_rtx4050.json --fold 1 --run-name C_cctv_seed1 --seed 1 --max-hours 7
+.venv-ml\Scripts\python.exe train_classifier.py --config configs\videomae_v2_C_cctv_rtx4050.json --fold 1 --run-name C_cctv_seed2 --seed 2 --max-hours 7

@@ -1,0 +1,71 @@
+fold 0, synthetic validation: 770 clips; confidence quartiles by pd.qcut
+
+=== C_v2 (best) (770 clips) ===
+ quartile   n  conf_min  conf_max  within_2s  median_abs_err_s    T@1
+ Q1 (low) 193    0.0003    0.0477     0.3731            3.0625 0.2859
+       Q2 192    0.0477    0.1565     0.5677            0.8500 0.4972
+       Q3 192    0.1570    0.3203     0.7396            0.4875 0.6621
+Q4 (high) 193    0.3205    0.7738     0.9534            0.2875 0.8861
+Spearman rho(confidence, |t_hat - t_star|) = -0.4510
+
+=== C_cctv (best) (770 clips) ===
+ quartile   n  conf_min  conf_max  within_2s  median_abs_err_s    T@1
+ Q1 (low) 193    0.0001    0.0520     0.4093            2.9875 0.3275
+       Q2 192    0.0521    0.1593     0.6042            0.7875 0.5048
+       Q3 192    0.1600    0.3081     0.7812            0.4875 0.6982
+Q4 (high) 193    0.3088    0.7230     0.9482            0.2875 0.8825
+Spearman rho(confidence, |t_hat - t_star|) = -0.4609
+
+fold 1, synthetic validation: 755 clips; confidence quartiles by pd.qcut
+
+=== C_v2 (best) (755 clips) ===
+ quartile   n  conf_min  conf_max  within_2s  median_abs_err_s    T@1
+ Q1 (low) 189    0.0002    0.0666     0.5556            1.6125 0.4669
+       Q2 189    0.0668    0.1511     0.6243            0.4375 0.5900
+       Q3 188    0.1515    0.2893     0.6702            0.4750 0.6137
+Q4 (high) 189    0.2899    0.8029     0.8413            0.2875 0.7896
+Spearman rho(confidence, |t_hat - t_star|) = -0.2062
+
+=== C_cctv (best) (755 clips) ===
+ quartile   n  conf_min  conf_max  within_2s  median_abs_err_s    T@1
+ Q1 (low) 189    0.0006    0.1005     0.4974            2.0125 0.4424
+       Q2 189    0.1013    0.2230     0.5873            0.5875 0.5322
+       Q3 188    0.2231    0.3895     0.7181            0.5125 0.6398
+Q4 (high) 189    0.3895    0.8540     0.8466            0.3625 0.7802
+Spearman rho(confidence, |t_hat - t_star|) = -0.2430
+
+fold 2, synthetic validation: 686 clips; confidence quartiles by pd.qcut
+
+=== C_v2 (best) (686 clips) ===
+ quartile   n  conf_min  conf_max  within_2s  median_abs_err_s    T@1
+ Q1 (low) 172    0.0002    0.1887     0.7093            0.4375 0.6424
+       Q2 171    0.1891    0.4180     0.9415            0.2125 0.8884
+       Q3 171    0.4195    0.5931     0.9649            0.2125 0.9297
+Q4 (high) 172    0.5943    0.9211     0.9942            0.2000 0.9474
+Spearman rho(confidence, |t_hat - t_star|) = -0.2749
+
+=== C_cctv (best) (686 clips) ===
+ quartile   n  conf_min  conf_max  within_2s  median_abs_err_s    T@1
+ Q1 (low) 172    0.0006    0.1608     0.7442            0.3375 0.6965
+       Q2 171    0.1654    0.4020     0.9357            0.2375 0.8763
+       Q3 171    0.4022    0.5761     0.9766            0.2375 0.9287
+Q4 (high) 172    0.5764    0.8988     0.9826            0.2375 0.9247
+Spearman rho(confidence, |t_hat - t_star|) = -0.1529
+
+pooled folds [0, 1, 2] (quartiles over the pooled clips; confidence scales of different folds' models are mixed)
+
+=== C_v2 (best), pooled (2211 clips) ===
+ quartile   n  conf_min  conf_max  within_2s  median_abs_err_s    T@1
+ Q1 (low) 553    0.0002    0.0767     0.5009            1.9625 0.4174
+       Q2 553    0.0768    0.2112     0.6546            0.4875 0.6017
+       Q3 552    0.2115    0.4171     0.8424            0.3375 0.7805
+Q4 (high) 553    0.4177    0.9211     0.9584            0.2375 0.9097
+Spearman rho(confidence, |t_hat - t_star|) = -0.4093
+
+=== C_cctv (best), pooled (2211 clips) ===
+ quartile   n  conf_min  conf_max  within_2s  median_abs_err_s    T@1
+ Q1 (low) 553    0.0001    0.0870     0.4973            2.0125 0.4255
+       Q2 553    0.0875    0.2340     0.6962            0.4875 0.6267
+       Q3 552    0.2343    0.4278     0.8551            0.3375 0.7857
+Q4 (high) 553    0.4278    0.8988     0.9403            0.2875 0.8832
+Spearman rho(confidence, |t_hat - t_star|) = -0.3765

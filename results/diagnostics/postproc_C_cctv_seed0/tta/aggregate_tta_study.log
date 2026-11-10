@@ -1,0 +1,50 @@
+﻿Rule (fixed before the results are printed): with post-processing smooth 3 + interp parabola, flip TTA is adopted only if pooled out-of-fold T@1 of C_cctv_seed0 over all clips improves by >= 0.002 over no TTA (both arms scored on the same GPU); T@0.5 and T@2 are reported but do not decide.
+Flip test-time augmentation, C_cctv_seed0, synthetic pooled out-of-fold, post-processing smooth 3 + parabola; scores from results\diagnostics\postproc_C_cctv_seed0\tta
+
+Rule (fixed before the results are printed): with post-processing smooth 3 + interp parabola, flip TTA is adopted only if pooled out-of-fold T@1 of C_cctv_seed0 over all clips improves by >= 0.002 over no TTA (both arms scored on the same GPU); T@0.5 and T@2 are reported but do not decide.
+
+scoring reports (reproduction check and classifier time):
+  run C_cctv_seed0 fold 0: best.pt (check 2, update 1860, val T@1 logged 0.6032); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 25988 windows, 770 clips; val batch 16, workers 4
+  orig: classifier time 487.8 s = 633.6 ms per clip, 18.77 ms per window; wall time incl. data loading 498.1 s (52.2 windows/s)
+  reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 2.97e-08 (0 of 25988 differ); t_hat equal in 770/770 clips; T@1 0.6032 vs saved 0.6032 (diff +0.0000); logged 0.6032
+  hflip: classifier time 492.2 s = 639.2 ms per clip, 18.94 ms per window; wall time incl. data loading 493.9 s (52.6 windows/s)
+  run C_cctv_seed0 fold 1: best.pt (check 3, update 2480, val T@1 logged 0.5986); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 25041 windows, 755 clips; val batch 16, workers 4
+  orig: classifier time 465.0 s = 615.9 ms per clip, 18.57 ms per window; wall time incl. data loading 474.9 s (52.7 windows/s)
+  reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 2.29e-02 (13441 of 25041 differ); t_hat equal in 749/755 clips; T@1 0.5974 vs saved 0.5986 (diff -0.0012); logged 0.5986
+  hflip: classifier time 462.3 s = 612.3 ms per clip, 18.46 ms per window; wall time incl. data loading 463.4 s (54.0 windows/s)
+  run C_cctv_seed0 fold 2: best.pt (check 6, update 4340, val T@1 logged 0.8564); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 19701 windows, 686 clips; val batch 16, workers 4
+  orig: classifier time 364.7 s = 531.7 ms per clip, 18.51 ms per window; wall time incl. data loading 373.8 s (52.7 windows/s)
+  reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 2.98e-08 (0 of 19701 differ); t_hat equal in 686/686 clips; T@1 0.8564 vs saved 0.8564 (diff +0.0000); logged 0.8564
+  hflip: classifier time 362.4 s = 528.3 ms per clip, 18.40 ms per window; wall time incl. data loading 363.5 s (54.2 windows/s)
+
+no TTA vs flip TTA (and the saved training-GPU scores for reference):
+                                  arm  scope  n_clips  T@0.5    T@1    T@2  within_2s  median |err| s  rho(conf, |err|)
+                               no TTA fold 0      770 0.4868 0.6085 0.6889     0.6844          0.4823           -0.4673
+                               no TTA fold 1      755 0.5057 0.6043 0.6816     0.6583          0.4392           -0.2299
+                               no TTA fold 2      686 0.7557 0.8598 0.9041     0.9096          0.2348           -0.1443
+                               no TTA pooled     2211 0.5767 0.6850 0.7532     0.7454          0.3791           -0.3748
+                             flip TTA fold 0      770 0.5021 0.6241 0.7044     0.6987          0.4671           -0.4734
+                             flip TTA fold 1      755 0.4937 0.5941 0.6758     0.6543          0.4628           -0.2556
+                             flip TTA fold 2      686 0.7710 0.8767 0.9191     0.9271          0.2331           -0.1189
+                             flip TTA pooled     2211 0.5826 0.6922 0.7612     0.7544          0.3782           -0.3811
+saved best CSV (training GPU), no TTA fold 0      770 0.4868 0.6085 0.6889     0.6844          0.4823           -0.4673
+saved best CSV (training GPU), no TTA fold 1      755 0.5062 0.6053 0.6823     0.6596          0.4386           -0.2311
+saved best CSV (training GPU), no TTA fold 2      686 0.7557 0.8598 0.9041     0.9096          0.2348           -0.1443
+saved best CSV (training GPU), no TTA pooled     2211 0.5768 0.6854 0.7534     0.7458          0.3782           -0.3750
+
+T@1 by weather and collision type (pooled):
+     by     group   n  T@1 no TTA  T@1 flip TTA    dT@1
+weather     clear 515      0.7132        0.7253  0.0120
+weather     night 449      0.6029        0.6105  0.0076
+weather      rain 342      0.7181        0.7225  0.0045
+weather    sunset 461      0.6878        0.6942  0.0064
+weather       wet 444      0.7070        0.7113  0.0042
+   type   head-on 588      0.8072        0.8201  0.0129
+   type  rear-end 794      0.5626        0.5704  0.0078
+   type sideswipe 405      0.6087        0.6210  0.0123
+   type    single  66      0.8250        0.7942 -0.0308
+   type    t-bone 358      0.8163        0.8143 -0.0021
+
+DECISION: adopt flip TTA: pooled T@1 0.6850 -> 0.6922 (+0.0072 >= 0.002); T@0.5 0.5767 -> 0.5826, T@2 0.7532 -> 0.7612
+
+wrote results\diagnostics\postproc_C_cctv_seed0\tta\tta_report.txt
