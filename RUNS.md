@@ -1,8 +1,10 @@
 | std_seed0 | fold 0 | configs/videomae_v1.json (sha256 894d3436) | scheme B, standard aug | best epoch 0 | val T@1 0.4408 | within 2 s 0.488 | early stop after epoch 3 | diagnostics: results/diagnostics/std_seed0_fold0 |
 | B_v2_seed0 | fold 0 only (no folds 1, 2) | configs/videomae_v2_B.json (sha256 5ee05e2f) | scheme B, standard aug, validation every 620 updates | best check 1 (epoch 1.00) | val T@1 0.4400 | within 2 s 0.487 | early stop after check 7 | diagnostics: results/diagnostics/B_v2_seed0_fold0 |
 | C_v2_seed0 | folds 0, 1, 2 | folds 0, 2: configs/videomae_v2_C.json (sha256 1edaaedf); fold 1: videomae_v2_C_rtx4050.json (sha256 fe4f55dc), documented deviation | scheme C, standard aug, validation every 620 updates | best checks 2 / 2 / 6 (epoch 0.67 / 0.65 / 1.36) | val T@1 0.5828 / 0.6151 / 0.8518; pooled out-of-fold 0.6773 (2211 clips) | within 2 s 0.658 / 0.673 / 0.902; pooled 0.739 | early stop after checks 8 / 8 / 12 | results/classifier_summary.md; results/diagnostics/C_v2_seed0_3folds; results/diagnostics/C_v2_seed0_fold0, _fold1, _fold2 |
-| C_cos3_seed0 | planned: folds 0, 1, 2 | folds 0, 2 (RTX 5060): configs/videomae_v2_C_cos3.json (sha256 56998505); fold 1 (RTX 4050): configs/videomae_v2_C_cos3_rtx4050.json (sha256 3fc8bd38) | scheme C, standard aug, cosine over 3 epochs, warmup 0.5 epoch, validation every 620 updates | - | - | - | - | not trained yet |
+| C_cos3_seed0 | folds 0, 1, 2 | configs/videomae_v2_C_cos3.json (sha256 56998505) in all three folds, all on the RTX 5060 (micro_batch 8 x 2; fold 1 used videomae_v2_C_cos3.json, not the rtx4050 config); git cd9aba7 (dirty) | scheme C, standard aug, cosine over 3 epochs, warmup 0.5 epoch, validation every 620 updates | best checks 2 / 2 / 6 (epoch 0.66 / 0.65 / 1.36) | val T@1 0.5825 / 0.6170 / 0.8539; pooled out-of-fold 0.6785 (2211 clips; C_v2 0.6773) | within 2 s 0.658 / 0.675 / 0.902; pooled 0.740 | early stop after checks 8 / 8 / 12; fold 1 resumed 3 times at update 4340, best check before | NOT ADOPTED by the pre-registered 0.02 rule (+0.0012 pooled T@1 over C_v2). results/diagnostics/C_cos3_seed0_3folds. An earlier RTX 4050 fold-1 run (videomae_v2_C_cos3_rtx4050.json, 3fc8bd38, best val T@1 0.6164) lies outside runs\ (Senior 2\C_cos3_seed0\fold_1) and is not used |
 | C_cctv_seed0 | folds 0, 1, 2 | folds 0, 2 (RTX 5060): configs/videomae_v2_C_cctv.json (sha256 c890b480); fold 1 (RTX 4050): configs/videomae_v2_C_cctv_rtx4050.json (sha256 31e3e00c), documented deviation as C_v2 | scheme C, cctv_v2 aug, night protection dark_luma 50, validation every 620 updates (Ablation 1) | best checks 2 / 3 / 6 (epoch 0.67 / 0.87 / 1.36) | val T@1 0.6032 / 0.5986 / 0.8564; pooled out-of-fold 0.6802 (2211 clips; C_v2 0.6773) | within 2 s 0.686 / 0.662 / 0.910; pooled 0.747 | early stop after checks 8 / 9 / 12 | DECISION (pre-registered rule, higher pooled T@1): C_cctv; +0.0029, scenario bootstrap [-0.0147, +0.0167]: no measurable difference on synthetic validation. results/classifier_summary.md; results/diagnostics/C_cctv_vs_C_v2; _fold0, _fold1, _fold2; preparation: runs/aug_preview/C_v2_cctv, _cctv_v2, _cctv_v2_night50 |
+| C_cctv_seed1 | folds 0, 1, 2 | as C_cctv_seed0 (c890b480 / 31e3e00c / c890b480), seed 1; folds 0, 2 git 80bac63 (dirty), fold 1 a66ce3d (dirty) | scheme C, cctv_v2 aug, night protection dark_luma 50, validation every 620 updates (final configuration, seed 1) | best checks 2 / 2 / 12 (epoch 0.67 / 0.65 / 2.53) | val T@1 0.5840 / 0.6099 / 0.8528; pooled out-of-fold 0.6762 (2211 clips); frozen post-processing 0.6854 | within 2 s 0.662 / 0.685 / 0.911; pooled 0.747 | early stop after checks 8 / 8 / 18; fold 2 resumed once at update 5500, best check after the resume | results/classifier_summary.md; results/diagnostics/C_cctv_seeds012; C_cctv_seed1_fold0, _fold1, _fold2 |
+| C_cctv_seed2 | folds 0, 1, 2 | as C_cctv_seed0 (c890b480 / 31e3e00c / c890b480), seed 2; folds 0, 2 git 80bac63 (dirty), fold 1 a66ce3d (dirty) | scheme C, cctv_v2 aug, night protection dark_luma 50, validation every 620 updates (final configuration, seed 2) | best checks 2 / 2 / 12 (epoch 0.67 / 0.65 / 2.53) | val T@1 0.5869 / 0.6121 / 0.8699; pooled out-of-fold 0.6833 (2211 clips); frozen post-processing 0.6923 | within 2 s 0.668 / 0.672 / 0.926; pooled 0.749 | early stop after checks 8 / 8 / 18; fold 1 resumed once at update 5500, best check before the resume | results/classifier_summary.md; results/diagnostics/C_cctv_seeds012; C_cctv_seed2_fold0, _fold1, _fold2 |
 
 Config sha256 = canonical config hash as recorded in runs/<run>/fold_<k>/config.json (first 8 hex digits).
 
@@ -14,7 +16,7 @@ sampled .npz files byte-identical. The fold-1 check-8 checkpoint gives val T@1 0
 on the RTX 5060. Aggregate with: aggregate_runs.py C_v2_seed0 --allow-config-diff micro_batch,grad_accum
 --run-cache-manifest C_v2_seed0:1=results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json
 
-C_cos3_seed0 (planned): videomae_v2_C.json with only max_epochs 10 -> 3 and warmup_fraction 0.05 -> 0.16664; the
+C_cos3_seed0 (planned; trained since, see its table row): videomae_v2_C.json with only max_epochs 10 -> 3 and warmup_fraction 0.05 -> 0.16664; the
 RTX 4050 config additionally micro_batch 4, grad_accum 4. warmup_fraction 0.16664 means 0.5 epoch for these folds:
 warmup 1398 / 1428 / 1595 of 8391 / 8568 / 9570 updates (folds 0 / 1 / 2), the same warmup as C_v2. It is not a
 general rule: recompute it if max_epochs, the batch or the split change.
@@ -103,6 +105,30 @@ Pooled out-of-fold T@0.5 / 1 / 2 / within 2 s: C_v2 0.5728 / 0.6773 / 0.7477 / 0
 +0.0167]: no measurable difference on synthetic validation. Next: seeds 1 and 2 of C_cctv (C_cctv_seed1,
 C_cctv_seed2). Details: results/diagnostics/C_cctv_vs_C_v2/ (report.txt, decision.txt).
 
+Ablation 1 under the frozen post-processing (2026-11-12; REPORTING ONLY, the decision above is unchanged; synthetic
+validation, no real data, no training). C_v2_seed0 best.pt scored on the RTX 5060 with analyse_predictions.py
+--score-best --hflip (fold 1 with the RTX 4050 cache manifest): folds 0 and 2 reproduce the saved predictions
+exactly; fold 1 t_hat equal in 746/755 clips, T@1 0.6168 vs 0.6151 (+0.0017, cross-GPU bf16). Aggregated with
+aggregate_runs.py --tta-study --smooth 3 --interp parabola (flip TTA arm; the same recomputed_preds(..., tta="flip")
+path as --tta flip, without overwriting results/classifier_summary). Cells: T@0.5 / T@1 / T@2 / within 2 s; pooled =
+out-of-fold over 2211 clips; C_cctv mean +- sample std over seeds 0-2 (ddof 1, n 3); C_v2 has one seed.
+
+| post-processing | run | fold 0 | fold 1 | fold 2 | pooled |
+|---|---|---|---|---|---|
+| (a) default | C_v2 seed 0 | 0.4631 / 0.5828 / 0.6700 / 0.6584 | 0.5227 / 0.6151 / 0.6912 / 0.6728 | 0.7512 / 0.8518 / 0.8972 / 0.9023 | 0.5728 / 0.6773 / 0.7477 / 0.7390 |
+| (a) default | C_cctv seed 0 | 0.4734 / 0.6032 / 0.6869 / 0.6857 | 0.4878 / 0.5986 / 0.6807 / 0.6623 | 0.7453 / 0.8564 / 0.9032 / 0.9096 | 0.5627 / 0.6802 / 0.7519 / 0.7472 |
+| (a) default | C_cctv seeds 0-2 | 0.4637 +- 0.0086 / 0.5914 +- 0.0104 / 0.6748 +- 0.0105 / 0.6719 +- 0.0123 | 0.4932 +- 0.0122 / 0.6069 +- 0.0073 / 0.6893 +- 0.0086 / 0.6728 +- 0.0113 | 0.7483 +- 0.0107 / 0.8597 +- 0.0090 / 0.9078 +- 0.0084 / 0.9155 +- 0.0089 | 0.5620 +- 0.0077 / 0.6799 +- 0.0036 / 0.7521 +- 0.0012 / 0.7478 +- 0.0010 |
+| (b) frozen | C_v2 seed 0 | 0.4868 / 0.5992 / 0.6773 / 0.6662 | 0.5347 / 0.6164 / 0.6914 / 0.6649 | 0.7758 / 0.8763 / 0.9170 / 0.9242 | 0.5928 / 0.6910 / 0.7565 / 0.7458 |
+| (b) frozen | C_cctv seed 0 | 0.5021 / 0.6241 / 0.7044 / 0.6987 | 0.4937 / 0.5941 / 0.6758 / 0.6543 | 0.7710 / 0.8767 / 0.9191 / 0.9271 | 0.5826 / 0.6922 / 0.7612 / 0.7544 |
+| (b) frozen | C_cctv seeds 0-2 | 0.4863 +- 0.0140 / 0.6043 +- 0.0171 / 0.6833 +- 0.0183 / 0.6766 +- 0.0192 | 0.5085 +- 0.0173 / 0.6128 +- 0.0163 / 0.6915 +- 0.0138 / 0.6733 +- 0.0171 | 0.7667 +- 0.0173 / 0.8710 +- 0.0110 / 0.9145 +- 0.0092 / 0.9208 +- 0.0085 | 0.5809 +- 0.0103 / 0.6900 +- 0.0040 / 0.7578 +- 0.0034 / 0.7512 +- 0.0028 |
+
+Pooled T@1, C_cctv - C_v2: (a) seed 0 +0.0029, seed mean +0.0026; (b) seed 0 +0.0012, seed mean -0.0011. Both
+within one C_cctv seed std (0.0036 / 0.0040) and C_v2 has one seed: no measurable difference under either
+post-processing, as decided. The frozen post-processing raises C_v2 by +0.0137 pooled T@1 (0.6773 -> 0.6910), C_cctv
+seed 0 by +0.0120. T@0.5 is lower for C_cctv under both (pooled, seed mean - C_v2: -0.0108 (a), -0.0120 (b)), mostly
+from fold 1. Details: results/diagnostics/C_v2_seed0_frozen/ (ablation_table.txt/.csv, frozen/ and smooth3_none/ tta
+reports, scores/fold_<k>/scoring_report.txt, commands.txt). Figure: results/figures/F3_ablation_bars.png.
+
 ## Post-processing (frozen on C_cctv_seed0 pooled out-of-fold)
 
 Frozen 2026-11-10 on synthetic validation only (no real data, no training, CPU): CHOICE = smoothing width 3 (centred
@@ -141,3 +167,60 @@ windows per clip), two passes 1191.5 ms per clip (37.3 ms per window), i.e. 2x. 
 and to the real test: analyse_predictions.py --score-best --hflip --out-dir DIR, then aggregate_runs.py ...
 --scores-dir DIR --tta flip --smooth 3 --interp parabola. Details: results/diagnostics/postproc_C_cctv_seed0/tta/
 (tta_report.txt, tta_table.csv, tta_by_group.csv, fold_<k>/ scores and scoring_report.txt).
+
+## Final configuration: mean +- std over seeds
+
+C_cctv, seeds 0, 1, 2 (2026-11-12; synthetic 3-fold validation only, no real data; scoring on the RTX 5060, no
+training; nothing tuned). Integrity of seeds 1 and 2: config hash c890b480 (folds 0, 2; RTX 5060; git 80bac63, dirty;
+before this update the only tracked file differing from 80bac63 was results/diagnostics/std_seed0_fold0/report.txt)
+and 31e3e00c (fold 1; RTX 4050; git a66ce3d,
+dirty; cache c76c46e6 = the documented RTX 4050 manifest); train_classifier.py and its imports are identical in a66ce3d
+and 80bac63; seed recorded; label and split hashes and the stored config equal seed 0's per fold; every fold ends
+with "training finished" (early stopping). Resumes: seed 1 fold 2 once at update 5500 (8 checks done, last at 4960);
+its best check 12 (update 8060) comes AFTER the resume, so the selected model saw augmentation draws from new worker
+generators. Seed 2 fold 1 once at update 5500; its best check 2 (update 1860) comes before the resume. Reproduction:
+best and last checks reproduce metrics.csv exactly on folds 0 and 2; fold 1 best checks exact, last checks +0.0012 /
++0.0028 (seed 1 / 2, scored on the RTX 5060, cross-GPU bf16). best.pt rescored on the RTX 5060: folds 0, 2 exact;
+fold 1 t_hat equal in 752/755 (T@1 equal) and 750/755 (T@1 -0.0013) clips.
+Pooled out-of-fold over 2211 clips, T@0.5 / T@1 / T@2 / within 2 s, mean +- sample std (ddof 1, n 3):
+(a) default (smoothing 3, no interpolation, no TTA; saved predictions): seeds 0 / 1 / 2 T@1 0.6802 / 0.6762 /
+0.6833; 0.5620 +- 0.0077 / 0.6799 +- 0.0036 / 0.7521 +- 0.0012 / 0.7478 +- 0.0010.
+(b) frozen (smoothing 3 + parabola + flip TTA): seeds 0 / 1 / 2 T@1 0.6922 / 0.6854 / 0.6923; 0.5809 +- 0.0103 /
+0.6900 +- 0.0040 / 0.7578 +- 0.0034 / 0.7512 +- 0.0028.
+Per fold T@1 (a) 0.5914 +- 0.0104 / 0.6069 +- 0.0073 / 0.8597 +- 0.0090; (b) 0.6043 +- 0.0171 / 0.6128 +- 0.0163 /
+0.8710 +- 0.0110 (folds 0 / 1 / 2).
+Independent check of the frozen post-processing on seeds 1 and 2 (not used for the choice): (b) - (a) pooled T@1
++0.0091 / +0.0090, T@0.5 +0.0157 / +0.0208, T@2 +0.0036 / +0.0044, within 2 s +0.0027 / +0.0005: positive on both
+seeds for every metric; per fold T@1 positive in 6 of 6 (seed 0's fold-1 drop is not repeated); within 2 s per fold
+negative in 2 of 6.
+Seed-to-seed range of best-check T@1 (a): fold 0 0.0193, fold 1 0.0135, fold 2 0.0171, next to the seed-0 C_cctv -
+C_v2 differences +0.0204 / -0.0165 / +0.0046: slightly above the C_cctv seed range on folds 0 and 1, inside it on
+fold 2, with opposite signs; the per-fold Ablation 1 differences are of the size of seed variation (C_v2 has one
+seed, so its own seed variation is not included), consistent with "no measurable difference".
+Spearman rho(confidence, |error|) with (b): pooled -0.381 / -0.460 / -0.419 (seeds 0 / 1 / 2), negative in every fold
+and seed (weakest fold 2 of seed 0, -0.119); no confidence threshold chosen.
+Reported synthetic result of the final configuration: (b) pooled T@1 0.6900 +- 0.0040 (n 3 seeds).
+results/classifier_summary.{csv,md} holds (a) (the default aggregate); (b) is in results/diagnostics/C_cctv_seeds012/
+(seed_tables.txt, per_seed_fold.csv, mean_std_over_seeds.csv, independent_postproc_check.csv, seed_range_T1.csv,
+confidence_rho_frozen.csv, integrity.txt, seed{s}_frozen/ and seed{s}_smooth3_none/ tta reports, commands.txt).
+
+## Routing threshold tau: rule (frozen), value pending
+
+Evidence (synthetic validation only, CPU, no real data; tau NOT computed): confidence_vs_error.py --tau-evidence
+on results/diagnostics/C_cctv_seeds012/seed{0,1,2}_frozen/tta_clip_predictions_flip.csv (2211 clips per seed, 6633
+pooled). p_narrow(c) = P(|t_hat - t*| <= 2 s | confidence c): increasing isotonic regression (pool adjacent
+violators, ties in confidence pooled) on the 6633 pooled predictions, evaluated on c = 0.00 ... 0.96 by linear
+interpolation between the fitted values (results/diagnostics/tau_evidence/isotonic_curve.csv). p_narrow at c = 0.1 /
+0.2 / 0.3 / 0.4 / 0.5: 0.6023 / 0.7311 / 0.8532 / 0.8768 / 0.9357. Cumulative, pooled: confidence >= 0.5 covers
+0.1842 of the predictions with 0.9673 within 2 s; >= 0.3 covers 0.4156 with 0.9267; >= 0.1 covers 0.7259 with
+0.8440; all 0.7512. Caveats: the three seeds give three predictions per clip, so the pooled predictions are not
+independent (the Wilson intervals are too narrow); above c = 0.8 there are only 69 predictions; the curve is
+fitted on the same pooled out-of-fold predictions it describes. Details: results/diagnostics/tau_evidence/
+(tau_evidence.txt, tau_cumulative.csv, tau_bins.csv, isotonic_curve.csv, isotonic_fit_points.csv); figure
+results/figures/F9_confidence_evidence.png.
+
+Rule (frozen 2026-11-14, before p_full is known): tau = the smallest confidence c with p_narrow(c) >= p_full, where
+p_narrow is the isotonic curve above (C_cctv seeds 0-2, pooled out-of-fold, frozen post-processing) and p_full is
+the share of synthetic validation clips whose full-scan VLM time is within 2 s, measured in the zero-shot VLM stage
+on synthetic clips only. Above tau the narrow path is expected to be at least as accurate as the full scan and is
+cheaper. The value is computed once, when p_full is known.

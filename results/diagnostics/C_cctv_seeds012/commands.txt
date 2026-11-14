@@ -1,0 +1,26 @@
+Final synthetic results of C_cctv, seeds 0, 1, 2 (2026-11-12), from cctv-accident-ITS-system\, training environment.
+GPU (RTX 5060) used only for scoring; no training; no real data; runs\ read-only; post-processing frozen (RUNS.md).
+
+1. Integrity (read-only; config.json, metrics.csv, train_log.txt of runs\C_cctv_seed{0,1,2}\fold_{0,1,2}):
+   scratchpad helper seed_integrity.py -> integrity.txt, integrity.csv, resumes.csv
+
+2. Per run (s = 1, 2; k = 0, 1, 2; fold 1 adds --run-cache-manifest C_cctv_seed<s>:1=results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json):
+   .venv-ml\Scripts\python.exe analyse_predictions.py --run C_cctv_seed<s> --fold <k>                     -> analyse_seed<s>_fold<k>.log, results\diagnostics\C_cctv_seed<s>_fold<k>\
+   .venv-ml\Scripts\python.exe analyse_predictions.py --run C_cctv_seed<s> --fold <k> --score-best --hflip --out-dir results\diagnostics\C_cctv_seeds012\scores\seed<s>
+                                                                                                          -> score_seed<s>_fold<k>.log, scores\seed<s>\fold_<k>\
+   (seed 0 scores: results\diagnostics\postproc_C_cctv_seed0\tta\fold_<k>\, from the earlier flip-TTA study)
+
+3. Per seed (CPU), the command is the first line of each log:
+   aggregate_runs.py C_cctv_seed<s> --tta-study --scores-dir <scores> --smooth 3 --interp parabola --postproc-out results\diagnostics\C_cctv_seeds012\seed<s>_frozen ...      -> agg_seed<s>_frozen.log
+   aggregate_runs.py C_cctv_seed<s> --tta-study --scores-dir <scores> --smooth 3 --interp none --postproc-out results\diagnostics\C_cctv_seeds012\seed<s>_smooth3_none ... -> agg_seed<s>_smooth3_none.log
+   NOTE: the "DECISION: adopt flip TTA" line printed by --tta-study in these six reports is NOT a decision. The
+   post-processing was frozen on C_cctv_seed0 (RUNS.md "Post-processing"); here it is only applied and checked.
+
+4. Official summary (default post-processing (a)), overwrites results\classifier_summary.{csv,md}
+   (previous version kept as classifier_summary_before.{csv,md}): agg_official.log, first line.
+
+5. Tables: scratchpad helper seed_tables.py (reads only the tta_table.csv files above and classifier_summary.csv) ->
+   seed_tables.txt, per_seed_fold.csv, mean_std_over_seeds.csv, independent_postproc_check.csv, seed_range_T1.csv,
+   confidence_rho_frozen.csv
+   (a) default = arm "saved best CSV (training GPU), no TTA" of seed<s>_smooth3_none = metrics.csv / classifier_summary
+   (b) frozen  = arm "flip TTA" of seed<s>_frozen (smoothing 3 + parabola + flip TTA, best.pt scored on the RTX 5060)

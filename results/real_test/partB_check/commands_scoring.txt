@@ -1,0 +1,2 @@
+﻿.venv-ml\Scripts\python.exe analyse_predictions.py --run C_cctv_seed0 --score-windows synthetic-val --folds 0 --out-dir results\real_test\partB_check\scores_C_cctv_seed0_fold0
+.venv-ml\Scripts\python.exe analyse_predictions.py --run C_cctv_seed0 --score-windows synthetic-val --folds 2 --out-dir results\real_test\partB_check\scores_C_cctv_seed0_fold2

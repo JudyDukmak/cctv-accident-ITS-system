@@ -26,6 +26,15 @@ the reproduction check of (smooth_window, none) against the saved predictions, t
 rho, and the selection rule (primary pooled T@1; keep the run's default unless the best variant beats it by
 >= --postproc-min-gain); further runs are reference tables only. Output: --postproc-out (report.txt, CSV).
 
+--window-ensemble (real-test path; reads no label): one run, --scores-dir DIR from analyse_predictions.py
+--score-windows (DIR/fold_<k>/window_scores_{orig,hflip}.csv) for --ensemble-folds; per fold model the flip-TTA score
+of a window = mean of its orig and hflip sigmoid scores (as --tta flip); the ensemble score = mean over the fold models
+(one model: that model's TTA score, so the frozen synthetic path is reproduced); then peak_t_hat with --smooth and
+--interp (frozen: 3, parabola) and the run's confidence_exclude. Writes --postproc-out/clip_predictions.csv (rgb_path,
+t_hat, confidence, delta, n_windows), ensemble_window_scores.csv and ensemble_report.txt. Code check on synthetic
+only: --check-against PRED_CSV (saved frozen predictions with t_star) and --check-scores-dir DIR (the window scores
+those predictions came from) compare t_hat, T@1, confidence and window scores.
+
 Usage:
     .venv-ml\\Scripts\\python.exe aggregate_runs.py RUN_NAME [RUN_NAME ...] [--overwrite]
         [--allow-config-diff micro_batch,grad_accum] [--run-cache-manifest RUN:FOLD=PATH ...]
@@ -409,6 +418,84 @@ def tta_study(args: argparse.Namespace, clips: list[str], allow: set[str],
     print(f"wrote {out_dir / 'tta_report.txt'}")
 
 
+ENSEMBLE_KEYS = ["rgb_path", "window_idx", "t_centre"]
+
+
+def window_ensemble(args: argparse.Namespace) -> None:
+    """--window-ensemble: see module doc. No label is read (except t_star of the synthetic --check-against file)."""
+    if len(args.runs) != 1:
+        fail("--window-ensemble takes exactly one run")
+    name = args.runs[0]
+    if args.scores_dir is None or args.postproc_out is None or args.smooth is None or args.tta != "flip":
+        fail("--window-ensemble needs --scores-dir, --postproc-out, --smooth, --interp and --tta flip")
+    folds = [int(f) for f in args.ensemble_folds.split(",")]
+    if not folds or set(folds) - set(FOLDS) or len(set(folds)) != len(folds):
+        fail(f"--ensemble-folds {args.ensemble_folds!r}: distinct values from 0, 1, 2")
+    excl = {json.loads((RUNS_DIR / name / f"fold_{k}" / "config.json").read_text(encoding="utf-8"))["config"]
+            ["confidence_exclude"] for k in folds}
+    if len(excl) != 1:
+        fail(f"{name}: confidence_exclude differs between folds")
+    exclude = excl.pop()
+    keys, cols, lines = None, {}, []
+    for k in folds:
+        d = args.scores_dir / f"fold_{k}"
+        o = pd.read_csv(d / "window_scores_orig.csv")
+        f = pd.read_csv(d / "window_scores_hflip.csv")
+        if not (o[ENSEMBLE_KEYS].equals(f[ENSEMBLE_KEYS])):
+            fail(f"{d}: orig and hflip window scores cover different windows")
+        if keys is None:
+            keys = o[ENSEMBLE_KEYS]
+        elif not o[ENSEMBLE_KEYS].equals(keys):
+            fail(f"{d}: windows differ from fold {folds[0]}")
+        # flip TTA of one model, exactly as window_scores(..., "flip")
+        cols[f"score_fold{k}"] = (o["score"].astype(np.float32).astype(float)
+                                  + f["score"].astype(np.float32).astype(float)) / 2
+        rep = d / "scoring_report.txt"
+        lines += ["  " + x for x in rep.read_text(encoding="utf-8").splitlines()] if rep.is_file() else []
+    ens = keys.assign(**cols)
+    ens["score"] = ens[list(cols)].mean(axis=1) if len(cols) > 1 else ens[next(iter(cols))]
+    pred = peak_t_hat(ens[["rgb_path", "t_centre", "score"]], args.smooth, args.interp, exclude)
+    pred = pred.merge(ens.groupby("rgb_path").size().rename("n_windows").reset_index(), on="rgb_path",
+                      validate="one_to_one")
+    out = args.postproc_out
+    out.mkdir(parents=True, exist_ok=True)
+    head = [f"Window ensemble: run {name}, fold models {folds}; scores {args.scores_dir}; flip TTA per model (mean of "
+            f"orig and hflip), mean over models, smoothing {args.smooth} + {args.interp}, confidence_exclude {exclude}; "
+            f"{len(ens)} windows, {len(pred)} clips", "scoring reports:"] + lines
+    checks = []
+    if args.check_scores_dir is not None:
+        for k in folds:
+            for nm, ref_nm in (("orig", "val_window_scores_orig.csv"), ("hflip", "val_window_scores_hflip.csv")):
+                mine = pd.read_csv(args.scores_dir / f"fold_{k}" / f"window_scores_{nm}.csv")
+                ref = pd.read_csv(args.check_scores_dir / f"fold_{k}" / ref_nm)
+                m = mine.merge(ref[["rgb_path", "window_idx", "t_centre", "score"]], on=["rgb_path", "window_idx"],
+                               suffixes=("", "_ref"), validate="one_to_one")
+                if len(m) != len(mine) or len(m) != len(ref):
+                    fail(f"fold {k} {nm}: windows differ from {args.check_scores_dir}")
+                checks.append(f"fold {k} {nm} window scores vs {args.check_scores_dir}: {len(m)} windows, t_centre max "
+                              f"|diff| {float((m['t_centre'] - m['t_centre_ref']).abs().max()):.1e}; score max |diff| "
+                              f"{float((m['score'] - m['score_ref']).abs().max()):.2e}, "
+                              f"{int((m['score'].astype(np.float32) != m['score_ref'].astype(np.float32)).sum())} differ")
+    if args.check_against is not None:
+        ref = pd.read_csv(args.check_against)
+        ref = ref[ref["rgb_path"].isin(set(pred["rgb_path"]))]
+        m = pred.merge(ref[["rgb_path", "t_hat", "confidence", "t_star"]], on="rgb_path", suffixes=("", "_ref"),
+                       validate="one_to_one")
+        if len(m) != len(pred):
+            fail(f"{args.check_against} does not cover all {len(pred)} clips")
+        t_new, t_ref = (float(temporal(m[c], m["t_star"], 1.0)) for c in ("t_hat", "t_hat_ref"))
+        checks.append(f"clip predictions vs {args.check_against}: t_hat equal in {int((m['t_hat'] == m['t_hat_ref']).sum())}"
+                      f"/{len(m)} clips (max |diff| {float((m['t_hat'] - m['t_hat_ref']).abs().max()):.1e} s); T@1 "
+                      f"{t_new:.4f} vs {t_ref:.4f} (diff {t_new - t_ref:+.4f}); confidence max |diff| "
+                      f"{float((m['confidence'] - m['confidence_ref']).abs().max()):.1e}")
+    text = "\n".join(head + ([""] + ["CHECKS:"] + [f"  {c}" for c in checks] if checks else [])) + "\n"
+    pred.to_csv(out / "clip_predictions.csv", index=False)
+    ens.to_csv(out / "ensemble_window_scores.csv", index=False)
+    (out / "ensemble_report.txt").write_text(text, encoding="utf-8")
+    print(text)
+    print(f"wrote {out / 'clip_predictions.csv'}, ensemble_window_scores.csv, ensemble_report.txt")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("runs", nargs="+", help="run names under runs/")
@@ -431,7 +518,17 @@ def main() -> None:
     ap.add_argument("--tta", choices=TTAS, default="none", help="flip = mean of orig and hflip scores (needs --scores-dir)")
     ap.add_argument("--tta-study", action="store_true", help="no TTA vs flip TTA for the first run; no summary files")
     ap.add_argument("--tta-min-gain", type=float, default=0.002)
+    ap.add_argument("--window-ensemble", action="store_true",
+                    help="real-test path: TTA + fold-model ensemble + post-processing (see module doc); no summary files")
+    ap.add_argument("--ensemble-folds", default="0,1,2")
+    ap.add_argument("--check-against", type=Path, default=None, help="with --window-ensemble, synthetic check only")
+    ap.add_argument("--check-scores-dir", type=Path, default=None, help="with --window-ensemble, synthetic check only")
     args = ap.parse_args()
+    if args.window_ensemble:
+        window_ensemble(args)
+        return
+    if args.check_against or args.check_scores_dir:
+        fail("--check-against / --check-scores-dir only apply with --window-ensemble")
     if (args.postproc_grid is None and not args.tta_study and (OUT_CSV.exists() or OUT_MD.exists())
             and not args.overwrite):
         fail(f"{OUT_CSV.name} / {OUT_MD.name} already exist; use --overwrite")

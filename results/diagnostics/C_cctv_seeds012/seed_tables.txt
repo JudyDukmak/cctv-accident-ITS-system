@@ -1,0 +1,60 @@
+C_cctv over seeds 0, 1, 2: synthetic 3-fold CV, pooled out-of-fold over 2211 clips; validation only, no real data.
+(a) default = smoothing 3, no interpolation, no TTA: the saved best-check predictions (training GPU; = metrics.csv and results/classifier_summary.csv)
+(b) frozen = smoothing 3 + parabola + flip TTA (RUNS.md 'Post-processing'), best.pt scored on the RTX 5060
+(a) vs results/classifier_summary.csv, 12 rows: max |diff| 0.0e+00
+
+1. per seed and fold
+seed                        0      1      2      0      1      2      0      1      2         0         1         2
+                        T@0.5  T@0.5  T@0.5    T@1    T@1    T@1    T@2    T@2    T@2 within_2s within_2s within_2s
+post-processing scope                                                                                              
+(a) default     fold 0 0.4734 0.4571 0.4605 0.6032 0.5840 0.5869 0.6869 0.6676 0.6701    0.6857    0.6623    0.6675
+                fold 1 0.4878 0.4846 0.5071 0.5986 0.6099 0.6121 0.6807 0.6980 0.6892    0.6623    0.6848    0.6715
+                fold 2 0.7453 0.7394 0.7601 0.8564 0.8528 0.8699 0.9032 0.9028 0.9175    0.9096    0.9111    0.9257
+                pooled 0.5627 0.5541 0.5694 0.6802 0.6762 0.6833 0.7519 0.7509 0.7534    0.7472    0.7472    0.7490
+(b) frozen      fold 0 0.5021 0.4756 0.4813 0.6241 0.5951 0.5938 0.7044 0.6734 0.6720    0.6987    0.6675    0.6636
+                fold 1 0.4937 0.5043 0.5275 0.5941 0.6202 0.6241 0.6758 0.7014 0.6974    0.6543    0.6874    0.6781
+                fold 2 0.7710 0.7476 0.7814 0.8767 0.8584 0.8779 0.9191 0.9039 0.9205    0.9271    0.9111    0.9242
+                pooled 0.5826 0.5698 0.5902 0.6922 0.6854 0.6923 0.7612 0.7545 0.7578    0.7544    0.7499    0.7494
+
+2. mean +- sample std over seeds (ddof 1, n 3)
+post-processing  scope            T@0.5              T@1              T@2        within_2s
+    (a) default fold 0 0.4637 +- 0.0086 0.5914 +- 0.0104 0.6748 +- 0.0105 0.6719 +- 0.0123
+    (a) default fold 1 0.4932 +- 0.0122 0.6069 +- 0.0073 0.6893 +- 0.0086 0.6728 +- 0.0113
+    (a) default fold 2 0.7483 +- 0.0107 0.8597 +- 0.0090 0.9078 +- 0.0084 0.9155 +- 0.0089
+    (a) default pooled 0.5620 +- 0.0077 0.6799 +- 0.0036 0.7521 +- 0.0012 0.7478 +- 0.0010
+     (b) frozen fold 0 0.4863 +- 0.0140 0.6043 +- 0.0171 0.6833 +- 0.0183 0.6766 +- 0.0192
+     (b) frozen fold 1 0.5085 +- 0.0173 0.6128 +- 0.0163 0.6915 +- 0.0138 0.6733 +- 0.0171
+     (b) frozen fold 2 0.7667 +- 0.0173 0.8710 +- 0.0110 0.9145 +- 0.0092 0.9208 +- 0.0085
+     (b) frozen pooled 0.5809 +- 0.0103 0.6900 +- 0.0040 0.7578 +- 0.0034 0.7512 +- 0.0028
+
+3. independent check of the frozen post-processing on seeds 1 and 2 (not used for the choice)
+ seed  scope  dT@0.5 (b)-(a)  dT@1 (b)-(a)  dT@2 (b)-(a)  dwithin_2s (b)-(a)  dT@1 same GPU: (b) - 3+none no TTA  dT@1 parabola part (5060)  dT@1 flip part (5060)
+    1 fold 0         +0.0184       +0.0111       +0.0059             +0.0052                             +0.0111                    +0.0032                +0.0079
+    1 fold 1         +0.0197       +0.0103       +0.0035             +0.0026                             +0.0103                    +0.0064                +0.0039
+    1 fold 2         +0.0082       +0.0056       +0.0011             +0.0000                             +0.0056                    -0.0009                +0.0065
+    1 pooled         +0.0157       +0.0091       +0.0036             +0.0027                             +0.0091                    +0.0030                +0.0061
+    2 fold 0         +0.0208       +0.0069       +0.0019             -0.0039                             +0.0069                    +0.0071                -0.0003
+    2 fold 1         +0.0203       +0.0120       +0.0082             +0.0066                             +0.0133                    +0.0060                +0.0073
+    2 fold 2         +0.0213       +0.0080       +0.0030             -0.0015                             +0.0080                    +0.0026                +0.0054
+    2 pooled         +0.0208       +0.0090       +0.0044             +0.0005                             +0.0094                    +0.0054                +0.0041
+pooled gain (b)-(a) positive on both seeds: T@0.5 yes, T@1 yes, T@2 yes, within_2s yes
+per-fold T@1 gain (b)-(a), seeds 1 and 2: 6 of 6 positive
+
+4. seed range of best-check T@1 per fold, (a) default, next to C_cctv - C_v2 (seed 0)
+  fold  seed 0  seed 1  seed 2    min    max  range (max-min)  sample std  C_cctv - C_v2 (seed 0)  |diff| < range
+fold 0  0.6032  0.5840  0.5869 0.5840 0.6032           0.0193      0.0104                  0.0200           False
+fold 1  0.5986  0.6099  0.6121 0.5986 0.6121           0.0135      0.0073                 -0.0170           False
+fold 2  0.8564  0.8528  0.8699 0.8528 0.8699           0.0171      0.0090                  0.0050            True
+
+5. Spearman rho(confidence, |error|), (b) frozen (no tau chosen)
+scope  fold 0  fold 1  fold 2  pooled
+seed                                 
+0     -0.4734 -0.2556 -0.1189 -0.3811
+1     -0.4405 -0.3004 -0.3234 -0.4601
+2     -0.4160 -0.2812 -0.2196 -0.4186
+for reference, (a) default
+scope  fold 0  fold 1  fold 2  pooled
+seed                                 
+0     -0.4609 -0.2430 -0.1529 -0.3765
+1     -0.4396 -0.2851 -0.2994 -0.4401
+2     -0.4085 -0.2864 -0.2071 -0.3983

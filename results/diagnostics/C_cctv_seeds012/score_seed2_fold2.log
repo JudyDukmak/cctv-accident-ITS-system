@@ -1,0 +1,17 @@
+﻿.venv-ml\Scripts\python.exe : W1112 08:01:17.106000 22140 
+.venv-ml\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently 
+not supported in Windows or MacOs.
+At line:1 char:901
++ ... e; break }; .venv-ml\Scripts\python.exe analyse_predictions.py --run  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (W1112 08:01:17....ndows or MacOs.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Loading weights:   0%|          | 0/186 [00:00<?, ?it/s]
+Loading weights:  17%|█▋        | 31/186 [00:00<00:00, 300.45it/s]
+Loading weights: 100%|██████████| 186/186 [00:00<00:00, 967.02it/s]
+run C_cctv_seed2 fold 2: best.pt (check 12, update 8060, val T@1 logged 0.8699); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 19701 windows, 686 clips; val batch 16, workers 4
+orig: classifier time 389.5 s = 567.8 ms per clip, 19.77 ms per window; wall time incl. data loading 398.7 s (49.4 windows/s)
+reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 2.98e-08 (0 of 19701 differ); t_hat equal in 686/686 clips; T@1 0.8699 vs saved 0.8699 (diff +0.0000); logged 0.8699
+hflip: classifier time 397.2 s = 579.0 ms per clip, 20.16 ms per window; wall time incl. data loading 398.5 s (49.4 windows/s)

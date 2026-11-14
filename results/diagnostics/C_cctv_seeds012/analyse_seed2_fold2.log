@@ -1,0 +1,192 @@
+﻿.venv-ml\Scripts\python.exe : W1112 07:54:18.421000 8832 
+.venv-ml\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently 
+not supported in Windows or MacOs.
+At line:1 char:653
++ ... st", $m) }; .venv-ml\Scripts\python.exe analyse_predictions.py --run  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (W1112 07:54:18....ndows or MacOs.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Loading weights:   0%|          | 0/186 [00:00<?, ?it/s]
+Loading weights:   8%|▊         | 14/186 [00:00<00:01, 123.22it/s]
+Loading weights:  26%|██▌       | 48/186 [00:00<00:00, 243.43it/s]
+Loading weights: 100%|██████████| 186/186 [00:00<00:00, 753.65it/s]
+scored 19701 windows with step_latest.pt (state epoch 3, global step 11780); val loss 0.4831; T@1 0.8180; OOM fallbacks 0
+Prediction diagnostics: run C_cctv_seed2, fold 2 (synthetic validation, 686 clips, 19701 windows)
+config videomae_v2_C_cctv.json (sha256 c890b4800516...), seed 2; best check 12 = val_*_best.csv from the run; last check 18 (update 11780) = step_latest.pt (global step 11780), scored in this run
+
+checks:
+  check 12 (best): 19701 windows, 686 clips; peaks recomputed from the window-score CSV match the clip predictions; tables use the stored clip predictions; T@1 0.8699 vs metrics.csv 0.8699 (diff +0.0000)
+  check 18 (last): 19701 windows, 686 clips; peaks recomputed from the window-score CSV match the clip predictions; tables use the stored clip predictions; T@1 0.8180 vs metrics.csv 0.8180 (diff +0.0000)
+
+=== 2. overall, with the naive reference t_hat = duration / 2 ===
+         predictor  n_clips  T@0.5    T@1    T@2  within_2s  median_err_s  mean_err_s
+   check 12 (best)      686 0.7601 0.8699 0.9175     0.9257        0.1875      0.0800
+   check 18 (last)      686 0.7052 0.8180 0.8733     0.8805        0.1875      0.0115
+naive duration / 2      686 0.1335 0.2416 0.4210     0.3615       -0.1750      0.5205
+
+=== 3. check 12 (best) ===
+
+3a. signed error
+signed error t_hat - t_star (s), 1 s bins; values below -10 / at or above +15 are counted in the first / last bin (2 / 0 clips)
+     bin_s  clips  share
+ [-10, -9)      2  0.003
+  [-9, -8)      2  0.003
+  [-8, -7)      0  0.000
+  [-7, -6)      6  0.009
+  [-6, -5)     10  0.015
+  [-5, -4)      6  0.009
+  [-4, -3)      6  0.009
+  [-3, -2)      4  0.006
+  [-2, -1)      3  0.004
+  [-1, +0)    152  0.222
+  [+0, +1)    469  0.684
+  [+1, +2)     11  0.016
+  [+2, +3)      3  0.004
+  [+3, +4)      1  0.001
+  [+4, +5)      0  0.000
+  [+5, +6)      3  0.004
+  [+6, +7)      0  0.000
+  [+7, +8)      1  0.001
+  [+8, +9)      1  0.001
+ [+9, +10)      2  0.003
+[+10, +11)      1  0.001
+[+11, +12)      0  0.000
+[+12, +13)      0  0.000
+[+13, +14)      2  0.003
+[+14, +15)      1  0.001
+
+percentiles: p5 -2.387, p25 -0.013, p50 +0.188, p75 +0.387, p95 +0.787
+
+shares:
+ early > 2 s  within +-2 s  late 2-5 s  late > 5 s
+       0.052         0.926       0.006       0.016
+
+3b. by collision type
+    ctype   n  within_2s  median_err_s   T@1
+  head-on 212      0.943         0.138 0.903
+ rear-end 272      0.919         0.138 0.878
+sideswipe 159      0.893         0.338 0.798
+   t-bone  43      1.000         0.388 0.920
+
+3b. by scenario_id
+     scenario_id   n  within_2s  median_err_s   T@1
+  Town03_head-on 212      0.943         0.138 0.903
+Town06_sideswipe 159      0.893         0.338 0.798
+ Town07_rear-end 272      0.919         0.138 0.878
+   Town07_t-bone  43      1.000         0.388 0.920
+
+3b. by t_star tercile
+    t_star_tercile   n  within_2s  median_err_s   T@1
+ T1 t* 1.05-4.95 s 230      0.957         0.138 0.920
+ T2 t* 4.95-8.75 s 228      0.930         0.188 0.874
+T3 t* 8.75-17.65 s 228      0.890         0.238 0.815
+
+3c. mean window score by phase (aftermath phases by window start relative to t*)
+                                 phase  windows  mean_score  median_score  share_score>0.5
+                       pre (label_B 0)     6700       0.063         0.016            0.027
+gap (label_B -1, ends < 1 s before t*)     1354       0.168         0.068            0.102
+                      near (label_B 1)     2603       0.647         0.850            0.655
+      aftermath: starts 0-2 s after t*     2468       0.161         0.056            0.098
+      aftermath: starts 2-5 s after t*     2663       0.147         0.075            0.068
+      aftermath: starts > 5 s after t*     3913       0.164         0.090            0.074
+
+3d. late peak
+clips with windows both within t* +-1 s and after t* + 2 s (by window centre): 599 of 686
+max smoothed score after t* + 2 s > max within t* +- 1 s: 21 clips = 0.035 of those 599
+
+=== 3. check 18 (last) ===
+
+3a. signed error
+signed error t_hat - t_star (s), 1 s bins; values below -10 / at or above +15 are counted in the first / last bin (5 / 1 clips)
+     bin_s  clips  share
+ [-10, -9)      7  0.010
+  [-9, -8)      1  0.001
+  [-8, -7)      2  0.003
+  [-7, -6)     11  0.016
+  [-6, -5)     12  0.017
+  [-5, -4)      9  0.013
+  [-4, -3)      6  0.009
+  [-3, -2)      8  0.012
+  [-2, -1)      7  0.010
+  [-1, +0)    150  0.219
+  [+0, +1)    434  0.633
+  [+1, +2)     13  0.019
+  [+2, +3)      2  0.003
+  [+3, +4)      3  0.004
+  [+4, +5)      3  0.004
+  [+5, +6)      1  0.001
+  [+6, +7)      5  0.007
+  [+7, +8)      3  0.004
+  [+8, +9)      0  0.000
+ [+9, +10)      2  0.003
+[+10, +11)      0  0.000
+[+11, +12)      0  0.000
+[+12, +13)      2  0.003
+[+13, +14)      4  0.006
+[+14, +15)      1  0.001
+
+percentiles: p5 -4.850, p25 -0.013, p50 +0.188, p75 +0.387, p95 +1.188
+
+shares:
+ early > 2 s  within +-2 s  late 2-5 s  late > 5 s
+       0.082         0.880       0.012       0.026
+
+3b. by collision type
+    ctype   n  within_2s  median_err_s   T@1
+  head-on 212      0.906         0.087 0.861
+ rear-end 272      0.901         0.163 0.852
+sideswipe 159      0.780         0.288 0.671
+   t-bone  43      1.000         0.337 0.931
+
+3b. by scenario_id
+     scenario_id   n  within_2s  median_err_s   T@1
+  Town03_head-on 212      0.906         0.087 0.861
+Town06_sideswipe 159      0.780         0.288 0.671
+ Town07_rear-end 272      0.901         0.163 0.852
+   Town07_t-bone  43      1.000         0.337 0.931
+
+3b. by t_star tercile
+    t_star_tercile   n  within_2s  median_err_s   T@1
+ T1 t* 1.05-4.95 s 230      0.917         0.138 0.872
+ T2 t* 4.95-8.75 s 228      0.904         0.188 0.846
+T3 t* 8.75-17.65 s 228      0.820         0.238 0.735
+
+3c. mean window score by phase (aftermath phases by window start relative to t*)
+                                 phase  windows  mean_score  median_score  share_score>0.5
+                       pre (label_B 0)     6700       0.042         0.004            0.023
+gap (label_B -1, ends < 1 s before t*)     1354       0.124         0.023            0.086
+                      near (label_B 1)     2603       0.561         0.693            0.562
+      aftermath: starts 0-2 s after t*     2468       0.109         0.014            0.077
+      aftermath: starts 2-5 s after t*     2663       0.081         0.015            0.044
+      aftermath: starts > 5 s after t*     3913       0.082         0.016            0.047
+
+3d. late peak
+clips with windows both within t* +-1 s and after t* + 2 s (by window centre): 599 of 686
+max smoothed score after t* + 2 s > max within t* +- 1 s: 41 clips = 0.068 of those 599
+
+=== 4. check 12 (best) vs check 18 (last), per clip ===
+share of clips whose t_hat moved:
+ later  earlier  same  median shift of moved clips (s)
+ 0.095    0.102 0.803                           -0.500
+
+T@1 by scenario:
+     scenario_id       n  T@1 check 12 (best)  T@1 check 18 (last)  change
+  Town03_head-on 212.000                0.903                0.861  -0.042
+Town06_sideswipe 159.000                0.798                0.671  -0.127
+ Town07_rear-end 272.000                0.878                0.852  -0.026
+   Town07_t-bone  43.000                0.920                0.931   0.011
+
+=== 5. score-curve plots (blue: check 12 (best), red: check 18 (last)) ===
+  largest error: curve_worst_Town03_head-on_sunset_33.png  (t* 3.25, err check 12 (best) +0.19, check 18 (last) +15.19)
+  largest error: curve_worst_Town03_head-on_night_14.png  (t* 2.75, err check 12 (best) +0.19, check 18 (last) +13.69)
+  largest error: curve_worst_Town03_head-on_wet_09.png  (t* 3.45, err check 12 (best) +13.49, check 18 (last) +13.49)
+  largest error: curve_worst_Town03_head-on_clear_23.png  (t* 3.05, err check 12 (best) +0.39, check 18 (last) +13.39)
+  largest error: curve_worst_Town03_head-on_night_36.png  (t* 4.90, err check 12 (best) +0.54, check 18 (last) +13.04)
+  largest error: curve_worst_Town03_head-on_clear_22.png  (t* 4.55, err check 12 (best) +13.39, check 18 (last) +12.89)
+  error near 0: curve_best_Town07_rear-end_clear_03.png  (t* 9.95, err check 12 (best) -0.01, check 18 (last) -0.01)
+  error near 0: curve_best_Town07_rear-end_clear_23.png  (t* 9.95, err check 12 (best) -0.01, check 18 (last) -0.01)
+  error near 0: curve_best_Town07_rear-end_night_24.png  (t* 8.45, err check 12 (best) -0.01, check 18 (last) -0.01)
+
+wrote C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\results\diagnostics\C_cctv_seed2_fold2\report.txt

@@ -1,0 +1,4 @@
+run C_cctv_seed1 fold 0: best.pt (check 2, update 1860, val T@1 logged 0.5840); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 25988 windows, 770 clips; val batch 16, workers 4
+orig: classifier time 517.1 s = 671.6 ms per clip, 19.90 ms per window; wall time incl. data loading 527.4 s (49.3 windows/s)
+reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 2.98e-08 (0 of 25988 differ); t_hat equal in 770/770 clips; T@1 0.5840 vs saved 0.5840 (diff +0.0000); logged 0.5840
+hflip: classifier time 521.3 s = 677.0 ms per clip, 20.06 ms per window; wall time incl. data loading 523.6 s (49.6 windows/s)

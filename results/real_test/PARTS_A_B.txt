@@ -1,0 +1,23 @@
+Real test of the window classifier: Parts A and B (2026-11-14/15). No real label read; no training; runs\ read-only
+(0 files under runs\ modified). Part C NOT started: waiting for confirmation. RUN_ONCE.txt does not exist yet.
+
+Part A, real frame cache (CPU): partA_cache\ (command.txt, run.log, cache_summary.txt, cache_manifest.json, real_clips.csv)
+  build_frame_cache.py --real --report-dir results\real_test\partA_cache --workers 8
+  cache: cache\frames224_real_v1\ (gitignored), real_windows.csv sha256 0baa1fbaf1e9770d5792e17b046452b116f8f30d2bd1f8cec446671867d7cda6
+  Columns read from metadata-real.csv: path, no_frames, duration, height, width; real_test_set.csv: path. Both hashes = manifest.
+  Window rule check: the real window function reproduces synthetic_windows.csv exactly (2211 clips, 70730 windows).
+  Grid formula: make_windows.frame_index (round(t*fps, 9) then floor(+0.5)); the unrounded synthetic cache formula would
+  differ in 14 real clips / 94 grid positions (by one frame) and break the window = grid-slice check. Same on synthetic.
+  OPEN (needs a decision before Part C):
+   - 3 clips shorter than one window (no prediction): 3gY2nZW6ZCM_00 (in the 400), MsQns-Oy-hk_02, jYai-crKZx8_00.
+   - 3 clips whose metadata no_frames exceeds the decodable frames (PyAV = OpenCV = container): LZY4HepPGu0_00 274 vs 240,
+     YQxqeP2Q_-M_00 352 vs 348, lgU3T6kySLw_00 181 vs 180; none in the 400; not cached (cache complete = false).
+
+Part B, code check on synthetic (GPU, RTX 5060): partB_check\ (commands_*.txt, score_fold*.log, ensemble_fold*.log,
+  scores_C_cctv_seed0_fold{0,2}\, ensemble_C_cctv_seed0_fold{0,2}\)
+  analyse_predictions.py --run C_cctv_seed0 --score-windows synthetic-val --folds K --out-dir ...
+  aggregate_runs.py C_cctv_seed0 --window-ensemble --ensemble-folds K --tta flip --smooth 3 --interp parabola
+      --check-against results\diagnostics\C_cctv_seeds012\seed0_frozen\tta_clip_predictions_flip.csv
+      --check-scores-dir results\diagnostics\postproc_C_cctv_seed0\tta
+  fold 0: window scores orig / hflip 0 of 25988 differ; t_hat equal 770/770; T@1 0.6241 = 0.6241
+  fold 2: window scores orig / hflip 0 of 19701 differ; t_hat equal 686/686; T@1 0.8767 = 0.8767

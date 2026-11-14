@@ -1,0 +1,20 @@
+﻿.venv-ml\Scripts\python.exe analyse_predictions.py --run C_v2_seed0 --fold 1 --score-best --hflip --out-dir results\diagnostics\C_v2_seed0_frozen\scores --run-cache-manifest results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json
+python.exe : W1112 17:02:55.770000 14224 
+.venv-ml\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently 
+not supported in Windows or MacOs.
+At line:1 char:855
++ ... old$k.log"; & .venv-ml\Scripts\python.exe @a *>> "$D\score_fold$k.log ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (W1112 17:02:55....ndows or MacOs.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+documented deviation: cache rebuilt on another machine, core fields identical (run manifest results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json sha256 c76c46e6a09e... = recorded; current 4615b3475fb9...; differs only in created_at, skipped_this_run, written_this_run)
+documented deviation: cache rebuilt on another machine, core fields identical (run manifest results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json sha256 c76c46e6a09e... = recorded; current 4615b3475fb9...; differs only in created_at, skipped_this_run, written_this_run)
+
+Loading weights:   0%|          | 0/186 [00:00<?, ?it/s]
+Loading weights:  21%|██        | 39/186 [00:00<00:00, 345.33it/s]
+Loading weights: 100%|██████████| 186/186 [00:00<00:00, 912.16it/s]
+run C_v2_seed0 fold 1: best.pt (check 2, update 1860, val T@1 logged 0.6151); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 25041 windows, 755 clips; val batch 16, workers 4
+orig: classifier time 463.0 s = 613.3 ms per clip, 18.49 ms per window; wall time incl. data loading 472.3 s (53.0 windows/s)
+reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 3.20e-02 (14789 of 25041 differ); t_hat equal in 746/755 clips; T@1 0.6168 vs saved 0.6151 (diff +0.0017); logged 0.6151
+hflip: classifier time 460.7 s = 610.2 ms per clip, 18.40 ms per window; wall time incl. data loading 462.0 s (54.2 windows/s)

@@ -1,0 +1,13 @@
+﻿Window ensemble: run C_cctv_seed0, fold models [2]; scores results\real_test\partB_check\scores_C_cctv_seed0_fold2; flip TTA per model (mean of orig and hflip), mean over models, smoothing 3 + parabola, confidence_exclude 2; 19701 windows, 686 clips
+scoring reports:
+  synthetic-val window scoring: run C_cctv_seed0 fold 2: best.pt (check 6, update 4340, val T@1 logged 0.8564); config videomae_v2_C_cctv.json (c890b480); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 19701 windows, 686 clips; val batch 16, workers 4
+  windows: synthetic validation windows of fold 2 rebuilt with windows_table(), equal to the window labels (19701 windows); cache C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\cache\frames224_v1
+  orig: classifier time 367.9 s = 536.2 ms per clip, 18.67 ms per window; wall time incl. data loading 376.8 s (52.3 windows/s)
+  hflip: classifier time 365.6 s = 533.0 ms per clip, 18.56 ms per window; wall time incl. data loading 366.7 s (53.7 windows/s)
+
+CHECKS:
+  fold 2 orig window scores vs results\diagnostics\postproc_C_cctv_seed0\tta: 19701 windows, t_centre max |diff| 0.0e+00; score max |diff| 0.00e+00, 0 differ
+  fold 2 hflip window scores vs results\diagnostics\postproc_C_cctv_seed0\tta: 19701 windows, t_centre max |diff| 0.0e+00; score max |diff| 0.00e+00, 0 differ
+  clip predictions vs results\diagnostics\C_cctv_seeds012\seed0_frozen\tta_clip_predictions_flip.csv: t_hat equal in 686/686 clips (max |diff| 0.0e+00 s); T@1 0.8767 vs 0.8767 (diff +0.0000); confidence max |diff| 0.0e+00
+
+wrote results\real_test\partB_check\ensemble_C_cctv_seed0_fold2\clip_predictions.csv, ensemble_window_scores.csv, ensemble_report.txt

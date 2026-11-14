@@ -1,0 +1,20 @@
+﻿.venv-ml\Scripts\python.exe : W1112 06:23:56.756000 13880 
+.venv-ml\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently 
+not supported in Windows or MacOs.
+At line:1 char:901
++ ... e; break }; .venv-ml\Scripts\python.exe analyse_predictions.py --run  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (W1112 06:23:56....ndows or MacOs.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+documented deviation: cache rebuilt on another machine, core fields identical (run manifest results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json sha256 c76c46e6a09e... = recorded; current 4615b3475fb9...; differs only in created_at, skipped_this_run, written_this_run)
+documented deviation: cache rebuilt on another machine, core fields identical (run manifest results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json sha256 c76c46e6a09e... = recorded; current 4615b3475fb9...; differs only in created_at, skipped_this_run, written_this_run)
+
+Loading weights:   0%|          | 0/186 [00:00<?, ?it/s]
+Loading weights:  23%|██▎       | 43/186 [00:00<00:00, 424.61it/s]
+Loading weights:  48%|████▊     | 89/186 [00:00<00:00, 424.55it/s]
+Loading weights: 100%|██████████| 186/186 [00:00<00:00, 827.18it/s]
+run C_cctv_seed1 fold 1: best.pt (check 2, update 1860, val T@1 logged 0.6099); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 25041 windows, 755 clips; val batch 16, workers 4
+orig: classifier time 498.7 s = 660.6 ms per clip, 19.92 ms per window; wall time incl. data loading 508.1 s (49.3 windows/s)
+reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 1.79e-02 (12460 of 25041 differ); t_hat equal in 752/755 clips; T@1 0.6099 vs saved 0.6099 (diff +0.0000); logged 0.6099
+hflip: classifier time 504.2 s = 667.8 ms per clip, 20.13 ms per window; wall time incl. data loading 506.1 s (49.5 windows/s)

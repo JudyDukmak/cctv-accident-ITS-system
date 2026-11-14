@@ -1,0 +1,23 @@
+﻿.venv-ml\Scripts\python.exe : W1115 00:15:27.472000 11676 
+.venv-ml\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently 
+not supported in Windows or MacOs.
+At line:1 char:888
++ ... v,noheader; .venv-ml\Scripts\python.exe analyse_predictions.py --run  ...
++                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSpecified: (W1115 00:15:27....ndows or MacOs.:String) [], RemoteException
+    + FullyQualifiedErrorId : NativeCommandError
+ 
+
+Loading weights:   0%|          | 0/186 [00:00<?, ?it/s]
+Loading weights:  17%|█▋        | 31/186 [00:00<00:00, 300.97it/s]
+Loading weights:  34%|███▍      | 63/186 [00:00<00:00, 298.71it/s]
+Loading weights: 100%|██████████| 186/186 [00:00<00:00, 603.96it/s]
+synthetic-val window scoring: run C_cctv_seed0 fold 0: best.pt (check 2, update 1860, val T@1 logged 0.6032); config videomae_v2_C_cctv.json (c890b480); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 25988 windows, 770 clips; val batch 16, workers 4
+   fold 0 orig: batch 500/1625, 2.7 min
+   fold 0 orig: batch 1000/1625, 5.2 min
+   fold 0 orig: batch 1500/1625, 7.7 min
+orig: classifier time 486.8 s = 632.2 ms per clip, 18.73 ms per window; wall time incl. data loading 496.9 s (52.3 windows/s)
+   fold 0 hflip: batch 500/1625, 2.5 min
+   fold 0 hflip: batch 1000/1625, 5.0 min
+   fold 0 hflip: batch 1500/1625, 7.5 min
+hflip: classifier time 484.6 s = 629.3 ms per clip, 18.65 ms per window; wall time incl. data loading 485.9 s (53.5 windows/s)

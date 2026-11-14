@@ -1,0 +1,19 @@
+C_v2_seed0 with the frozen post-processing (2026-11-12), from cctv-accident-ITS-system\, training environment.
+Reporting only (Ablation 1 decision unchanged). GPU (RTX 5060) only for scoring; no training; no real data; runs\ read-only.
+
+1. Scoring of best.pt, original and all-frames-flipped windows (one log per fold; first line = command):
+   .venv-ml\Scripts\python.exe analyse_predictions.py --run C_v2_seed0 --fold <k> --score-best --hflip --out-dir results\diagnostics\C_v2_seed0_frozen\scores
+       (fold 1 adds --run-cache-manifest results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json)
+   -> score_fold<k>.log, scores\fold_<k>\ (val_window_scores_orig.csv, val_window_scores_hflip.csv, scoring_report.txt)
+
+2. Aggregation (CPU; first line of each log):
+   aggregate_runs.py C_v2_seed0 --tta-study --scores-dir ...\scores --smooth 3 --interp parabola --postproc-out ...\frozen ...       -> agg_frozen.log
+   aggregate_runs.py C_v2_seed0 --tta-study --scores-dir ...\scores --smooth 3 --interp none --postproc-out ...\smooth3_none ...     -> agg_smooth3_none.log
+   --tta-study is used instead of the plain "--tta flip" call because the plain call always rewrites
+   results\classifier_summary.{csv,md}; both use the same recomputed_preds(..., tta="flip") code.
+   NOTE: the "DECISION: adopt flip TTA" line printed by --tta-study is NOT a decision (post-processing frozen on C_cctv_seed0).
+
+3. Table: scratchpad helper ablation_table.py (reads only the tta_table.csv files of this folder and of
+   results\diagnostics\C_cctv_seeds012\seed<s>_{frozen,smooth3_none}\) -> ablation_table.txt, ablation_table.csv
+   (a) default = arm "saved best CSV (training GPU), no TTA" of smooth3_none (= metrics.csv / classifier_summary)
+   (b) frozen  = arm "flip TTA" of frozen

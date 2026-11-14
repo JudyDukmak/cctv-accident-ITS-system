@@ -1,0 +1,4 @@
+run C_v2_seed0 fold 1: best.pt (check 2, update 1860, val T@1 logged 0.6151); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 25041 windows, 755 clips; val batch 16, workers 4
+orig: classifier time 463.0 s = 613.3 ms per clip, 18.49 ms per window; wall time incl. data loading 472.3 s (53.0 windows/s)
+reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 3.20e-02 (14789 of 25041 differ); t_hat equal in 746/755 clips; T@1 0.6168 vs saved 0.6151 (diff +0.0017); logged 0.6151
+hflip: classifier time 460.7 s = 610.2 ms per clip, 18.40 ms per window; wall time incl. data loading 462.0 s (54.2 windows/s)

@@ -1,0 +1,47 @@
+Flip test-time augmentation, C_v2_seed0, synthetic pooled out-of-fold, post-processing smooth 3 + parabola; scores from results\diagnostics\C_v2_seed0_frozen\scores
+
+Rule (fixed before the results are printed): with post-processing smooth 3 + interp parabola, flip TTA is adopted only if pooled out-of-fold T@1 of C_v2_seed0 over all clips improves by >= 0.002 over no TTA (both arms scored on the same GPU); T@0.5 and T@2 are reported but do not decide.
+
+scoring reports (reproduction check and classifier time):
+  run C_v2_seed0 fold 0: best.pt (check 2, update 1860, val T@1 logged 0.5828); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 25988 windows, 770 clips; val batch 16, workers 4
+  orig: classifier time 484.2 s = 628.8 ms per clip, 18.63 ms per window; wall time incl. data loading 494.1 s (52.6 windows/s)
+  reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 2.98e-08 (0 of 25988 differ); t_hat equal in 770/770 clips; T@1 0.5828 vs saved 0.5828 (diff +0.0000); logged 0.5828
+  hflip: classifier time 480.6 s = 624.1 ms per clip, 18.49 ms per window; wall time incl. data loading 481.9 s (53.9 windows/s)
+  run C_v2_seed0 fold 1: best.pt (check 2, update 1860, val T@1 logged 0.6151); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 25041 windows, 755 clips; val batch 16, workers 4
+  orig: classifier time 463.0 s = 613.3 ms per clip, 18.49 ms per window; wall time incl. data loading 472.3 s (53.0 windows/s)
+  reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 3.20e-02 (14789 of 25041 differ); t_hat equal in 746/755 clips; T@1 0.6168 vs saved 0.6151 (diff +0.0017); logged 0.6151
+  hflip: classifier time 460.7 s = 610.2 ms per clip, 18.40 ms per window; wall time incl. data loading 462.0 s (54.2 windows/s)
+  run C_v2_seed0 fold 2: best.pt (check 6, update 4340, val T@1 logged 0.8518); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 19701 windows, 686 clips; val batch 16, workers 4
+  orig: classifier time 365.0 s = 532.0 ms per clip, 18.52 ms per window; wall time incl. data loading 373.7 s (52.7 windows/s)
+  reproduction (orig, default rule smooth 3, no interpolation): window scores max |diff| vs saved 2.96e-08 (0 of 19701 differ); t_hat equal in 686/686 clips; T@1 0.8518 vs saved 0.8518 (diff +0.0000); logged 0.8518
+  hflip: classifier time 362.5 s = 528.4 ms per clip, 18.40 ms per window; wall time incl. data loading 363.4 s (54.2 windows/s)
+
+no TTA vs flip TTA (and the saved training-GPU scores for reference):
+                                  arm  scope  n_clips  T@0.5    T@1    T@2  within_2s  median |err| s  rho(conf, |err|)
+                               no TTA fold 0      770 0.4759 0.5885 0.6724     0.6571          0.5006           -0.4488
+                               no TTA fold 1      755 0.5412 0.6222 0.6946     0.6755          0.3693           -0.1835
+                               no TTA fold 2      686 0.7529 0.8524 0.8968     0.9009          0.2377           -0.3112
+                               no TTA pooled     2211 0.5841 0.6819 0.7496     0.7390          0.3559           -0.4038
+                             flip TTA fold 0      770 0.4868 0.5992 0.6773     0.6662          0.4744           -0.4828
+                             flip TTA fold 1      755 0.5347 0.6164 0.6914     0.6649          0.3763           -0.2318
+                             flip TTA fold 2      686 0.7758 0.8763 0.9170     0.9242          0.2302           -0.2748
+                             flip TTA pooled     2211 0.5928 0.6910 0.7565     0.7458          0.3491           -0.4295
+saved best CSV (training GPU), no TTA fold 0      770 0.4759 0.5885 0.6724     0.6571          0.5006           -0.4488
+saved best CSV (training GPU), no TTA fold 1      755 0.5402 0.6210 0.6930     0.6742          0.3695           -0.1871
+saved best CSV (training GPU), no TTA fold 2      686 0.7529 0.8524 0.8968     0.9009          0.2377           -0.3112
+saved best CSV (training GPU), no TTA pooled     2211 0.5838 0.6815 0.7491     0.7386          0.3559           -0.4048
+
+T@1 by weather and collision type (pooled):
+     by     group   n  T@1 no TTA  T@1 flip TTA    dT@1
+weather     clear 515      0.7216        0.7316  0.0100
+weather     night 449      0.6063        0.6149  0.0086
+weather      rain 342      0.7049        0.7305  0.0256
+weather    sunset 461      0.6859        0.6827 -0.0032
+weather       wet 444      0.6905        0.6993  0.0088
+   type   head-on 588      0.7940        0.8010  0.0070
+   type  rear-end 794      0.5529        0.5687  0.0158
+   type sideswipe 405      0.6097        0.6120  0.0023
+   type    single  66      0.8431        0.8426 -0.0005
+   type    t-bone 358      0.8359        0.8432  0.0073
+
+DECISION: adopt flip TTA: pooled T@1 0.6819 -> 0.6910 (+0.0091 >= 0.002); T@0.5 0.5841 -> 0.5928, T@2 0.7496 -> 0.7565

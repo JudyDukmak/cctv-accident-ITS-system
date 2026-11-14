@@ -1,0 +1,5 @@
+seed,fold,resumed at update,epoch,checks done,last check update,best so far,final best check,final best update,best check
+0,1,4617,1,7,4340,0.5986,3,2480,before resume
+0,1,4617,1,7,4340,0.5986,3,2480,before resume
+1,2,5500,1,8,4960,0.8468,12,8060,after resume
+2,1,5500,1,8,4960,0.6121,2,1860,before resume

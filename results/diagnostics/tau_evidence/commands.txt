@@ -1,0 +1,20 @@
+Evidence for the routing threshold tau (2026-11-14), from cctv-accident-ITS-system\, training environment.
+Synthetic validation only; CPU only; no real data; no training; runs\ read-only. tau is NOT computed (RUNS.md
+"Routing threshold tau: rule (frozen), value pending").
+
+1. Tables (first line of run.log):
+   .venv-ml\Scripts\python.exe confidence_vs_error.py --tau-evidence --out-dir results\diagnostics\tau_evidence
+   inputs: results\diagnostics\C_cctv_seeds012\seed{0,1,2}_frozen\tta_clip_predictions_flip.csv (2211 clips each,
+           checked), synthetic_window_labels.csv (label_B == 1 windows per clip; label_B -1 = unused, not counted)
+   outputs: tau_evidence.txt, tau_cumulative.csv, tau_bins.csv, isotonic_curve.csv (grid 0.00-0.96, step 0.01),
+            isotonic_fit_points.csv
+   Isotonic regression: own pool-adjacent-violators implementation (no sklearn / scipy in .venv-ml; no dependency
+   added); Wilson 95% interval with z = 1.959963984540054.
+
+2. Figure: .venv-ml\Scripts\python.exe report_figures.py --only 9 -> results\figures\F9_confidence_evidence.png
+   (log results\figures\report_figures_F9.log)
+
+Related, same day: C_cos3_seed0 pooled metrics for its RUNS.md row:
+   results\diagnostics\C_cos3_seed0_3folds\ (agg.log, report.txt, postproc_variants.csv). The command was
+   aggregate_runs.py C_cos3_seed0 C_v2_seed0 --postproc-grid 3 ..., used only for its reproduction check of the
+   saved predictions; its "CHOICE" line (width 3 vs itself) is not a post-processing decision.

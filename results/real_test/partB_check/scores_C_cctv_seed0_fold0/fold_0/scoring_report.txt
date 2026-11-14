@@ -1,0 +1,4 @@
+synthetic-val window scoring: run C_cctv_seed0 fold 0: best.pt (check 2, update 1860, val T@1 logged 0.6032); config videomae_v2_C_cctv.json (c890b480); GPU NVIDIA GeForce RTX 5060 Laptop GPU; 25988 windows, 770 clips; val batch 16, workers 4
+windows: synthetic validation windows of fold 0 rebuilt with windows_table(), equal to the window labels (25988 windows); cache C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\cache\frames224_v1
+orig: classifier time 486.8 s = 632.2 ms per clip, 18.73 ms per window; wall time incl. data loading 496.9 s (52.3 windows/s)
+hflip: classifier time 484.6 s = 629.3 ms per clip, 18.65 ms per window; wall time incl. data loading 485.9 s (53.5 windows/s)

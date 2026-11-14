@@ -1,0 +1,18 @@
+integrity
+ seed  fold                          config     hash  hash ok  seed recorded  fold rec  smoke  labels=seed0  split=seed0    cache  config = seed0 config           git      gpu  best check  best update  best T@1  last check  resumes  finished  early stop
+    0     0         videomae_v2_C_cctv.json c890b480     True              0         0  False          True         True 4615b347                   True a66ce3d dirty RTX 5060           2         1860    0.6032           8        0      True        True
+    0     1 videomae_v2_C_cctv_rtx4050.json 31e3e00c     True              0         1  False          True         True c76c46e6                   True a66ce3d dirty RTX 4050           3         2480    0.5986           9        2      True        True
+    0     2         videomae_v2_C_cctv.json c890b480     True              0         2  False          True         True 4615b347                   True a66ce3d dirty RTX 5060           6         4340    0.8564          12        0      True        True
+    1     0         videomae_v2_C_cctv.json c890b480     True              1         0  False          True         True 4615b347                   True 80bac63 dirty RTX 5060           2         1860    0.5840           8        0      True        True
+    1     1 videomae_v2_C_cctv_rtx4050.json 31e3e00c     True              1         1  False          True         True c76c46e6                   True a66ce3d dirty RTX 4050           2         1860    0.6099           8        0      True        True
+    1     2         videomae_v2_C_cctv.json c890b480     True              1         2  False          True         True 4615b347                   True 80bac63 dirty RTX 5060          12         8060    0.8528          18        1      True        True
+    2     0         videomae_v2_C_cctv.json c890b480     True              2         0  False          True         True 4615b347                   True 80bac63 dirty RTX 5060           2         1860    0.5869           8        0      True        True
+    2     1 videomae_v2_C_cctv_rtx4050.json 31e3e00c     True              2         1  False          True         True c76c46e6                   True a66ce3d dirty RTX 4050           2         1860    0.6121           8        1      True        True
+    2     2         videomae_v2_C_cctv.json c890b480     True              2         2  False          True         True 4615b347                   True 80bac63 dirty RTX 5060          12         8060    0.8699          18        0      True        True
+
+resumes
+ seed  fold  resumed at update  epoch  checks done  last check update  best so far  final best check  final best update    best check
+    0     1               4617      1            7               4340       0.5986                 3               2480 before resume
+    0     1               4617      1            7               4340       0.5986                 3               2480 before resume
+    1     2               5500      1            8               4960       0.8468                12               8060  after resume
+    2     1               5500      1            8               4960       0.6121                 2               1860 before resume

@@ -1,0 +1,4 @@
+category,n_in_category,rgb_path,fold,t_star,t_hat,err,confidence
+correct (|error| <= 0.5 s),1345,synthetic_videos/videos/rear-end/Town07_rear-end_rain_49.mp4,2,9.2,9.429613627477593,0.22961362747759395,0.5534513468543688
+late peak (error > +2 s),221,synthetic_videos/videos/rear-end/Town04_rear-end_sunset_19.mp4,0,5.5,13.56138571557639,8.06138571557639,0.1257884303728739
+early peak (error < -2 s),322,synthetic_videos/videos/rear-end/Town07_rear-end_clear_58.mp4,2,8.2,2.878122461582149,-5.3218775384178505,0.052972714106241825

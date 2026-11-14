@@ -25,6 +25,19 @@ train_classifier.validate) with the original frames and, with --hflip, with all 
 val_window_scores_orig.csv (and _hflip.csv), the reproduction check of the original-frame scores against the run's
 saved best-check predictions, and the GPU time of the classifier (forward incl. host-to-device copy, synchronised)
 per pass. Defaults (no --score-best) leave the behaviour above unchanged.
+
+Window scoring for the real test (--score-windows real|synthetic-val --run RUN --folds 0,1,2 --out-dir DIR): no report,
+no label is read. For each listed fold, checkpoints/best.pt (checks as --score-best) scores a window table with the
+original frames and with all 16 frames horizontally flipped, exactly as --score-best (WindowDataset codes 2*row + flip,
+the run's val batch and workers, eval, bf16, rows in sorted (rgb_path, window_idx) order); only the frame cache folder
+differs. Writes DIR/fold_<k>/window_scores_{orig,hflip}.csv (rgb_path, window_idx, t_centre, score) and
+scoring_report.txt (GPU, classifier time per pass: forward incl. host-to-device copy, synchronised). Fold files that
+already exist for the same window table are reused (resume after an interruption), never rescored.
+  real:          cache/frames224_real_v1/real_windows.csv (build_frame_cache.py --real; its cache manifest must say
+                 complete and hold the table's sha256). Reads no real label (metadata-real.csv is not opened).
+  synthetic-val: code check, exactly one fold: that fold's synthetic validation clips, windows rebuilt with
+                 build_frame_cache.windows_table() from metadata-synthetic.csv (checked equal to the training window
+                 labels), synthetic cache. Ensemble and post-processing: aggregate_runs.py --window-ensemble.
 """
 
 import argparse
@@ -47,6 +60,10 @@ from cache_manifest_check import check_cache_manifest  # noqa: E402
 
 METADATA_SYN = REPO_ROOT / "ACCIDENT" / "dataset" / "metadata-synthetic.csv"
 OUT_ROOT = REPO_ROOT / "results" / "diagnostics"
+REAL_CACHE_DIR = REPO_ROOT / "cache" / "frames224_real_v1"
+REAL_WINDOWS_CSV = REAL_CACHE_DIR / "real_windows.csv"
+SCORE_COLS = ["rgb_path", "window_idx", "t_centre"]
+PROGRESS_BATCHES = 500
 SIGMAS_T = (0.5, 1.0, 2.0)
 HIST_EDGES = np.arange(-10, 16, 1.0)  # 1 s bins from -10 to +15
 N_WORST, N_BEST = 6, 3
@@ -197,6 +214,152 @@ def score_best(run_dir: Path, info: dict, val_rows: pd.DataFrame, metrics: pd.Da
 
 
 # --------------------------------------------------------------------------- #
+# Window scoring for the real test (--score-windows)
+# --------------------------------------------------------------------------- #
+class CacheDirWindowDataset(tc.WindowDataset):
+    """tc.WindowDataset (no augmentation) reading <stem>.npz from `cache_dir` instead of tc.CACHE_DIR; _clip is the
+    same code with the folder replaced."""
+
+    def __init__(self, cache_dir: Path, *args, **kwargs) -> None:
+        super().__init__(*args, **kwargs)
+        self.cache_dir = Path(cache_dir)
+
+    def _clip(self, stem: str) -> dict:
+        if stem in self._lru:
+            self._lru.move_to_end(stem)
+            return self._lru[stem]
+        with np.load(self.cache_dir / f"{stem}.npz") as z:
+            item = {"offsets": z["offsets"], "data": z["data"]}
+        self._lru[stem] = item
+        if len(self._lru) > self.lru_size:
+            self._lru.popitem(last=False)
+        return item
+
+
+def scoring_windows(kind: str, folds: list[int]) -> tuple[pd.DataFrame, Path, str]:
+    """(window table sorted by rgb_path, window_idx; cache folder; description) for --score-windows."""
+    import hashlib
+    import build_frame_cache as bfc
+    if kind == "real":
+        man = json.loads((REAL_CACHE_DIR / "cache_manifest.json").read_text(encoding="ascii"))
+        sha = hashlib.sha256(REAL_WINDOWS_CSV.read_bytes()).hexdigest()
+        if man.get("complete") is not True:
+            fail(f"{REAL_CACHE_DIR / 'cache_manifest.json'} does not say complete: true")
+        if sha != man.get("real_windows_sha256"):
+            fail(f"{REAL_WINDOWS_CSV.name} sha256 differs from the real cache manifest")
+        win = pd.read_csv(REAL_WINDOWS_CSV)
+        cache_dir, note = REAL_CACHE_DIR, f"real windows {REAL_WINDOWS_CSV} (sha256 {sha[:12]}...)"
+    else:
+        if len(folds) != 1:
+            fail("--score-windows synthetic-val takes exactly one fold")
+        data, manifest, _ = tc.load_labels(8)
+        _, val_rows = tc.split_fold(data, folds[0], smoke=False)
+        tc.check_cache(val_rows.iloc[:0], val_rows, manifest, partial=False)
+        meta = pd.read_csv(METADATA_SYN, usecols=["rgb_path", "no_frames", "duration"])
+        win = bfc.windows_table(meta[meta["rgb_path"].isin(set(val_rows["rgb_path"]))])
+        ref = val_rows[["rgb_path", "window_idx", "t_start", "t_centre", "k0"]].reset_index(drop=True)
+        mine = win.sort_values(["rgb_path", "window_idx"]).reset_index(drop=True)[ref.columns]
+        if not (len(mine) == len(ref) and np.array_equal(mine[["rgb_path", "window_idx", "k0"]].to_numpy(),
+                                                         ref[["rgb_path", "window_idx", "k0"]].to_numpy())
+                and np.allclose(mine[["t_start", "t_centre"]], ref[["t_start", "t_centre"]], atol=1e-9, rtol=0)):
+            fail("windows_table() differs from the training window labels of the fold")
+        cache_dir = tc.CACHE_DIR
+        note = (f"synthetic validation windows of fold {folds[0]} rebuilt with windows_table(), equal to the window "
+                f"labels ({len(win)} windows)")
+    win = win.sort_values(["rgb_path", "window_idx"]).reset_index(drop=True)
+    missing = [s for s in win["stem"].unique() if not (cache_dir / f"{s}.npz").is_file()]
+    if missing:
+        fail(f"{len(missing)} cache files missing in {cache_dir}, e.g. {missing[:3]}")
+    return win, cache_dir, note
+
+
+def load_best(run: str, fold: int) -> tuple[dict, dict, pd.Series]:
+    """config.json, best.pt and the best metrics row of a full (non-smoke) fold run, with the --score-best checks."""
+    import torch
+    run_dir = tc.RUNS_DIR / run / f"fold_{fold}"
+    info = json.loads((run_dir / "config.json").read_text(encoding="utf-8"))
+    if info.get("fold") != fold or info.get("smoke_test"):
+        fail(f"{run_dir}: not a full fold-{fold} run")
+    metrics = pd.read_csv(run_dir / "metrics.csv")
+    best_row = metrics[metrics["best"].astype(str) == "True"].iloc[-1]
+    ck = torch.load(run_dir / "checkpoints" / "best.pt", map_location="cpu", weights_only=False)
+    if ck.get("run_hash") != info["run_hash"]:
+        fail(f"{run} fold {fold}: best.pt run_hash differs from config.json")
+    if int(ck["global_step"]) != int(best_row["global_step"]):
+        fail(f"{run} fold {fold}: best.pt is from update {ck['global_step']}, the best metrics row from "
+             f"{int(best_row['global_step'])}")
+    return info, ck, best_row
+
+
+def score_windows(kind: str, run: str, folds: list[int], out_dir: Path) -> None:
+    """--score-windows: see module doc."""
+    import time
+    import torch
+    from transformers import VideoMAEImageProcessor
+    if not torch.cuda.is_available():
+        fail("CUDA is not available")
+    device = torch.device("cuda")
+    win, cache_dir, note = scoring_windows(kind, folds)
+    n_clips = win["rgb_path"].nunique()
+    out_dir.mkdir(parents=True, exist_ok=True)
+    keys = win[SCORE_COLS]
+    for k in folds:
+        fd = out_dir / f"fold_{k}"
+        files = {name: fd / f"window_scores_{name}.csv" for name in ("orig", "hflip")}
+        if all(f.is_file() for f in files.values()):
+            ok = all(len(d := pd.read_csv(f)) == len(keys) and d[SCORE_COLS].equals(keys) for f in files.values())
+            if not ok:
+                fail(f"{fd}: existing window scores do not match the window table; not overwritten")
+            print(f"{run} fold {k}: window scores already present for this window table; reused, not rescored")
+            continue
+        info, ck, best_row = load_best(run, k)
+        cfg = info["config"]
+        proc = VideoMAEImageProcessor.from_pretrained(cfg["model_id"])
+        ds = CacheDirWindowDataset(cache_dir, win["stem"], win["k0"], np.zeros(len(win), np.float32), None,
+                                   list(proc.image_mean), list(proc.image_std), cfg["frames"], cfg["model_fps"],
+                                   cfg["lru_size"])
+        sampler = tc.ListSampler()
+        loader = tc.make_loader(ds, cfg["val_batch"], cfg["num_workers"], sampler)
+        model = tc.build_model(cfg, device, None if not info["drop_path_applied"] else tc.drop_path_field())
+        model.load_state_dict(ck["model"])
+        model.eval()
+        fd.mkdir(parents=True, exist_ok=True)
+        lines = [f"{kind} window scoring: run {run} fold {k}: best.pt (check {int(ck['check_idx'])}, update "
+                 f"{int(ck['global_step'])}, val T@1 logged {float(ck['val_T_1']):.4f}); config "
+                 f"{Path(info['config_file']).name} ({info['config_hash'][:8]}); GPU {torch.cuda.get_device_name(0)}; "
+                 f"{len(win)} windows, {n_clips} clips; val batch {cfg['val_batch']}, workers {cfg['num_workers']}",
+                 f"windows: {note}; cache {cache_dir}"]
+        del ck
+        print(lines[0], flush=True)
+        n_batches = -(-len(win) // cfg["val_batch"])
+        for name, flip in (("orig", False), ("hflip", True)):
+            sampler.set(range(int(flip), 2 * len(win), 2))  # dataset codes 2*row + flip, rows in order
+            logits = np.empty(len(win), dtype=np.float32)
+            gpu_s, t_wall = 0.0, time.perf_counter()
+            with torch.no_grad():
+                for b, (x, _, _, rows, _) in enumerate(loader, 1):
+                    torch.cuda.synchronize()
+                    t0 = time.perf_counter()
+                    logits[rows.numpy()] = tc.val_logits(model, x, device, len(x))  # returns on CPU: synchronised
+                    gpu_s += time.perf_counter() - t0
+                    if b % PROGRESS_BATCHES == 0:
+                        print(f"   fold {k} {name}: batch {b}/{n_batches}, {(time.perf_counter() - t_wall) / 60:.1f} min",
+                              flush=True)
+            wall = time.perf_counter() - t_wall
+            scores = 1.0 / (1.0 + np.exp(-logits))  # float32, as train_classifier.validate
+            tmp = files[name].with_name(files[name].name + ".tmp")
+            keys.assign(score=scores).to_csv(tmp, index=False)
+            tmp.replace(files[name])
+            lines.append(f"{name}: classifier time {gpu_s:.1f} s = {1000 * gpu_s / n_clips:.1f} ms per clip, "
+                         f"{1000 * gpu_s / len(win):.2f} ms per window; wall time incl. data loading {wall:.1f} s "
+                         f"({len(win) / wall:.1f} windows/s)")
+            print(lines[-1], flush=True)
+        (fd / "scoring_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
+        del model, loader
+        torch.cuda.empty_cache()
+
+
+# --------------------------------------------------------------------------- #
 # Analyses
 # --------------------------------------------------------------------------- #
 def with_context(win: pd.DataFrame, val_rows: pd.DataFrame, smooth_window: int) -> pd.DataFrame:
@@ -327,7 +490,20 @@ def main() -> None:
     ap.add_argument("--score-best", action="store_true", help="score best.pt for TTA (see module doc); no report")
     ap.add_argument("--hflip", action="store_true", help="with --score-best: also score horizontally flipped frames")
     ap.add_argument("--out-dir", type=Path, default=None, help="with --score-best: output folder (under results/)")
+    ap.add_argument("--score-windows", choices=("real", "synthetic-val"), default=None,
+                    help="window scoring with best.pt of --folds, orig + hflip (see module doc); needs --out-dir")
+    ap.add_argument("--folds", default="0,1,2", help="with --score-windows: comma-separated folds")
     args = ap.parse_args()
+    if args.score_windows:
+        if args.out_dir is None:
+            fail("--score-windows needs --out-dir")
+        if args.score_best or args.hflip or args.rescore:
+            fail("--score-windows cannot be combined with --score-best, --hflip or --rescore")
+        folds = [int(f) for f in args.folds.split(",")]
+        if not folds or set(folds) - {0, 1, 2} or len(set(folds)) != len(folds):
+            fail(f"--folds {args.folds!r}: distinct values from 0, 1, 2")
+        score_windows(args.score_windows, args.run, folds, args.out_dir)
+        return
 
     run_dir = tc.RUNS_DIR / args.run / f"fold_{args.fold}"
     out_dir = OUT_ROOT / f"{args.run}_fold{args.fold}"

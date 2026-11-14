@@ -1,0 +1,67 @@
+Frame cache build (REAL test clips; no label column read)
+time: 2026-11-14T21:07:01+00:00
+1. inputs: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\ACCIDENT\dataset\metadata-real.csv (sha256 a3d06073353a... = test-set manifest), columns read: path, no_frames, duration, height, width
+   real_test_set.csv sha256 521a5cf62cbe... = manifest output_sha256; 400 clips, column read: path; all in metadata-real.csv
+   cache dir: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\cache\frames224_real_v1; PyAV 19.0.2, OpenCV 5.0.0; workers 8
+   rules: fps = no_frames / duration; grid t_k = k/8, frame floor(round(t_k * fps, 9) + 0.5); windows 16 frames, stride 0.5 s, t_centre = t_start + 0.9375 s; resize full frame to 224x224 INTER_AREA, JPEG 95
+2. window rule check: windows_table() on the 2211 synthetic clips reproduces synthetic_windows.csv exactly (70730 windows; t_start, t_end, frame_first, frame_last equal)
+3. clips: 2027 (frozen 400 subset: 400); with >= 1 window: 2024 (subset 399); windows 82142 (subset 16375); windows per clip min / median / max (clips with windows) 1 / 50 / 227; grid frames 352856
+   clips shorter than one window (no window; no cache file): 3 (in the 400 subset: 1)
+     real_videos/3gY2nZW6ZCM_00.mp4: duration 1.300 s, no_frames 25, fps 19.231; one window needs 37 frames; in 400 subset: True
+     real_videos/MsQns-Oy-hk_02.mp4: duration 1.433 s, no_frames 37, fps 25.814; one window needs 49 frames; in 400 subset: False
+     real_videos/jYai-crKZx8_00.mp4: duration 1.320 s, no_frames 29, fps 21.970; one window needs 42 frames; in 400 subset: False
+   clips whose 8-fps grid repeats video frames (fps < 8, same rule as synthetic): 95 (subset 18); fps of these 3.92-7.98
+   grid formula: frame = floor(round(t_k * fps, 9) + 0.5) (make_windows.frame_index, the window rule). The synthetic cache formula without the 9-decimal rounding gives the same grid on all synthetic clips but differs here in 14 clips, 94 grid positions (t_k * fps within 1e-9 of a .5 boundary, by one video frame); with it the windows would not be grid slices:
+     real_videos/JGD3vYYu5S4_00.mp4: 16 grid positions
+     real_videos/R29vBQmDFq4_00.mp4: 1 grid positions
+     real_videos/X59Tadp1bjg_00.mp4: 2 grid positions
+     real_videos/Y5oIfasCYJM_00.mp4: 3 grid positions
+     real_videos/YueG1zLkV8o_00.mp4: 2 grid positions
+     real_videos/YueG1zLkV8o_02.mp4: 7 grid positions
+     real_videos/ZTLYOhzf8Jw_00.mp4: 1 grid positions
+     real_videos/njI11mpdwo0_00.mp4: 1 grid positions
+     real_videos/q7UutMH5DTM_00.mp4: 7 grid positions
+     real_videos/s80RaghtMRk_03.mp4: 2 grid positions
+     real_videos/uGvzo8mRSSo_00.mp4: 1 grid positions
+     real_videos/vVeLx1IopnM_00.mp4: 1 grid positions
+     real_videos/x8GY43DccAs_00.mp4: 41 grid positions
+     real_videos/zYgBOSbkY3A_01.mp4: 9 grid positions
+   fps (no_frames / duration): min 3.922, median 14.988, max 49.700; duration min 1.300 s, median 26.827 s, max 114.957 s; height min 160, median 720, max 2160
+   real_windows.csv: unchanged (identical), sha256 0baa1fbaf1e9770d5792e17b046452b116f8f30d2bd1f8cec446671867d7cda6
+4. decoding 2024 clips (all)
+   progress 200/2024 clips, 0 errors, 0.4 min
+   progress 400/2024 clips, 0 errors, 0.8 min
+   progress 600/2024 clips, 0 errors, 1.2 min
+   ERROR real_videos/LZY4HepPGu0_00.mp4: RuntimeError: video ended after frame 239; 30 grid frames missing (first grid position 210, frame 240)
+   progress 800/2024 clips, 1 errors, 1.6 min
+   progress 1000/2024 clips, 1 errors, 2.0 min
+   ERROR real_videos/YQxqeP2Q_-M_00.mp4: RuntimeError: video ended after frame 347; 3 grid frames missing (first grid position 237, frame 348)
+   progress 1200/2024 clips, 2 errors, 2.5 min
+   progress 1400/2024 clips, 2 errors, 2.9 min
+   ERROR real_videos/lgU3T6kySLw_00.mp4: RuntimeError: video ended after frame 179; 2 grid frames missing (first grid position 238, frame 180)
+   progress 1600/2024 clips, 3 errors, 3.3 min
+   progress 1800/2024 clips, 3 errors, 3.8 min
+   progress 2000/2024 clips, 3 errors, 4.2 min
+   progress 2024/2024 clips, 3 errors, 4.3 min
+
+6. Verification on the first 5 clips: cached JPEG vs the same frame decoded again with OpenCV (sequential), resized the same way. MAD = mean absolute pixel difference (0-255).
+   MAD at frame-1 / frame+1 are shown as a reference: the cached frame should match its own index best.
+   -2UPLUV7JLg_00                   pos   0 frame    0  MAD  1.636   (frame-1    n/a, frame+1  1.806)
+   -2UPLUV7JLg_00                   pos 118 frame  147  MAD  1.664   (frame-1  1.717, frame+1  1.766)
+   -2UPLUV7JLg_00                   pos 235 frame  293  MAD  1.661   (frame-1  2.237, frame+1  2.202)
+   -6SQSDj8cYU_00                   pos   0 frame    0  MAD  1.194   (frame-1    n/a, frame+1  3.272)
+   -6SQSDj8cYU_00                   pos 120 frame  225  MAD  1.397   (frame-1  1.934, frame+1  1.889)
+   -6SQSDj8cYU_00                   pos 239 frame  448  MAD  1.452   (frame-1  3.986, frame+1  3.751)
+   -7-vQ4obVwQ_00                   pos   0 frame    0  MAD  2.048   (frame-1    n/a, frame+1  2.944)
+   -7-vQ4obVwQ_00                   pos 120 frame  201  MAD  2.121   (frame-1  2.400, frame+1  2.480)
+   -7-vQ4obVwQ_00                   pos 239 frame  400  MAD  2.128   (frame-1  2.174, frame+1  2.176)
+   -9oifpjUxxM_00                   pos   0 frame    0  MAD  1.616   (frame-1    n/a, frame+1  1.865)
+   -9oifpjUxxM_00                   pos 112 frame  210  MAD  1.627   (frame-1  1.732, frame+1  1.725)
+   -9oifpjUxxM_00                   pos 223 frame  417  MAD  1.624   (frame-1  1.893, frame+1  1.892)
+   -AztVDZ6cEE_00                   pos   0 frame    0  MAD  1.942   (frame-1    n/a, frame+1  2.821)
+   -AztVDZ6cEE_00                   pos 104 frame  195  MAD  2.026   (frame-1  2.426, frame+1  2.449)
+   -AztVDZ6cEE_00                   pos 207 frame  388  MAD  2.019   (frame-1  2.304, frame+1  2.337)
+
+cache: 2021/2024 clips with windows present, 6.922 GB, complete False
+errors: real_videos/LZY4HepPGu0_00.mp4: RuntimeError: video ended after frame 239; 30 grid frames missing (first grid position 210, frame 240); real_videos/YQxqeP2Q_-M_00.mp4: RuntimeError: video ended after frame 347; 3 grid frames missing (first grid position 237, frame 348); real_videos/lgU3T6kySLw_00.mp4: RuntimeError: video ended after frame 179; 2 grid frames missing (first grid position 238, frame 180)
+FINAL: clips 2024 (written 2009, skipped 12), errors 3, frames 352136, 6.922 GB, 4.26 minutes

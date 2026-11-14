@@ -10,8 +10,13 @@ Outputs: results/diagnostics/overfit_vs_lr/ (one CSV and one PNG per run, summar
 
 Usage (training environment, CPU):
     .venv-ml\\Scripts\\python.exe overfit_vs_lr.py
+    .venv-ml\\Scripts\\python.exe overfit_vs_lr.py --report-figures results\\figures
+        report figures only (nothing else written): F1_learning_curves.png (val T@1, val loss, train loss vs
+        epoch_fraction per fold, C_v2_seed0 and C_cctv seeds 0-2, best checks marked) and F2_C_v2_vs_C_cos3.png
+        (val T@1 and lr / peak lr per fold, C_v2_seed0 and C_cos3_seed0); 300 dpi.
 """
 
+import argparse
 import json
 import math
 from pathlib import Path
@@ -139,7 +144,94 @@ def plot(df: pd.DataFrame, title: str, path: Path, warmup_ef: float) -> None:
     plt.close(fig)
 
 
+# Report figure colours (one hue per configuration; seeds of C_cctv as steps of the blue ramp, seed 0 darkest)
+C_V2_COLOUR = "#eb6834"
+C_COS3_COLOUR = "#1baf7a"
+C_CCTV_SEED_COLOURS = {0: "#1c5cab", 1: "#3987e5", 2: "#86b6ef"}
+INK, MUTED, GRID = "#0b0b0b", "#52514e", "#e1e0d9"
+
+
+def style_axis(a) -> None:
+    a.grid(color=GRID, lw=0.6)
+    a.set_axisbelow(True)
+    for s in ("top", "right"):
+        a.spines[s].set_visible(False)
+    for s in ("left", "bottom"):
+        a.spines[s].set_color("#c3c2b7")
+    a.tick_params(colors=MUTED, labelsize=7)
+
+
+def report_figures(out_dir: Path) -> None:
+    """F1 and F2 of the report (see module doc); reads metrics.csv / config.json only."""
+    out_dir.mkdir(parents=True, exist_ok=True)
+    runs_dir = REPO_ROOT / "runs"
+    f1 = [("C_v2 seed 0", "C_v2_seed0", C_V2_COLOUR)] + \
+         [(f"C_cctv seed {s}", f"C_cctv_seed{s}", C_CCTV_SEED_COLOURS[s]) for s in (0, 1, 2)]
+    cols = [("val_T_1", "val T@1 (0-1)"), ("val_loss", "val loss (BCE)"),
+            ("train_loss_since_prev_check", "train loss (mean since\nprevious check)")]
+    fig, ax = plt.subplots(3, 3, figsize=(10, 8), sharex="row")
+    for k in (0, 1, 2):
+        for label, run, colour in f1:
+            df, _ = per_check(runs_dir / run / f"fold_{k}")
+            b = int(np.argmax(df["val_T_1"].to_numpy()))
+            for j, (c, ylab) in enumerate(cols):
+                a = ax[k, j]
+                a.plot(df["epoch_fraction"], df[c], "-", color=colour, lw=1.5, marker="o", ms=2.5,
+                       label=label if (k, j) == (0, 0) else None)
+                a.plot(df["epoch_fraction"].iloc[b], df[c].iloc[b], marker="*", ms=10, color=colour,
+                       markeredgecolor="white", markeredgewidth=0.6, zorder=5)
+                a.set_ylabel(ylab, fontsize=8, color=INK)
+        for j in range(3):
+            style_axis(ax[k, j])
+            ax[k, j].set_title(f"fold {k}", fontsize=8, color=MUTED, loc="left")
+    for j in range(3):
+        ax[2, j].set_xlabel("training progress (epochs)", fontsize=8, color=INK)
+    handles, labels = ax[0, 0].get_legend_handles_labels()
+    handles.append(plt.Line2D([], [], ls="", marker="*", ms=10, color=MUTED))
+    labels.append("best check (max val T@1)")
+    fig.legend(handles, labels, loc="upper center", ncol=5, fontsize=8, frameon=False)
+    fig.tight_layout(rect=(0, 0, 1, 0.96))
+    fig.savefig(out_dir / "F1_learning_curves.png", dpi=300)
+    plt.close(fig)
+
+    f2 = [("C_v2 seed 0 (cosine to 0 over 10 epochs)", "C_v2_seed0", C_V2_COLOUR, 14),
+          ("C_cos3 seed 0 (cosine to 0 over 3 epochs)", "C_cos3_seed0", C_COS3_COLOUR, 9)]
+    fig, ax = plt.subplots(3, 2, figsize=(8.5, 7.5), sharex=True)
+    for k in (0, 1, 2):
+        for label, run, colour, star in f2:  # C_v2 star larger: both runs can share a best check
+            df, _ = per_check(runs_dir / run / f"fold_{k}")
+            b = int(np.argmax(df["val_T_1"].to_numpy()))
+            ax[k, 0].plot(df["epoch_fraction"], df["val_T_1"], "-", color=colour, lw=1.5, marker="o", ms=2.5,
+                          label=label if k == 0 else None)
+            ax[k, 0].plot(df["epoch_fraction"].iloc[b], df["val_T_1"].iloc[b], marker="*", ms=star, color=colour,
+                          markeredgecolor="white", markeredgewidth=0.6, zorder=5)
+            ax[k, 1].plot(df["epoch_fraction"], df["lr_frac_of_peak"], "-", color=colour, lw=1.5, marker="o", ms=2.5)
+        ax[k, 0].set_ylabel("val T@1 (0-1)", fontsize=8, color=INK)
+        ax[k, 1].set_ylabel("head lr / peak lr", fontsize=8, color=INK)
+        for j in range(2):
+            style_axis(ax[k, j])
+            ax[k, j].set_title(f"fold {k}", fontsize=8, color=MUTED, loc="left")
+    for j in range(2):
+        ax[2, j].set_xlabel("training progress (epochs)", fontsize=8, color=INK)
+    handles, labels = ax[0, 0].get_legend_handles_labels()
+    handles.append(plt.Line2D([], [], ls="", marker="*", ms=10, color=MUTED))
+    labels.append("best check")
+    fig.legend(handles, labels, loc="upper center", ncol=3, fontsize=8, frameon=False,
+               title="both: linear warmup over 0.5 epoch", title_fontsize=7)
+    fig.tight_layout(rect=(0, 0, 1, 0.95))
+    fig.savefig(out_dir / "F2_C_v2_vs_C_cos3.png", dpi=300)
+    plt.close(fig)
+    print(f"wrote {out_dir / 'F1_learning_curves.png'} and {out_dir / 'F2_C_v2_vs_C_cos3.png'}")
+
+
 def main() -> None:
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--report-figures", type=Path, default=None, metavar="DIR",
+                    help="write only the report figures F1 and F2 to DIR")
+    args = ap.parse_args()
+    if args.report_figures is not None:
+        report_figures(args.report_figures)
+        return
     OUT_DIR.mkdir(parents=True, exist_ok=True)
     summaries, pngs = {}, []
     for label, run_dir in RUNS.items():
