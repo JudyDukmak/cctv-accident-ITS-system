@@ -1,0 +1,3 @@
+scope,n_clips,n_source_videos,clips_per_source_median,clips_per_source_max
+all 2027,2027,1944,1.0,6
+frozen 400,400,400,1.0,1

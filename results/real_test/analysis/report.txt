@@ -1,0 +1,177 @@
+Real test: analysis of the saved predictions (ADDITION TO THE PLAN, 2026-11-15; after stages C1 and C2; no model run; nothing chosen or changed; RUN_ONCE.txt only read). 2026-11-15T19:38:47+00:00
+inputs: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\results\real_test\predictions (clip_predictions.csv sha256 = the lock's EVENT lines; per-fold-model files), stage_C1/C2 tables (all 4 runs' metrics on all 2027 / frozen 400 and the single-fold-model metrics recomputed and equal to the saved tables), synthetic frozen predictions (results/diagnostics/.../tta_clip_predictions_flip.csv), metadata-real.csv (accident_time, duration)
+
+1. PAIRED BOOTSTRAP OF THE ABLATION ON REAL (difference = C_v2_seed0 minus C_cctv; positive = C_v2 higher; source videos resampled with replacement, 10000 resamples, numpy default_rng seed 0, the same resamples for both comparisons and all metrics of a scope; metric of a resample = mean over its clips; percentile 95% interval; C_cctv mean = per-clip mean of the three seeds' terms)
+   source videos (clip stem without _NN):
+     scope  n_clips  n_source_videos  clips_per_source_median  clips_per_source_max
+  all 2027     2027             1944                   1.0000                     6
+frozen 400      400              400                   1.0000                     1
+   [all 2027] n = 2027 clips, 1944 source videos
+                             comparison    metric  difference  ci95_lo  ci95_hi
+              C_v2_seed0 - C_cctv_seed0     T_0.5      0.0317   0.0236   0.0398
+              C_v2_seed0 - C_cctv_seed0       T_1      0.0270   0.0179   0.0360
+              C_v2_seed0 - C_cctv_seed0       T_2      0.0153   0.0060   0.0246
+              C_v2_seed0 - C_cctv_seed0 within_2s      0.0187   0.0069   0.0306
+C_v2_seed0 - C_cctv mean over seeds 0-2     T_0.5      0.0304   0.0226   0.0380
+C_v2_seed0 - C_cctv mean over seeds 0-2       T_1      0.0311   0.0224   0.0395
+C_v2_seed0 - C_cctv mean over seeds 0-2       T_2      0.0229   0.0142   0.0314
+C_v2_seed0 - C_cctv mean over seeds 0-2 within_2s      0.0275   0.0161   0.0389
+   [frozen 400] n = 400 clips, 400 source videos
+                             comparison    metric  difference  ci95_lo  ci95_hi
+              C_v2_seed0 - C_cctv_seed0     T_0.5      0.0274   0.0079   0.0462
+              C_v2_seed0 - C_cctv_seed0       T_1      0.0229   0.0016   0.0442
+              C_v2_seed0 - C_cctv_seed0       T_2      0.0169  -0.0073   0.0400
+              C_v2_seed0 - C_cctv_seed0 within_2s      0.0200  -0.0100   0.0500
+C_v2_seed0 - C_cctv mean over seeds 0-2     T_0.5      0.0166  -0.0001   0.0335
+C_v2_seed0 - C_cctv mean over seeds 0-2       T_1      0.0190   0.0000   0.0380
+C_v2_seed0 - C_cctv mean over seeds 0-2       T_2      0.0196  -0.0017   0.0405
+C_v2_seed0 - C_cctv mean over seeds 0-2 within_2s      0.0267   0.0000   0.0542
+
+2. PER FOLD MODEL: synthetic validation T@1 of fold model k on its own validation fold (frozen post-processing, saved predictions) next to the real T@1 of that fold model alone (flip TTA, same post-processing, fallback); last row per run: synthetic pooled out-of-fold and the real 3-model ensemble
+         run                fold_model  synthetic_val_n_clips  synthetic_val_T@1  real_T@1 all 2027  real_T@1 frozen 400
+  C_v2_seed0                    fold 0                    770             0.5992             0.3981               0.3923
+  C_v2_seed0                    fold 1                    755             0.6164             0.4113               0.4015
+  C_v2_seed0                    fold 2                    686             0.8763             0.4224               0.4256
+  C_v2_seed0 pooled / 3-model ensemble                   2211             0.6910             0.4245               0.4210
+C_cctv_seed0                    fold 0                    770             0.6241             0.3821               0.3829
+C_cctv_seed0                    fold 1                    755             0.5941             0.3694               0.3693
+C_cctv_seed0                    fold 2                    686             0.8767             0.4094               0.4112
+C_cctv_seed0 pooled / 3-model ensemble                   2211             0.6922             0.3976               0.3980
+C_cctv_seed1                    fold 0                    770             0.5951             0.3533               0.3693
+C_cctv_seed1                    fold 1                    755             0.6202             0.3630               0.3558
+C_cctv_seed1                    fold 2                    686             0.8584             0.4134               0.4230
+C_cctv_seed1 pooled / 3-model ensemble                   2211             0.6854             0.3981               0.4060
+C_cctv_seed2                    fold 0                    770             0.5938             0.3626               0.3889
+C_cctv_seed2                    fold 1                    755             0.6241             0.3588               0.3670
+C_cctv_seed2                    fold 2                    686             0.8779             0.3793               0.3832
+C_cctv_seed2 pooled / 3-model ensemble                   2211             0.6923             0.3846               0.4017
+
+3. EARLY IMPACT (t* < 2.875 s) vs THE REST: clip duration (s) and gain over the naive midpoint (classifier - naive; C_cctv mean +- sample std over seeds 0-2)
+   [all 2027] duration and naive midpoint
+        group  n_clips  duration_mean  duration_median  duration_min  duration_max  naive T_0.5  naive T_1  naive T_2  naive within_2s
+ t* < 2.875 s      460        16.3726          14.5895        1.3000       30.1330       0.1688     0.2764     0.3875           0.3870
+t* >= 2.875 s     1567        23.4555          29.8750        4.0040      114.9574       0.0886     0.1641     0.2681           0.2482
+   [all 2027] gain over the naive midpoint
+        group C_v2_seed0 T_0.5 C_v2_seed0 T_1 C_v2_seed0 T_2 C_v2_seed0 within_2s      C_cctv T_0.5        C_cctv T_1        C_cctv T_2  C_cctv within_2s
+ t* < 2.875 s          +0.1690        +0.2359        +0.2759              +0.2696 +0.1293 +- 0.0061 +0.1966 +- 0.0072 +0.2459 +- 0.0026 +0.2428 +- 0.0033
+t* >= 2.875 s          +0.1557        +0.2347        +0.3013              +0.3140 +0.1280 +- 0.0078 +0.2060 +- 0.0078 +0.2806 +- 0.0086 +0.2863 +- 0.0095
+   [frozen 400] duration and naive midpoint
+        group  n_clips  duration_mean  duration_median  duration_min  duration_max  naive T_0.5  naive T_1  naive T_2  naive within_2s
+ t* < 2.875 s       98        15.4085           9.9214        1.3000       30.0330       0.1675     0.3079     0.4403           0.4694
+t* >= 2.875 s      302        24.2056          29.9167        4.4667      114.9574       0.0885     0.1560     0.2486           0.2252
+   [frozen 400] gain over the naive midpoint
+        group C_v2_seed0 T_0.5 C_v2_seed0 T_1 C_v2_seed0 T_2 C_v2_seed0 within_2s      C_cctv T_0.5        C_cctv T_1        C_cctv T_2  C_cctv within_2s
+ t* < 2.875 s          +0.1516        +0.2102        +0.2515              +0.2143 +0.1445 +- 0.0281 +0.1904 +- 0.0255 +0.2114 +- 0.0224 +0.1803 +- 0.0156
+t* >= 2.875 s          +0.1508        +0.2334        +0.3109              +0.3212 +0.1311 +- 0.0036 +0.2146 +- 0.0031 +0.2980 +- 0.0095 +0.2969 +- 0.0134
+
+4. CONFIDENCE, SYNTHETIC vs REAL, PER C_cctv SEED (each clip once per table: synthetic 2211 out-of-fold predictions, real 2027 clips incl. 3 fallback clips with confidence 0; no tau chosen)
+   bins, seed 0
+confidence  syn n  syn coverage  syn within_2s  syn T@1  real n  real coverage  real within_2s  real T@1 syn Wilson95 (secondary) real Wilson95 (secondary)
+[0.9, 1.0]      0        0.0000            NaN      NaN       0         0.0000             NaN       NaN                        -                         -
+[0.8, 0.9)     15        0.0068         1.0000   0.9476       0         0.0000             NaN       NaN         [0.7961, 1.0000]                         -
+[0.7, 0.8)     56        0.0253         0.9821   0.9387       1         0.0005          1.0000    0.9881         [0.9055, 0.9968]          [0.2065, 1.0000]
+[0.6, 0.7)    118        0.0534         0.9661   0.9117       1         0.0005          1.0000    0.9902         [0.9161, 0.9867]          [0.2065, 1.0000]
+[0.5, 0.6)    194        0.0877         0.9278   0.8720      10         0.0049          0.7000    0.6550         [0.8825, 0.9565]          [0.3968, 0.8922]
+[0.4, 0.5)    229        0.1036         0.9389   0.8899      35         0.0173          0.7714    0.6000         [0.9000, 0.9632]          [0.6098, 0.8793]
+[0.3, 0.4)    293        0.1325         0.8567   0.7991     104         0.0513          0.8365    0.6043         [0.8119, 0.8922]          [0.7537, 0.8954]
+[0.2, 0.3)    314        0.1420         0.8312   0.7787     234         0.1154          0.8205    0.6142         [0.7858, 0.8686]          [0.7663, 0.8644]
+[0.1, 0.2)    403        0.1823         0.6725   0.6034     470         0.2319          0.6128    0.4160         [0.6252, 0.7165]          [0.5680, 0.6557]
+[0.0, 0.1)    589        0.2664         0.5195   0.4439    1172         0.5782          0.4625    0.3193         [0.4792, 0.5596]          [0.4341, 0.4911]
+   Wilson column: Secondary, added to help read bins with few clips; not part of the evaluation protocol and not used by the tau rule.
+
+   bins, seed 1
+confidence  syn n  syn coverage  syn within_2s  syn T@1  real n  real coverage  real within_2s  real T@1 syn Wilson95 (secondary) real Wilson95 (secondary)
+[0.9, 1.0]      2        0.0009         1.0000   0.9778       0         0.0000             NaN       NaN         [0.3424, 1.0000]                         -
+[0.8, 0.9)     30        0.0136         0.9667   0.9112       0         0.0000             NaN       NaN         [0.8333, 0.9941]                         -
+[0.7, 0.8)     72        0.0326         0.9861   0.9480       1         0.0005          1.0000    0.9956         [0.9254, 0.9975]          [0.2065, 1.0000]
+[0.6, 0.7)    135        0.0611         0.9852   0.9391       4         0.0020          1.0000    0.8359         [0.9476, 0.9959]          [0.5101, 1.0000]
+[0.5, 0.6)    196        0.0886         0.9796   0.9216      11         0.0054          0.9091    0.8462         [0.9487, 0.9920]          [0.6226, 0.9838]
+[0.4, 0.5)    236        0.1067         0.9364   0.8808      37         0.0183          0.8649    0.6188         [0.8978, 0.9611]          [0.7202, 0.9409]
+[0.3, 0.4)    279        0.1262         0.8674   0.8137     102         0.0503          0.8137    0.6123         [0.8226, 0.9022]          [0.7273, 0.8774]
+[0.2, 0.3)    279        0.1262         0.7921   0.7132     193         0.0952          0.7824    0.5743         [0.7407, 0.8356]          [0.7190, 0.8348]
+[0.1, 0.2)    355        0.1606         0.6817   0.6170     415         0.2047          0.6458    0.4445         [0.6315, 0.7280]          [0.5986, 0.6903]
+[0.0, 0.1)    627        0.2836         0.4864   0.4106    1264         0.6236          0.4549    0.3265         [0.4475, 0.5255]          [0.4276, 0.4825]
+   Wilson column: Secondary, added to help read bins with few clips; not part of the evaluation protocol and not used by the tau rule.
+
+   bins, seed 2
+confidence  syn n  syn coverage  syn within_2s  syn T@1  real n  real coverage  real within_2s  real T@1 syn Wilson95 (secondary) real Wilson95 (secondary)
+[0.9, 1.0]      3        0.0014         0.6667   0.6386       0         0.0000             NaN       NaN         [0.2077, 0.9385]                         -
+[0.8, 0.9)     19        0.0086         1.0000   0.9757       0         0.0000             NaN       NaN         [0.8318, 1.0000]                         -
+[0.7, 0.8)     69        0.0312         0.9710   0.9390       0         0.0000             NaN       NaN         [0.9003, 0.9920]                         -
+[0.6, 0.7)    128        0.0579         1.0000   0.9485       2         0.0010          1.0000    0.9948         [0.9709, 1.0000]          [0.3424, 1.0000]
+[0.5, 0.6)    185        0.0837         0.9459   0.9067       5         0.0025          1.0000    0.9016         [0.9034, 0.9704]          [0.5655, 1.0000]
+[0.4, 0.5)    228        0.1031         0.9167   0.8718      31         0.0153          0.7742    0.6080         [0.8735, 0.9460]          [0.6019, 0.8860]
+[0.3, 0.4)    270        0.1221         0.8704   0.8163      71         0.0350          0.7606    0.5406         [0.8251, 0.9053]          [0.6496, 0.8448]
+[0.2, 0.3)    318        0.1438         0.8050   0.7472     182         0.0898          0.8187    0.5916         [0.7580, 0.8448]          [0.7563, 0.8679]
+[0.1, 0.2)    389        0.1759         0.6632   0.6005     456         0.2250          0.6667    0.4479         [0.6149, 0.7084]          [0.6222, 0.7084]
+[0.0, 0.1)    602        0.2723         0.5116   0.4418    1280         0.6315          0.4492    0.3156         [0.4718, 0.5514]          [0.4222, 0.4766]
+   Wilson column: Secondary, added to help read bins with few clips; not part of the evaluation protocol and not used by the tau rule.
+
+   bins, mean over seeds 0-2 (n = mean count; share within 2 s and T@1 averaged over the seeds with clips in the row; no interval: a mean of three dependent shares is not a binomial count)
+confidence    syn n  syn coverage  syn within_2s  syn T@1    real n  real coverage  real within_2s  real T@1 seeds with clips syn/real
+[0.9, 1.0]   1.6667        0.0008         0.8333   0.8082    0.0000         0.0000             NaN       NaN                       2/0
+[0.8, 0.9)  21.3333        0.0096         0.9889   0.9448    0.0000         0.0000             NaN       NaN                       3/0
+[0.7, 0.8)  65.6667        0.0297         0.9798   0.9419    0.6667         0.0003          1.0000    0.9919                       3/2
+[0.6, 0.7) 127.0000        0.0574         0.9838   0.9331    2.3333         0.0012          1.0000    0.9403                       3/3
+[0.5, 0.6) 191.6667        0.0867         0.9511   0.9001    8.6667         0.0043          0.8697    0.8009                       3/3
+[0.4, 0.5) 231.0000        0.1045         0.9307   0.8808   34.3333         0.0169          0.8035    0.6089                       3/3
+[0.3, 0.4) 280.6667        0.1269         0.8648   0.8097   92.3333         0.0456          0.8036    0.5857                       3/3
+[0.2, 0.3) 303.6667        0.1373         0.8095   0.7463  203.0000         0.1001          0.8072    0.5934                       3/3
+[0.1, 0.2) 382.3333        0.1729         0.6725   0.6069  447.0000         0.2205          0.6417    0.4361                       3/3
+[0.0, 0.1) 606.0000        0.2741         0.5059   0.4321 1238.6667         0.6111          0.4555    0.3204                       3/3
+
+   cumulative, seed 0
+confidence  syn n  syn coverage  syn within_2s  syn T@1  real n  real coverage  real within_2s  real T@1 syn Wilson95 (secondary) real Wilson95 (secondary)
+    >= 0.9      0        0.0000            NaN      NaN       0         0.0000             NaN       NaN                        -                         -
+    >= 0.8     15        0.0068         1.0000   0.9476       0         0.0000             NaN       NaN         [0.7961, 1.0000]                         -
+    >= 0.7     71        0.0321         0.9859   0.9406       1         0.0005          1.0000    0.9881         [0.9244, 0.9975]          [0.2065, 1.0000]
+    >= 0.6    189        0.0855         0.9735   0.9225       2         0.0010          1.0000    0.9891         [0.9396, 0.9886]          [0.3424, 1.0000]
+    >= 0.5    383        0.1732         0.9504   0.8969      12         0.0059          0.7500    0.7106         [0.9238, 0.9680]          [0.4677, 0.9111]
+    >= 0.4    612        0.2768         0.9461   0.8943      47         0.0232          0.7660    0.6283         [0.9252, 0.9614]          [0.6278, 0.8640]
+    >= 0.3    905        0.4093         0.9171   0.8635     151         0.0745          0.8146    0.6117         [0.8974, 0.9334]          [0.7451, 0.8685]
+    >= 0.2   1219        0.5513         0.8950   0.8416     385         0.1899          0.8182    0.6133         [0.8765, 0.9110]          [0.7766, 0.8535]
+    >= 0.1   1622        0.7336         0.8397   0.7824     855         0.4218          0.7053    0.5048         [0.8211, 0.8568]          [0.6738, 0.7349]
+    >= 0.0   2211        1.0000         0.7544   0.6922    2027         1.0000          0.5649    0.3976         [0.7360, 0.7719]          [0.5432, 0.5863]
+   Wilson column: Secondary, added to help read bins with few clips; not part of the evaluation protocol and not used by the tau rule.
+
+   cumulative, seed 1
+confidence  syn n  syn coverage  syn within_2s  syn T@1  real n  real coverage  real within_2s  real T@1 syn Wilson95 (secondary) real Wilson95 (secondary)
+    >= 0.9      2        0.0009         1.0000   0.9778       0         0.0000             NaN       NaN         [0.3424, 1.0000]                         -
+    >= 0.8     32        0.0145         0.9688   0.9154       0         0.0000             NaN       NaN         [0.8426, 0.9945]                         -
+    >= 0.7    104        0.0470         0.9808   0.9379       1         0.0005          1.0000    0.9956         [0.9326, 0.9947]          [0.2065, 1.0000]
+    >= 0.6    239        0.1081         0.9833   0.9386       5         0.0025          1.0000    0.8678         [0.9578, 0.9935]          [0.5655, 1.0000]
+    >= 0.5    435        0.1967         0.9816   0.9309      16         0.0079          0.9375    0.8530         [0.9641, 0.9907]          [0.7167, 0.9889]
+    >= 0.4    671        0.3035         0.9657   0.9133      53         0.0261          0.8868    0.6895         [0.9491, 0.9771]          [0.7742, 0.9471]
+    >= 0.3    950        0.4297         0.9368   0.8841     155         0.0765          0.8387    0.6387         [0.9195, 0.9506]          [0.7727, 0.8883]
+    >= 0.2   1229        0.5559         0.9040   0.8453     348         0.1717          0.8075    0.6030         [0.8862, 0.9192]          [0.7628, 0.8454]
+    >= 0.1   1584        0.7164         0.8542   0.7941     763         0.3764          0.7195    0.5168         [0.8359, 0.8707]          [0.6866, 0.7502]
+    >= 0.0   2211        1.0000         0.7499   0.6854    2027         1.0000          0.5545    0.3981         [0.7314, 0.7675]          [0.5328, 0.5760]
+   Wilson column: Secondary, added to help read bins with few clips; not part of the evaluation protocol and not used by the tau rule.
+
+   cumulative, seed 2
+confidence  syn n  syn coverage  syn within_2s  syn T@1  real n  real coverage  real within_2s  real T@1 syn Wilson95 (secondary) real Wilson95 (secondary)
+    >= 0.9      3        0.0014         0.6667   0.6386       0         0.0000             NaN       NaN         [0.2077, 0.9385]                         -
+    >= 0.8     22        0.0100         0.9545   0.9298       0         0.0000             NaN       NaN         [0.7820, 0.9919]                         -
+    >= 0.7     91        0.0412         0.9670   0.9367       0         0.0000             NaN       NaN         [0.9075, 0.9887]                         -
+    >= 0.6    219        0.0991         0.9863   0.9436       2         0.0010          1.0000    0.9948         [0.9605, 0.9953]          [0.3424, 1.0000]
+    >= 0.5    404        0.1827         0.9678   0.9267       7         0.0035          1.0000    0.9282         [0.9457, 0.9811]          [0.6457, 1.0000]
+    >= 0.4    632        0.2858         0.9494   0.9069      38         0.0187          0.8158    0.6670         [0.9294, 0.9639]          [0.6658, 0.9078]
+    >= 0.3    902        0.4080         0.9257   0.8798     109         0.0538          0.7798    0.5846         [0.9067, 0.9411]          [0.6932, 0.8473]
+    >= 0.2   1220        0.5518         0.8943   0.8452     291         0.1436          0.8041    0.5890         [0.8758, 0.9103]          [0.7547, 0.8456]
+    >= 0.1   1609        0.7277         0.8384   0.7860     747         0.3685          0.7202    0.5029         [0.8196, 0.8556]          [0.6870, 0.7512]
+    >= 0.0   2211        1.0000         0.7494   0.6923    2027         1.0000          0.5491    0.3846         [0.7309, 0.7671]          [0.5274, 0.5706]
+   Wilson column: Secondary, added to help read bins with few clips; not part of the evaluation protocol and not used by the tau rule.
+
+   cumulative, mean over seeds 0-2 (n = mean count; share within 2 s and T@1 averaged over the seeds with clips in the row; no interval: a mean of three dependent shares is not a binomial count)
+confidence     syn n  syn coverage  syn within_2s  syn T@1    real n  real coverage  real within_2s  real T@1 seeds with clips syn/real
+    >= 0.9    1.6667        0.0008         0.8333   0.8082    0.0000         0.0000             NaN       NaN                       2/0
+    >= 0.8   23.0000        0.0104         0.9744   0.9309    0.0000         0.0000             NaN       NaN                       3/0
+    >= 0.7   88.6667        0.0401         0.9779   0.9384    0.6667         0.0003          1.0000    0.9919                       3/2
+    >= 0.6  215.6667        0.0975         0.9810   0.9349    3.0000         0.0015          1.0000    0.9506                       3/3
+    >= 0.5  407.3333        0.1842         0.9666   0.9182   11.6667         0.0058          0.8958    0.8306                       3/3
+    >= 0.4  638.3333        0.2887         0.9537   0.9048   46.0000         0.0227          0.8228    0.6616                       3/3
+    >= 0.3  919.0000        0.4156         0.9266   0.8758  138.3333         0.0682          0.8110    0.6117                       3/3
+    >= 0.2 1222.6667        0.5530         0.8977   0.8440  341.3333         0.1684          0.8099    0.6017                       3/3
+    >= 0.1 1605.0000        0.7259         0.8441   0.7875  788.3333         0.3889          0.7150    0.5082                       3/3
+    >= 0.0 2211.0000        1.0000         0.7512   0.6900 2027.0000         1.0000          0.5562    0.3934                       3/3
+

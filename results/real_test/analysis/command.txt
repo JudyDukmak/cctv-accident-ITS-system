@@ -1,0 +1,14 @@
+﻿Real test: analysis of the saved predictions (ADDITION TO THE PLAN, 2026-11-15, requested after stages C1 and C2).
+No model run, CPU only, nothing chosen or changed; RUN_ONCE.txt only read (prediction sha256 checked against its EVENT lines).
+Run from cctv-accident-ITS-system\ (training environment):
+   .venv-ml\Scripts\python.exe aggregate_runs.py --real-analysis   (terminal output: run.log)
+code: git HEAD cf2322d + aggregate_runs.py with the new --real-analysis mode (uncommitted), sha256 95605c4b6f3255b763009529b686dad75df566bd0b3ae4051de95fa97c1922b7
+   (aggregate_runs.py therefore no longer equals its sha256 in RUN_ONCE.txt; the code that ran the real test is commit cf2322d)
+fixed settings: paired bootstrap over source videos (clip stem without _NN), 10000 resamples, numpy default_rng seed 0,
+   percentile 95% interval; confidence thresholds / bins as in stage C2 and tau_evidence (conf_tables)
+checks (the script stops on any mismatch; all passed): clip_predictions.csv sha256 = RUN_ONCE.txt EVENT lines; all 2027 / frozen 400
+   metrics of the 4 runs = stage_C2\per_run_table.csv; single-fold-model metrics = stage_C1/C2 secondary_single_fold_models.csv;
+   synthetic per-fold / pooled T@1 = the runs' frozen tta_table.csv; per-seed confidence tables = tau_evidence\tau_{cumulative,bins}.csv
+   (synthetic) and stage_C2\confidence_{cumulative,bins}_real.csv (real)
+outputs: report.txt, bootstrap_ablation.csv, source_videos.csv, per_fold_table.csv, early_impact.csv, confidence_per_seed.csv,
+   confidence_mean_over_seeds.csv, run.log
