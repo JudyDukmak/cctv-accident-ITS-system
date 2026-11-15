@@ -38,3 +38,4 @@ real_check/*.csv
 
 incoming/
 results/diagnostics/*/frames/
+results/real_test/scores/

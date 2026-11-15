@@ -48,6 +48,15 @@ Real test, run once (results/real_test/; the only modes that read real labels, a
                    both the GPU seconds and the secondary single-fold-model table. Scopes: all 2027, frozen 400, clips
                    with >= 1 window, early impact (t* < 2.875 s).
   --dry-run        (with --real-eval and another --real-root) FAKE t* = 0.37 x duration; no label is read.
+  --real-analysis  (added to the plan 2026-11-15, after both stages; no model run, nothing chosen, RUN_ONCE.txt only
+                   read) analysis of the saved predictions in <real root>/predictions/ (sha256 checked against the
+                   lock's EVENT lines; stage tables reproduced first). Writes <real root>/analysis/ once: paired
+                   bootstrap of C_v2_seed0 - C_cctv_seed0 and C_v2_seed0 - C_cctv mean over seeds 0-2 (source videos =
+                   clip stem without _NN resampled, BOOT_N resamples, seed BOOT_SEED, percentile 95% interval) on all
+                   2027 and the frozen 400; per-fold synthetic validation T@1 next to the real T@1 of that fold model
+                   alone; duration and gain over the naive midpoint for t* < 2.875 s and the rest; confidence tables
+                   synthetic vs real per C_cctv seed (each clip once per table) and their mean over seeds, Wilson 95%
+                   interval as a secondary last column of the per-seed tables only.
 
 Usage:
     .venv-ml\\Scripts\\python.exe aggregate_runs.py RUN_NAME [RUN_NAME ...] [--overwrite]
@@ -61,6 +70,7 @@ Usage:
 import argparse
 import hashlib
 import json
+import re
 import sys
 from pathlib import Path
 
@@ -69,7 +79,7 @@ import pandas as pd
 
 REPO_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT))
-from accs_scorer import temporal  # noqa: E402
+from accs_scorer import temporal, temporal_per_clip  # noqa: E402
 from cache_manifest_check import check_cache_manifest  # noqa: E402
 
 RUNS_DIR = REPO_ROOT / "runs"
@@ -966,6 +976,236 @@ def real_eval(stage: str, root: Path, dry: bool) -> None:
     print(f"wrote {out}")
 
 
+# --------------------------------------------------------------------------- #
+# Real test: analysis of the saved predictions (added to the plan 2026-11-15; no model run, nothing chosen)
+# --------------------------------------------------------------------------- #
+BOOT_N, BOOT_SEED = 10_000, 0  # fixed; not an option, so the bootstrap is not rerun with other seeds
+ANALYSIS_RUNS = ("C_v2_seed0",) + C_CCTV
+WILSON_NOTE = ("Secondary, added to help read bins with few clips; not part of the evaluation protocol and not used by "
+               "the tau rule.")
+
+
+def source_video(rgb_path: str) -> str:
+    """Source video of a real clip: the file stem without the trailing _NN."""
+    return re.sub(r"_\d+$", "", Path(str(rgb_path).replace("\\", "/")).stem)
+
+
+def clip_terms(p: pd.DataFrame) -> pd.DataFrame:
+    """Per-clip terms whose mean over clips is each metric (T@sigma: accs_scorer.temporal_per_clip; within 2 s: 0/1)."""
+    t = pd.DataFrame({f"T_{s:g}": temporal_per_clip(p["t_hat"], p["t_star"], s) for s in SIGMAS_T}, index=p.index)
+    t["within_2s"] = ((p["t_hat"] - p["t_star"]).abs() <= 2.0).astype(float)
+    return t
+
+
+def saved_real(f: Path, clips: pd.DataFrame) -> pd.DataFrame:
+    """A saved real prediction file joined to the clips (labels), rows in the order and index of `clips`."""
+    p = pd.read_csv(f)
+    m = clips.merge(p[["rgb_path", "t_hat", "confidence", "fallback"]], on="rgb_path", how="inner",
+                    validate="one_to_one")
+    if len(p) != len(clips) or len(m) != len(clips) or not (m["rgb_path"].to_numpy() == clips["rgb_path"].to_numpy()).all():
+        fail(f"{f}: expected each of the {len(clips)} real clips once")
+    if (m["fallback"].astype(bool) == m["has_window"]).any():
+        fail(f"{f}: fallback flags differ from the clips without a window")
+    return m.set_index(clips.index)
+
+
+def check_close(label: str, got: float, saved: float, tol: float = 1e-9) -> None:
+    if (np.isnan(got) and np.isnan(saved)) or abs(got - saved) <= tol:
+        return
+    fail(f"{label}: recomputed {got!r} differs from the saved {saved!r}")
+
+
+def real_analysis(root: Path) -> None:
+    """--real-analysis: see module doc."""
+    out = root / "analysis"
+    if (out / "report.txt").exists():
+        fail(f"{out / 'report.txt'} exists; the analysis is written once")
+    _, events = read_lock(root)  # read only
+    if not all(stage_done(events, s) for s in STAGES):
+        fail("both real-test stages must be evaluated before this analysis")
+    clips = real_clips(dry=False)
+    clips["source"] = clips["rgb_path"].map(source_video)
+    two = REAL_SCOPES[:2]  # all 2027, frozen 400
+
+    # saved predictions, checked against the lock and against the saved stage tables
+    preds = {}
+    for run in ANALYSIS_RUNS:
+        f = root / "predictions" / run / "clip_predictions.csv"
+        h = [e for e in events if f"PREDICTIONS {run} sha256 " in e and "DRY RUN" not in e]
+        if len(h) != 1 or sha_of(f) != h[0].split()[-1]:
+            fail(f"{f} differs from its sha256 in {LOCK_NAME}")
+        preds[run] = saved_real(f, clips)
+    singles = {(run, k): saved_real(root / "predictions" / run / f"clip_predictions_fold{k}_model_only.csv", clips)
+               for run in ANALYSIS_RUNS for k in FOLDS}
+    prt = pd.read_csv(root / "stage_C2" / "per_run_table.csv")
+    sec = pd.concat([pd.read_csv(root / f"stage_{s}" / "secondary_single_fold_models.csv") for s in STAGES])
+    for scope, sel in two:
+        for run, p in preds.items():
+            got = scores(p[sel(p)])
+            r = prt[(prt["predictor"] == run) & (prt["scope"] == scope)].iloc[0]
+            for m in METRICS:
+                check_close(f"{run} {scope} {m}", got[m], float(r[m]))
+        for (run, k), p in singles.items():
+            got = scores(p[sel(p)])
+            r = sec[(sec["run"] == run) & (sec["fold_model"] == k) & (sec["scope"] == scope)].iloc[0]
+            for m in METRICS:
+                check_close(f"{run} fold {k} model {scope} {m}", got[m], float(r[m]))
+    rep = [f"Real test: analysis of the saved predictions (ADDITION TO THE PLAN, 2026-11-15; after stages C1 and C2; no "
+           f"model run; nothing chosen or changed; {LOCK_NAME} only read). {utc_now()}",
+           f"inputs: {root / 'predictions'} (clip_predictions.csv sha256 = the lock's EVENT lines; per-fold-model files), "
+           f"stage_C1/C2 tables (all {len(ANALYSIS_RUNS)} runs' metrics on all 2027 / frozen 400 and the single-fold-model "
+           "metrics recomputed and equal to the saved tables), synthetic frozen predictions "
+           "(results/diagnostics/.../tta_clip_predictions_flip.csv), metadata-real.csv (accident_time, duration)", ""]
+
+    # 1. paired bootstrap over source videos
+    rng = np.random.default_rng(BOOT_SEED)
+    terms = {run: clip_terms(p) for run, p in preds.items()}
+    cctv_mean = sum(terms[r] for r in C_CCTV) / len(C_CCTV)
+    comps = (("C_v2_seed0 - C_cctv_seed0", terms["C_v2_seed0"] - terms["C_cctv_seed0"]),
+             ("C_v2_seed0 - C_cctv mean over seeds 0-2", terms["C_v2_seed0"] - cctv_mean))
+    boot, src = [], []
+    for scope, sel in two:
+        mask = sel(clips).to_numpy()
+        codes, uniq = pd.factorize(clips.loc[mask, "source"])
+        g = len(uniq)
+        n_g = np.bincount(codes, minlength=g).astype(float)
+        src.append({"scope": scope, "n_clips": int(mask.sum()), "n_source_videos": g,
+                    "clips_per_source_median": float(np.median(n_g)), "clips_per_source_max": int(n_g.max())})
+        w = rng.multinomial(g, np.full(g, 1.0 / g), size=BOOT_N).astype(float)  # resample counts per source video
+        den = w @ n_g
+        for name, d in comps:
+            for m in METRICS:
+                v = d.loc[mask, m].to_numpy()
+                stat = (w @ np.bincount(codes, weights=v, minlength=g)) / den
+                lo, hi = np.percentile(stat, [2.5, 97.5])
+                boot.append({"scope": scope, "n_clips": int(mask.sum()), "n_source_videos": g, "comparison": name,
+                             "metric": m, "difference": float(v.mean()), "ci95_lo": float(lo), "ci95_hi": float(hi)})
+    boot, src = pd.DataFrame(boot), pd.DataFrame(src)
+
+    # 2. per fold: synthetic validation T@1 of fold model k next to its real T@1 alone
+    pf, syn_pred = [], {}
+    for run in ANALYSIS_RUNS:
+        syn = pd.read_csv(SYN_TTA[run].parent / "tta_clip_predictions_flip.csv")
+        if len(syn) != 2211 or syn["rgb_path"].duplicated().any() or set(syn["fold"]) != set(FOLDS):
+            fail(f"{run}: synthetic frozen predictions must hold the 2211 clips once, folds 0-2")
+        syn_pred[run] = syn
+        tt = pd.read_csv(SYN_TTA[run])
+        tt = tt[tt["arm"] == "flip TTA"].set_index("scope")
+        for k in list(FOLDS) + ["pooled"]:
+            q = syn if k == "pooled" else syn[syn["fold"] == k]
+            sv = temporal(q["t_hat"], q["t_star"], 1.0)
+            check_close(f"{run} synthetic {k} T@1", sv, float(tt.loc["pooled" if k == "pooled" else f"fold {k}", "T@1"]))
+            real = preds[run] if k == "pooled" else singles[(run, k)]
+            pf.append({"run": run, "fold_model": "pooled / 3-model ensemble" if k == "pooled" else f"fold {k}",
+                       "synthetic_val_n_clips": len(q), "synthetic_val_T@1": sv,
+                       **{f"real_T@1 {scope}": scores(real[sel(real)])["T_1"] for scope, sel in two}})
+    pf = pd.DataFrame(pf)
+
+    # 3. early impact: durations and gain over the naive midpoint per group
+    ei = []
+    for scope, sel in two:
+        base = clips[sel(clips)]
+        for grp, gm in ((f"t* < {EARLY_T} s", base["early"]), (f"t* >= {EARLY_T} s", ~base["early"])):
+            q = base[gm]
+            naive = scores(q.assign(t_hat=q["duration"] / 2))
+            row = {"scope": scope, "group": grp, "n_clips": len(q), "duration_mean": q["duration"].mean(),
+                   "duration_median": q["duration"].median(), "duration_min": q["duration"].min(),
+                   "duration_max": q["duration"].max()}
+            row |= {f"naive {m}": naive[m] for m in METRICS}
+            v2 = scores(preds["C_v2_seed0"].loc[q.index])
+            row |= {f"C_v2_seed0 gain {m}": v2[m] - naive[m] for m in METRICS}
+            for m in METRICS:
+                gains = pd.Series([scores(preds[r].loc[q.index])[m] - naive[m] for r in C_CCTV])
+                row[f"C_cctv gain {m} mean"], row[f"C_cctv gain {m} sd"] = gains.mean(), gains.std(ddof=1)
+            ei.append(row)
+    ei = pd.DataFrame(ei)
+
+    # 4. confidence, synthetic vs real, per C_cctv seed (each clip once per table), then the mean over seeds
+    conf = []
+    syn_saved = {"cumulative": pd.read_csv(TAU_DIR / "tau_cumulative.csv"), "bins": pd.read_csv(TAU_DIR / "tau_bins.csv")}
+    real_saved = {"cumulative": pd.read_csv(root / "stage_C2" / "confidence_cumulative_real.csv"),
+                  "bins": pd.read_csv(root / "stage_C2" / "confidence_bins_real.csv")}
+    for i, run in enumerate(C_CCTV):
+        for domain, p, saved in (("synthetic", syn_pred[run], syn_saved), ("real", preds[run], real_saved)):
+            cum, binned = conf_tables(p, f"seed {i}")
+            for kind, rows in (("cumulative", cum), ("bins", binned)):
+                sv = saved[kind][saved[kind]["scope"] == f"seed {i}"].set_index("confidence")
+                for r in rows:
+                    for c in ("n_clips", "coverage", "share_within_2s", "T@1"):
+                        check_close(f"{domain} seed {i} {kind} {r['confidence']} {c}", float(r[c]),
+                                    float(sv.loc[r["confidence"], c]))
+                    conf.append({"table": kind, "domain": domain, "seed": i, "confidence": r["confidence"],
+                                 "n_clips": r["n_clips"], "coverage": r["coverage"],
+                                 "share_within_2s": r["share_within_2s"], "T@1": r["T@1"],
+                                 "wilson95_lo (secondary)": r["wilson95_lo"], "wilson95_hi (secondary)": r["wilson95_hi"]})
+    conf = pd.DataFrame(conf)
+    cmean = conf.groupby(["table", "domain", "confidence"], sort=False).agg(
+        n_clips=("n_clips", "mean"), coverage=("coverage", "mean"), share_within_2s=("share_within_2s", "mean"),
+        **{"T@1": ("T@1", "mean")}, seeds_with_clips=("n_clips", lambda v: int((v > 0).sum()))).reset_index()
+
+    def side(tb: pd.DataFrame, with_wilson: bool) -> str:
+        s = tb[tb["domain"] == "synthetic"].set_index("confidence")
+        r = tb[tb["domain"] == "real"].set_index("confidence").reindex(s.index)
+        t = pd.DataFrame({"syn n": s["n_clips"], "syn coverage": s["coverage"], "syn within_2s": s["share_within_2s"],
+                          "syn T@1": s["T@1"], "real n": r["n_clips"], "real coverage": r["coverage"],
+                          "real within_2s": r["share_within_2s"], "real T@1": r["T@1"]})
+        if with_wilson:
+            w = lambda x: "-" if x["n_clips"] == 0 else f"[{x['wilson95_lo (secondary)']:.4f}, {x['wilson95_hi (secondary)']:.4f}]"  # noqa: E731
+            t["syn Wilson95 (secondary)"] = s.apply(w, axis=1)
+            t["real Wilson95 (secondary)"] = r.apply(w, axis=1)
+        else:
+            t["seeds with clips syn/real"] = s["seeds_with_clips"].astype(str) + "/" + r["seeds_with_clips"].astype(str)
+        return t.reset_index().to_string(index=False, float_format=lambda v: f"{v:.4f}")
+
+    # report
+    rep += [f"1. PAIRED BOOTSTRAP OF THE ABLATION ON REAL (difference = C_v2_seed0 minus C_cctv; positive = C_v2 higher; "
+            f"source videos resampled with replacement, {BOOT_N} resamples, numpy default_rng seed {BOOT_SEED}, the same "
+            "resamples for both comparisons and all metrics of a scope; metric of a resample = mean over its clips; "
+            "percentile 95% interval; C_cctv mean = per-clip mean of the three seeds' terms)",
+            "   source videos (clip stem without _NN):", fmt(src)]
+    for scope, _ in two:
+        b = boot[boot["scope"] == scope]
+        rep += [f"   [{scope}] n = {int(b['n_clips'].iloc[0])} clips, {int(b['n_source_videos'].iloc[0])} source videos",
+                fmt(b.drop(columns=["scope", "n_clips", "n_source_videos"]))]
+    rep += ["", "2. PER FOLD MODEL: synthetic validation T@1 of fold model k on its own validation fold (frozen "
+            "post-processing, saved predictions) next to the real T@1 of that fold model alone (flip TTA, same "
+            "post-processing, fallback); last row per run: synthetic pooled out-of-fold and the real 3-model ensemble",
+            fmt(pf), "",
+            f"3. EARLY IMPACT (t* < {EARLY_T} s) vs THE REST: clip duration (s) and gain over the naive midpoint "
+            "(classifier - naive; C_cctv mean +- sample std over seeds 0-2)"]
+    for scope, _ in two:
+        q = ei[ei["scope"] == scope]
+        rep += [f"   [{scope}] duration and naive midpoint",
+                fmt(q[["group", "n_clips", "duration_mean", "duration_median", "duration_min", "duration_max"]
+                      + [f"naive {m}" for m in METRICS]]),
+                f"   [{scope}] gain over the naive midpoint",
+                pd.DataFrame({"group": q["group"], **{f"C_v2_seed0 {m}": q[f"C_v2_seed0 gain {m}"].map(lambda v: f"{v:+.4f}")
+                                                     for m in METRICS},
+                              **{f"C_cctv {m}": [f"{a:+.4f} +- {s:.4f}" for a, s in
+                                                 zip(q[f"C_cctv gain {m} mean"], q[f"C_cctv gain {m} sd"])]
+                                 for m in METRICS}}).to_string(index=False)]
+    rep += ["", "4. CONFIDENCE, SYNTHETIC vs REAL, PER C_cctv SEED (each clip once per table: synthetic 2211 out-of-fold "
+            "predictions, real 2027 clips incl. 3 fallback clips with confidence 0; no tau chosen)"]
+    for kind in ("bins", "cumulative"):
+        for i in range(3):
+            rep += [f"   {kind}, seed {i}", side(conf[(conf["table"] == kind) & (conf["seed"] == i)], True),
+                    f"   Wilson column: {WILSON_NOTE}", ""]
+        rep += [f"   {kind}, mean over seeds 0-2 (n = mean count; share within 2 s and T@1 averaged over the seeds "
+                "with clips in the row; no interval: a mean of three dependent shares is not a binomial count)",
+                side(cmean[cmean["table"] == kind], False), ""]
+    out.mkdir(parents=True, exist_ok=True)
+    boot.to_csv(out / "bootstrap_ablation.csv", index=False)
+    src.to_csv(out / "source_videos.csv", index=False)
+    pf.to_csv(out / "per_fold_table.csv", index=False)
+    ei.to_csv(out / "early_impact.csv", index=False)
+    conf.to_csv(out / "confidence_per_seed.csv", index=False)
+    cmean.to_csv(out / "confidence_mean_over_seeds.csv", index=False)
+    text = "\n".join(rep) + "\n"
+    (out / "report.txt").write_text(text, encoding="utf-8")
+    print(text)
+    print(f"wrote {out}")
+
+
 def main() -> None:
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("runs", nargs="*", help="run names under runs/ (none with --real-lock / --real-eval)")
@@ -998,7 +1238,14 @@ def main() -> None:
     ap.add_argument("--real-root", type=Path, default=REAL_DIR)
     ap.add_argument("--dry-run", action="store_true",
                     help="with --real-eval: FAKE t* = 0.37 x duration, no label read (code test in another --real-root)")
+    ap.add_argument("--real-analysis", action="store_true",
+                    help="analysis of the saved real-test predictions (see module doc); writes <real root>/analysis/")
     args = ap.parse_args()
+    if args.real_analysis:
+        if args.runs or args.real_lock or args.real_eval or args.dry_run:
+            fail("--real-analysis takes no run names and no other real-test mode")
+        real_analysis(args.real_root)
+        return
     if args.real_lock or args.real_eval:
         if args.runs:
             fail("--real-lock / --real-eval take no run names")

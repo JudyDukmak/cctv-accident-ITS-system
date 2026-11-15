@@ -1,0 +1,14 @@
+﻿RUN ONCE: real test of the window classifier (no VLM, no tau). Created 2026-11-14T22:09:43+00:00.
+git HEAD a93bcf1aaa01a95418fbbe47c1f6c7d0099cd304; tracked files modified vs HEAD: M aggregate_runs.py,  M analyse_predictions.py,  M build_frame_cache.py,  M results/classifier_summary.csv,  M results/classifier_summary.md,  M results/diagnostics/std_seed0_fold0/report.txt,  M results/real_test/partA_cache/cache_manifest.json,  M results/real_test/partA_cache/cache_summary.txt,  M results/real_test/partA_cache/command.txt,  M results/real_test/partA_cache/real_clips.csv,  M results/real_test/partA_cache/run.log
+code / input sha256 (checked before every scoring run and evaluation; any change stops the run):
+  aggregate_runs.py 0f251120e225afbaeefc968fa290eca0e9643f0c30f95b1790e9290f7ea352d3
+  analyse_predictions.py 7319f12188f54d3ed88f66f1ec7f93b88877df31bd8b9232c1ae5a86fc988192
+  build_frame_cache.py 7de47b36964f75bcab7e53176c99f9678d27498ae8c7ba31794c6bb8bf65291d
+  train_classifier.py cddd451e75d5b133cf3edeb9ffe8e610c267f00b9970b966dd9dc455b309e7c2
+  accs_scorer.py f4bab55d3c959f5a01a99f569808bb169755c7b20bc346a76c6f385edb9da397
+  make_windows.py 6fbc9a890090a76cbbe1023197d469d8e1f9c95d536ba90bfe86424f46ccc89a
+  cache_manifest_check.py 0c72a9ba5b5389a03da4b9e98e60274a76d18545095777dadfaa2212d98f0b48
+  real_windows.csv fa1d2c07d85923d5a96ff5ab23891d40794465aeb7c990bc08743715e8faf676
+  metadata-real.csv a3d06073353a7fedff140b652d025135f017860a240cad693990f5288c6c0ec9
+  real_test_set.csv 521a5cf62cbee5e897b4ebf99f1c4297a5af06f4a8c985eeb4e91f60b28c2c7c
+frozen post-processing: tta flip (mean of orig and hflip sigmoid scores per fold model); fold_models [0, 1, 2]; ensemble mean of the fold models' TTA window scores; smooth 3; interp parabola; fallback clips without a window: t_hat = duration / 2, confidence 0 (decision 2026-11-15)

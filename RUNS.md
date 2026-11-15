@@ -318,3 +318,50 @@ Details are in results/real_test/:
 - stage_C1/report.txt and its CSVs
 - stage_C2/report.txt, per_run_table.csv, final_table.csv, transfer_gap.csv, confidence_*_real.csv, gpu_seconds.csv,
   secondary_single_fold_models.csv
+
+### Analysis of the saved predictions (addition to the plan, 2026-11-15)
+
+This analysis was requested after both stages and was not in the plan. It ran no model and used only the CPU. Nothing
+was chosen or changed, and RUN_ONCE.txt was only read. The command is `aggregate_runs.py --real-analysis` (new mode,
+uncommitted, sha256 95605c4b...; the real test itself ran on commit cf2322d). Before computing anything new, the
+script checks the saved predictions against the lock and reproduces every saved stage table it uses.
+
+(1) Paired bootstrap of the ablation. It resamples source videos (clip stem without _NN) 10,000 times with numpy
+seed 0 and reports percentile 95% intervals. There are 1944 source videos for the 2027 clips (at most 6 clips each)
+and 400 for the frozen 400. Differences are C_v2_seed0 minus C_cctv:
+
+| Comparison | Scope | T@1 [95% CI] | T@0.5 lower bound | T@2 lower bound | Within 2 s lower bound |
+|---|---|---|---|---|---|
+| vs C_cctv_seed0 | All 2027 | +0.0270 [0.0179, 0.0360] | above 0 | above 0 | above 0 |
+| vs C_cctv mean over seeds | All 2027 | +0.0311 [0.0224, 0.0395] | above 0 | above 0 | above 0 |
+| vs C_cctv_seed0 | Frozen 400 | +0.0229 [0.0016, 0.0442] | 0.0079 | -0.0073 | -0.0100 |
+| vs C_cctv mean over seeds | Frozen 400 | +0.0190 [0.0000, 0.0380] | -0.0001 | -0.0017 | 0.0000 |
+
+The bootstrap covers clip sampling only. It does not cover training-seed variation, and C_v2 has a single seed.
+
+(2) Per-fold table: the synthetic validation T@1 of fold model k next to the real T@1 of that fold model alone. The
+fold-2 models have the highest synthetic T@1 (0.858-0.878 against 0.594-0.624 for folds 0 and 1) and the highest real
+T@1 on all 2027 clips in all four runs, but their real lead is small (0.379-0.422 against 0.353-0.411).
+
+(3) Early impact (t* < 2.875 s). These clips are shorter: median duration 14.59 s for the 460 early clips against
+29.88 s for the other 1567. The naive midpoint is higher on them (T@1 0.2764 vs 0.1641). The classifier's T@1 gain
+over naive is similar in both groups:
+
+| Predictor | Early clips | Other clips |
+|---|---|---|
+| C_v2 | +0.2359 | +0.2347 |
+| C_cctv | +0.1966 +- 0.0072 | +0.2060 +- 0.0078 |
+
+(4) Confidence, synthetic vs real, for each C_cctv seed (each clip counted once per table) and their mean over seeds.
+The Wilson interval appears only as a secondary last column of the per-seed tables. Mean over seeds at
+confidence >= 0.3:
+
+| | Real | Synthetic |
+|---|---|---|
+| Coverage | 0.0682 | 0.4156 |
+| Within 2 s | 0.8110 | 0.9266 |
+| T@1 | 0.6117 | 0.8758 |
+
+Details are in results/real_test/analysis/: report.txt, command.txt, run.log, bootstrap_ablation.csv,
+source_videos.csv, per_fold_table.csv, early_impact.csv, confidence_per_seed.csv and
+confidence_mean_over_seeds.csv.
