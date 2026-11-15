@@ -1,0 +1,33 @@
+﻿.venv-ml\Scripts\python.exe aggregate_runs.py C_cos3_seed0 C_v2_seed0 --postproc-grid 3 --postproc-out results\diagnostics\C_cos3_seed0_3folds --allow-config-diff micro_batch,grad_accum --run-cache-manifest C_v2_seed0:1=results\diagnostics\C_v2_seed0_3folds\fold1_cache_manifest_rtx4050.json
+Selection rule (fixed before the results are printed): on C_cos3_seed0, pooled out-of-fold T@1 over all clips is the primary metric; the variant with the highest pooled T@1 is chosen only if it beats the current default (smoothing = the run's smooth_window, no interpolation) by at least 0.002; otherwise the default is kept. T@0.5 is reported separately and does not enter the choice. Reference runs are not used for the choice.
+Post-processing of the best-check window scores, synthetic pooled out-of-fold (no training, no GPU, no real data); runs: C_cos3_seed0, C_v2_seed0; widths [3] x interp ['none', 'parabola']
+
+Selection rule (fixed before the results are printed): on C_cos3_seed0, pooled out-of-fold T@1 over all clips is the primary metric; the variant with the highest pooled T@1 is chosen only if it beats the current default (smoothing = the run's smooth_window, no interpolation) by at least 0.002; otherwise the default is kept. T@0.5 is reported separately and does not enter the choice. Reference runs are not used for the choice.
+
+=== C_cos3_seed0 (SELECTION) ===
+reproduction check of the default (smooth 3, none):
+  fold 0: t_hat equal to the saved best-check predictions in 770/770 clips; confidence max |diff| 0.0e+00
+  fold 1: t_hat equal to the saved best-check predictions in 755/755 clips; confidence max |diff| 0.0e+00
+  fold 2: t_hat equal to the saved best-check predictions in 686/686 clips; confidence max |diff| 0.0e+00
+  pooled T@0.5 / 1 / 2 recomputed 0.5739 / 0.6785 / 0.7491 vs aggregate (saved predictions) 0.5739 / 0.6785 / 0.7491; max |diff| 0.0e+00
+
+ smooth   interp  default  pooled T@0.5  pooled T@1  pooled T@2  fold 0 T@1  fold 1 T@1  fold 2 T@1  within_2s  median |err| s  rho(conf, |err|)  share interpolated  n_clips
+      3     none     True        0.5739      0.6785      0.7491      0.5825      0.6170      0.8539     0.7399          0.3875           -0.3930              0.0000     2211
+      3 parabola    False        0.5857      0.6831      0.7506      0.5882      0.6235      0.8554     0.7399          0.3543           -0.3932              1.0000     2211
+
+best pooled T@1: smooth 3, parabola = 0.6831; default smooth 3, none = 0.6785; gain +0.0046 >= 0.002
+CHOICE: smooth 3, interp parabola (new variant); pooled T@0.5 / 1 / 2 = 0.5857 / 0.6831 / 0.7506
+
+=== C_v2_seed0 (reference only (not used for the choice)) ===
+reproduction check of the default (smooth 3, none):
+  fold 0: t_hat equal to the saved best-check predictions in 770/770 clips; confidence max |diff| 0.0e+00
+  fold 1: t_hat equal to the saved best-check predictions in 755/755 clips; confidence max |diff| 0.0e+00
+  fold 2: t_hat equal to the saved best-check predictions in 686/686 clips; confidence max |diff| 0.0e+00
+  pooled T@0.5 / 1 / 2 recomputed 0.5728 / 0.6773 / 0.7477 vs aggregate (saved predictions) 0.5728 / 0.6773 / 0.7477; max |diff| 0.0e+00
+
+ smooth   interp  default  pooled T@0.5  pooled T@1  pooled T@2  fold 0 T@1  fold 1 T@1  fold 2 T@1  within_2s  median |err| s  rho(conf, |err|)  share interpolated  n_clips
+      3     none     True        0.5728      0.6773      0.7477      0.5828      0.6151      0.8518     0.7390          0.3875           -0.4093              0.0000     2211
+      3 parabola    False        0.5838      0.6815      0.7491      0.5885      0.6210      0.8524     0.7386          0.3559           -0.4048              1.0000     2211
+
+
+wrote results\diagnostics\C_cos3_seed0_3folds\report.txt and postproc_variants.csv
