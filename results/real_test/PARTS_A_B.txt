@@ -13,6 +13,13 @@ Part A, real frame cache (CPU): partA_cache\ (command.txt, run.log, cache_summar
    - 3 clips whose metadata no_frames exceeds the decodable frames (PyAV = OpenCV = container): LZY4HepPGu0_00 274 vs 240,
      YQxqeP2Q_-M_00 352 vs 348, lgU3T6kySLw_00 181 vs 180; none in the 400; not cached (cache complete = false).
 
+  RESOLVED 2026-11-15 (author's decisions, before any real label was read): grid formula kept (rounded); clips with no
+  window -> t_hat = duration / 2, confidence 0, counted in every metric; short files -> fps kept, only windows whose
+  frames exist (LZY4HepPGu0_00 57 -> 49 windows, dropped window_idx 49-56; YQxqeP2Q_-M_00 and lgU3T6kySLw_00 57 -> 56,
+  dropped 56), cached. Cache rebuilt: partA_cache\run.log (first build in first_build_2026-11-14\): 2024/2024 clips with
+  windows cached, 82132 windows (400 subset: 16375), 0 errors, real_windows.csv sha256 fa1d2c07....
+  Fold-model averaging confirmed (Week 3 evaluation 6.5); it has no synthetic validation.
+
 Part B, code check on synthetic (GPU, RTX 5060): partB_check\ (commands_*.txt, score_fold*.log, ensemble_fold*.log,
   scores_C_cctv_seed0_fold{0,2}\, ensemble_C_cctv_seed0_fold{0,2}\)
   analyse_predictions.py --run C_cctv_seed0 --score-windows synthetic-val --folds K --out-dir ...

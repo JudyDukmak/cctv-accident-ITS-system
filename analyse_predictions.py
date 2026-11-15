@@ -35,6 +35,8 @@ scoring_report.txt (GPU, classifier time per pass: forward incl. host-to-device 
 already exist for the same window table are reused (resume after an interruption), never rescored.
   real:          cache/frames224_real_v1/real_windows.csv (build_frame_cache.py --real; its cache manifest must say
                  complete and hold the table's sha256). Reads no real label (metadata-real.csv is not opened).
+                 Run-once guard: --out-dir <root>/scores/<run>, --folds 0,1,2; <root>/RUN_ONCE.txt must exist
+                 (aggregate_runs.py --real-lock), code and inputs unchanged, the run's stage not yet evaluated.
   synthetic-val: code check, exactly one fold: that fold's synthetic validation clips, windows rebuilt with
                  build_frame_cache.windows_table() from metadata-synthetic.csv (checked equal to the training window
                  labels), synthetic cache. Ensemble and post-processing: aggregate_runs.py --window-ensemble.
@@ -299,6 +301,13 @@ def score_windows(kind: str, run: str, folds: list[int], out_dir: Path) -> None:
     if not torch.cuda.is_available():
         fail("CUDA is not available")
     device = torch.device("cuda")
+    real_root = None
+    if kind == "real":  # run-once guard (aggregate_runs.py --real-lock): out_dir must be <root>/scores/<run>
+        import aggregate_runs as ar
+        if out_dir.name != run or out_dir.parent.name != "scores" or folds != [0, 1, 2]:
+            fail("--score-windows real writes to <real root>/scores/<run> with --folds 0,1,2")
+        real_root = out_dir.parent.parent
+        ar.guard_real_scoring(run, real_root)
     win, cache_dir, note = scoring_windows(kind, folds)
     n_clips = win["rgb_path"].nunique()
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -357,6 +366,9 @@ def score_windows(kind: str, run: str, folds: list[int], out_dir: Path) -> None:
         (fd / "scoring_report.txt").write_text("\n".join(lines) + "\n", encoding="utf-8")
         del model, loader
         torch.cuda.empty_cache()
+    if real_root is not None:
+        import aggregate_runs as ar
+        ar.append_event(real_root, f"SCORING {run} finished (folds {folds}, orig + hflip)")
 
 
 # --------------------------------------------------------------------------- #

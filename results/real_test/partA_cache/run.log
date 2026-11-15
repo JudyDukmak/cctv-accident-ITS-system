@@ -1,5 +1,5 @@
 ﻿Frame cache build (REAL test clips; no label column read)
-time: 2026-11-14T21:07:01+00:00
+time: 2026-11-14T22:00:23+00:00
 1. inputs: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\ACCIDENT\dataset\metadata-real.csv (sha256 a3d06073353a... = test-set manifest), columns read: path, no_frames, duration, height, width
    real_test_set.csv sha256 521a5cf62cbe... = manifest output_sha256; 400 clips, column read: path; all in metadata-real.csv
    cache dir: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\cache\frames224_real_v1; PyAV 19.0.2, OpenCV 5.0.0; workers 8
@@ -27,22 +27,26 @@ time: 2026-11-14T21:07:01+00:00
      real_videos/x8GY43DccAs_00.mp4: 41 grid positions
      real_videos/zYgBOSbkY3A_01.mp4: 9 grid positions
    fps (no_frames / duration): min 3.922, median 14.988, max 49.700; duration min 1.300 s, median 26.827 s, max 114.957 s; height min 160, median 720, max 2160
-   real_windows.csv: unchanged (identical), sha256 0baa1fbaf1e9770d5792e17b046452b116f8f30d2bd1f8cec446671867d7cda6
 4. decoding 2024 clips (all)
-   progress 200/2024 clips, 0 errors, 0.4 min
-   progress 400/2024 clips, 0 errors, 0.8 min
-   progress 600/2024 clips, 0 errors, 1.2 min
+   progress 200/2024 clips, 0 errors, 0.0 min
+   progress 400/2024 clips, 0 errors, 0.0 min
+   progress 600/2024 clips, 0 errors, 0.0 min
+   progress 800/2024 clips, 0 errors, 0.0 min
+   progress 1000/2024 clips, 0 errors, 0.0 min
    ERROR real_videos/LZY4HepPGu0_00.mp4: RuntimeError: video ended after frame 239; 30 grid frames missing (first grid position 210, frame 240)
-   progress 800/2024 clips, 1 errors, 1.6 min
-   progress 1000/2024 clips, 1 errors, 2.0 min
+   progress 1200/2024 clips, 1 errors, 0.0 min
    ERROR real_videos/YQxqeP2Q_-M_00.mp4: RuntimeError: video ended after frame 347; 3 grid frames missing (first grid position 237, frame 348)
-   progress 1200/2024 clips, 2 errors, 2.5 min
-   progress 1400/2024 clips, 2 errors, 2.9 min
+   progress 1400/2024 clips, 2 errors, 0.0 min
+   progress 1600/2024 clips, 2 errors, 0.1 min
    ERROR real_videos/lgU3T6kySLw_00.mp4: RuntimeError: video ended after frame 179; 2 grid frames missing (first grid position 238, frame 180)
-   progress 1600/2024 clips, 3 errors, 3.3 min
-   progress 1800/2024 clips, 3 errors, 3.8 min
-   progress 2000/2024 clips, 3 errors, 4.2 min
-   progress 2024/2024 clips, 3 errors, 4.3 min
+   progress 1800/2024 clips, 3 errors, 0.1 min
+   progress 2000/2024 clips, 3 errors, 0.1 min
+   progress 2024/2024 clips, 3 errors, 0.1 min
+5. files with fewer decodable frames than metadata no_frames: 3 (fps kept = no_frames / duration; only windows whose frames exist are kept)
+     real_videos/LZY4HepPGu0_00.mp4: no_frames 274, decodable 240; windows 57 -> 49; dropped window_idx 49-56 (t_start 24.5-28.0 s, 8 windows); in 400 subset: False
+     real_videos/YQxqeP2Q_-M_00.mp4: no_frames 352, decodable 348; windows 57 -> 56; dropped window_idx 56-56 (t_start 28.0-28.0 s, 1 windows); in 400 subset: False
+     real_videos/lgU3T6kySLw_00.mp4: no_frames 181, decodable 180; windows 57 -> 56; dropped window_idx 56-56 (t_start 28.0-28.0 s, 1 windows); in 400 subset: False
+   real_windows.csv: written, sha256 fa1d2c07d85923d5a96ff5ab23891d40794465aeb7c990bc08743715e8faf676; 82132 windows (subset 16375) in 2024 clips
 
 6. Verification on the first 5 clips: cached JPEG vs the same frame decoded again with OpenCV (sequential), resized the same way. MAD = mean absolute pixel difference (0-255).
    MAD at frame-1 / frame+1 are shown as a reference: the cached frame should match its own index best.
@@ -62,7 +66,6 @@ time: 2026-11-14T21:07:01+00:00
    -AztVDZ6cEE_00                   pos 104 frame  195  MAD  2.026   (frame-1  2.426, frame+1  2.449)
    -AztVDZ6cEE_00                   pos 207 frame  388  MAD  2.019   (frame-1  2.304, frame+1  2.337)
 
-cache: 2021/2024 clips with windows present, 6.922 GB, complete False
-errors: real_videos/LZY4HepPGu0_00.mp4: RuntimeError: video ended after frame 239; 30 grid frames missing (first grid position 210, frame 240); real_videos/YQxqeP2Q_-M_00.mp4: RuntimeError: video ended after frame 347; 3 grid frames missing (first grid position 237, frame 348); real_videos/lgU3T6kySLw_00.mp4: RuntimeError: video ended after frame 179; 2 grid frames missing (first grid position 238, frame 180)
-FINAL: clips 2024 (written 2009, skipped 12), errors 3, frames 352136, 6.922 GB, 4.26 minutes
+cache: 2024/2024 clips with windows present, 6.937 GB, complete True
+FINAL: clips 2024 (written 3, skipped 2021), errors 0, frames 352816, 6.937 GB, 0.06 minutes
 saved C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\cache\frames224_real_v1\cache_manifest.json, cache_summary.txt; copies and real_clips.csv in results\real_test\partA_cache

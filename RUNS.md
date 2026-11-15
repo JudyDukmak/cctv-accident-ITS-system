@@ -224,3 +224,97 @@ p_narrow is the isotonic curve above (C_cctv seeds 0-2, pooled out-of-fold, froz
 the share of synthetic validation clips whose full-scan VLM time is within 2 s, measured in the zero-shot VLM stage
 on synthetic clips only. Above tau the narrow path is expected to be at least as accurate as the full scan and is
 cheaper. The value is computed once, when p_full is known.
+
+## Real test (run once)
+
+Window classifier alone on the real clips (no VLM, no tau), 2026-11-14/15, RTX 5060 Laptop GPU, no training. Nothing
+was tuned or chosen on these results. Lock results/real_test/RUN_ONCE.txt, created 2026-11-14T22:09:43Z: git HEAD
+a93bcf1; aggregate_runs.py, analyse_predictions.py and build_frame_cache.py were modified after a93bcf1 (decision-2
+truncation, run-once lock, real evaluation) and are uncommitted, so their sha256 values in the lock are the record of
+the code that ran (equal again after stage C2). The lock holds the sha256 of 7 code files, real_windows.csv, the cache
+manifest, metadata-real.csv and real_test_set.csv (checked before every scoring run and evaluation), and the config
+hash, best check and best.pt sha256 of the 12 fold models. Stage C1 (C_v2_seed0, C_cctv_seed0) was evaluated at
+2026-11-15T03:18:14Z, then stage C2 (C_cctv_seed1, C_cctv_seed2) at 08:24:12Z, each once and with nothing changed
+between them. The prediction sha256 values are in the lock's EVENT lines.
+
+Real frame cache (Part A, CPU) used the synthetic rules: 8 fps grid, 224 x 224 full-frame resize, no crop, JPEG 95,
+PyAV sequential decoding. It is in cache/frames224_real_v1/ (real_windows.csv sha256 fa1d2c07...). Of 2027 clips,
+2024 have at least one window (399 of the 400); there are 82132 windows (16375 in the 400) and 0 errors. Windows are
+16 frames with stride 0.5 s, t_centre = t_start + 0.9375 s and fps = no_frames / duration; the window function
+reproduces synthetic_windows.csv exactly. The grid formula is make_windows.frame_index
+(floor(round(t * fps, 9) + 0.5)); the unrounded synthetic-cache formula would differ by one frame in 14 real clips
+(94 grid positions), and we kept the rounded one (decision 2026-11-15).
+
+Decisions of 2026-11-15, made before any real label was read:
+(1) The 3 clips with no window (3gY2nZW6ZCM_00, which is in the 400; MsQns-Oy-hk_02; jYai-crKZx8_00) get
+t_hat = duration / 2 and confidence 0, and count in every metric. Results are also reported on the clips with at
+least one window.
+(2) Three files have fewer decodable frames than metadata no_frames (none is in the 400). Each keeps
+fps = no_frames / duration and only the windows whose frames exist:
+
+| Clip | no_frames vs decodable | Windows | Dropped window_idx |
+|---|---|---|---|
+| LZY4HepPGu0_00 | 274 vs 240 | 57 -> 49 | 49-56 |
+| YQxqeP2Q_-M_00 | 352 vs 348 | 57 -> 56 | 56 |
+| lgU3T6kySLw_00 | 181 vs 180 | 57 -> 56 | 56 |
+
+(3) Per run, the predictor averages the flip-TTA window scores of the 3 fold best.pt models, then applies
+smoothing 3 + parabola (Week 3 evaluation 6.5). This ensemble has no synthetic validation. Each fold model alone is
+reported as a secondary result, and nothing is chosen from it.
+
+Code check (Part B, synthetic) ran one fold model through the real-test path on its own validation clips
+(C_cctv_seed0, folds 0 and 2). It reproduced the saved frozen predictions: 0 window scores differ, t_hat is equal in
+770/770 and 686/686 clips, and T@1 is equal.
+
+Results are T@0.5 / T@1 / T@2 / within 2 s, with C_cctv as mean +- sample std over seeds 0-2 (ddof 1):
+
+| Scope | C_cctv seeds 0-2 | C_v2 seed 0 | Naive midpoint |
+|---|---|---|---|
+| All 2027 (headline) | 0.2351 +- 0.0073 / 0.3934 +- 0.0077 / 0.5679 +- 0.0072 / 0.5562 +- 0.0080 | 0.2655 / 0.4245 / 0.5908 / 0.5836 | 0.1068 / 0.1896 / 0.2952 / 0.2797 |
+| Frozen 400 | 0.2422 +- 0.0094 / 0.4019 +- 0.0040 / 0.5724 +- 0.0032 / 0.5533 +- 0.0076 | 0.2588 / 0.4210 / 0.5919 / 0.5800 | 0.1078 / 0.1932 / 0.2956 / 0.2850 |
+| At least 1 window (2024) | 0.2343 +- 0.0073 / 0.3926 +- 0.0077 / 0.5673 +- 0.0072 / 0.5555 +- 0.0080 | 0.2647 / 0.4238 / 0.5902 / 0.5830 | n/a |
+| Early impact, t* < 2.875 s (460) | 0.2982 +- 0.0061 / 0.4731 +- 0.0072 / 0.6334 +- 0.0026 / 0.6297 +- 0.0033 | 0.3379 / 0.5124 / 0.6634 / 0.6565 | 0.1688 / 0.2764 / 0.3875 / 0.3870 |
+
+The naive midpoint reproduces the paper's 0.1068 / 0.1896 / 0.2952.
+
+Ablation 1 on real: C_v2_seed0 has a higher T@1 than each C_cctv seed, both on all 2027 clips (0.4245 vs
+0.3976 / 0.3981 / 0.3846) and on the frozen 400 (0.4210 vs 0.3980 / 0.4060 / 0.4017). C_v2 has only one seed, and on
+synthetic the two variants did not differ measurably. The C_cctv selection is not changed on test results.
+
+Transfer gap (real 2027 minus synthetic pooled out-of-fold):
+
+| Metric | C_cctv seeds 0-2 | C_v2_seed0 |
+|---|---|---|
+| T@0.5 | -0.3457 +- 0.0176 | n/a |
+| T@1 | -0.2966 +- 0.0104 | -0.2665 |
+| T@2 | -0.1899 +- 0.0058 | n/a |
+| Within 2 s | -0.1951 +- 0.0054 | n/a |
+
+Confidence on real (C_cctv seeds 0-2 pooled, 6081 predictions) is much lower than on synthetic:
+
+| | Real | Synthetic |
+|---|---|---|
+| Median confidence | 0.0728 | 0.2350 |
+| Confidence >= 0.3: coverage, within 2 s | 0.0682, 0.8145 | 0.4156, 0.9267 |
+| Confidence >= 0.5: coverage, within 2 s | 0.0058, 0.8857 | 0.1842, 0.9673 |
+
+No tau was chosen.
+
+Cost: GPU time for the classifier alone (RTX 5060 Laptop, 6 passes = 3 fold models x orig + hflip) is 4.50-4.54 s
+per clip with windows, or 18.49-18.65 ms per window pass.
+
+Commands:
+
+    .venv-ml\Scripts\python.exe build_frame_cache.py --real --report-dir results\real_test\partA_cache --workers 8
+    .venv-ml\Scripts\python.exe aggregate_runs.py --real-lock
+    results\real_test\run_stages.ps1    # per run: analyse_predictions.py --run R --score-windows real --folds 0,1,2
+                                        #   --out-dir results\real_test\scores\R; per stage: aggregate_runs.py --real-eval C1|C2
+
+Details are in results/real_test/:
+- RUN_ONCE.txt, PARTS_A_B.txt
+- partA_cache/, partB_check/
+- logs/, logs_chain.txt
+- scores/<run>/fold_<k>/, predictions/<run>/
+- stage_C1/report.txt and its CSVs
+- stage_C2/report.txt, per_run_table.csv, final_table.csv, transfer_gap.csv, confidence_*_real.csv, gpu_seconds.csv,
+  secondary_single_fold_models.csv

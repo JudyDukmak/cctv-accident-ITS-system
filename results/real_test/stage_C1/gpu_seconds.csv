@@ -1,0 +1,3 @@
+run,gpu,passes,gpu_s_total,gpu_s_per_clip (clips with windows),gpu_s_per_clip (all 2027),ms_per_window_pass
+C_v2_seed0,NVIDIA GeForce RTX 5060 Laptop GPU,6,9189.2,4.540118577075099,4.53339911198816,18.64721829899836
+C_cctv_seed0,NVIDIA GeForce RTX 5060 Laptop GPU,6,9162.5,4.5269268774703555,4.520226936359151,18.59303722463027

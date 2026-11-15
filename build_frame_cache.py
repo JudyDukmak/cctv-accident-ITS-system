@@ -25,7 +25,9 @@ real_test_set.csv (path column only) against real_test_set_manifest.json. Window
 fps = no_frames / duration; window time t_centre = t_start + 0.9375 s. Before any decoding, the same window function is
 applied to the 2,211 synthetic clips and must reproduce synthetic_windows.csv exactly. Grid, decoder, resize and JPEG
 as above, into cache/frames224_real_v1/ (real_windows.csv, cache_manifest.json, cache_summary.txt there); clips with no
-window get no cache file and are listed. --report-dir also receives cache_summary.txt and real_clips.csv.
+window get no cache file and are listed. A file that ends before metadata no_frames (decision 2026-11-15) keeps fps =
+no_frames / duration and only the windows whose frames exist; it is cached and its dropped windows are listed.
+real_windows.csv is written after decoding. --report-dir also receives cache_summary.txt and real_clips.csv.
     .venv-ml\\Scripts\\python.exe build_frame_cache.py --real --report-dir DIR [--limit N] [--workers W]
 """
 
@@ -34,6 +36,7 @@ import hashlib
 import json
 import math
 import os
+import re
 import sys
 import time
 from concurrent.futures import ProcessPoolExecutor, as_completed
@@ -244,16 +247,20 @@ def verify(clips, log, cache_dir=CACHE_DIR):
 def windows_table(meta):
     """Windows of every clip in `meta` (columns rgb_path, no_frames, duration) by the synthetic rule of
     make_windows.clip_windows, without labels: t_start = j * STRIDE_S while the last frame index <= no_frames - 1.
+    Optional column frames_available (real files with fewer decodable frames than no_frames, decision 2026-11-15):
+    windows are kept while the last frame index <= frames_available - 1; fps stays no_frames / duration.
     Columns rgb_path, stem, window_idx, t_start, t_end, t_centre (= t_start + CENTRE_S), k0, frame_first, frame_last."""
     rows = []
-    for p, nf, dur in zip(meta["rgb_path"], meta["no_frames"], meta["duration"]):
+    avail = meta["frames_available"] if "frames_available" in meta else meta["no_frames"]
+    for p, nf, dur, na in zip(meta["rgb_path"], meta["no_frames"], meta["duration"], avail):
         fps_video = int(nf) / float(dur)
+        limit = min(int(nf), int(na))
         stem = Path(p.replace("\\", "/")).stem
         j = 0
         while True:
             t_start = j * STRIDE_S
             frames = window_frame_indices(t_start, fps_video, MODEL_FPS, WINDOW_FRAMES)
-            if frames[-1] > int(nf) - 1:
+            if frames[-1] > limit - 1:
                 break
             ts = round(t_start, 6)
             rows.append({"rgb_path": p, "stem": stem, "window_idx": j, "t_start": ts,
@@ -399,9 +406,6 @@ def real_main(args):
         f"{float(meta['height'].median()):g}, max {int(meta['height'].max())}")
 
     REAL_CACHE_DIR.mkdir(parents=True, exist_ok=True)
-    windows_status = write_guarded(REAL_WINDOWS_CSV, win)
-    windows_sha = sha256_file(REAL_WINDOWS_CSV)
-    log(f"   {REAL_WINDOWS_CSV.name}: {windows_status}, sha256 {windows_sha}")
 
     # 4. decode
     run_clips = clips if args.limit is None else clips[:args.limit]
@@ -430,6 +434,57 @@ def real_main(args):
                     f"{(time.perf_counter() - t0) / 60:.1f} min")
     minutes = (time.perf_counter() - t0) / 60
 
+    # 5. files with fewer decodable frames than no_frames (decision 2026-11-15): keep fps = no_frames / duration,
+    # keep only the windows whose frames exist, cache those clips, list the dropped windows
+    meta["frames_available"] = meta["no_frames"]
+    meta["windows_dropped"] = ""
+    truncated = []
+    for p, e in list(err_list):
+        mt = re.match(r"RuntimeError: video ended after frame (\d+);", e or "")
+        if not mt:
+            continue
+        i = meta.index[meta["rgb_path"] == p][0]
+        meta.at[i, "frames_available"] = int(mt.group(1)) + 1
+        old = win[win["rgb_path"] == p]
+        new = windows_table(meta.loc[[i]])
+        dropped = old[~old["window_idx"].isin(new["window_idx"])]
+        c = next(c for c in clips if c["rgb_path"] == p)
+        if new.empty:
+            fail(f"{p}: no window fits in the {meta.at[i, 'frames_available']} decodable frames")
+        K, grid = build_grid(new, float(meta.at[i, "fps"]), int(meta.at[i, "no_frames"]), c["stem"],
+                             grid_frame_indices_window_rule)
+        stem, st, nf, nb, err2 = process_clip(c["video"], c["stem"], grid, REAL_CACHE_DIR)
+        if st == "error":
+            log(f"   ERROR after truncation {p}: {err2}")
+            continue
+        err_list.remove((p, e))
+        errors -= 1
+        frames += nf
+        nbytes += nb
+        written += st == "written"
+        skipped += st == "skipped"
+        status[p] = f"{st}_truncated"
+        c["K"], c["grid"] = K, grid
+        grids[p] = (K, grid)
+        win = pd.concat([win[win["rgb_path"] != p], new], ignore_index=True)
+        meta.at[i, "n_windows"], meta.at[i, "grid_frames"] = len(new), K
+        meta.at[i, "windows_dropped"] = " ".join(str(j) for j in dropped["window_idx"])
+        truncated.append((p, int(meta.at[i, "no_frames"]), int(meta.at[i, "frames_available"]), len(old), len(new),
+                          dropped))
+    win = win.sort_values(["rgb_path", "window_idx"]).reset_index(drop=True)
+    log(f"5. files with fewer decodable frames than metadata no_frames: {len(truncated)} (fps kept = no_frames / "
+        f"duration; only windows whose frames exist are kept)")
+    for p, nf_meta, na, n_old, n_new, d in truncated:
+        log(f"     {p}: no_frames {nf_meta}, decodable {na}; windows {n_old} -> {n_new}; dropped window_idx "
+            f"{d['window_idx'].min()}-{d['window_idx'].max()} (t_start {d['t_start'].min():.1f}-{d['t_start'].max():.1f} s, "
+            f"{len(d)} windows); in 400 subset: {bool(meta.loc[meta['rgb_path'] == p, 'in_test400'].iloc[0])}")
+    windows_status = write_guarded(REAL_WINDOWS_CSV, win[["rgb_path", "stem", "window_idx", "t_start", "t_end",
+                                                          "t_centre", "k0", "frame_first", "frame_last"]])
+    windows_sha = sha256_file(REAL_WINDOWS_CSV)
+    t4 = meta[meta["in_test400"]]
+    log(f"   {REAL_WINDOWS_CSV.name}: {windows_status}, sha256 {windows_sha}; {len(win)} windows (subset "
+        f"{int(t4['n_windows'].sum())}) in {win['rgb_path'].nunique()} clips")
+
     verify(run_clips[:VERIFY_CLIPS], log, REAL_CACHE_DIR)
 
     present = [c["stem"] for c in clips if cache_path(c["stem"], REAL_CACHE_DIR).is_file()]
@@ -456,6 +511,9 @@ def real_main(args):
         "grid_rule": "t_k = k/8, frame = floor(round(t_k * no_frames/duration, 9) + 0.5) (make_windows.frame_index), "
                      "K = 8*max(t_start) + 16",
         "grid_rule_differs_from_unrounded": {p: n for p, n in rule_diff},
+        "truncated_to_decodable_frames": {p: {"no_frames": nf_meta, "decodable": na, "windows": [n_old, n_new],
+                                              "dropped_window_idx": d["window_idx"].tolist()}
+                                          for p, nf_meta, na, n_old, n_new, d in truncated},
         "window_rule": f"t_start = j*{STRIDE_S} s while the last frame index <= no_frames-1; t_centre = t_start + "
                        f"{CENTRE_S} s",
         "decoder": f"PyAV {av.__version__}, sequential, no seeking",
@@ -476,8 +534,8 @@ def real_main(args):
     (REAL_CACHE_DIR / "cache_summary.txt").write_text(text, encoding="utf-8")
     report_dir.mkdir(parents=True, exist_ok=True)
     (report_dir / "cache_summary.txt").write_text(text, encoding="utf-8")
-    meta[["rgb_path", "stem", "no_frames", "duration", "fps", "height", "width", "n_windows", "grid_frames",
-          "grid_repeats_frames", "in_test400", "cache_status"]].rename(columns={"rgb_path": "path"}).to_csv(
+    meta[["rgb_path", "stem", "no_frames", "frames_available", "duration", "fps", "height", "width", "n_windows",
+          "windows_dropped", "grid_frames", "grid_repeats_frames", "in_test400", "cache_status"]].rename(columns={"rgb_path": "path"}).to_csv(
         report_dir / "real_clips.csv", index=False)
     (report_dir / "cache_manifest.json").write_text(json.dumps(cache_manifest, indent=2) + "\n", encoding="ascii")
     print(f"saved {REAL_CACHE_DIR / 'cache_manifest.json'}, cache_summary.txt; copies and real_clips.csv in {report_dir}")

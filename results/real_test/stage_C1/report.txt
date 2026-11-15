@@ -1,0 +1,77 @@
+Real test, stage C1 (C_v2_seed0, C_cctv_seed0); 2026-11-15T03:18:11+00:00; lock C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\results\real_test\RUN_ONCE.txt (git HEAD a93bcf1); frozen post-processing: tta flip (mean of orig and hflip sigmoid scores per fold model); fold_models [0, 1, 2]; ensemble mean of the fold models' TTA window scores; smooth 3; interp parabola; fallback clips without a window: t_hat = duration / 2, confidence 0 (decision 2026-11-15)
+clips 2027 (frozen 400: 400); early-impact (t* < 2.875 s): 460 (in the 400: 98); metrics: accs_scorer.temporal T@0.5/1/2, within 2 s = |t_hat - t*| <= 2 s
+
+naive midpoint on all 2027: 0.1068 / 0.1896 / 0.2952 (T@0.5 / T@1 / T@2); expected 0.1068 / 0.1896 / 0.2952: REPRODUCED
+C_v2_seed0: 2024 clips predicted from windows, 3 fallback (no window)
+C_cctv_seed0: 2024 clips predicted from windows, 3 fallback (no window)
+
+ABLATION 1 ON REAL (like-for-like: same clips, same frozen post-processing, same ensemble of 3 fold models; the ensemble has no synthetic validation)
+[all 2027] n = 2027 clips (fallback 3)
+                    predictor   T_0.5     T_1     T_2  within_2s
+naive midpoint (duration / 2)  0.1068  0.1896  0.2952     0.2797
+                   C_v2_seed0  0.2655  0.4245  0.5908     0.5836
+                 C_cctv_seed0  0.2338  0.3976  0.5754     0.5649
+    C_cctv_seed0 - C_v2_seed0 -0.0317 -0.0270 -0.0153    -0.0187
+
+[frozen 400] n = 400 clips (fallback 1)
+                    predictor   T_0.5     T_1     T_2  within_2s
+naive midpoint (duration / 2)  0.1078  0.1932  0.2956     0.2850
+                   C_v2_seed0  0.2588  0.4210  0.5919     0.5800
+                 C_cctv_seed0  0.2314  0.3980  0.5751     0.5600
+    C_cctv_seed0 - C_v2_seed0 -0.0274 -0.0229 -0.0169    -0.0200
+
+[all, >= 1 window] n = 2024 clips (fallback 0)
+                    predictor   T_0.5     T_1     T_2  within_2s
+naive midpoint (duration / 2)  0.1058  0.1884  0.2942     0.2787
+                   C_v2_seed0  0.2647  0.4238  0.5902     0.5830
+                 C_cctv_seed0  0.2330  0.3967  0.5748     0.5642
+    C_cctv_seed0 - C_v2_seed0 -0.0318 -0.0270 -0.0154    -0.0188
+
+[400, >= 1 window] n = 399 clips (fallback 0)
+                    predictor   T_0.5     T_1     T_2  within_2s
+naive midpoint (duration / 2)  0.1060  0.1913  0.2938     0.2832
+                   C_v2_seed0  0.2573  0.4196  0.5910     0.5789
+                 C_cctv_seed0  0.2299  0.3966  0.5740     0.5589
+    C_cctv_seed0 - C_v2_seed0 -0.0274 -0.0230 -0.0169    -0.0201
+
+[all, early t* < 2.875 s] n = 460 clips (fallback 3)
+                    predictor   T_0.5     T_1     T_2  within_2s
+naive midpoint (duration / 2)  0.1688  0.2764  0.3875     0.3870
+                   C_v2_seed0  0.3379  0.5124  0.6634     0.6565
+                 C_cctv_seed0  0.2998  0.4770  0.6354     0.6326
+    C_cctv_seed0 - C_v2_seed0 -0.0380 -0.0354 -0.0279    -0.0239
+
+[400, early t* < 2.875 s] n = 98 clips (fallback 1)
+                    predictor   T_0.5     T_1     T_2  within_2s
+naive midpoint (duration / 2)  0.1675  0.3079  0.4403     0.4694
+                   C_v2_seed0  0.3192  0.5181  0.6918     0.6837
+                 C_cctv_seed0  0.2809  0.4723  0.6288     0.6327
+    C_cctv_seed0 - C_v2_seed0 -0.0383 -0.0459 -0.0630    -0.0510
+
+[all, t* >= 2.875 s] n = 1567 clips (fallback 0)
+                    predictor   T_0.5     T_1     T_2  within_2s
+naive midpoint (duration / 2)  0.0886  0.1641  0.2681     0.2482
+                   C_v2_seed0  0.2443  0.3988  0.5695     0.5622
+                 C_cctv_seed0  0.2145  0.3742  0.5578     0.5450
+    C_cctv_seed0 - C_v2_seed0 -0.0299 -0.0245 -0.0116    -0.0172
+
+GPU SECONDS (classifier only: forward incl. host-to-device copy, synchronised; 3 fold models x orig + hflip = 6 passes over 82132 windows of 2024 clips; data loading overlapped, not counted)
+         run                                gpu  passes  gpu_s_total  gpu_s_per_clip (clips with windows)  gpu_s_per_clip (all 2027)  ms_per_window_pass
+  C_v2_seed0 NVIDIA GeForce RTX 5060 Laptop GPU       6    9189.2000                               4.5401                     4.5334             18.6472
+C_cctv_seed0 NVIDIA GeForce RTX 5060 Laptop GPU       6    9162.5000                               4.5269                     4.5202             18.5930
+
+SECONDARY (nothing chosen from it): each fold model alone (flip TTA, same post-processing and fallback)
+                     predictor      scope  n_clips  n_fallback  T_0.5    T_1    T_2  within_2s
+  C_v2_seed0 fold-0 model only   all 2027     2027           3 0.2500 0.3981 0.5571     0.5417
+  C_v2_seed0 fold-0 model only frozen 400      400           1 0.2389 0.3923 0.5539     0.5300
+  C_v2_seed0 fold-1 model only   all 2027     2027           3 0.2560 0.4113 0.5767     0.5659
+  C_v2_seed0 fold-1 model only frozen 400      400           1 0.2525 0.4015 0.5635     0.5550
+  C_v2_seed0 fold-2 model only   all 2027     2027           3 0.2612 0.4224 0.5886     0.5821
+  C_v2_seed0 fold-2 model only frozen 400      400           1 0.2630 0.4256 0.5934     0.5875
+C_cctv_seed0 fold-0 model only   all 2027     2027           3 0.2314 0.3821 0.5463     0.5353
+C_cctv_seed0 fold-0 model only frozen 400      400           1 0.2291 0.3829 0.5444     0.5350
+C_cctv_seed0 fold-1 model only   all 2027     2027           3 0.2150 0.3694 0.5448     0.5323
+C_cctv_seed0 fold-1 model only frozen 400      400           1 0.2134 0.3693 0.5463     0.5300
+C_cctv_seed0 fold-2 model only   all 2027     2027           3 0.2459 0.4094 0.5843     0.5762
+C_cctv_seed0 fold-2 model only frozen 400      400           1 0.2468 0.4112 0.5863     0.5800
+

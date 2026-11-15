@@ -1,5 +1,5 @@
 {
-  "complete": false,
+  "complete": true,
   "data": "REAL (metadata-real.csv; non-label columns only)",
   "limit": null,
   "clips_metadata": 2027,
@@ -9,13 +9,13 @@
     "real_videos/MsQns-Oy-hk_02.mp4",
     "real_videos/jYai-crKZx8_00.mp4"
   ],
-  "clips_in_cache": 2021,
+  "clips_in_cache": 2024,
   "clips_this_run": 2024,
-  "written_this_run": 2009,
-  "skipped_this_run": 12,
-  "errors_this_run": 3,
-  "frames_this_run": 352136,
-  "bytes_in_cache": 7432873993,
+  "written_this_run": 3,
+  "skipped_this_run": 2021,
+  "errors_this_run": 0,
+  "frames_this_run": 352816,
+  "bytes_in_cache": 7448905469,
   "resize_rule": "full frame (no crop) resized to 224x224 with cv2.INTER_AREA, RGB",
   "jpeg_quality": 95,
   "model_fps": 8,
@@ -36,10 +36,52 @@
     "real_videos/x8GY43DccAs_00.mp4": 41,
     "real_videos/zYgBOSbkY3A_01.mp4": 9
   },
+  "truncated_to_decodable_frames": {
+    "real_videos/LZY4HepPGu0_00.mp4": {
+      "no_frames": 274,
+      "decodable": 240,
+      "windows": [
+        57,
+        49
+      ],
+      "dropped_window_idx": [
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56
+      ]
+    },
+    "real_videos/YQxqeP2Q_-M_00.mp4": {
+      "no_frames": 352,
+      "decodable": 348,
+      "windows": [
+        57,
+        56
+      ],
+      "dropped_window_idx": [
+        56
+      ]
+    },
+    "real_videos/lgU3T6kySLw_00.mp4": {
+      "no_frames": 181,
+      "decodable": 180,
+      "windows": [
+        57,
+        56
+      ],
+      "dropped_window_idx": [
+        56
+      ]
+    }
+  },
   "window_rule": "t_start = j*0.5 s while the last frame index <= no_frames-1; t_centre = t_start + 0.9375 s",
   "decoder": "PyAV 19.0.2, sequential, no seeking",
   "metadata_real_sha256": "a3d06073353a7fedff140b652d025135f017860a240cad693990f5288c6c0ec9",
   "real_test_set_sha256": "521a5cf62cbee5e897b4ebf99f1c4297a5af06f4a8c985eeb4e91f60b28c2c7c",
-  "real_windows_sha256": "0baa1fbaf1e9770d5792e17b046452b116f8f30d2bd1f8cec446671867d7cda6",
-  "created_at": "2026-11-14T21:11:25+00:00"
+  "real_windows_sha256": "fa1d2c07d85923d5a96ff5ab23891d40794465aeb7c990bc08743715e8faf676",
+  "created_at": "2026-11-14T22:00:37+00:00"
 }

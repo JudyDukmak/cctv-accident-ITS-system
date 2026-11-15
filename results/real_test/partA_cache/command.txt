@@ -1,1 +1,1 @@
-﻿.venv-ml\Scripts\python.exe build_frame_cache.py --real --report-dir results\real_test\partA_cache --workers 8
+﻿.venv-ml\Scripts\python.exe build_frame_cache.py --real --report-dir results\real_test\partA_cache --workers 8   (rerun with decision 2; first build in first_build_2026-11-14\)
