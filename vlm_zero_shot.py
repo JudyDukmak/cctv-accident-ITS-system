@@ -181,12 +181,15 @@ def make_dev_list():
 
 # ---------------------------------------------------------------- frames
 
-def load_clips(clips_csv):
+def load_clips(clips_csv=None):
+    """The clips of clips_csv; clips_csv None: all 2211 synthetic clips in metadata order."""
     meta = synthetic_meta()
     pred = {norm(r["rgb_path"]): r for r in read_csv(CLASSIFIER_PRED)}
     split = {norm(r["rgb_path"]): r for r in read_csv(SPLIT_CSV)}
     out = []
-    for r in read_csv(clips_csv):
+    rows = read_csv(clips_csv) if clips_csv is not None else [
+        {"rgb_path": p, "day_night": "night" if m["weather"] == "night" else "day"} for p, m in meta.items()]
+    for r in rows:
         p = norm(r["rgb_path"])
         if not p.startswith("synthetic_videos/") or p not in meta:
             fail(f"{p}: not a synthetic clip of {META_SYN.name}")
@@ -198,7 +201,7 @@ def load_clips(clips_csv):
                     "day_night": r.get("day_night", ""), "no_frames": nf, "duration": dur, "fps": nf / dur,
                     "t_star": float(m["accident_time"]), "center_x": float(m["center_x"]),
                     "center_y": float(m["center_y"]), "t_hat": float(pred[p]["t_hat"]),
-                    "width": int(m["width"]), "height": int(m["height"])})
+                    "width": int(m["width"]), "height": int(m["height"]), "val_fold": int(split[p]["val_fold"])})
     return out
 
 
@@ -839,6 +842,276 @@ def narrow2_run(clips_csv):
     print(text)
 
 
+# ---------------------------------------------------------------- frozen full scan on all 2211 synthetic clips
+
+FULL_DIR = REPO_ROOT / "results" / "vlm_full_scan"
+FROZEN_FILE = FULL_DIR / "FROZEN.txt"
+FULL_CSV = FULL_DIR / "full_scan.csv"
+FROZEN_VERSION = 3
+POWER_CHECK_EVERY = 25
+TAU_CURVE = REPO_ROOT / "results" / "diagnostics" / "tau_evidence" / "isotonic_curve.csv"
+FULL_COLUMNS = ["rgb_path", "type", "weather", "day_night", "val_fold", "duration", "t_star", "t_hat", "dev_clip",
+                "n_coarse", "coarse_raw", "coarse_value", "coarse_digit_string", "coarse_invalid", "coarse_edge", "t_c",
+                "n_fine", "fine_window", "fine_raw", "fine_value", "fine_digit_string", "fine_invalid", "fine_edge",
+                "t_fine", "gate", "fallback", "t_full", "error", "gpu_s_coarse", "gpu_s_fine", "wall_s", "gpu", "finished_utc"]
+
+
+def text_sha(text):
+    return hashlib.sha256(text.encode("utf-8")).hexdigest()
+
+
+def frozen_hashes():
+    return {"vlm_zero_shot.py": sha256(Path(__file__)),
+            "gpu_check/vlm_smoke_test.py": sha256(REPO_ROOT / "gpu_check" / "vlm_smoke_test.py"),
+            "full_scan_prompt_v3_template": text_sha(FULL_PROMPT[FROZEN_VERSION]),
+            "narrow_prompt_v1": text_sha(NARROW_PROMPT)}
+
+
+def power():
+    """(on mains, text) from Win32_Battery (BatteryStatus 2 = on AC mains)."""
+    import subprocess
+    out = subprocess.run(["powershell", "-NoProfile", "-Command",
+                          "$b = Get-CimInstance Win32_Battery | Select-Object -First 1; "
+                          "\"$($b.BatteryStatus) $($b.EstimatedChargeRemaining)\""],
+                         capture_output=True, text=True).stdout.split()
+    status, charge = (out + ["?", "?"])[:2]
+    return status == "2", f"BatteryStatus {status} (2 = on AC mains), charge {charge}%"
+
+
+def write_frozen():
+    import subprocess
+    if FROZEN_FILE.exists():
+        fail(f"{FROZEN_FILE} exists; the protocol is frozen once")
+    git = lambda *a: subprocess.run(["git", *a], cwd=REPO_ROOT, capture_output=True, text=True).stdout.strip()  # noqa: E731
+    dirty = git("status", "--porcelain", "--", "vlm_zero_shot.py", "gpu_check/vlm_smoke_test.py")
+    if dirty:
+        fail(f"commit the code first; uncommitted: {dirty}")
+    h = frozen_hashes()
+    FULL_DIR.mkdir(parents=True, exist_ok=True)
+    L = [f"FROZEN zero-shot VLM protocol; written {now()}; nothing below may change after the run starts (the run "
+         "refuses to start or resume if a hash differs).",
+         f"git commit {git('rev-parse', 'HEAD')} (branch {git('branch', '--show-current')})",
+         *[f"sha256 {k}: {v}" for k, v in h.items()],
+         f"model: {smoke.MODELS[MODEL_KEY]}, 4-bit NF4 (double quant, bf16 compute), greedy decoding, max_new_tokens "
+         f"{MAX_NEW_TOKENS}; frames full frame, no crop, PIL bicubic",
+         f"FULL SCAN = version 3 (selected by the pre-registered rule on the 32 development clips): {V3_FRAMES} "
+         f"distinct frames per pass, each frame duplicated so every 2-frame token group holds one frame with its own "
+         f"timestamp '<T.T seconds>'; frames resized to {PIXEL_BUDGET} pixels (448 x 256 area, aspect kept); coarse "
+         f"pass evenly over the whole clip (0 to the last frame time) -> t_c; fine pass evenly over t_c +- "
+         f"{FINE_HALF_S:g} s (shifted inside the clip) -> t_fine; answer {{\"time\": seconds}}; valid = JSON with a "
+         "number or a string of digits (flagged) within [first - 0.1, last + 0.1] s; rule A: t < "
+         f"{MIN_T_S} s invalid; coarse invalid -> t_full = duration / 2, no fine pass; fine invalid -> t_full = t_c; "
+         "rule B gate: fine answer nearest the first or last of the 16 frame times -> t_full = t_c; else t_full = t_fine",
+         f"full-scan prompt template (sha above): {FULL_PROMPT[FROZEN_VERSION]}",
+         f"NARROW CALL = narrow v1 (kept by the pre-registered rule): {NARROW_FRAMES} frames evenly over t_hat +- "
+         f"{NARROW_HALF_S:g} s (shifted inside the clip) at {PIXEL_BUDGET} pixels (448 x 256), frames paired natively; "
+         f"answer collision_type, x, y; invalid -> {FALLBACK_TYPE}, {FALLBACK_POINT}. Not run in this full scan.",
+         f"narrow prompt (sha above): {NARROW_PROMPT}",
+         "run: all 2211 synthetic clips (metadata-synthetic.csv order), once, on mains power (checked at start and every "
+         f"{POWER_CHECK_EVERY} clips; on battery the run stops and resumes later); results appended per clip to "
+         "full_scan.csv (resumable: finished clips are skipped)",
+         "p_full = share of the 2211 clips with |t_full - t*| <= 2 s, pooled, fallbacks at their fallback time; tau = "
+         f"the smallest confidence c with p_narrow(c) >= p_full on {TAU_CURVE.relative_to(REPO_ROOT)} (computed once)",
+         "FROZEN_JSON " + json.dumps({"hashes": h, "version": FROZEN_VERSION})]
+    FROZEN_FILE.write_text("\n".join(L) + "\n", encoding="utf-8")
+    print("\n".join(L))
+
+
+def check_frozen():
+    if not FROZEN_FILE.exists():
+        fail(f"{FROZEN_FILE} missing")
+    line = [x for x in FROZEN_FILE.read_text(encoding="utf-8").splitlines() if x.startswith("FROZEN_JSON ")]
+    frozen = json.loads(line[0][len("FROZEN_JSON "):])
+    now_h = frozen_hashes()
+    bad = [k for k, v in frozen["hashes"].items() if now_h.get(k) != v]
+    if bad:
+        fail(f"differs from {FROZEN_FILE.name}: {bad}; the frozen protocol may not change")
+
+
+def full_scan_one(vlm, clip, v=FROZEN_VERSION):
+    """The frozen full scan (version v) of one clip; the same functions as the development run."""
+    t0 = time.perf_counter()
+    r = {"n_fine": 0, "fine_window": "", "fine_raw": "", "fine_value": "", "fine_digit_string": False,
+         "fine_invalid": "", "fine_edge": False, "t_fine": "", "gate": False, "gpu_s_fine": 0.0}
+    c_idx = to_indices(clip, np.linspace(0.0, last_time(clip), V3_FRAMES))
+    ct = np.array(c_idx) / clip["fps"]
+    frames = stack(decode(clip, c_idx), c_idx)
+    text, s = vlm(clip, np.repeat(frames, 2, axis=0), [i for i in c_idx for _ in range(2)], full_prompt(v, clip, ct))
+    t_c, val, digit, why, edge = parse_full(text, v, ct)
+    r.update(n_coarse=len(c_idx), coarse_raw=text, coarse_value="" if val is None else val, coarse_digit_string=digit,
+             coarse_invalid=why, coarse_edge=edge, t_c="" if t_c is None else t_c, gpu_s_coarse=s)
+    if t_c is None:
+        r["t_full"], r["fallback"] = clip["duration"] / 2, "coarse"
+    else:
+        fi = to_indices(clip, window_times(clip, t_c, FINE_HALF_S, V3_FRAMES))
+        ft = np.array(fi) / clip["fps"]
+        frames = stack(decode(clip, fi), fi)
+        text, s = vlm(clip, np.repeat(frames, 2, axis=0), [i for i in fi for _ in range(2)], full_prompt(v, clip, ft))
+        t_f, val, digit, why, edge = parse_full(text, v, ft)
+        r.update(n_fine=len(fi), fine_window=f"{ft[0]:.2f}-{ft[-1]:.2f}", fine_raw=text,
+                 fine_value="" if val is None else val, fine_digit_string=digit, fine_invalid=why, fine_edge=edge,
+                 t_fine="" if t_f is None else t_f, gpu_s_fine=s)
+        if t_f is None:
+            r["t_full"], r["fallback"] = t_c, "fine"
+        elif edge:
+            r["t_full"], r["fallback"], r["gate"] = t_c, "", True
+        else:
+            r["t_full"], r["fallback"] = t_f, ""
+    r["error"] = r["t_full"] - clip["t_star"]
+    r["wall_s"] = time.perf_counter() - t0
+    return r
+
+
+def full_scan_run():
+    check_frozen()
+    ok, ptxt = power()
+    events = FULL_DIR / "run_events.txt"
+
+    def event(msg):
+        with open(events, "a", encoding="utf-8") as f:
+            f.write(f"{now()} {msg}\n")
+        stamp(msg)
+    if not ok:
+        event(f"NOT STARTED: not on mains ({ptxt})")
+        fail("not on mains power")
+    clips = load_clips(None)
+    dev = {norm(r["rgb_path"]) for r in read_csv(DEV_CSV)}
+    done = {norm(r["rgb_path"]) for r in read_csv(FULL_CSV)} if FULL_CSV.exists() else set()
+    todo = [c for c in clips if c["rgb_path"] not in done]
+    event(f"START/RESUME: {len(done)} clips done, {len(todo)} to do; power {ptxt}")
+    if not todo:
+        return
+    vlm = Vlm()
+    new = not FULL_CSV.exists()
+    with open(FULL_CSV, "a", newline="", encoding="utf-8") as f, \
+            open(FULL_DIR / "raw_outputs.jsonl", "a", encoding="utf-8") as raw:
+        w = csv.DictWriter(f, fieldnames=FULL_COLUMNS)
+        if new:
+            w.writeheader()
+        for k, clip in enumerate(todo, 1):
+            if k % POWER_CHECK_EVERY == 0:
+                ok, ptxt = power()
+                if not ok:
+                    event(f"STOPPED (resumable): not on mains ({ptxt}) after {len(done) + k - 1} clips")
+                    sys.exit(4)
+            r = full_scan_one(vlm, clip)
+            row = {**{key: clip[key] for key in ("rgb_path", "type", "weather", "day_night", "val_fold", "duration",
+                                                  "t_star", "t_hat")},
+                   "dev_clip": clip["rgb_path"] in dev, **r, "gpu": vlm.gpu, "finished_utc": now()}
+            w.writerow(row)
+            raw.write(json.dumps({"clip": clip["rgb_path"], "coarse": r["coarse_raw"], "fine": r["fine_raw"]}) + "\n")
+            f.flush()
+            raw.flush()
+            os.fsync(f.fileno())
+            if k % 50 == 0 or k == len(todo):
+                stamp(f"{len(done) + k}/{len(clips)} clips done (last: {Path(clip['rgb_path']).stem}, "
+                      f"{r['wall_s']:.1f} s wall, {r['gpu_s_coarse'] + r['gpu_s_fine']:.2f} GPU s)")
+    ok, ptxt = power()
+    event(f"FINISHED: {len(clips)} clips; power at end {ptxt}")
+
+
+def wilson(k, n, z=1.959963984540054):
+    if n == 0:
+        return float("nan"), float("nan")
+    p, z2 = k / n, z * z
+    centre = (p + z2 / (2 * n)) / (1 + z2 / n)
+    half = z * math.sqrt(p * (1 - p) / n + z2 / (4 * n * n)) / (1 + z2 / n)
+    return centre - half, centre + half
+
+
+def full_scan_report():
+    """p_full and the reference predictors on the 2211 clips; tau computed once with the frozen rule."""
+    check_frozen()
+    out = FULL_DIR / "report.txt"
+    if out.exists():
+        fail(f"{out} exists; the report and tau are computed once")
+    rows = read_csv(FULL_CSV)
+    clips = {c["rgb_path"]: c for c in load_clips(None)}
+    if len(rows) != len(clips) or {norm(r["rgb_path"]) for r in rows} != set(clips):
+        fail(f"full_scan.csv has {len(rows)} rows; the run is not complete")
+    order = {p: i for i, p in enumerate(clips)}
+    rows.sort(key=lambda r: order[norm(r["rgb_path"])])
+    ts = np.array([float(r["t_star"]) for r in rows])
+    d = np.array([float(r["duration"]) for r in rows])
+    tf = np.array([float(r["t_full"]) for r in rows])
+    tc_only = np.array([float(r["t_c"]) if r["t_c"] != "" else float(r["duration"]) / 2 for r in rows])
+    within = np.abs(tf - ts) <= 2
+    n = len(rows)
+    L = [f"Frozen zero-shot full scan (version 3) on all {n} synthetic clips; report {now()}. Protocol: FROZEN.txt. "
+         "Synthetic labels only; no real clip or real label opened.", ""]
+
+    def block(name, mask):
+        k, m = int(within[mask].sum()), int(mask.sum())
+        lo, hi = wilson(k, m)
+        return f"  {name:28s} n {m:5d}  p_full {k / m:.4f} ({k}/{m})   [Wilson 95% {lo:.4f}-{hi:.4f}, secondary]"
+    dev = np.array([r["dev_clip"] == "True" for r in rows])
+    L += ["P_FULL = share with |t_full - t*| <= 2 s (fallbacks at their fallback time)",
+          block("all 2211 (pooled)", np.ones(n, bool)), block("without the 32 dev clips", ~dev)]
+    for key, label in (("val_fold", "fold"), ("type", "type"), ("day_night", "day/night")):
+        for val in sorted({r[key] for r in rows}):
+            L.append(block(f"{label} {val}", np.array([r[key] == val for r in rows])))
+    cz = sum(r["coarse_value"] != "" and float(r["coarse_value"]) == 0.0 for r in rows)
+    L += ["", "FULL SCAN DETAILS (all 2211)",
+          "  T@0.5 / T@1 / T@2: " + " / ".join(f"{temporal(tf, ts, s):.4f}" for s in (0.5, 1.0, 2.0)),
+          f"  coarse-only share within 2 s (t_c; coarse fallbacks at duration / 2): {np.mean(np.abs(tc_only - ts) <= 2):.4f}",
+          f"  coarse fallbacks {sum(r['fallback'] == 'coarse' for r in rows)}, fine fallbacks "
+          f"{sum(r['fallback'] == 'fine' for r in rows)}, gated (rule B) {sum(r['gate'] == 'True' for r in rows)}, "
+          f"digit strings {sum((r['coarse_digit_string'] == 'True') + (r['fine_digit_string'] == 'True') for r in rows)}",
+          f"  coarse answers at 0.0: {cz}/{n} = {cz / n:.4f}; coarse invalid reasons: " + ", ".join(
+              f"{why} {sum(r['coarse_invalid'] == why for r in rows)}" for why in sorted({r['coarse_invalid'] for r in rows} - {''})),
+          f"  median |error| {np.median(np.abs(tf - ts)):.3f} s",
+          f"  GPU s per clip (coarse + fine, synchronised generate): {np.mean([float(r['gpu_s_coarse']) + float(r['gpu_s_fine']) for r in rows]):.2f} "
+          f"on {', '.join(sorted({r['gpu'] for r in rows}))}; wall s per clip (incl. CPU decoding) "
+          f"{np.mean([float(r['wall_s']) for r in rows]):.2f}"]
+    L += ["", "REFERENCE PREDICTORS on the same 2211 clips (within 2 s; T@0.5 / T@1 / T@2)"]
+    refs = [("naive midpoint (duration / 2)", d / 2)]
+    for s in (0, 1, 2):
+        pr = {norm(p["rgb_path"]): float(p["t_hat"]) for p in
+              read_csv(REPO_ROOT / "results" / "diagnostics" / "C_cctv_seeds012" / f"seed{s}_frozen" / "tta_clip_predictions_flip.csv")}
+        refs.append((f"classifier C_cctv seed {s} (frozen, out-of-fold)", np.array([pr[norm(r['rgb_path'])] for r in rows])))
+    vals = {}
+    for name, t in refs:
+        wv = float(np.mean(np.abs(t - ts) <= 2))
+        vals[name] = wv
+        L.append(f"  {name:48s} {wv:.4f}   " + " / ".join(f"{temporal(t, ts, s):.4f}" for s in (0.5, 1.0, 2.0)))
+    cs = np.array([v for k, v in vals.items() if k.startswith("classifier")])
+    L.append(f"  classifier C_cctv seeds 0-2 within 2 s: mean {cs.mean():.4f} +- {cs.std(ddof=1):.4f} (sample std, n 3)")
+    devraw = {}
+    for line in open(REPO_ROOT / "results" / "vlm_dev" / "v3" / "raw_outputs.jsonl", encoding="utf-8"):
+        o = json.loads(line)
+        if o.get("version") == FROZEN_VERSION:
+            devraw[(norm(o["clip"]), o["pass"])] = o["output"]
+    same = sum(devraw.get((norm(r["rgb_path"]), "coarse")) == r["coarse_raw"] and
+               (r["fine_raw"] == "" or devraw.get((norm(r["rgb_path"]), "fine")) == r["fine_raw"]) for r in rows if r["dev_clip"] == "True")
+    L.append(f"  consistency: {same}/{int(dev.sum())} dev clips give the same raw answers as the v3 development run")
+    # tau, computed once with the frozen rule
+    p_full = float(within.mean())
+    curve = read_csv(TAU_CURVE)
+    cgrid = np.array([float(c["confidence"]) for c in curve])
+    pn = np.array([float(c["p_narrow_isotonic"]) for c in curve])
+    ok_c = cgrid[pn >= p_full]
+    L += ["", f"TAU (frozen rule: the smallest confidence c on {TAU_CURVE.relative_to(REPO_ROOT)} with p_narrow(c) >= "
+              f"p_full = {p_full:.4f})"]
+    if ok_c.size == 0:
+        L.append("  no c satisfies the rule (p_full above the whole curve): no tau")
+        tau = None
+    else:
+        tau = float(ok_c.min())
+        L.append(f"  tau = {tau:.2f}  (p_narrow({tau:.2f}) = {pn[cgrid == tau][0]:.4f}; p_narrow at the grid point below: "
+                 f"{pn[cgrid < tau][-1]:.4f})" if (cgrid < tau).any() else f"  tau = {tau:.2f} (the first grid point)")
+        conf = {s: np.array([float(p["confidence"]) for p in read_csv(
+            REPO_ROOT / "results" / "diagnostics" / "C_cctv_seeds012" / f"seed{s}_frozen" / "tta_clip_predictions_flip.csv")])
+            for s in (0, 1, 2)}
+        sh = [float(np.mean(conf[s] >= tau)) for s in (0, 1, 2)]
+        pooled = np.concatenate(list(conf.values()))
+        L.append(f"  synthetic clips with confidence >= tau (C_cctv frozen, out-of-fold): seeds 0 / 1 / 2 "
+                 f"{' / '.join(f'{v:.4f}' for v in sh)}; mean {np.mean(sh):.4f}; pooled {np.mean(pooled >= tau):.4f} "
+                 f"({int((pooled >= tau).sum())}/{pooled.size})")
+    text = "\n".join(L) + "\n"
+    out.write_text(text, encoding="utf-8")
+    print(text)
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--make-dev-list", action="store_true")
@@ -852,10 +1125,16 @@ def main():
                          "re-run comparison")
     ap.add_argument("--narrow2", choices=["protocol", "inspect", "run"], default=None,
                     help="narrow v2 (addition to the plan): write PROTOCOL.txt, CPU check, or GPU run on --clips")
+    ap.add_argument("--full-scan", choices=["freeze", "run", "report"], default=None,
+                    help="frozen full scan on all 2211 synthetic clips: write FROZEN.txt, run (resumable), report + tau")
     args = ap.parse_args()
     for s in (sys.stdout, sys.stderr):
         s.reconfigure(encoding="utf-8", errors="replace")
-    if args.narrow2:
+    if args.full_scan:
+        os.environ.setdefault("HF_HUB_OFFLINE", "1")
+        os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
+        {"freeze": write_frozen, "run": full_scan_run, "report": full_scan_report}[args.full_scan]()
+    elif args.narrow2:
         os.environ.setdefault("HF_HUB_OFFLINE", "1")
         os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
         {"protocol": narrow2_protocol, "inspect": narrow2_inspect,
