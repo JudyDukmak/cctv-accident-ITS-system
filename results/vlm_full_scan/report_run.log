@@ -1,0 +1,36 @@
+﻿Frozen zero-shot full scan (version 3) on all 2211 synthetic clips; report 2026-11-16T17:23:20+00:00. Protocol: FROZEN.txt. Synthetic labels only; no real clip or real label opened.
+
+P_FULL = share with |t_full - t*| <= 2 s (fallbacks at their fallback time)
+  all 2211 (pooled)            n  2211  p_full 0.2741 (606/2211)   [Wilson 95% 0.2559-0.2931, secondary]
+  without the 32 dev clips     n  2179  p_full 0.2740 (597/2179)   [Wilson 95% 0.2557-0.2931, secondary]
+  fold 0                       n   770  p_full 0.2442 (188/770)   [Wilson 95% 0.2151-0.2757, secondary]
+  fold 1                       n   755  p_full 0.2596 (196/755)   [Wilson 95% 0.2296-0.2920, secondary]
+  fold 2                       n   686  p_full 0.3236 (222/686)   [Wilson 95% 0.2897-0.3595, secondary]
+  type head-on                 n   588  p_full 0.3197 (188/588)   [Wilson 95% 0.2833-0.3585, secondary]
+  type rear-end                n   794  p_full 0.2305 (183/794)   [Wilson 95% 0.2025-0.2610, secondary]
+  type sideswipe               n   405  p_full 0.2444 (99/405)   [Wilson 95% 0.2051-0.2886, secondary]
+  type single                  n    66  p_full 0.3182 (21/66)   [Wilson 95% 0.2185-0.4379, secondary]
+  type t-bone                  n   358  p_full 0.3212 (115/358)   [Wilson 95% 0.2750-0.3713, secondary]
+  day/night day                n  1762  p_full 0.2804 (494/1762)   [Wilson 95% 0.2599-0.3018, secondary]
+  day/night night              n   449  p_full 0.2494 (112/449)   [Wilson 95% 0.2117-0.2915, secondary]
+
+FULL SCAN DETAILS (all 2211)
+  T@0.5 / T@1 / T@2: 0.0907 / 0.1751 / 0.3436
+  coarse-only share within 2 s (t_c; coarse fallbacks at duration / 2): 0.2705
+  coarse fallbacks 219, fine fallbacks 347, gated (rule B) 16, digit strings 0
+  coarse answers at 0.0: 219/2211 = 0.0991; coarse invalid reasons: rule A: t < 0.3 s 219
+  median |error| 3.650 s
+  GPU s per clip (coarse + fine, synchronised generate): 4.74 on NVIDIA GeForce RTX 5060 Laptop GPU; wall s per clip (incl. CPU decoding) 6.96
+
+REFERENCE PREDICTORS on the same 2211 clips (within 2 s; T@0.5 / T@1 / T@2)
+  naive midpoint (duration / 2)                    0.3333   0.1072 / 0.2104 / 0.4069
+  classifier C_cctv seed 0 (frozen, out-of-fold)   0.7544   0.5826 / 0.6922 / 0.7612
+  classifier C_cctv seed 1 (frozen, out-of-fold)   0.7499   0.5698 / 0.6854 / 0.7545
+  classifier C_cctv seed 2 (frozen, out-of-fold)   0.7494   0.5902 / 0.6923 / 0.7578
+  classifier C_cctv seeds 0-2 within 2 s: mean 0.7512 +- 0.0028 (sample std, n 3)
+  consistency: 32/32 dev clips give the same raw answers as the v3 development run
+
+TAU (frozen rule: the smallest confidence c on results\diagnostics\tau_evidence\isotonic_curve.csv with p_narrow(c) >= p_full = 0.2741)
+  tau = 0.01  (p_narrow(0.01) = 0.3758; p_narrow at the grid point below: 0.1818)
+  synthetic clips with confidence >= tau (C_cctv frozen, out-of-fold): seeds 0 / 1 / 2 0.9579 / 0.9385 / 0.9634; mean 0.9533; pooled 0.9533 (6323/6633)
+

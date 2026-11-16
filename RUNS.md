@@ -204,7 +204,7 @@ results/classifier_summary.{csv,md} holds (a) (the default aggregate); (b) is in
 (seed_tables.txt, per_seed_fold.csv, mean_std_over_seeds.csv, independent_postproc_check.csv, seed_range_T1.csv,
 confidence_rho_frozen.csv, integrity.txt, seed{s}_frozen/ and seed{s}_smooth3_none/ tta reports, commands.txt).
 
-## Routing threshold tau: rule (frozen), value pending
+## Routing threshold tau: rule (frozen), value 0.01 (computed 2026-11-16, see "Zero-shot VLM full scan" below)
 
 Evidence (synthetic validation only, CPU, no real data; tau NOT computed): confidence_vs_error.py --tau-evidence
 on results/diagnostics/C_cctv_seeds012/seed{0,1,2}_frozen/tta_clip_predictions_flip.csv (2211 clips per seed, 6633
@@ -365,3 +365,51 @@ confidence >= 0.3:
 Details are in results/real_test/analysis/: report.txt, command.txt, run.log, bootstrap_ablation.csv,
 source_videos.csv, per_fold_table.csv, early_impact.csv, confidence_per_seed.csv and
 confidence_mean_over_seeds.csv.
+
+## Zero-shot VLM full scan and tau (run once, 2026-11-16)
+
+Synthetic clips only; no real clip or real label opened. Protocol frozen before the run in
+results/vlm_full_scan/FROZEN.txt (2026-11-16T13:05:53Z, git commit 644f4e3 on branch vlm-zero-shot, sha256 of
+vlm_zero_shot.py f5675fc8..., of the full-scan prompt v3 template 181e55a3... and of the narrow prompt v1 f0feb553...).
+Model Qwen/Qwen3-VL-4B-Instruct, 4-bit NF4 (double quant, bf16 compute), greedy, max_new_tokens 64.
+Full scan = version 3 (selected by the pre-registered rule on the 32 development clips): 16 distinct frames per pass,
+each frame duplicated (one frame per temporal token group, own timestamp), 448 x 256 pixel area; coarse pass over the
+whole clip -> t_c; fine pass over t_c +- 4 s -> t_fine; rules A (t < 0.3 s invalid) and B (fine answer at the first or
+last frame -> t_c); coarse invalid -> duration / 2, fine invalid -> t_c. Narrow call = narrow v1 (kept by the
+pre-registered rule): 16 frames over t_hat +- 2 s at 448 x 256.
+
+Run: `.venv-vlm/Scripts/python.exe -u vlm_zero_shot.py --full-scan run` (HF_HUB_OFFLINE=1, TRANSFORMERS_OFFLINE=1),
+2026-11-16 13:06:04Z to 17:23:10Z, one pass with no resume, on AC mains at start and at end (BatteryStatus 2, checked
+every 25 clips). All 2211 clips; the 32 development clips gave the same raw answers as the v3 development run.
+Report: `vlm_zero_shot.py --full-scan report`.
+
+| p_full (within 2 s) | n | p_full | Wilson 95% (secondary) |
+|---|---|---|---|
+| all (pooled) | 2211 | 0.2741 (606/2211) | 0.2559-0.2931 |
+| without the 32 dev clips | 2179 | 0.2740 (597/2179) | 0.2557-0.2931 |
+| fold 0 | 770 | 0.2442 | 0.2151-0.2757 |
+| fold 1 | 755 | 0.2596 | 0.2296-0.2920 |
+| fold 2 | 686 | 0.3236 | 0.2897-0.3595 |
+| head-on | 588 | 0.3197 | 0.2833-0.3585 |
+| rear-end | 794 | 0.2305 | 0.2025-0.2610 |
+| sideswipe | 405 | 0.2444 | 0.2051-0.2886 |
+| single | 66 | 0.3182 | 0.2185-0.4379 |
+| t-bone | 358 | 0.3212 | 0.2750-0.3713 |
+| day | 1762 | 0.2804 | 0.2599-0.3018 |
+| night | 449 | 0.2494 | 0.2117-0.2915 |
+
+Full scan, all 2211: T@0.5 / T@1 / T@2 0.0907 / 0.1751 / 0.3436; coarse only within 2 s 0.2705; coarse fallbacks 219
+(all rule A, i.e. coarse answers at 0.0: 219/2211 = 0.0991), fine fallbacks 347, gated by rule B 16, digit strings 0;
+median |error| 3.650 s. 4.74 GPU s per clip (coarse + fine) on the NVIDIA GeForce RTX 5060 Laptop GPU; 6.96 wall s per
+clip including CPU decoding.
+
+Reference on the same 2211 clips (within 2 s): naive midpoint 0.3333 (T@1 0.2104); classifier C_cctv frozen
+out-of-fold t_hat seeds 0 / 1 / 2 0.7544 / 0.7499 / 0.7494, mean 0.7512 +- 0.0028.
+
+tau (frozen rule, computed once): the smallest c on results/diagnostics/tau_evidence/isotonic_curve.csv with
+p_narrow(c) >= p_full = 0.2741 is **tau = 0.01** (p_narrow(0.01) = 0.3758; p_narrow(0.00) = 0.1818). Synthetic clips
+with confidence >= tau (C_cctv frozen, out-of-fold): seeds 0 / 1 / 2 0.9579 / 0.9385 / 0.9634; pooled 0.9533
+(6323/6633).
+
+Details in results/vlm_full_scan/: FROZEN.txt, command.txt, run.log, run_events.txt, full_scan.csv,
+raw_outputs.jsonl, report.txt, report_run.log.
