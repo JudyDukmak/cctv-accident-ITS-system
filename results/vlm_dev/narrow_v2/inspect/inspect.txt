@@ -1,0 +1,7 @@
+Narrow v2 CPU check through the real processor (no model); 2026-11-16T12:40:37+00:00
+Town05_head-on_wet_24 (day) narrow v1: 16 frames 123..203 (6.15-10.15 s), resized input 452 x 254, model receives 448 x 256 (W x H), grid_thw [8, 16, 28], visual tokens 896, input tokens 1171
+Town05_head-on_wet_24 (day) narrow v2: 8 frames 123..203 (6.15-10.15 s), resized input 903 x 508, model receives 896 x 512 (W x H), grid_thw [4, 32, 56], visual tokens 1792, input tokens 2033
+   grid: narrow_v2_Town05_head-on_wet_24.png (the 8 frames as the model receives them, 4 per row)
+Town03_head-on_night_03 (night) narrow v1: 16 frames 53..133 (2.65-6.65 s), resized input 452 x 254, model receives 448 x 256 (W x H), grid_thw [8, 16, 28], visual tokens 896, input tokens 1170
+Town03_head-on_night_03 (night) narrow v2: 8 frames 53..133 (2.65-6.65 s), resized input 903 x 508, model receives 896 x 512 (W x H), grid_thw [4, 32, 56], visual tokens 1792, input tokens 2033
+   grid: narrow_v2_Town03_head-on_night_03.png (the 8 frames as the model receives them, 4 per row)

@@ -1,0 +1,159 @@
+{"clip": "synthetic_videos/videos/head-on/Town05_head-on_wet_24.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 6}"}
+{"clip": "synthetic_videos/videos/head-on/Town05_head-on_wet_24.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 6.0}"}
+{"clip": "synthetic_videos/videos/head-on/Town05_head-on_wet_24.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 7}"}
+{"clip": "synthetic_videos/videos/head-on/Town05_head-on_wet_24.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 5.7}"}
+{"clip": "synthetic_videos/videos/head-on/Town05_head-on_wet_24.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.45, \"y\": 0.35}"}
+{"clip": "synthetic_videos/videos/head-on/Town05_head-on_rain_42.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 6}"}
+{"clip": "synthetic_videos/videos/head-on/Town05_head-on_rain_42.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 2.0}"}
+{"clip": "synthetic_videos/videos/head-on/Town05_head-on_rain_42.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 7}"}
+{"clip": "synthetic_videos/videos/head-on/Town05_head-on_rain_42.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 2.2}"}
+{"clip": "synthetic_videos/videos/head-on/Town05_head-on_rain_42.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.45, \"y\": 0.45}"}
+{"clip": "synthetic_videos/videos/head-on/Town06_head-on_sunset_35.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 4}"}
+{"clip": "synthetic_videos/videos/head-on/Town06_head-on_sunset_35.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 3.0}"}
+{"clip": "synthetic_videos/videos/head-on/Town06_head-on_sunset_35.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/head-on/Town06_head-on_sunset_35.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 0.0}"}
+{"clip": "synthetic_videos/videos/head-on/Town06_head-on_sunset_35.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.35, \"y\": 0.35}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_03.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_03.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 10.0}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_03.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 6}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_03.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 6.1}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_03.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.48, \"y\": 0.42}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_12.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 16}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_12.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 1.0}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_12.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 16}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_12.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 2.7}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_12.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.5, \"y\": 0.5}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_08.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 16}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_08.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 4.0}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_08.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 15}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_08.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 2.2}"}
+{"clip": "synthetic_videos/videos/head-on/Town03_head-on_night_08.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.4, \"y\": 0.4}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_wet_235.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_wet_235.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 1.0}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_wet_235.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_wet_235.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 0.6}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_wet_235.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.72, \"y\": 0.45}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_sunset_213.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_sunset_213.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 12.0}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_sunset_213.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_sunset_213.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 10.0}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_sunset_213.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.5, \"y\": 0.45}"}
+{"clip": "synthetic_videos/videos/rear-end/Town07_rear-end_sunset_58.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 8}"}
+{"clip": "synthetic_videos/videos/rear-end/Town07_rear-end_sunset_58.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 7.0}"}
+{"clip": "synthetic_videos/videos/rear-end/Town07_rear-end_sunset_58.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/rear-end/Town07_rear-end_sunset_58.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 6.0}"}
+{"clip": "synthetic_videos/videos/rear-end/Town07_rear-end_sunset_58.mp4", "pass": "narrow", "output": "{\"collision_type\": \"head-on\", \"x\": 0.3, \"y\": 0.25}"}
+{"clip": "synthetic_videos/videos/rear-end/Town07_rear-end_night_09.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/rear-end/Town07_rear-end_night_09.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 10.0}"}
+{"clip": "synthetic_videos/videos/rear-end/Town07_rear-end_night_09.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/rear-end/Town07_rear-end_night_09.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 8.8}"}
+{"clip": "synthetic_videos/videos/rear-end/Town07_rear-end_night_09.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.45, \"y\": 0.45}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_night_214.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 16}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_night_214.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 17.0}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_night_214.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 17}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_night_214.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 17.2}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_night_214.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.5, \"y\": 0.35}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_night_231.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_night_231.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 10.0}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_night_231.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_night_231.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 8.0}"}
+{"clip": "synthetic_videos/videos/rear-end/Town05_rear-end_night_231.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.5, \"y\": 0.45}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_sunset_07.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 6}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_sunset_07.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 5.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_sunset_07.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_sunset_07.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 3.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_sunset_07.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.48, \"y\": 0.32}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_clear_33.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_clear_33.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 1.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_clear_33.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_clear_33.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 0.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_clear_33.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.38, \"y\": 0.48}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town04_sideswipe_wet_06.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 16}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town04_sideswipe_wet_06.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 16.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town04_sideswipe_wet_06.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 16}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town04_sideswipe_wet_06.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 15.7}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town04_sideswipe_wet_06.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.4, \"y\": 0.2}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_night_25.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_night_25.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 12.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_night_25.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_night_25.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 10.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town06_sideswipe_night_25.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.57, \"y\": 0.42}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town05_sideswipe_night_29.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 14}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town05_sideswipe_night_29.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 12.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town05_sideswipe_night_29.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town05_sideswipe_night_29.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 10.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town05_sideswipe_night_29.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.48, \"y\": 0.42}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town04_sideswipe_night_05.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 16}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town04_sideswipe_night_05.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 1.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town04_sideswipe_night_05.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 16}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town04_sideswipe_night_05.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 5.0}"}
+{"clip": "synthetic_videos/videos/sideswipe/Town04_sideswipe_night_05.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.28, \"y\": 0.25}"}
+{"clip": "synthetic_videos/videos/single/Town07_single_sunset_15.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/single/Town07_single_sunset_15.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 12.0}"}
+{"clip": "synthetic_videos/videos/single/Town07_single_sunset_15.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/single/Town07_single_sunset_15.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 11.0}"}
+{"clip": "synthetic_videos/videos/single/Town07_single_sunset_15.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.35, \"y\": 0.35}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_wet_01.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_wet_01.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 1.0}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_wet_01.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_wet_01.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 0.0}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_wet_01.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.45, \"y\": 0.35}"}
+{"clip": "synthetic_videos/videos/single/Town07_single_clear_07.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/single/Town07_single_clear_07.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 5.0}"}
+{"clip": "synthetic_videos/videos/single/Town07_single_clear_07.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/single/Town07_single_clear_07.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 2.0}"}
+{"clip": "synthetic_videos/videos/single/Town07_single_clear_07.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.5, \"y\": 0.4}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_20.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_20.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 0.0}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_20.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_20.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.57, \"y\": 0.45}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_23.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_23.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 5.0}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_23.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_23.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 3.0}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_23.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.42, \"y\": 0.32}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_09.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_09.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 10.0}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_09.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_09.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 7.0}"}
+{"clip": "synthetic_videos/videos/single/Town10HD_single_night_09.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.5, \"y\": 0.3}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_clear_08.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 14}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_clear_08.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 12.0}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_clear_08.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 13}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_clear_08.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 8.6}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_clear_08.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.5, \"y\": 0.5}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_clear_01.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_clear_01.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 1.0}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_clear_01.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_clear_01.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 0.0}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_clear_01.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.5, \"y\": 0.5}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_wet_16.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_wet_16.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 1.0}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_wet_16.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_wet_16.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 0.0}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_wet_16.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.5, \"y\": 0.3}"}
+{"clip": "synthetic_videos/videos/t-bone/Town10HD_t-bone_night_26.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 4}"}
+{"clip": "synthetic_videos/videos/t-bone/Town10HD_t-bone_night_26.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 2.0}"}
+{"clip": "synthetic_videos/videos/t-bone/Town10HD_t-bone_night_26.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 2}"}
+{"clip": "synthetic_videos/videos/t-bone/Town10HD_t-bone_night_26.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 2.2}"}
+{"clip": "synthetic_videos/videos/t-bone/Town10HD_t-bone_night_26.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.5, \"y\": 0.4}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_night_42.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_night_42.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 10.0}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_night_42.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_night_42.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 6.6}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_night_42.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.45, \"y\": 0.45}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_night_51.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 14}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_night_51.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 12.0}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_night_51.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_night_51.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 10.0}"}
+{"clip": "synthetic_videos/videos/t-bone/Town03_t-bone_night_51.mp4", "pass": "narrow", "output": "{\"collision_type\": \"sideswipe\", \"x\": 0.5, \"y\": 0.4}"}
+{"clip": "synthetic_videos/videos/head-on/Town06_head-on_clear_01.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 10}"}
+{"clip": "synthetic_videos/videos/head-on/Town06_head-on_clear_01.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 1.0}"}
+{"clip": "synthetic_videos/videos/head-on/Town06_head-on_clear_01.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/head-on/Town06_head-on_clear_01.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 0.0}"}
+{"clip": "synthetic_videos/videos/head-on/Town06_head-on_clear_01.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.5, \"y\": 0.5}"}
+{"clip": "synthetic_videos/videos/rear-end/Town04_rear-end_night_32.mp4", "version": 1, "pass": "coarse", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/rear-end/Town04_rear-end_night_32.mp4", "version": 2, "pass": "coarse", "output": "{\"time\": 10.0}"}
+{"clip": "synthetic_videos/videos/rear-end/Town04_rear-end_night_32.mp4", "version": 1, "pass": "fine", "output": "{\"frame\": 12}"}
+{"clip": "synthetic_videos/videos/rear-end/Town04_rear-end_night_32.mp4", "version": 2, "pass": "fine", "output": "{\"time\": 6.6}"}
+{"clip": "synthetic_videos/videos/rear-end/Town04_rear-end_night_32.mp4", "pass": "narrow", "output": "{\"collision_type\": \"rear-end\", \"x\": 0.5, \"y\": 0.4}"}

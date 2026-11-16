@@ -1,0 +1,3 @@
+version,n_clips,within_2s,T@1,coarse at first/last frame,t_full within 10% of midpoint,coarse invalid (parse/range),coarse rule A,fine invalid (parse/range),fine rule A,coarse fallbacks,fine fallbacks,gated (rule B),digit strings,GPU s per clip (full scan),median |error| s
+v1,32,0.09375,0.04424143179745595,0.03125,0.40625,0,0,0,0,0,0,0,0,9.65757514062625,4.025
+v2,32,0.1875,0.12079182399386434,0.28125,0.21875,0,1,0,6,1,6,1,0,9.70562216874896,4.074999999999999

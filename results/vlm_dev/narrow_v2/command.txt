@@ -1,0 +1,7 @@
+command (from cctv-accident-ITS-system/, 2026-11-16T12:40:57Z):
+  HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 .venv-vlm/Scripts/python.exe -u vlm_zero_shot.py --narrow2 run --clips vlm_dev_clips.csv
+power at start: BatteryStatus 2 (2 = on AC mains), charge 80%
+clips: vlm_dev_clips.csv sha256 bba63401d1627ed890acff574d31d20058044361a51242562464a2e26135645a
+code: git HEAD c8479da + uncommitted vlm_zero_shot.py sha256 bce850a310b3520b9a66a01908a0416f6fe51d772a7b4e88b9d6d5db83824796
+terminal output: run.log
+power at end: BatteryStatus 2 (2 = on AC mains), charge 80%

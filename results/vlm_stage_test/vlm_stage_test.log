@@ -1,0 +1,484 @@
+command: C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Scripts\python.exe gpu_check/vlm_smoke_test.py --stage-test
+started: 2026-11-15T22:31:11+00:00
+
+===== 2026-11-15T22:31:11+00:00 stage test 2B-bf16 narrow16 =====
+W1116 01:31:15.339000 29948 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-15T22:31:15+00:00 2B-bf16 narrow16: decoding frames of 2 clips (CPU)
+2026-11-15T22:31:20+00:00 2B-bf16 narrow16: frames ready (16, 16 frames)
+2026-11-15T22:31:20+00:00 PROGRESS load start 2B-bf16 (Qwen/Qwen3-VL-2B-Instruct, bf16)
+2026-11-15T22:31:20+00:00 2B-bf16: processor loaded, loading weights
+
+Loading weights:   0%|          | 0/625 [00:00<?, ?it/s]
+Loading weights:   4%|▎         | 22/625 [00:00<00:03, 180.00it/s]
+Loading weights:   7%|▋         | 42/625 [00:00<00:03, 176.04it/s]
+Loading weights:  10%|█         | 64/625 [00:00<00:02, 187.34it/s]
+Loading weights:  13%|█▎        | 83/625 [00:00<00:03, 177.90it/s]
+Loading weights:  16%|█▌        | 101/625 [00:00<00:03, 160.17it/s]
+Loading weights:  19%|█▉        | 118/625 [00:00<00:03, 160.16it/s]
+Loading weights:  22%|██▏       | 138/625 [00:00<00:02, 168.98it/s]
+Loading weights:  25%|██▍       | 156/625 [00:00<00:02, 166.50it/s]
+Loading weights:  28%|██▊       | 173/625 [00:01<00:02, 158.27it/s]
+Loading weights:  30%|███       | 189/625 [00:01<00:02, 151.51it/s]
+Loading weights:  33%|███▎      | 206/625 [00:01<00:02, 155.39it/s]
+Loading weights:  36%|███▌      | 225/625 [00:01<00:02, 162.89it/s]
+Loading weights:  39%|███▊      | 242/625 [00:01<00:02, 145.95it/s]
+Loading weights:  42%|████▏     | 260/625 [00:01<00:02, 143.66it/s]
+Loading weights:  45%|████▍     | 280/625 [00:01<00:02, 157.36it/s]
+Loading weights:  48%|████▊     | 297/625 [00:01<00:02, 157.96it/s]
+Loading weights:  55%|█████▌    | 346/625 [00:01<00:01, 245.03it/s]
+Loading weights:  65%|██████▌   | 409/625 [00:02<00:00, 350.17it/s]
+Loading weights:  76%|███████▋  | 478/625 [00:02<00:00, 442.29it/s]
+Loading weights:  88%|████████▊ | 549/625 [00:02<00:00, 511.37it/s]
+Loading weights:  96%|█████████▋| 602/625 [00:02<00:00, 483.54it/s]
+Loading weights: 100%|██████████| 625/625 [00:02<00:00, 252.38it/s]
+2026-11-15T22:31:23+00:00 PROGRESS load done 2B-bf16: 3.5 s, allocated 3.96 GB
+2026-11-15T22:31:23+00:00 PROGRESS call start Town06_head-on_clear_01 call 1 (16 frames)
+2026-11-15T22:31:25+00:00 PROGRESS call done Town06_head-on_clear_01 call 1: 1.73 s, peak allocated 4.36 GB, valid True
+2026-11-15T22:31:25+00:00 PROGRESS call start Town06_head-on_clear_01 call 2 (16 frames)
+2026-11-15T22:31:26+00:00 PROGRESS call done Town06_head-on_clear_01 call 2: 1.19 s, peak allocated 4.37 GB, valid True
+2026-11-15T22:31:26+00:00 PROGRESS call start Town04_rear-end_night_32 call 1 (16 frames)
+2026-11-15T22:31:27+00:00 PROGRESS call done Town04_rear-end_night_32 call 1: 1.13 s, peak allocated 4.37 GB, valid True
+2026-11-15T22:31:27+00:00 PROGRESS call start Town04_rear-end_night_32 call 2 (16 frames)
+2026-11-15T22:31:29+00:00 PROGRESS call done Town04_rear-end_night_32 call 2: 1.18 s, peak allocated 4.37 GB, valid True
+[2B-bf16 narrow16] result received
+
+===== 2026-11-15T22:31:29+00:00 stage test 2B-bf16 full1fps =====
+W1116 01:31:33.977000 6960 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-15T22:31:34+00:00 2B-bf16 full1fps: decoding frames of 2 clips (CPU)
+2026-11-15T22:31:39+00:00 2B-bf16 full1fps: frames ready (18, 33 frames)
+2026-11-15T22:31:39+00:00 PROGRESS load start 2B-bf16 (Qwen/Qwen3-VL-2B-Instruct, bf16)
+2026-11-15T22:31:39+00:00 2B-bf16: processor loaded, loading weights
+
+Loading weights:   0%|          | 0/625 [00:00<?, ?it/s]
+Loading weights:   4%|▎         | 22/625 [00:00<00:03, 195.74it/s]
+Loading weights:   7%|▋         | 42/625 [00:00<00:03, 161.18it/s]
+Loading weights:  10%|█         | 64/625 [00:00<00:03, 173.84it/s]
+Loading weights:  13%|█▎        | 84/625 [00:00<00:02, 182.12it/s]
+Loading weights:  16%|█▋        | 103/625 [00:00<00:03, 173.06it/s]
+Loading weights:  20%|█▉        | 122/625 [00:00<00:02, 170.81it/s]
+Loading weights:  23%|██▎       | 141/625 [00:00<00:02, 172.85it/s]
+Loading weights:  25%|██▌       | 159/625 [00:00<00:02, 168.25it/s]
+Loading weights:  28%|██▊       | 176/625 [00:01<00:02, 160.93it/s]
+Loading weights:  31%|███       | 195/625 [00:01<00:02, 156.94it/s]
+Loading weights:  34%|███▍      | 211/625 [00:01<00:02, 155.37it/s]
+Loading weights:  36%|███▋      | 227/625 [00:01<00:02, 149.17it/s]
+Loading weights:  39%|███▊      | 242/625 [00:01<00:02, 143.44it/s]
+Loading weights:  42%|████▏     | 263/625 [00:01<00:02, 148.37it/s]
+Loading weights:  45%|████▍     | 279/625 [00:01<00:02, 150.27it/s]
+Loading weights:  47%|████▋     | 296/625 [00:01<00:02, 152.14it/s]
+Loading weights:  56%|█████▋    | 353/625 [00:01<00:01, 264.50it/s]
+Loading weights:  69%|██████▊   | 429/625 [00:02<00:00, 389.79it/s]
+Loading weights:  79%|███████▉  | 495/625 [00:02<00:00, 464.81it/s]
+Loading weights:  88%|████████▊ | 549/625 [00:02<00:00, 481.85it/s]
+Loading weights:  96%|█████████▌| 598/625 [00:02<00:00, 471.53it/s]
+Loading weights: 100%|██████████| 625/625 [00:02<00:00, 250.53it/s]
+2026-11-15T22:31:43+00:00 PROGRESS load done 2B-bf16: 3.5 s, allocated 3.96 GB
+2026-11-15T22:31:43+00:00 PROGRESS call start Town06_head-on_clear_01 call 1 (18 frames)
+2026-11-15T22:31:44+00:00 PROGRESS call done Town06_head-on_clear_01 call 1: 1.18 s, peak allocated 4.40 GB, valid True
+2026-11-15T22:31:44+00:00 PROGRESS call start Town06_head-on_clear_01 call 2 (18 frames)
+2026-11-15T22:31:44+00:00 PROGRESS call done Town06_head-on_clear_01 call 2: 0.60 s, peak allocated 4.40 GB, valid True
+2026-11-15T22:31:44+00:00 PROGRESS call start Town04_rear-end_night_32 call 1 (33 frames)
+2026-11-15T22:31:46+00:00 PROGRESS call done Town04_rear-end_night_32 call 1: 1.38 s, peak allocated 5.04 GB, valid True
+2026-11-15T22:31:46+00:00 PROGRESS call start Town04_rear-end_night_32 call 2 (33 frames)
+2026-11-15T22:31:47+00:00 PROGRESS call done Town04_rear-end_night_32 call 2: 1.34 s, peak allocated 5.04 GB, valid True
+[2B-bf16 full1fps] result received
+
+===== 2026-11-15T22:31:48+00:00 stage test 2B-bf16 full2fps =====
+W1116 01:31:52.686000 22476 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-15T22:31:52+00:00 2B-bf16 full2fps: decoding frames of 2 clips (CPU)
+2026-11-15T22:31:59+00:00 2B-bf16 full2fps: frames ready (36, 65 frames)
+2026-11-15T22:31:59+00:00 PROGRESS load start 2B-bf16 (Qwen/Qwen3-VL-2B-Instruct, bf16)
+2026-11-15T22:31:59+00:00 2B-bf16: processor loaded, loading weights
+
+Loading weights:   0%|          | 0/625 [00:00<?, ?it/s]
+Loading weights:   3%|▎         | 20/625 [00:00<00:03, 184.10it/s]
+Loading weights:   6%|▌         | 39/625 [00:00<00:03, 186.96it/s]
+Loading weights:   9%|▉         | 58/625 [00:00<00:03, 181.29it/s]
+Loading weights:  12%|█▏        | 77/625 [00:00<00:03, 157.99it/s]
+Loading weights:  16%|█▌        | 97/625 [00:00<00:03, 166.09it/s]
+Loading weights:  18%|█▊        | 114/625 [00:00<00:03, 157.77it/s]
+Loading weights:  21%|██        | 131/625 [00:00<00:03, 160.33it/s]
+Loading weights:  24%|██▍       | 150/625 [00:00<00:02, 168.65it/s]
+Loading weights:  27%|██▋       | 168/625 [00:01<00:02, 163.69it/s]
+Loading weights:  30%|██▉       | 185/625 [00:01<00:02, 151.61it/s]
+Loading weights:  33%|███▎      | 209/625 [00:01<00:02, 163.56it/s]
+Loading weights:  37%|███▋      | 231/625 [00:01<00:02, 175.03it/s]
+Loading weights:  40%|████      | 250/625 [00:01<00:02, 178.54it/s]
+Loading weights:  43%|████▎     | 269/625 [00:01<00:02, 175.02it/s]
+Loading weights:  46%|████▌     | 289/625 [00:01<00:01, 174.05it/s]
+Loading weights:  53%|█████▎    | 331/625 [00:01<00:01, 232.32it/s]
+Loading weights:  64%|██████▎   | 397/625 [00:01<00:00, 348.06it/s]
+Loading weights:  75%|███████▌  | 469/625 [00:02<00:00, 448.75it/s]
+Loading weights:  88%|████████▊ | 547/625 [00:02<00:00, 541.80it/s]
+Loading weights:  96%|█████████▋| 603/625 [00:02<00:00, 511.26it/s]
+Loading weights: 100%|██████████| 625/625 [00:02<00:00, 268.53it/s]
+2026-11-15T22:32:02+00:00 PROGRESS load done 2B-bf16: 3.3 s, allocated 3.96 GB
+2026-11-15T22:32:02+00:00 PROGRESS call start Town06_head-on_clear_01 call 1 (36 frames)
+2026-11-15T22:32:04+00:00 PROGRESS call done Town06_head-on_clear_01 call 1: 1.86 s, peak allocated 5.14 GB, valid True
+2026-11-15T22:32:04+00:00 PROGRESS call start Town06_head-on_clear_01 call 2 (36 frames)
+2026-11-15T22:32:06+00:00 PROGRESS call done Town06_head-on_clear_01 call 2: 1.38 s, peak allocated 5.14 GB, valid True
+2026-11-15T22:32:06+00:00 PROGRESS call start Town04_rear-end_night_32 call 1 (65 frames)
+[2B-bf16 full2fps] result received
+
+===== 2026-11-15T22:32:09+00:00 stage test 2B-nf4 narrow16 =====
+W1116 01:32:12.943000 27772 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-15T22:32:13+00:00 2B-nf4 narrow16: decoding frames of 2 clips (CPU)
+2026-11-15T22:32:17+00:00 2B-nf4 narrow16: frames ready (16, 16 frames)
+2026-11-15T22:32:17+00:00 PROGRESS load start 2B-nf4 (Qwen/Qwen3-VL-2B-Instruct, nf4)
+2026-11-15T22:32:17+00:00 2B-nf4: processor loaded, loading weights
+
+Loading weights:   0%|          | 0/625 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/625 [00:00<04:01,  2.59it/s]
+Loading weights:   0%|          | 3/625 [00:00<01:30,  6.84it/s]
+Loading weights:   3%|▎         | 16/625 [00:00<00:15, 38.30it/s]
+Loading weights:   6%|▌         | 36/625 [00:00<00:07, 80.29it/s]
+Loading weights:   8%|▊         | 49/625 [00:00<00:06, 92.22it/s]
+Loading weights:  11%|█         | 69/625 [00:00<00:04, 118.52it/s]
+Loading weights:  13%|█▎        | 83/625 [00:01<00:04, 121.05it/s]
+Loading weights:  16%|█▋        | 102/625 [00:01<00:03, 136.38it/s]
+Loading weights:  19%|█▊        | 117/625 [00:01<00:03, 136.41it/s]
+Loading weights:  22%|██▏       | 135/625 [00:01<00:03, 143.27it/s]
+Loading weights:  24%|██▍       | 150/625 [00:01<00:03, 142.57it/s]
+Loading weights:  27%|██▋       | 168/625 [00:01<00:03, 146.44it/s]
+Loading weights:  29%|██▉       | 183/625 [00:01<00:03, 141.95it/s]
+Loading weights:  32%|███▏      | 201/625 [00:01<00:02, 146.69it/s]
+Loading weights:  35%|███▍      | 216/625 [00:01<00:02, 141.50it/s]
+Loading weights:  37%|███▋      | 234/625 [00:02<00:02, 146.05it/s]
+Loading weights:  40%|███▉      | 249/625 [00:02<00:02, 142.54it/s]
+Loading weights:  43%|████▎     | 267/625 [00:02<00:02, 147.39it/s]
+Loading weights:  45%|████▌     | 282/625 [00:02<00:02, 140.42it/s]
+Loading weights:  48%|████▊     | 300/625 [00:02<00:02, 145.77it/s]
+Loading weights:  54%|█████▍    | 338/625 [00:02<00:01, 207.83it/s]
+Loading weights:  64%|██████▍   | 400/625 [00:02<00:00, 315.16it/s]
+Loading weights:  74%|███████▎  | 460/625 [00:02<00:00, 388.80it/s]
+Loading weights:  83%|████████▎ | 520/625 [00:02<00:00, 440.76it/s]
+Loading weights:  93%|█████████▎| 580/625 [00:03<00:00, 480.96it/s]
+Loading weights: 100%|██████████| 625/625 [00:03<00:00, 192.43it/s]
+2026-11-15T22:32:22+00:00 PROGRESS load done 2B-nf4: 4.9 s, allocated 1.47 GB
+2026-11-15T22:32:22+00:00 PROGRESS call start Town06_head-on_clear_01 call 1 (16 frames)
+2026-11-15T22:32:23+00:00 PROGRESS call done Town06_head-on_clear_01 call 1: 1.55 s, peak allocated 1.87 GB, valid True
+2026-11-15T22:32:23+00:00 PROGRESS call start Town06_head-on_clear_01 call 2 (16 frames)
+2026-11-15T22:32:25+00:00 PROGRESS call done Town06_head-on_clear_01 call 2: 1.16 s, peak allocated 1.87 GB, valid True
+2026-11-15T22:32:25+00:00 PROGRESS call start Town04_rear-end_night_32 call 1 (16 frames)
+2026-11-15T22:32:26+00:00 PROGRESS call done Town04_rear-end_night_32 call 1: 1.26 s, peak allocated 1.87 GB, valid True
+2026-11-15T22:32:26+00:00 PROGRESS call start Town04_rear-end_night_32 call 2 (16 frames)
+2026-11-15T22:32:27+00:00 PROGRESS call done Town04_rear-end_night_32 call 2: 1.30 s, peak allocated 1.87 GB, valid True
+[2B-nf4 narrow16] result received
+
+===== 2026-11-15T22:32:28+00:00 stage test 2B-nf4 full1fps =====
+W1116 01:32:32.355000 31156 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-15T22:32:32+00:00 2B-nf4 full1fps: decoding frames of 2 clips (CPU)
+2026-11-15T22:32:37+00:00 2B-nf4 full1fps: frames ready (18, 33 frames)
+2026-11-15T22:32:37+00:00 PROGRESS load start 2B-nf4 (Qwen/Qwen3-VL-2B-Instruct, nf4)
+2026-11-15T22:32:37+00:00 2B-nf4: processor loaded, loading weights
+
+Loading weights:   0%|          | 0/625 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/625 [00:00<04:03,  2.56it/s]
+Loading weights:   1%|          | 5/625 [00:00<00:49, 12.51it/s]
+Loading weights:   4%|▍         | 25/625 [00:00<00:09, 62.27it/s]
+Loading weights:   6%|▌         | 38/625 [00:00<00:07, 79.67it/s]
+Loading weights:   9%|▉         | 58/625 [00:00<00:05, 110.25it/s]
+Loading weights:  12%|█▏        | 72/625 [00:00<00:04, 115.42it/s]
+Loading weights:  14%|█▍        | 88/625 [00:01<00:04, 127.18it/s]
+Loading weights:  16%|█▋        | 103/625 [00:01<00:04, 128.83it/s]
+Loading weights:  19%|█▉        | 121/625 [00:01<00:03, 141.41it/s]
+Loading weights:  22%|██▏       | 136/625 [00:01<00:03, 139.89it/s]
+Loading weights:  24%|██▍       | 152/625 [00:01<00:03, 143.33it/s]
+Loading weights:  27%|██▋       | 168/625 [00:01<00:03, 147.65it/s]
+Loading weights:  29%|██▉       | 184/625 [00:01<00:03, 146.13it/s]
+Loading weights:  32%|███▏      | 201/625 [00:01<00:02, 148.10it/s]
+Loading weights:  35%|███▍      | 216/625 [00:01<00:02, 144.57it/s]
+Loading weights:  37%|███▋      | 234/625 [00:02<00:02, 147.53it/s]
+Loading weights:  40%|███▉      | 249/625 [00:02<00:02, 143.01it/s]
+Loading weights:  42%|████▏     | 265/625 [00:02<00:02, 147.61it/s]
+Loading weights:  45%|████▍     | 280/625 [00:02<00:02, 135.06it/s]
+Loading weights:  48%|████▊     | 300/625 [00:02<00:02, 146.43it/s]
+Loading weights:  53%|█████▎    | 330/625 [00:02<00:01, 187.81it/s]
+Loading weights:  62%|██████▏   | 390/625 [00:02<00:00, 302.43it/s]
+Loading weights:  72%|███████▏  | 448/625 [00:02<00:00, 380.04it/s]
+Loading weights:  81%|████████▏ | 508/625 [00:02<00:00, 432.76it/s]
+Loading weights:  91%|█████████ | 568/625 [00:02<00:00, 475.57it/s]
+Loading weights:  99%|█████████▊| 617/625 [00:03<00:00, 407.28it/s]
+Loading weights: 100%|██████████| 625/625 [00:03<00:00, 195.92it/s]
+2026-11-15T22:32:41+00:00 PROGRESS load done 2B-nf4: 4.5 s, allocated 1.47 GB
+2026-11-15T22:32:41+00:00 PROGRESS call start Town06_head-on_clear_01 call 1 (18 frames)
+2026-11-15T22:32:42+00:00 PROGRESS call done Town06_head-on_clear_01 call 1: 1.17 s, peak allocated 1.91 GB, valid False
+2026-11-15T22:32:42+00:00 PROGRESS call start Town06_head-on_clear_01 call 2 (18 frames)
+2026-11-15T22:32:43+00:00 PROGRESS call done Town06_head-on_clear_01 call 2: 0.81 s, peak allocated 1.91 GB, valid False
+2026-11-15T22:32:43+00:00 PROGRESS call start Town04_rear-end_night_32 call 1 (33 frames)
+2026-11-15T22:32:45+00:00 PROGRESS call done Town04_rear-end_night_32 call 1: 1.42 s, peak allocated 2.55 GB, valid False
+2026-11-15T22:32:45+00:00 PROGRESS call start Town04_rear-end_night_32 call 2 (33 frames)
+2026-11-15T22:32:46+00:00 PROGRESS call done Town04_rear-end_night_32 call 2: 1.42 s, peak allocated 2.55 GB, valid False
+[2B-nf4 full1fps] result received
+
+===== 2026-11-15T22:32:47+00:00 stage test 2B-nf4 full2fps =====
+W1116 01:32:51.180000 30404 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-15T22:32:51+00:00 2B-nf4 full2fps: decoding frames of 2 clips (CPU)
+2026-11-15T22:32:56+00:00 2B-nf4 full2fps: frames ready (36, 65 frames)
+2026-11-15T22:32:56+00:00 PROGRESS load start 2B-nf4 (Qwen/Qwen3-VL-2B-Instruct, nf4)
+2026-11-15T22:32:57+00:00 2B-nf4: processor loaded, loading weights
+
+Loading weights:   0%|          | 0/625 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/625 [00:00<04:02,  2.57it/s]
+Loading weights:   1%|▏         | 8/625 [00:00<00:30, 20.42it/s]
+Loading weights:   4%|▍         | 25/625 [00:00<00:10, 58.84it/s]
+Loading weights:   6%|▌         | 38/625 [00:00<00:07, 75.47it/s]
+Loading weights:   9%|▉         | 58/625 [00:00<00:05, 106.24it/s]
+Loading weights:  11%|█▏        | 71/625 [00:00<00:04, 112.22it/s]
+Loading weights:  15%|█▍        | 91/625 [00:01<00:04, 130.36it/s]
+Loading weights:  17%|█▋        | 106/625 [00:01<00:03, 135.05it/s]
+Loading weights:  19%|█▉        | 121/625 [00:01<00:03, 139.17it/s]
+Loading weights:  22%|██▏       | 136/625 [00:01<00:03, 134.09it/s]
+Loading weights:  24%|██▍       | 152/625 [00:01<00:03, 139.21it/s]
+Loading weights:  27%|██▋       | 169/625 [00:01<00:03, 140.86it/s]
+Loading weights:  30%|██▉       | 185/625 [00:01<00:03, 142.81it/s]
+Loading weights:  32%|███▏      | 201/625 [00:01<00:02, 144.85it/s]
+Loading weights:  35%|███▍      | 216/625 [00:01<00:02, 139.16it/s]
+Loading weights:  37%|███▋      | 232/625 [00:02<00:02, 143.60it/s]
+Loading weights:  40%|███▉      | 247/625 [00:02<00:02, 132.19it/s]
+Loading weights:  43%|████▎     | 267/625 [00:02<00:02, 146.65it/s]
+Loading weights:  45%|████▌     | 282/625 [00:02<00:02, 140.21it/s]
+Loading weights:  48%|████▊     | 298/625 [00:02<00:02, 144.69it/s]
+Loading weights:  51%|█████     | 319/625 [00:02<00:01, 162.29it/s]
+Loading weights:  60%|██████    | 378/625 [00:02<00:00, 282.19it/s]
+Loading weights:  70%|███████   | 438/625 [00:02<00:00, 366.67it/s]
+Loading weights:  79%|███████▉  | 496/625 [00:02<00:00, 420.85it/s]
+Loading weights:  89%|████████▊ | 554/625 [00:03<00:00, 463.63it/s]
+Loading weights:  96%|█████████▌| 601/625 [00:03<00:00, 461.55it/s]
+Loading weights: 100%|██████████| 625/625 [00:03<00:00, 191.91it/s]
+2026-11-15T22:33:01+00:00 PROGRESS load done 2B-nf4: 4.6 s, allocated 1.47 GB
+2026-11-15T22:33:01+00:00 PROGRESS call start Town06_head-on_clear_01 call 1 (36 frames)
+2026-11-15T22:33:03+00:00 PROGRESS call done Town06_head-on_clear_01 call 1: 1.81 s, peak allocated 2.64 GB, valid False
+2026-11-15T22:33:03+00:00 PROGRESS call start Town06_head-on_clear_01 call 2 (36 frames)
+2026-11-15T22:33:04+00:00 PROGRESS call done Town06_head-on_clear_01 call 2: 1.44 s, peak allocated 2.64 GB, valid False
+2026-11-15T22:33:04+00:00 PROGRESS call start Town04_rear-end_night_32 call 1 (65 frames)
+2026-11-15T22:33:08+00:00 PROGRESS call done Town04_rear-end_night_32 call 1: 3.27 s, peak allocated 4.60 GB, valid False
+2026-11-15T22:33:08+00:00 PROGRESS call start Town04_rear-end_night_32 call 2 (65 frames)
+2026-11-15T22:33:11+00:00 PROGRESS call done Town04_rear-end_night_32 call 2: 3.20 s, peak allocated 4.60 GB, valid False
+[2B-nf4 full2fps] result received
+
+===== 2026-11-15T22:33:12+00:00 stage test 4B-nf4 narrow16 =====
+W1116 01:33:16.325000 17248 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-15T22:33:16+00:00 4B-nf4 narrow16: decoding frames of 2 clips (CPU)
+2026-11-15T22:33:21+00:00 4B-nf4 narrow16: frames ready (16, 16 frames)
+2026-11-15T22:33:21+00:00 PROGRESS load start 4B-nf4 (Qwen/Qwen3-VL-4B-Instruct, nf4)
+2026-11-15T22:33:21+00:00 4B-nf4: processor loaded, loading weights
+
+Loading weights:   0%|          | 0/713 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/713 [00:00<07:28,  1.59it/s]
+Loading weights:   1%|          | 4/713 [00:00<01:48,  6.54it/s]
+Loading weights:   2%|▏         | 14/713 [00:00<00:29, 23.62it/s]
+Loading weights:   3%|▎         | 22/713 [00:01<00:19, 34.65it/s]
+Loading weights:   4%|▍         | 28/713 [00:01<00:17, 38.76it/s]
+Loading weights:   5%|▌         | 37/713 [00:01<00:13, 49.02it/s]
+Loading weights:   7%|▋         | 47/713 [00:01<00:11, 56.91it/s]
+Loading weights:   8%|▊         | 55/713 [00:01<00:10, 60.20it/s]
+Loading weights:   9%|▊         | 62/713 [00:01<00:11, 58.01it/s]
+Loading weights:  10%|▉         | 70/713 [00:01<00:11, 58.27it/s]
+Loading weights:  11%|█         | 80/713 [00:01<00:09, 65.08it/s]
+Loading weights:  12%|█▏        | 87/713 [00:01<00:09, 65.72it/s]
+Loading weights:  13%|█▎        | 94/713 [00:02<00:10, 60.57it/s]
+Loading weights:  14%|█▍        | 102/713 [00:02<00:09, 65.20it/s]
+Loading weights:  15%|█▌        | 109/713 [00:02<00:09, 64.66it/s]
+Loading weights:  16%|█▋        | 116/713 [00:02<00:09, 60.73it/s]
+Loading weights:  18%|█▊        | 125/713 [00:02<00:09, 65.13it/s]
+Loading weights:  19%|█▉        | 135/713 [00:02<00:08, 68.72it/s]
+Loading weights:  20%|█▉        | 142/713 [00:02<00:08, 65.82it/s]
+Loading weights:  21%|██        | 149/713 [00:02<00:09, 60.95it/s]
+Loading weights:  22%|██▏       | 158/713 [00:03<00:08, 66.79it/s]
+Loading weights:  24%|██▎       | 168/713 [00:03<00:07, 71.86it/s]
+Loading weights:  25%|██▍       | 176/713 [00:03<00:07, 67.88it/s]
+Loading weights:  26%|██▌       | 183/713 [00:03<00:08, 63.38it/s]
+Loading weights:  27%|██▋       | 191/713 [00:03<00:08, 64.59it/s]
+Loading weights:  28%|██▊       | 201/713 [00:03<00:07, 66.87it/s]
+Loading weights:  29%|██▉       | 208/713 [00:03<00:07, 67.19it/s]
+Loading weights:  30%|███       | 215/713 [00:03<00:08, 59.77it/s]
+Loading weights:  31%|███▏      | 223/713 [00:04<00:07, 62.85it/s]
+Loading weights:  32%|███▏      | 231/713 [00:04<00:07, 65.82it/s]
+Loading weights:  33%|███▎      | 238/713 [00:04<00:08, 56.42it/s]
+Loading weights:  34%|███▍      | 245/713 [00:04<00:07, 59.05it/s]
+Loading weights:  35%|███▌      | 252/713 [00:04<00:08, 56.58it/s]
+Loading weights:  36%|███▌      | 258/713 [00:04<00:09, 47.23it/s]
+Loading weights:  37%|███▋      | 267/713 [00:04<00:08, 55.48it/s]
+Loading weights:  38%|███▊      | 273/713 [00:05<00:08, 52.86it/s]
+Loading weights:  39%|███▉      | 279/713 [00:05<00:08, 51.84it/s]
+Loading weights:  41%|████      | 289/713 [00:05<00:07, 55.76it/s]
+Loading weights:  41%|████▏     | 295/713 [00:05<00:07, 52.72it/s]
+Loading weights:  42%|████▏     | 301/713 [00:05<00:07, 51.76it/s]
+Loading weights:  44%|████▎     | 311/713 [00:05<00:07, 56.27it/s]
+Loading weights:  44%|████▍     | 317/713 [00:05<00:07, 50.50it/s]
+Loading weights:  45%|████▌     | 323/713 [00:06<00:08, 47.85it/s]
+Loading weights:  46%|████▋     | 330/713 [00:06<00:07, 49.62it/s]
+Loading weights:  47%|████▋     | 335/713 [00:06<00:09, 41.38it/s]
+Loading weights:  48%|████▊     | 344/713 [00:06<00:07, 49.59it/s]
+Loading weights:  49%|████▉     | 350/713 [00:06<00:08, 44.65it/s]
+Loading weights:  50%|████▉     | 356/713 [00:06<00:08, 43.28it/s]
+Loading weights:  51%|█████     | 361/713 [00:06<00:07, 44.40it/s]
+Loading weights:  51%|█████▏    | 367/713 [00:07<00:07, 43.44it/s]
+Loading weights:  52%|█████▏    | 374/713 [00:07<00:06, 48.55it/s]
+Loading weights:  53%|█████▎    | 380/713 [00:07<00:07, 42.80it/s]
+Loading weights:  54%|█████▍    | 388/713 [00:07<00:06, 49.20it/s]
+Loading weights:  55%|█████▌    | 394/713 [00:07<00:06, 47.15it/s]
+Loading weights:  60%|██████    | 428/713 [00:07<00:02, 115.58it/s]
+Loading weights:  66%|██████▋   | 474/713 [00:07<00:01, 199.62it/s]
+Loading weights:  72%|███████▏  | 514/713 [00:07<00:00, 251.02it/s]
+Loading weights:  79%|███████▊  | 560/713 [00:07<00:00, 307.29it/s]
+Loading weights:  85%|████████▍ | 606/713 [00:08<00:00, 349.29it/s]
+Loading weights:  90%|█████████ | 644/713 [00:08<00:00, 356.16it/s]
+Loading weights:  96%|█████████▌| 681/713 [00:08<00:00, 342.15it/s]
+Loading weights: 100%|██████████| 713/713 [00:08<00:00, 82.18it/s] 
+2026-11-15T22:33:31+00:00 PROGRESS load done 4B-nf4: 10.3 s, allocated 2.71 GB
+2026-11-15T22:33:31+00:00 PROGRESS call start Town06_head-on_clear_01 call 1 (16 frames)
+2026-11-15T22:33:34+00:00 PROGRESS call done Town06_head-on_clear_01 call 1: 2.92 s, peak allocated 3.35 GB, valid True
+2026-11-15T22:33:34+00:00 PROGRESS call start Town06_head-on_clear_01 call 2 (16 frames)
+2026-11-15T22:33:36+00:00 PROGRESS call done Town06_head-on_clear_01 call 2: 2.07 s, peak allocated 3.35 GB, valid True
+2026-11-15T22:33:36+00:00 PROGRESS call start Town04_rear-end_night_32 call 1 (16 frames)
+2026-11-15T22:33:38+00:00 PROGRESS call done Town04_rear-end_night_32 call 1: 1.81 s, peak allocated 3.35 GB, valid True
+2026-11-15T22:33:38+00:00 PROGRESS call start Town04_rear-end_night_32 call 2 (16 frames)
+2026-11-15T22:33:40+00:00 PROGRESS call done Town04_rear-end_night_32 call 2: 1.83 s, peak allocated 3.35 GB, valid True
+[4B-nf4 narrow16] result received
+
+===== 2026-11-15T22:33:41+00:00 stage test 4B-nf4 full1fps =====
+W1116 01:33:44.952000 25520 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-15T22:33:45+00:00 4B-nf4 full1fps: decoding frames of 2 clips (CPU)
+2026-11-15T22:33:50+00:00 4B-nf4 full1fps: frames ready (18, 33 frames)
+2026-11-15T22:33:50+00:00 PROGRESS load start 4B-nf4 (Qwen/Qwen3-VL-4B-Instruct, nf4)
+2026-11-15T22:33:50+00:00 4B-nf4: processor loaded, loading weights
+
+Loading weights:   0%|          | 0/713 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/713 [00:00<07:15,  1.63it/s]
+Loading weights:   0%|          | 3/713 [00:00<02:18,  5.11it/s]
+Loading weights:   1%|▏         | 9/713 [00:00<00:42, 16.53it/s]
+Loading weights:   2%|▏         | 15/713 [00:00<00:27, 25.78it/s]
+Loading weights:   4%|▎         | 25/713 [00:01<00:16, 41.73it/s]
+Loading weights:   5%|▍         | 33/713 [00:01<00:13, 49.32it/s]
+Loading weights:   6%|▌         | 40/713 [00:01<00:12, 53.51it/s]
+Loading weights:   7%|▋         | 48/713 [00:01<00:11, 57.07it/s]
+Loading weights:   8%|▊         | 58/713 [00:01<00:10, 64.70it/s]
+Loading weights:   9%|▉         | 65/713 [00:01<00:09, 65.84it/s]
+Loading weights:  10%|█         | 72/713 [00:01<00:10, 59.08it/s]
+Loading weights:  11%|█▏        | 81/713 [00:01<00:09, 63.61it/s]
+Loading weights:  13%|█▎        | 91/713 [00:02<00:08, 69.14it/s]
+Loading weights:  14%|█▍        | 99/713 [00:02<00:09, 67.95it/s]
+Loading weights:  15%|█▍        | 106/713 [00:02<00:09, 64.32it/s]
+Loading weights:  16%|█▌        | 114/713 [00:02<00:09, 65.05it/s]
+Loading weights:  17%|█▋        | 124/713 [00:02<00:08, 66.96it/s]
+Loading weights:  18%|█▊        | 131/713 [00:02<00:08, 67.45it/s]
+Loading weights:  19%|█▉        | 138/713 [00:02<00:09, 58.46it/s]
+Loading weights:  21%|██        | 147/713 [00:02<00:09, 61.00it/s]
+Loading weights:  22%|██▏       | 157/713 [00:03<00:08, 68.57it/s]
+Loading weights:  23%|██▎       | 165/713 [00:03<00:07, 70.44it/s]
+Loading weights:  24%|██▍       | 173/713 [00:03<00:07, 68.94it/s]
+Loading weights:  25%|██▌       | 181/713 [00:03<00:08, 63.76it/s]
+Loading weights:  27%|██▋       | 191/713 [00:03<00:07, 69.47it/s]
+Loading weights:  28%|██▊       | 201/713 [00:03<00:07, 69.44it/s]
+Loading weights:  29%|██▉       | 209/713 [00:03<00:07, 69.64it/s]
+Loading weights:  30%|███       | 217/713 [00:03<00:07, 65.74it/s]
+Loading weights:  31%|███▏      | 224/713 [00:04<00:07, 62.33it/s]
+Loading weights:  33%|███▎      | 234/713 [00:04<00:06, 69.56it/s]
+Loading weights:  34%|███▍      | 242/713 [00:04<00:06, 68.97it/s]
+Loading weights:  35%|███▍      | 249/713 [00:04<00:07, 65.16it/s]
+Loading weights:  36%|███▌      | 257/713 [00:04<00:06, 65.30it/s]
+Loading weights:  37%|███▋      | 267/713 [00:04<00:06, 69.24it/s]
+Loading weights:  38%|███▊      | 274/713 [00:04<00:06, 68.73it/s]
+Loading weights:  39%|███▉      | 281/713 [00:04<00:06, 61.77it/s]
+Loading weights:  41%|████      | 290/713 [00:05<00:06, 64.96it/s]
+Loading weights:  42%|████▏     | 300/713 [00:05<00:05, 69.49it/s]
+Loading weights:  43%|████▎     | 307/713 [00:05<00:06, 66.84it/s]
+Loading weights:  44%|████▍     | 314/713 [00:05<00:06, 61.98it/s]
+Loading weights:  45%|████▌     | 323/713 [00:05<00:05, 65.45it/s]
+Loading weights:  47%|████▋     | 333/713 [00:05<00:05, 70.79it/s]
+Loading weights:  48%|████▊     | 341/713 [00:05<00:05, 70.70it/s]
+Loading weights:  49%|████▉     | 349/713 [00:05<00:05, 65.38it/s]
+Loading weights:  50%|████▉     | 356/713 [00:06<00:05, 61.99it/s]
+Loading weights:  51%|█████▏    | 366/713 [00:06<00:05, 67.89it/s]
+Loading weights:  52%|█████▏    | 373/713 [00:06<00:05, 67.67it/s]
+Loading weights:  53%|█████▎    | 380/713 [00:06<00:05, 63.01it/s]
+Loading weights:  55%|█████▍    | 389/713 [00:06<00:04, 65.72it/s]
+Loading weights:  57%|█████▋    | 406/713 [00:06<00:03, 92.13it/s]
+Loading weights:  65%|██████▍   | 462/713 [00:06<00:01, 217.01it/s]
+Loading weights:  72%|███████▏  | 512/713 [00:06<00:00, 291.16it/s]
+Loading weights:  80%|███████▉  | 570/713 [00:06<00:00, 366.29it/s]
+Loading weights:  87%|████████▋ | 622/713 [00:07<00:00, 406.04it/s]
+Loading weights:  95%|█████████▌| 678/713 [00:07<00:00, 445.91it/s]
+Loading weights: 100%|██████████| 713/713 [00:07<00:00, 97.22it/s] 
+2026-11-15T22:33:59+00:00 PROGRESS load done 4B-nf4: 9.0 s, allocated 2.71 GB
+2026-11-15T22:33:59+00:00 PROGRESS call start Town06_head-on_clear_01 call 1 (18 frames)
+2026-11-15T22:34:01+00:00 PROGRESS call done Town06_head-on_clear_01 call 1: 1.65 s, peak allocated 3.42 GB, valid True
+2026-11-15T22:34:01+00:00 PROGRESS call start Town06_head-on_clear_01 call 2 (18 frames)
+2026-11-15T22:34:02+00:00 PROGRESS call done Town06_head-on_clear_01 call 2: 1.24 s, peak allocated 3.42 GB, valid True
+2026-11-15T22:34:02+00:00 PROGRESS call start Town04_rear-end_night_32 call 1 (33 frames)
+2026-11-15T22:34:05+00:00 PROGRESS call done Town04_rear-end_night_32 call 1: 2.59 s, peak allocated 4.56 GB, valid True
+2026-11-15T22:34:05+00:00 PROGRESS call start Town04_rear-end_night_32 call 2 (33 frames)
+2026-11-15T22:34:07+00:00 PROGRESS call done Town04_rear-end_night_32 call 2: 2.53 s, peak allocated 4.56 GB, valid True
+[4B-nf4 full1fps] result received
+
+===== 2026-11-15T22:34:08+00:00 stage test 4B-nf4 full2fps =====
+W1116 01:34:12.482000 15388 Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-15T22:34:12+00:00 4B-nf4 full2fps: decoding frames of 2 clips (CPU)
+2026-11-15T22:34:19+00:00 4B-nf4 full2fps: frames ready (36, 65 frames)
+2026-11-15T22:34:19+00:00 PROGRESS load start 4B-nf4 (Qwen/Qwen3-VL-4B-Instruct, nf4)
+2026-11-15T22:34:19+00:00 4B-nf4: processor loaded, loading weights
+
+Loading weights:   0%|          | 0/713 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/713 [00:00<08:37,  1.38it/s]
+Loading weights:   0%|          | 3/713 [00:00<02:40,  4.42it/s]
+Loading weights:   1%|▏         | 9/713 [00:00<00:47, 14.82it/s]
+Loading weights:   2%|▏         | 16/713 [00:01<00:28, 24.67it/s]
+Loading weights:   4%|▎         | 26/713 [00:01<00:17, 39.09it/s]
+Loading weights:   5%|▌         | 36/713 [00:01<00:13, 50.95it/s]
+Loading weights:   6%|▌         | 43/713 [00:01<00:12, 55.31it/s]
+Loading weights:   7%|▋         | 50/713 [00:01<00:12, 54.22it/s]
+Loading weights:   8%|▊         | 58/713 [00:01<00:10, 59.95it/s]
+Loading weights:   9%|▉         | 65/713 [00:01<00:10, 59.68it/s]
+Loading weights:  10%|█         | 72/713 [00:01<00:11, 56.63it/s]
+Loading weights:  11%|█▏        | 81/713 [00:02<00:10, 62.16it/s]
+Loading weights:  13%|█▎        | 91/713 [00:02<00:09, 67.69it/s]
+Loading weights:  14%|█▍        | 99/713 [00:02<00:09, 68.13it/s]
+Loading weights:  15%|█▍        | 106/713 [00:02<00:09, 62.33it/s]
+Loading weights:  16%|█▌        | 113/713 [00:02<00:09, 63.42it/s]
+Loading weights:  17%|█▋        | 120/713 [00:02<00:09, 63.85it/s]
+Loading weights:  18%|█▊        | 127/713 [00:02<00:09, 59.84it/s]
+Loading weights:  19%|█▉        | 136/713 [00:02<00:08, 66.35it/s]
+Loading weights:  20%|██        | 146/713 [00:02<00:07, 73.96it/s]
+Loading weights:  22%|██▏       | 154/713 [00:03<00:07, 74.69it/s]
+Loading weights:  23%|██▎       | 162/713 [00:03<00:07, 73.67it/s]
+Loading weights:  24%|██▍       | 170/713 [00:03<00:07, 69.44it/s]
+Loading weights:  25%|██▌       | 180/713 [00:03<00:07, 75.11it/s]
+Loading weights:  27%|██▋       | 190/713 [00:03<00:06, 79.25it/s]
+Loading weights:  28%|██▊       | 198/713 [00:03<00:06, 78.24it/s]
+Loading weights:  29%|██▉       | 206/713 [00:03<00:06, 75.23it/s]
+Loading weights:  30%|███       | 214/713 [00:03<00:07, 68.05it/s]
+Loading weights:  31%|███▏      | 224/713 [00:04<00:06, 73.23it/s]
+Loading weights:  33%|███▎      | 234/713 [00:04<00:06, 77.87it/s]
+Loading weights:  34%|███▍      | 242/713 [00:04<00:06, 75.79it/s]
+Loading weights:  35%|███▌      | 250/713 [00:04<00:06, 74.09it/s]
+Loading weights:  36%|███▌      | 258/713 [00:04<00:06, 67.81it/s]
+Loading weights:  38%|███▊      | 268/713 [00:04<00:05, 74.23it/s]
+Loading weights:  39%|███▉      | 278/713 [00:04<00:05, 79.14it/s]
+Loading weights:  40%|████      | 287/713 [00:04<00:05, 80.48it/s]
+Loading weights:  42%|████▏     | 296/713 [00:04<00:05, 78.59it/s]
+Loading weights:  43%|████▎     | 304/713 [00:05<00:05, 74.43it/s]
+Loading weights:  44%|████▍     | 312/713 [00:05<00:05, 73.13it/s]
+Loading weights:  45%|████▌     | 322/713 [00:05<00:04, 78.71it/s]
+Loading weights:  46%|████▋     | 330/713 [00:05<00:04, 76.94it/s]
+Loading weights:  47%|████▋     | 338/713 [00:05<00:05, 74.64it/s]
+Loading weights:  49%|████▊     | 346/713 [00:05<00:05, 69.01it/s]
+Loading weights:  50%|████▉     | 356/713 [00:05<00:04, 75.33it/s]
+Loading weights:  51%|█████▏    | 366/713 [00:05<00:04, 78.35it/s]
+Loading weights:  52%|█████▏    | 374/713 [00:05<00:04, 77.33it/s]
+Loading weights:  54%|█████▎    | 382/713 [00:06<00:04, 75.17it/s]
+Loading weights:  55%|█████▍    | 390/713 [00:06<00:04, 69.76it/s]
+Loading weights:  61%|██████▏   | 438/713 [00:06<00:01, 175.38it/s]
+Loading weights:  70%|██████▉   | 498/713 [00:06<00:00, 287.37it/s]
+Loading weights:  79%|███████▊  | 560/713 [00:06<00:00, 372.76it/s]
+Loading weights:  87%|████████▋ | 620/713 [00:06<00:00, 435.83it/s]
+Loading weights:  94%|█████████▎| 668/713 [00:06<00:00, 443.11it/s]
+Loading weights: 100%|██████████| 713/713 [00:06<00:00, 102.41it/s]
+2026-11-15T22:34:28+00:00 PROGRESS load done 4B-nf4: 8.8 s, allocated 2.71 GB
+2026-11-15T22:34:28+00:00 PROGRESS call start Town06_head-on_clear_01 call 1 (36 frames)
+2026-11-15T22:34:31+00:00 PROGRESS call done Town06_head-on_clear_01 call 1: 3.09 s, peak allocated 4.73 GB, valid True
+2026-11-15T22:34:31+00:00 PROGRESS call start Town06_head-on_clear_01 call 2 (36 frames)
+2026-11-15T22:34:34+00:00 PROGRESS call done Town06_head-on_clear_01 call 2: 2.69 s, peak allocated 4.73 GB, valid True
+2026-11-15T22:34:34+00:00 PROGRESS call start Town04_rear-end_night_32 call 1 (65 frames)
+[4B-nf4 full2fps] result received
