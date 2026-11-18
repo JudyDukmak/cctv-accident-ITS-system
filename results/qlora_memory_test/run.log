@@ -1,0 +1,104 @@
+2026-11-17T11:03:00+00:00 power before attempt 1: BatteryStatus 2 (2 = on AC mains), charge 80%
+W1117 14:03:04.193000 2772 .venv-vlm\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-17T11:03:09+00:00 attempt 1: inputs built for 4 clips
+
+Loading weights:   0%|          | 0/713 [00:00<?, ?it/s]
+Loading weights:   0%|          | 1/713 [00:00<09:03,  1.31it/s]
+Loading weights:   0%|          | 3/713 [00:01<03:54,  3.03it/s]
+Loading weights:   1%|          | 5/713 [00:01<02:17,  5.17it/s]
+Loading weights:   2%|▏         | 14/713 [00:01<00:38, 18.13it/s]
+Loading weights:   3%|▎         | 18/713 [00:01<00:32, 21.70it/s]
+Loading weights:   4%|▎         | 25/713 [00:01<00:22, 30.88it/s]
+Loading weights:   4%|▍         | 30/713 [00:01<00:20, 33.60it/s]
+Loading weights:   5%|▌         | 36/713 [00:01<00:17, 38.27it/s]
+Loading weights:   6%|▌         | 41/713 [00:01<00:17, 39.38it/s]
+Loading weights:   7%|▋         | 47/713 [00:02<00:15, 44.17it/s]
+Loading weights:   7%|▋         | 52/713 [00:02<00:14, 44.93it/s]
+Loading weights:   8%|▊         | 58/713 [00:02<00:13, 48.29it/s]
+Loading weights:   9%|▉         | 64/713 [00:02<00:14, 46.11it/s]
+Loading weights:  10%|▉         | 70/713 [00:02<00:14, 43.97it/s]
+Loading weights:  11%|█         | 78/713 [00:02<00:12, 52.20it/s]
+Loading weights:  12%|█▏        | 84/713 [00:02<00:13, 46.21it/s]
+Loading weights:  13%|█▎        | 91/713 [00:02<00:12, 50.72it/s]
+Loading weights:  14%|█▎        | 97/713 [00:03<00:12, 47.43it/s]
+Loading weights:  14%|█▍        | 103/713 [00:03<00:13, 46.87it/s]
+Loading weights:  15%|█▌        | 110/713 [00:03<00:11, 52.32it/s]
+Loading weights:  16%|█▋        | 116/713 [00:03<00:12, 46.29it/s]
+Loading weights:  17%|█▋        | 124/713 [00:03<00:11, 53.30it/s]
+Loading weights:  18%|█▊        | 130/713 [00:03<00:11, 49.89it/s]
+Loading weights:  19%|█▉        | 136/713 [00:03<00:11, 48.83it/s]
+Loading weights:  20%|██        | 144/713 [00:03<00:10, 55.93it/s]
+Loading weights:  21%|██        | 150/713 [00:04<00:11, 50.26it/s]
+Loading weights:  22%|██▏       | 157/713 [00:04<00:10, 54.95it/s]
+Loading weights:  23%|██▎       | 163/713 [00:04<00:10, 53.16it/s]
+Loading weights:  24%|██▎       | 169/713 [00:04<00:10, 51.81it/s]
+Loading weights:  25%|██▍       | 177/713 [00:04<00:09, 59.07it/s]
+Loading weights:  26%|██▌       | 184/713 [00:04<00:09, 53.73it/s]
+Loading weights:  27%|██▋       | 191/713 [00:04<00:10, 51.56it/s]
+Loading weights:  28%|██▊       | 199/713 [00:04<00:08, 58.42it/s]
+Loading weights:  29%|██▉       | 206/713 [00:05<00:09, 53.88it/s]
+Loading weights:  30%|██▉       | 212/713 [00:05<00:09, 54.41it/s]
+Loading weights:  31%|███       | 218/713 [00:05<00:09, 51.47it/s]
+Loading weights:  31%|███▏      | 224/713 [00:05<00:10, 48.52it/s]
+Loading weights:  32%|███▏      | 231/713 [00:05<00:08, 53.71it/s]
+Loading weights:  33%|███▎      | 237/713 [00:05<00:10, 47.16it/s]
+Loading weights:  35%|███▍      | 246/713 [00:05<00:09, 51.56it/s]
+Loading weights:  36%|███▌      | 254/713 [00:06<00:07, 57.76it/s]
+Loading weights:  37%|███▋      | 261/713 [00:06<00:08, 54.46it/s]
+Loading weights:  37%|███▋      | 267/713 [00:06<00:08, 54.67it/s]
+Loading weights:  38%|███▊      | 273/713 [00:06<00:08, 51.90it/s]
+Loading weights:  39%|███▉      | 279/713 [00:06<00:09, 47.94it/s]
+Loading weights:  40%|████      | 286/713 [00:06<00:08, 52.83it/s]
+Loading weights:  41%|████      | 292/713 [00:06<00:08, 47.47it/s]
+Loading weights:  42%|████▏     | 301/713 [00:06<00:08, 51.30it/s]
+Loading weights:  43%|████▎     | 308/713 [00:07<00:07, 55.45it/s]
+Loading weights:  44%|████▍     | 314/713 [00:07<00:08, 49.45it/s]
+Loading weights:  45%|████▌     | 322/713 [00:07<00:06, 56.64it/s]
+Loading weights:  46%|████▌     | 328/713 [00:07<00:07, 53.61it/s]
+Loading weights:  47%|████▋     | 334/713 [00:07<00:07, 50.99it/s]
+Loading weights:  48%|████▊     | 341/713 [00:07<00:06, 54.98it/s]
+Loading weights:  49%|████▊     | 347/713 [00:07<00:07, 46.51it/s]
+Loading weights:  50%|████▉     | 355/713 [00:07<00:06, 52.27it/s]
+Loading weights:  51%|█████     | 361/713 [00:08<00:07, 49.37it/s]
+Loading weights:  51%|█████▏    | 367/713 [00:08<00:07, 45.40it/s]
+Loading weights:  52%|█████▏    | 374/713 [00:08<00:06, 49.38it/s]
+Loading weights:  53%|█████▎    | 380/713 [00:08<00:08, 40.43it/s]
+Loading weights:  54%|█████▍    | 388/713 [00:08<00:07, 44.20it/s]
+Loading weights:  55%|█████▌    | 393/713 [00:08<00:07, 41.01it/s]
+Loading weights:  58%|█████▊    | 414/713 [00:09<00:03, 76.52it/s]
+Loading weights:  62%|██████▏   | 442/713 [00:09<00:02, 121.58it/s]
+Loading weights:  67%|██████▋   | 476/713 [00:09<00:01, 172.10it/s]
+Loading weights:  72%|███████▏  | 510/713 [00:09<00:00, 211.91it/s]
+Loading weights:  77%|███████▋  | 546/713 [00:09<00:00, 248.84it/s]
+Loading weights:  81%|████████  | 574/713 [00:09<00:00, 251.07it/s]
+Loading weights:  85%|████████▌ | 608/713 [00:09<00:00, 270.79it/s]
+Loading weights:  89%|████████▉ | 636/713 [00:09<00:00, 268.17it/s]
+Loading weights:  94%|█████████▎| 668/713 [00:09<00:00, 268.55it/s]
+Loading weights:  98%|█████████▊| 696/713 [00:10<00:00, 201.09it/s]
+Loading weights: 100%|██████████| 713/713 [00:10<00:00, 69.08it/s] 
+[transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\vlm_qlora_memory_test.py:142: UserWarning: Converting a tensor with requires_grad=True to a scalar may lead to unexpected behavior.
+Consider using tensor.detach() first. (Triggered internally at C:\actions-runner\_work\pytorch\pytorch\pytorch\torch\csrc\autograd\generated\python_variable_methods.cpp:837.)
+  smoke.stamp(f"attempt {attempt} step {step}/{N_STEPS} clip {k} {s:.2f} s loss {float(loss):.4f} "
+2026-11-17T11:03:26+00:00 attempt 1 step 1/20 clip 0 4.81 s loss 0.5723 peak alloc 5.12 GB
+2026-11-17T11:03:29+00:00 attempt 1 step 2/20 clip 1 3.10 s loss 0.5279 peak alloc 5.38 GB
+2026-11-17T11:03:32+00:00 attempt 1 step 3/20 clip 2 3.01 s loss 0.7620 peak alloc 5.38 GB
+2026-11-17T11:03:35+00:00 attempt 1 step 4/20 clip 3 3.01 s loss 0.5419 peak alloc 5.38 GB
+2026-11-17T11:03:38+00:00 attempt 1 step 5/20 clip 0 2.96 s loss 0.3671 peak alloc 5.38 GB
+2026-11-17T11:03:41+00:00 attempt 1 step 6/20 clip 1 3.01 s loss 0.4580 peak alloc 5.38 GB
+2026-11-17T11:03:44+00:00 attempt 1 step 7/20 clip 2 3.02 s loss 0.5101 peak alloc 5.38 GB
+2026-11-17T11:03:47+00:00 attempt 1 step 8/20 clip 3 3.04 s loss 0.4515 peak alloc 5.38 GB
+2026-11-17T11:03:50+00:00 attempt 1 step 9/20 clip 0 2.98 s loss 0.3393 peak alloc 5.38 GB
+2026-11-17T11:03:53+00:00 attempt 1 step 10/20 clip 1 3.01 s loss 0.3898 peak alloc 5.38 GB
+2026-11-17T11:03:56+00:00 attempt 1 step 11/20 clip 2 3.02 s loss 0.4129 peak alloc 5.38 GB
+2026-11-17T11:03:59+00:00 attempt 1 step 12/20 clip 3 3.04 s loss 0.3965 peak alloc 5.38 GB
+2026-11-17T11:04:02+00:00 attempt 1 step 13/20 clip 0 2.98 s loss 0.3289 peak alloc 5.38 GB
+2026-11-17T11:04:05+00:00 attempt 1 step 14/20 clip 1 3.01 s loss 0.3311 peak alloc 5.38 GB
+2026-11-17T11:04:08+00:00 attempt 1 step 15/20 clip 2 3.04 s loss 0.3149 peak alloc 5.38 GB
+2026-11-17T11:04:11+00:00 attempt 1 step 16/20 clip 3 3.05 s loss 0.3251 peak alloc 5.38 GB
+2026-11-17T11:04:14+00:00 attempt 1 step 17/20 clip 0 2.98 s loss 0.2812 peak alloc 5.38 GB
+2026-11-17T11:04:17+00:00 attempt 1 step 18/20 clip 1 3.03 s loss 0.3038 peak alloc 5.38 GB
+2026-11-17T11:04:20+00:00 attempt 1 step 19/20 clip 2 3.03 s loss 0.2605 peak alloc 5.38 GB
+2026-11-17T11:04:23+00:00 attempt 1 step 20/20 clip 3 3.04 s loss 0.2416 peak alloc 5.38 GB
+RESULT_JSON (saved to attempts.jsonl)
+2026-11-17T11:04:25+00:00 power at end: BatteryStatus 2 (2 = on AC mains), charge 80%

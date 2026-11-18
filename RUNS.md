@@ -225,6 +225,18 @@ the share of synthetic validation clips whose full-scan VLM time is within 2 s, 
 on synthetic clips only. Above tau the narrow path is expected to be at least as accurate as the full scan and is
 cheaper. The value is computed once, when p_full is known.
 
+Expected routing on real clips (2026-11-17; cost estimate only, tau stays 0.01; no real label read: only rgb_path,
+confidence and fallback of results/real_test/predictions/C_cctv_seed{0,1,2}/clip_predictions.csv and the path column
+of real_test_set.csv). Clips with confidence < 0.01 go to the full scan; the 3 no-window clips have confidence 0 and
+count as below.
+
+| Clips | Seed 0 | Seed 1 | Seed 2 | Mean over seeds |
+|---|---|---|---|---|
+| All 2027 | 203 (0.1001) | 265 (0.1307) | 227 (0.1120) | 231.67 (0.1143) |
+| Frozen 400 | 40 (0.1000) | 58 (0.1450) | 58 (0.1450) | 52.00 (0.1300) |
+
+Details: results/real_test/routing_count/ (routing_count.py, command.txt, report.txt).
+
 ## Real test (run once)
 
 Window classifier alone on the real clips (no VLM, no tau), 2026-11-14/15, RTX 5060 Laptop GPU, no training. Nothing
