@@ -1,0 +1,8 @@
+accs_scorer.spatial on 200 clips, sigma_x 0.1271988418398835, sigma_y 0.11881774725886773
+  v1      S 0.3513
+  v2      S 0.2689
+  centre  S 0.4040
+  day   v1 S 0.3611
+  day   v2 S 0.2872
+  night v1 S 0.3385
+  night v2 S 0.2450

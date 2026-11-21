@@ -1,0 +1,1 @@
+﻿.venv-vlm\Scripts\python.exe -u narrow_v1_v2_200.py --run  (HF_HUB_OFFLINE=1, TRANSFORMERS_OFFLINE=1 set by the script); output appended to results\narrow_v1_v2_200\run.log

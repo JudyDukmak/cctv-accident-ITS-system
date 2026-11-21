@@ -1,0 +1,9 @@
+2026-11-21T13:24:46+00:00 START/RESUME: 0 clips done, 200 to do; power BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:28:57+00:00 power check after 25 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:32:56+00:00 power check after 50 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:37:03+00:00 power check after 75 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:41:09+00:00 power check after 100 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:45:31+00:00 power check after 125 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:49:23+00:00 power check after 150 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:53:14+00:00 power check after 175 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:57:11+00:00 FINISHED: 200 clips; power at end BatteryStatus 2 (2 = on AC mains), charge 80%

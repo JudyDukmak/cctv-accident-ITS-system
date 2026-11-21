@@ -1,0 +1,51 @@
+QLoRA training data (synthetic only; no model, no training); report 2026-11-21T15:43:20+00:00
+manifest results\qlora_data\manifest.csv sha256 c0c1d9b74ae327aef0e8a8b1fa467b5afda048346f953a9f030ae14554f7f719: 4422 windows = 2211 clips x 2 (A: centre t_hat C_cctv seed 0 OOF; B: t* + U[-1, 1] s, seed 0); 16 frames over centre +- 2 s, shifted inside the clip; frames 448 x 256
+
+1. COUNTS (clips; each clip gives windows A and B)
+  per fold: {'0': 770, '1': 755, '2': 686}
+  type         day  night  total   per fold (0 / 1 / 2)
+  head-on      458    130    588   202 / 174 / 212
+  rear-end     630    164    794   245 / 277 / 272
+  sideswipe    322     83    405   139 / 107 / 159
+  single        56     10     66   53 / 13 / 0
+  t-bone       296     62    358   131 / 184 / 43
+  single has few clips: 66 of 2211 (3.0%), 10 at night; fold counts {'0': 53, '1': 13} (none in fold 2).
+  flags: design clips 32, narrow-test clips 200 (overlap 0)
+
+2. t* INSIDE THE WINDOW (first to last frame time)
+  window A: t* inside 1671/2211 = 0.7558; t* - window middle: p0 -25.950, p5 -7.875, p25 -0.450, p50 -0.250, p75 0.050, p95 6.750, p100 18.750; t* to nearest sampled frame: median 0.100 s, max 23.950 s
+    head-on    0.8707
+    rear-end   0.6335
+    sideswipe  0.6988
+    single     0.8182
+    t-bone     0.8911
+  window B: t* inside 2211/2211 = 1.0000; t* - window middle: p0 -1.000, p5 -0.900, p25 -0.500, p50 0.050, p75 0.500, p95 0.900, p100 1.800; t* to nearest sampled frame: median 0.050 s, max 0.150 s
+    head-on    1.0000
+    rear-end   1.0000
+    sideswipe  1.0000
+    single     1.0000
+    t-bone     1.0000
+  window B offsets: p0 -1.000, p5 -0.911, p25 -0.510, p50 -0.016, p75 0.505, p95 0.899, p100 0.999
+
+3. BOX SIZE (collision box; fractions of the image and pixels of the 448 x 256 model frame)
+  width  (fraction): p0 0.014, p5 0.037, p25 0.065, p50 0.089, p75 0.120, p95 0.172, p100 0.328
+  height (fraction): p0 0.029, p5 0.052, p25 0.084, p50 0.124, p75 0.177, p95 0.255, p100 0.424
+  width  (px of 448): p0 6.093, p5 16.442, p25 29.165, p50 39.693, p75 53.894, p95 77.123, p100 146.765
+  height (px of 256): p0 7.347, p5 13.286, p25 21.581, p50 31.744, p75 45.261, p95 65.203, p100 108.570
+  area (fraction of the image): p0 0.001, p5 0.003, p25 0.006, p50 0.011, p75 0.017, p95 0.036, p100 0.120
+  boxes under 10 x 10 px in the model frame: 30
+  mean width / height (fraction): 0.0952 / 0.1353
+    head-on    median width 0.091, height 0.105
+    rear-end   median width 0.099, height 0.138
+    sideswipe  median width 0.073, height 0.105
+    single     median width 0.081, height 0.132
+    t-bone     median width 0.096, height 0.150
+
+4. FRAME CACHE
+  cache\qlora_frames448_v1: 4422 window files (0 missing), 2.834 GB; JPEG q95, 448 x 256; last run 500 s with 8 workers, status {'skipped': 1, 'written': 2210}, errors 0 (cache_log.txt has every run)
+
+5. GRID (grid_examples.png): window B, the cached frame nearest t*, box (red) and point (yellow) from the labels
+  Town03_head-on_clear_00 (head-on, day): frame 72 at 3.60 s, t* 3.45 s; box (0.589, 0.088, 0.723, 0.216)
+  Town04_rear-end_night_00 (rear-end, night): frame 105 at 5.25 s, t* 5.20 s; box (0.571, 0.394, 0.715, 0.479)
+  Town04_sideswipe_clear_00 (sideswipe, day): frame 186 at 9.30 s, t* 9.25 s; box (0.480, 0.027, 0.554, 0.134)
+  Town03_t-bone_night_01 (t-bone, night): frame 80 at 4.00 s, t* 4.05 s; box (0.536, 0.404, 0.617, 0.484)

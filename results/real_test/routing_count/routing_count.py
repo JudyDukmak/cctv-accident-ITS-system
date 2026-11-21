@@ -23,6 +23,15 @@ def name(p: str) -> str:
 
 
 def main() -> None:
+    import argparse
+    global TAU
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--tau", type=float, default=TAU, help="threshold (default 0.01, the first run)")
+    ap.add_argument("--out", type=Path, default=HERE / "report.txt", help="report file (refuses to overwrite)")
+    args = ap.parse_args()
+    TAU = args.tau
+    if args.out.exists():
+        sys.exit(f"ERROR: {args.out} exists; refusing to overwrite")
     with open(TEST_CSV, newline="") as f:
         frozen = {name(r["path"]) for r in csv.DictReader(f)}  # only the path column is used
     out = [f"Expected routing on real clips: confidence < tau = {TAU} -> full scan. Only rgb_path / confidence /"
@@ -57,7 +66,8 @@ def main() -> None:
                    f"  (per seed {b[0]} / {b[1]} / {b[2]})")
     text = "\n".join(out)
     print(text)
-    (HERE / "report.txt").write_text(text + "\n", encoding="utf-8")
+    args.out.parent.mkdir(parents=True, exist_ok=True)
+    args.out.write_text(text + "\n", encoding="utf-8")
 
 
 if __name__ == "__main__":

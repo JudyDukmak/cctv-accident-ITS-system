@@ -1,0 +1,18 @@
+{
+ "windows_expected": 4422,
+ "window_files": 4422,
+ "bytes": 3043396979,
+ "wall_s_this_run": 500.34039440000197,
+ "workers": 8,
+ "status_this_run": {
+  "skipped": 1,
+  "written": 2210
+ },
+ "errors": [],
+ "jpeg_quality": 95,
+ "frame_size": [
+  448,
+  256
+ ],
+ "finished": "2026-11-21T15:42:41+00:00"
+}

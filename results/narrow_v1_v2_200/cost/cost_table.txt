@@ -1,0 +1,22 @@
+Measured cost per clip on NVIDIA GeForce RTX 5060 Laptop GPU, on mains (classifier: BatteryStatus 2 (2 = on AC mains), charge 80% -> BatteryStatus 2 (2 = on AC mains), charge 80%; VLM: BatteryStatus 2 (2 = on AC mains), charge 80% -> BatteryStatus 2 (2 = on AC mains), charge 80%). Median of 3 repeats after one warm-up [min-max]. Synthetic clips only.
+
+Town06_head-on_clear_01: duration 17.80 s, 32 classifier windows
+  part                                                      GPU s             wall s      peak alloc GB   peak reserved GB
+  classifier (3 fold models x 2 passes)          3.68 [3.65-3.71]   6.45 [6.39-6.50]   1.89 [1.89-1.89]   2.15 [2.15-2.15]
+    of which frame cache (CPU) 0.70 [0.70-0.72] s; 6 passes incl. data loading 5.75 [5.68-5.78] s; post-processing 0.0011 [0.0011-0.0011] s
+  narrow v1 (16 frames, 896 visual tokens)       1.79 [1.78-1.80]   2.98 [2.96-2.99]   3.42 [3.42-3.42]   3.54 [3.54-3.54]
+  narrow v2 (16 frames duplicated, 1792 tokens)   5.70 [5.69-5.71]   6.92 [6.88-6.93]   4.98 [4.98-4.98]   5.13 [5.13-5.13]
+  full scan v3 (coarse + fine pass)              4.85 [4.79-4.85]   6.91 [6.83-6.91]   4.43 [4.43-4.43]   5.13 [5.13-5.13]
+    narrow v2 new tokens per run [61, 61, 61, 61]; full scan passes [2, 2, 2, 2]; same answer in every run: v1 True, v2 True, full scan True
+
+Town04_rear-end_night_32: duration 32.20 s, 61 classifier windows
+  part                                                      GPU s             wall s      peak alloc GB   peak reserved GB
+  classifier (3 fold models x 2 passes)          7.11 [7.09-7.14] 11.68 [11.67-11.73]   1.89 [1.89-1.89]   2.15 [2.15-2.15]
+    of which frame cache (CPU) 1.23 [1.21-1.24] s; 6 passes incl. data loading 10.44 [10.42-10.51] s; post-processing 0.0011 [0.0011-0.0011] s
+  narrow v1 (16 frames, 896 visual tokens)       1.91 [1.86-1.93]   5.04 [5.01-5.07]   3.42 [3.42-3.42]   5.13 [5.13-5.13]
+  narrow v2 (16 frames duplicated, 1792 tokens)   5.68 [5.67-5.76]   8.84 [8.81-8.90]   4.98 [4.98-4.98]   5.13 [5.13-5.13]
+  full scan v3 (coarse + fine pass)              4.80 [4.79-4.83]   9.03 [9.02-9.05]   4.44 [4.44-4.44]   5.13 [5.13-5.13]
+    narrow v2 new tokens per run [60, 60, 60, 60]; full scan passes [2, 2, 2, 2]; same answer in every run: v1 True, v2 True, full scan True
+
+one-off (not per clip): classifier 3 models load 4.8 s, weights 0.96 GB allocated; VLM load 11.8 s, weights 2.71 GB
+Definitions: GPU s = synchronised model time only (classifier: forward passes incl. host-to-device copy; VLM: generate). Wall s = the whole per-clip path incl. CPU video decoding and preprocessing (classifier: frame cache build + 6 passes incl. JPEG decoding / normalisation + post-processing; VLM: frame decoding + processor + generate + parsing). Peak = torch max allocated / reserved in the process during the part, weights included (classifier: all 3 fold models resident; VLM: the 4-bit model). Classifier data loader with 0 workers (one clip); the real-test scoring used 4 workers over 2,027 clips.

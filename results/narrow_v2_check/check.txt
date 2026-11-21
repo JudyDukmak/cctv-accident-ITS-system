@@ -1,0 +1,75 @@
+Narrow v2 CPU check (no model; processor Qwen/Qwen3-VL-4B-Instruct); 2026-11-21T12:53:30+00:00; synthetic clips only
+narrow_prompt_v2.py sha256 0353f0f6b099c3bddb41db050eca694289a96856a0d8cda68f074a6a956f765d; PROMPT_V2 sha256 a9d22e3352d17765273e38c33115a81d3d0b9b1e7258f0f4b3693731bf109764; 2040 characters, 18 lines; greedy (do_sample False), max_new_tokens 160
+frozen files unchanged (current sha256 found in FROZEN.txt): vlm_zero_shot.py yes, gpu_check/vlm_smoke_test.py yes, full_scan_prompt_v3_template yes, narrow_prompt_v1 yes
+
+1. PROMPT_V2 vs the .docx appendix (Feedback on the Zero-Shot VLM Stage and Routing Threshold.docx, sha256 b08323e4e7f4242651f5bbba609fd2d2c28d335b651723bc8575738c8c21b40b)
+  identical character for character: True (docx 2040 characters, PROMPT_V2 2040)
+  non-ASCII characters in PROMPT_V2: none
+
+2. PARSER SELF-TEST (hand-written strings, no model): all as expected: True
+  ok   valid True  point (0.200, 0.300) type t-bone    swapped x/y False/False missing [] reason '' <- '{"vehicles": "a", "motion": "crossing", "collision_visible": true, "co'
+  ok   valid True  point (0.200, 0.300) type head-on   swapped x/y True/True missing [] reason '' <- '```json\n{"vehicles": "a", "motion": "opposite", "collision_visible": f'
+  ok   valid True  point (0.500, 0.500) type rear-end  swapped x/y False/False missing ['vehicles', 'motion', 'collision_visible'] reason '' <- '{"collision_type": "rear-end", "bbox_2d": [0, 0, 1000, 1000]}'
+  ok   valid False point (0.500, 0.500) type rear-end  swapped x/y False/False missing ['vehicles', 'motion', 'collision_visible'] reason "collision_type not one of the 5 types: 'Rear-end'" <- '{"collision_type": "Rear-end", "bbox_2d": [1, 2, 3, 4]}'
+  ok   valid False point (0.500, 0.500) type rear-end  swapped x/y False/False missing ['vehicles', 'motion', 'collision_visible'] reason 'bbox_2d is not 4 numbers: [1, 2, 3]' <- '{"collision_type": "single", "bbox_2d": [1, 2, 3]}'
+  ok   valid False point (0.500, 0.500) type rear-end  swapped x/y False/False missing ['vehicles', 'motion', 'collision_visible'] reason 'bbox_2d outside 0-1000: [1, 2, 3, 1001]' <- '{"collision_type": "single", "bbox_2d": [1, 2, 3, 1001]}'
+  ok   valid False point (0.500, 0.500) type rear-end  swapped x/y False/False missing ['vehicles', 'motion', 'collision_visible'] reason "bbox_2d is not 4 numbers: ['1', 2, 3, 4]" <- '{"collision_type": "single", "bbox_2d": ["1", 2, 3, 4]}'
+  ok   valid False point (0.500, 0.500) type rear-end  swapped x/y False/False missing ['vehicles', 'motion', 'collision_visible'] reason 'bbox_2d has zero width or height: [5, 2, 5, 4]' <- '{"collision_type": "single", "bbox_2d": [5, 2, 5, 4]}'
+  ok   valid False point (0.500, 0.500) type rear-end  swapped x/y False/False missing ['vehicles', 'motion', 'collision_visible'] reason 'bbox_2d is not 4 numbers: [True, 2, 3, 4]' <- '{"collision_type": "single", "bbox_2d": [true, 2, 3, 4]}'
+  ok   valid False point (0.500, 0.500) type rear-end  swapped x/y False/False missing [] reason 'no JSON object' <- 'not json'
+
+3. INPUTS THROUGH THE REAL PROCESSOR (video processor Qwen3VLVideoProcessor: patch 16, merge 2, temporal patch 2; do_pad attribute: None)
+
+  Town05_head-on_wet_24 (day, wet): duration 22.15 s, fps 20.0000, t_hat 8.14 s (C_cctv seed 0, frozen, out-of-fold)
+    frames 123..203 (6.15-10.15 s), 16 distinct frames sent as 32 (each duplicated); input 452 x 254, model receives 448 x 256 (W x H); grid_thw [16, 16, 28]
+    tokens: visual 1792 (16 groups x 112), vision_start 16, input total 2413; + up to 160 new tokens
+    both frames of every group identical in the model input: True
+    frame  index true time s    prompt text  diff s
+        0    123       6.150  <6.2 seconds>  +0.050
+        1    128       6.400  <6.4 seconds>  +0.000
+        2    133       6.650  <6.7 seconds>  +0.050
+        3    139       6.950  <7.0 seconds>  +0.050
+        4    144       7.200  <7.2 seconds>  +0.000
+        5    149       7.450  <7.5 seconds>  +0.050
+        6    155       7.750  <7.8 seconds>  +0.050
+        7    160       8.000  <8.0 seconds>  +0.000
+        8    165       8.250  <8.2 seconds>  -0.050
+        9    171       8.550  <8.6 seconds>  +0.050
+       10    176       8.800  <8.8 seconds>  +0.000
+       11    181       9.050  <9.1 seconds>  +0.050
+       12    187       9.350  <9.3 seconds>  -0.050
+       13    192       9.600  <9.6 seconds>  +0.000
+       14    197       9.850  <9.8 seconds>  -0.050
+       15    203      10.150 <10.2 seconds>  +0.050
+    16 timestamps for 16 frames (one per frame: True); max |text - true time| 0.050 s (the processor writes one decimal); distinct texts 16
+    padding: no (uniform border bands in px {'left': 0, 'right': 0, 'top': 0, 'bottom': 0}); mean |model frame - whole input frame resized to 448 x 256| per frame 0.00-0.00 (0-255 scale) -> the whole frame is resized, aspect 1.780 -> 1.750; bbox 0-1000 maps to the full image on each axis
+    PADDING constant in the code: None -> consistent
+    grid: narrow_v2_Town05_head-on_wet_24.png (the 16 distinct frames as the model receives them, 4 per row, in time order); true point (0.578, 0.352), t* 7.80 s
+
+  Town03_head-on_night_03 (night, night): duration 22.55 s, fps 20.0000, t_hat 4.67 s (C_cctv seed 0, frozen, out-of-fold)
+    frames 53..133 (2.65-6.65 s), 16 distinct frames sent as 32 (each duplicated); input 452 x 254, model receives 448 x 256 (W x H); grid_thw [16, 16, 28]
+    tokens: visual 1792 (16 groups x 112), vision_start 16, input total 2412; + up to 160 new tokens
+    both frames of every group identical in the model input: True
+    frame  index true time s    prompt text  diff s
+        0     53       2.650  <2.6 seconds>  -0.050
+        1     59       2.950  <3.0 seconds>  +0.050
+        2     64       3.200  <3.2 seconds>  +0.000
+        3     69       3.450  <3.5 seconds>  +0.050
+        4     75       3.750  <3.8 seconds>  +0.050
+        5     80       4.000  <4.0 seconds>  +0.000
+        6     85       4.250  <4.2 seconds>  -0.050
+        7     91       4.550  <4.5 seconds>  -0.050
+        8     96       4.800  <4.8 seconds>  +0.000
+        9    101       5.050  <5.0 seconds>  -0.050
+       10    107       5.350  <5.3 seconds>  -0.050
+       11    112       5.600  <5.6 seconds>  +0.000
+       12    117       5.850  <5.8 seconds>  -0.050
+       13    123       6.150  <6.2 seconds>  +0.050
+       14    128       6.400  <6.4 seconds>  +0.000
+       15    133       6.650  <6.7 seconds>  +0.050
+    16 timestamps for 16 frames (one per frame: True); max |text - true time| 0.050 s (the processor writes one decimal); distinct texts 16
+    padding: no (uniform border bands in px {'left': 0, 'right': 0, 'top': 0, 'bottom': 0}); mean |model frame - whole input frame resized to 448 x 256| per frame 0.00-0.00 (0-255 scale) -> the whole frame is resized, aspect 1.780 -> 1.750; bbox 0-1000 maps to the full image on each axis
+    PADDING constant in the code: None -> consistent
+    grid: narrow_v2_Town03_head-on_night_03.png (the 16 distinct frames as the model receives them, 4 per row, in time order); true point (0.422, 0.090), t* 4.45 s
+
+prompt text (the part after the video, as the model receives it) ends with: 'These 16 frames come from a fixed traffic camera, in time order, covering about 4 seconds. The text before each frame gi' ...

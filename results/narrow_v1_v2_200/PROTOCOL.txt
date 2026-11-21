@@ -1,0 +1,10 @@
+Narrow v1 vs v2 on 200 synthetic clips; protocol written 2026-11-21T13:24:45+00:00 BEFORE the first model call.
+clips: test_clips.csv sha256 2a313416abf524023e2b3b60b132aa039eae538b0f1afc14fc9199c9cc8899a7 (see LIST.txt); synthetic only, no real clip or label
+window centre (both versions): t_hat = results\diagnostics\C_cctv_seeds012\seed0_frozen\tta_clip_predictions_flip.csv (C_cctv seed 0, frozen post-processing, out-of-fold: checked per clip)
+model: Qwen/Qwen3-VL-4B-Instruct nf4 (NF4, double quant, bf16 compute), loaded once
+narrow v1 (frozen; vlm_zero_shot.py sha256 f5675fc8357d1c66e67a72e8ff22873e5bcda6da3d1e223bdbc646678c9867f0, narrow prompt v1 sha256 f0feb553b7431e6e46ccca5cdb163c8b8b88afa1760cbaa9040c8d7c79be17d0): 16 frames over t_hat +- 2 s, 114688 px area, native pairing, greedy, max_new_tokens 64; valid = vlm_smoke_test.parse_output values_ok; invalid -> fallback
+narrow v2 (narrow_prompt_v2.py sha256 04105b13fa6aa94ca2366c2781d7fb285e4f0edfee26178c3666be3f7a3473c8, PROMPT_V2 sha256 a9d22e3352d17765273e38c33115a81d3d0b9b1e7258f0f4b3693731bf109764): 16 frames over t_hat +- 2 s, 114688 px area, each frame duplicated (own timestamp), greedy, max_new_tokens 160; valid / flags / point = parse_v2 (digit strings and type normalisation accepted and flagged); invalid -> fallback
+fallback (both): type rear-end, point (0.5, 0.5); counted
+collision_visible (v2) is stored as a diagnostic only; it changes no prediction
+metrics: type accuracy (fallbacks included as their fallback type); location score S = mean exp(-(dx^2 / 2 sigma_x^2 + dy^2 / 2 sigma_y^2)) with sigma_x, sigma_y and spatial_k from scorer_config.json (accs_scorer formula); point error = Euclidean distance in image fractions; baselines on the same clips: majority type (rear-end) and the image centre (0.5, 0.5)
+mains power checked at start, every 25 clips and at the end; nothing is chosen from this run here (report only)

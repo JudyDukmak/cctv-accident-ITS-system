@@ -1,0 +1,24 @@
+QLoRA memory and speed test, Qwen/Qwen3-VL-4B-Instruct NF4; synthetic clips only; no accuracy measured. Input layout v2 (narrow v2: each frame duplicated, PROMPT_V2, v2 JSON target).
+Setup: see the docstring of vlm_qlora_memory_test.py (copied in command.txt).
+2026-11-21T14:02:04+00:00 power before attempt 1: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T14:02:25+00:00 power before attempt 2: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T14:04:04+00:00 power at end: BatteryStatus 2 (2 = on AC mains), charge 80%
+
+attempt 1: 16 frames, LoRA rank 16 (alpha 32) -> status OOM, fits False
+  trainable parameters 33,030,144 in 252 LoRA modules (parameters stored, NF4 packed counted as stored: 2,448,667,136)
+  target example (Town05_head-on_wet_24): {"vehicles": "two vehicles meeting near the marked point (x 0.58, y 0.35)", "motion": "opposite", "collision_visible": true, "collision_type": "head-on", "bbox_2d": [532, 302, 624, 402]}
+  input per clip: grid_thw [16, 16, 28], visual tokens 1792, input tokens [2487, 2499, 2487, 2488], target tokens [75, 75, 75, 76], frame size in [452, 254]
+  GPU NVIDIA GeForce RTX 5060 Laptop GPU total 7.96 GB; after load allocated 2.71 GB (peak during load 2.73)
+  peak GPU memory during training: allocated 5.45 GB, reserved 6.95 GB; device-wide (NVML) peak 7.51 GB (baseline before load 0.25 GB)
+  error: CUDA out of memory. Tried to allocate 1.41 GiB. GPU 0 has a total capacity of 7.96 GiB of which 967.00 MiB is free. Of the allocated memory 5.45 GiB is allocated by PyTorch, and 462.22 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+
+attempt 2: 8 frames, LoRA rank 16 (alpha 32) -> status OK, fits True
+  trainable parameters 33,030,144 in 252 LoRA modules (parameters stored, NF4 packed counted as stored: 2,448,667,136)
+  target example (Town05_head-on_wet_24): {"vehicles": "two vehicles meeting near the marked point (x 0.58, y 0.35)", "motion": "opposite", "collision_visible": true, "collision_type": "head-on", "bbox_2d": [532, 302, 624, 402]}
+  input per clip: grid_thw [8, 16, 28], visual tokens 896, input tokens [1526, 1532, 1526, 1527], target tokens [75, 75, 75, 76], frame size in [452, 254]
+  GPU NVIDIA GeForce RTX 5060 Laptop GPU total 7.96 GB; after load allocated 2.71 GB (peak during load 2.73)
+  peak GPU memory during training: allocated 5.99 GB, reserved 7.19 GB; device-wide (NVML) peak 7.57 GB (baseline before load 0.25 GB)
+  steps done 20/20; step 1 (warm-up) 4.74 s; steps 2-20: mean 4.14 s, median 4.12 s per step; load 6.9 s
+  loss per step (logged only to show the steps run; not an accuracy): 1.703 1.451 1.258 1.027 0.811 0.777 0.680 0.667 0.498 0.466 0.411 0.447 0.336 0.339 0.344 0.365 0.275 0.283 0.240 0.291
+
+clips: Town05_head-on_wet_24, Town05_rear-end_wet_235, Town06_sideswipe_sunset_07, Town03_t-bone_clear_08

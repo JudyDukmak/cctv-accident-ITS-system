@@ -237,6 +237,35 @@ count as below.
 
 Details: results/real_test/routing_count/ (routing_count.py, command.txt, report.txt).
 
+### Routing rule replaced: tau on T@1 (2026-11-21; change made on synthetic data only, before the real cascade run)
+
+On the supervisor's request (feedback of 2026-11-18), the within-2-s rule above (tau = 0.01) is replaced before any
+real cascade run. Synthetic data only; no model run; no real clip or label used to decide anything. Command:
+`.venv-ml\Scripts\python.exe confidence_vs_error.py --routing-t1 --out-dir results\routing_T1`. Inputs: C_cctv seeds
+0-2 out-of-fold predictions (frozen post-processing), the frozen full-scan v3 results (results/vlm_full_scan) and the
+clip midpoint (duration / 2), all 2211 clips; per-clip T@1 = exp(-(t - t*)^2 / 2).
+
+Fallback comparison, pooled (6633 predictions), mean T@1 on the same clips:
+
+| Confidence | n | Classifier | Full scan | Midpoint |
+|---|---|---|---|---|
+| [0, 0.01) | 310 | 0.3047 | 0.1269 | 0.1654 |
+| [0.01, 0.02) | 243 | 0.3712 | 0.1850 | 0.1798 |
+| [0.02, 0.05) | 549 | 0.4142 | 0.1228 | 0.1957 |
+| [0.05, 0.1) | 716 | 0.5206 | 0.1459 | 0.1909 |
+| [0.1, 0.2) | 1147 | 0.6066 | 0.1671 | 0.2079 |
+| [0.2, 1] | 3668 | 0.8440 | 0.1945 | 0.2230 |
+
+Fallback (fixed rule: confidence < 0.05, pooled, higher mean T@1): full scan 0.1377, midpoint 0.1837 (n 1102) ->
+**fallback = clip midpoint**. Rule: tau = the smallest c (grid 0.00 ... 0.96) where the classifier's isotonic T@1
+(increasing, pooled 6633) >= the midpoint's isotonic T@1 against the same confidence. Result: **tau = 0.00**
+(classifier 0.1774 vs midpoint 0.0031 at c = 0.00; the classifier's curve stays above at every grid point), so all
+synthetic predictions (6633/6633; 2211/2211 per seed) keep the classifier t_hat. Real clips, from the confidence
+column only: 0 of the frozen 400 (and 0 of 2027) below tau for each seed; the 3 no-window clips already get
+t_hat = duration / 2 by the frozen no-window fallback. The full scan is not used for timing in the cascade.
+Details: results/routing_T1/ (report.txt, fallback_by_confidence.csv with per-seed tables, isotonic_curves_T1.csv,
+isotonic_fit_points_T1.csv, isotonic_curves_T1.png, real_frozen400_below_tau.txt, command.txt).
+
 ## Real test (run once)
 
 Window classifier alone on the real clips (no VLM, no tau), 2026-11-14/15, RTX 5060 Laptop GPU, no training. Nothing

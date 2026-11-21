@@ -1,0 +1,13 @@
+Expected routing on real clips: confidence < tau = 0.0 -> full scan. Only rgb_path / confidence / fallback of the predictions and the path column of real_test_set.csv were read.
+frozen 400 file names read: 400
+seed 0: results\real_test\predictions\C_cctv_seed0\clip_predictions.csv rows 2027; fallback rows 3 (confidence [0.0]); frozen-400 clips missing from predictions 0
+  all        n  2027  confidence < 0.0:     0  share 0.0000
+  frozen400  n   400  confidence < 0.0:     0  share 0.0000
+seed 1: results\real_test\predictions\C_cctv_seed1\clip_predictions.csv rows 2027; fallback rows 3 (confidence [0.0]); frozen-400 clips missing from predictions 0
+  all        n  2027  confidence < 0.0:     0  share 0.0000
+  frozen400  n   400  confidence < 0.0:     0  share 0.0000
+seed 2: results\real_test\predictions\C_cctv_seed2\clip_predictions.csv rows 2027; fallback rows 3 (confidence [0.0]); frozen-400 clips missing from predictions 0
+  all        n  2027  confidence < 0.0:     0  share 0.0000
+  frozen400  n   400  confidence < 0.0:     0  share 0.0000
+mean over seeds all        n  2027  below tau 0.00  share 0.0000  (per seed 0 / 0 / 0)
+mean over seeds frozen400  n   400  below tau 0.00  share 0.0000  (per seed 0 / 0 / 0)

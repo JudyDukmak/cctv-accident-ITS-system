@@ -25,6 +25,16 @@ Setup (fixed before the run):
 
 Each attempt runs in its own child process (clean GPU memory). Outputs in results/qlora_memory_test/.
 Usage (from cctv-accident-ITS-system/):  .venv-vlm\\Scripts\\python.exe -u vlm_qlora_memory_test.py
+
+--layout v2 (added 2026-11-21; the default layout v1 above is unchanged): the narrow-v2 input of narrow_prompt_v2.py
+  instead: the n frames over t* +- 2 s each duplicated (one frame per temporal token group, its own timestamp; 16
+  frames = 1,792 visual tokens), prompt PROMPT_V2 (for 8 frames the same text with "These 16 frames" -> "These 8
+  frames"), target = a JSON answer in the v2 format from the synthetic labels: {"vehicles": placeholder text,
+  "motion": the motion option of the true type, "collision_visible": true, "collision_type": the true type,
+  "bbox_2d": the true box x1, y1, x2, y2 in 0-1000 (rounded)}; the vehicles text is a fixed placeholder (memory test
+  only, no description labels exist). Attempts: 1: 16 frames, rank 16; if it does not fit: 2: 8 frames, rank 16.
+  Outputs in results/qlora_memory_test_v2/.
+    .venv-vlm\\Scripts\\python.exe -u vlm_qlora_memory_test.py --layout v2
 """
 
 import argparse
@@ -37,6 +47,8 @@ import sys
 import threading
 import time
 from pathlib import Path
+
+import numpy as np
 
 REPO_ROOT = Path(__file__).resolve().parent
 sys.path.insert(0, str(REPO_ROOT))
@@ -53,6 +65,19 @@ LORA_DROPOUT = 0.05
 LR = 1e-4
 SEED = 0
 ATTEMPTS = {1: dict(frames=16, rank=16), 2: dict(frames=8, rank=16), 3: dict(frames=8, rank=8)}
+LAYOUTS = {"v1": (OUT_DIR, ATTEMPTS),
+           "v2": (REPO_ROOT / "results" / "qlora_memory_test_v2", {1: dict(frames=16, rank=16), 2: dict(frames=8, rank=16)})}
+MOTION_V2 = {"head-on": "opposite", "rear-end": "same direction", "sideswipe": "parallel", "t-bone": "crossing",
+             "single": "one vehicle"}
+
+
+def v2_target(c, box):
+    """A narrow-v2 JSON answer from the synthetic labels (vehicles: fixed placeholder text)."""
+    veh = ("one vehicle near the marked point" if c["type"] == "single"
+           else "two vehicles meeting near the marked point")
+    return json.dumps({"vehicles": f"{veh} (x {c['center_x']:.2f}, y {c['center_y']:.2f})",
+                       "motion": MOTION_V2[c["type"]], "collision_visible": True, "collision_type": c["type"],
+                       "bbox_2d": [round(1000 * float(box[k])) for k in ("x1", "y1", "x2", "y2")]})
 CHILD_TIMEOUT_S = 3600
 GB = 2 ** 30
 RESULT_TAG = "RESULT_JSON "
@@ -68,24 +93,34 @@ def pick_clips():
 
 # ---------------------------------------------------------------- child: one attempt
 
-def child(attempt):
+def child(attempt, layout="v1"):
     import torch
     from peft import LoraConfig, get_peft_model
     from transformers import AutoProcessor
 
-    a = ATTEMPTS[attempt]
-    prompt = vz.NARROW_PROMPT if a["frames"] == 16 else vz.NARROW2_PROMPT
+    a = LAYOUTS[layout][1][attempt]
+    if layout == "v1":
+        prompt = vz.NARROW_PROMPT if a["frames"] == 16 else vz.NARROW2_PROMPT
+    else:
+        import narrow_prompt_v2 as n2
+        prompt = n2.PROMPT_V2.replace("These 16 frames", f"These {a['frames']} frames")
+        meta = vz.synthetic_meta()
     if f"These {a['frames']} frames" not in prompt:
         vz.fail("prompt frame count does not match")
-    res = {"attempt": attempt, **a, "lora_alpha": 2 * a["rank"], "lora_target": LORA_TARGET, "steps": N_STEPS,
-           "status": None, "oom": False, "prompt_sha256": vz.text_sha(prompt)}
+    res = {"attempt": attempt, "layout": layout, **a, "lora_alpha": 2 * a["rank"], "lora_target": LORA_TARGET,
+           "steps": N_STEPS, "status": None, "oom": False, "prompt_sha256": vz.text_sha(prompt)}
     torch.manual_seed(SEED)
     processor = AutoProcessor.from_pretrained(smoke.MODELS[vz.MODEL_KEY])
     batches, res["clips"] = [], []
     for c in pick_clips():
         idx = vz.to_indices(c, vz.window_times(c, c["t_star"], HALF_S, a["frames"]))
         frames = vz.stack(vz.decode(c, idx), idx)
-        target = json.dumps({"collision_type": c["type"], "x": round(c["center_x"], 3), "y": round(c["center_y"], 3)})
+        if layout == "v1":
+            target = json.dumps({"collision_type": c["type"], "x": round(c["center_x"], 3),
+                                 "y": round(c["center_y"], 3)})
+        else:  # each frame duplicated: one frame per temporal token group, with its own timestamp
+            target = v2_target(c, meta[c["rgb_path"]])
+            frames, idx = np.repeat(frames, 2, axis=0), [i for i in idx for _ in range(2)]
         inputs, labels, _ = smoke.build_inputs(processor, frames, idx, c["fps"], c, target, prompt_text_in=prompt)
         ids = inputs["input_ids"][0]
         res["clips"].append({"rgb_path": c["rgb_path"], "frames": idx, "t_first_last": [idx[0] / c["fps"], idx[-1] / c["fps"]],
@@ -175,9 +210,10 @@ def child(attempt):
 
 # ---------------------------------------------------------------- parent
 
-def run_attempt(attempt, log):
+def run_attempt(attempt, log, layout="v1"):
     env = dict(os.environ, HF_HUB_OFFLINE="1", TRANSFORMERS_OFFLINE="1", PYTHONIOENCODING="utf-8")
-    proc = subprocess.Popen([sys.executable, "-u", str(Path(__file__).resolve()), "--child", str(attempt)],
+    proc = subprocess.Popen([sys.executable, "-u", str(Path(__file__).resolve()), "--child", str(attempt),
+                             "--layout", layout],
                             stdout=subprocess.PIPE, stderr=subprocess.STDOUT, env=env, cwd=str(REPO_ROOT),
                             text=True, encoding="utf-8", errors="replace")
     timed_out = threading.Event()
@@ -205,7 +241,7 @@ def run_attempt(attempt, log):
     finally:
         timer.cancel()
     if result is None:
-        result = {"attempt": attempt, **ATTEMPTS[attempt], "fits": False,
+        result = {"attempt": attempt, **LAYOUTS[layout][1][attempt], "fits": False,
                   "status": "TIMEOUT" if timed_out.is_set() else f"CHILD FAILED (exit {proc.returncode})"}
     return result
 
@@ -214,8 +250,9 @@ def fmt(v, f="{:.2f}"):
     return "-" if v is None else f.format(v)
 
 
-def report(results, power_lines):
-    L = ["QLoRA memory and speed test, Qwen/Qwen3-VL-4B-Instruct NF4; synthetic clips only; no accuracy measured.",
+def report(results, power_lines, layout="v1"):
+    L = ["QLoRA memory and speed test, Qwen/Qwen3-VL-4B-Instruct NF4; synthetic clips only; no accuracy measured."
+         + ("" if layout == "v1" else f" Input layout {layout} (narrow v2: each frame duplicated, PROMPT_V2, v2 JSON target)."),
          "Setup: see the docstring of vlm_qlora_memory_test.py (copied in command.txt).", *power_lines, ""]
     for r in results:
         L.append(f"attempt {r['attempt']}: {r['frames']} frames, LoRA rank {r['rank']} (alpha {2 * r['rank']}) -> "
@@ -225,6 +262,8 @@ def report(results, power_lines):
                      f"(parameters stored, NF4 packed counted as stored: {r['total_params_stored']:,})")
         if "clips" in r:
             c0 = r["clips"][0]
+            if layout != "v1":
+                L.append(f"  target example ({Path(c0['rgb_path']).stem}): {c0['target']}")
             L.append(f"  input per clip: grid_thw {c0['video_grid_thw']}, visual tokens {c0['visual_tokens']}, "
                      f"input tokens {[c['input_tokens'] for c in r['clips']]}, target tokens "
                      f"{[c['target_tokens'] for c in r['clips']]}, frame size in {c0['frame_size_in']}")
@@ -249,17 +288,18 @@ def report(results, power_lines):
     return "\n".join(L) + "\n"
 
 
-def parent():
-    if (OUT_DIR / "report.txt").exists():
-        vz.fail(f"{OUT_DIR / 'report.txt'} exists; refusing to overwrite a finished run")
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    (OUT_DIR / "command.txt").write_text(
-        f"{vz.now()}\n.venv-vlm\\Scripts\\python.exe -u vlm_qlora_memory_test.py (HF_HUB_OFFLINE=1, "
+def parent(layout="v1"):
+    out_dir, attempts = LAYOUTS[layout]
+    if (out_dir / "report.txt").exists():
+        vz.fail(f"{out_dir / 'report.txt'} exists; refusing to overwrite a finished run")
+    out_dir.mkdir(parents=True, exist_ok=True)
+    (out_dir / "command.txt").write_text(
+        f"{vz.now()}\n.venv-vlm\\Scripts\\python.exe -u vlm_qlora_memory_test.py --layout {layout} (HF_HUB_OFFLINE=1, "
         f"TRANSFORMERS_OFFLINE=1 in the child processes)\nscript sha256 {vz.sha256(Path(__file__))}\n\n{__doc__}",
         encoding="utf-8")
     results, power_lines = [], []
-    with open(OUT_DIR / "run.log", "a", encoding="utf-8") as log, \
-            open(OUT_DIR / "attempts.jsonl", "a", encoding="utf-8") as js:
+    with open(out_dir / "run.log", "a", encoding="utf-8") as log, \
+            open(out_dir / "attempts.jsonl", "a", encoding="utf-8") as js:
         def note(msg):
             line = f"{vz.now()} {msg}"
             print(line, flush=True)
@@ -267,13 +307,13 @@ def parent():
             log.flush()
             power_lines.append(line)
 
-        for attempt in ATTEMPTS:
+        for attempt in attempts:
             on, txt = vz.power()
             note(f"power before attempt {attempt}: {txt}")
             if not on:
                 note("STOPPED: on battery")
                 break
-            r = run_attempt(attempt, log)
+            r = run_attempt(attempt, log, layout)
             js.write(json.dumps(r) + "\n")
             js.flush()
             results.append(r)
@@ -281,23 +321,24 @@ def parent():
                 break
         on, txt = vz.power()
         note(f"power at end: {txt}")
-    text = report(results, power_lines)
-    (OUT_DIR / "report.txt").write_text(text, encoding="utf-8")
+    text = report(results, power_lines, layout)
+    (out_dir / "report.txt").write_text(text, encoding="utf-8")
     print(text)
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     ap.add_argument("--child", type=int, choices=sorted(ATTEMPTS), default=None)
+    ap.add_argument("--layout", choices=sorted(LAYOUTS), default="v1")
     args = ap.parse_args()
     for s in (sys.stdout, sys.stderr):
         s.reconfigure(encoding="utf-8", errors="replace")
     os.environ.setdefault("HF_HUB_OFFLINE", "1")
     os.environ.setdefault("TRANSFORMERS_OFFLINE", "1")
     if args.child:
-        child(args.child)
+        child(args.child, args.layout)
     else:
-        parent()
+        parent(args.layout)
 
 
 if __name__ == "__main__":

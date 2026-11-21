@@ -1,0 +1,16 @@
+2026-11-21T16:52:32+00:00 power at start: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T16:52:32+00:00 SMOKE training: 3154 examples per epoch, 6308 steps, warmup 189; code sha256 c1c153a30415315bf8846f693d4577dfe9e5dceab73fd6d73376c551a5c2873b
+2026-11-21T16:52:40+00:00 trainable parameters 33,030,144; LoRA modules 252; dtype torch.float32
+2026-11-21T16:54:11+00:00 step 25/6308 (epoch 1) loss mean 0.7089 lr 2.65e-05 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.4 h
+2026-11-21T16:55:42+00:00 step 50/6308 (epoch 1) loss mean 0.6049 lr 5.29e-05 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.3 h
+2026-11-21T16:55:43+00:00 checkpoint step00050 saved (step 50)
+2026-11-21T16:55:43+00:00 power at checkpoint step00050: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T16:55:43+00:00 SMOKE DONE at step 50; peak allocated 5.69 GB, reserved 7.04 GB
+2026-11-21T16:55:49+00:00 power at start: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T16:55:49+00:00 SMOKE training: 3154 examples per epoch, 6308 steps, warmup 189; code sha256 c1c153a30415315bf8846f693d4577dfe9e5dceab73fd6d73376c551a5c2873b
+2026-11-21T16:55:57+00:00 RESUMED from step00050: step 50, validations done []
+2026-11-21T16:55:57+00:00 trainable parameters 33,030,144; LoRA modules 252; dtype torch.float32
+2026-11-21T16:56:16+00:00 step 55/6308 (epoch 1) loss mean 0.5523 lr 5.82e-05 3.73 s/step peak alloc 5.69 GB reserved 7.08 GB; ETA training 6.5 h
+2026-11-21T16:56:16+00:00 checkpoint step00055 saved (step 55)
+2026-11-21T16:56:16+00:00 power at checkpoint step00055: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T16:56:16+00:00 SMOKE DONE at step 55; peak allocated 5.69 GB, reserved 7.08 GB

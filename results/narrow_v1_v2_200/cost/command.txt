@@ -1,0 +1,3 @@
+﻿.venv-vlm\Scripts\python.exe -u cost_per_clip.py --vlm  >> results\narrow_v1_v2_200\cost\run.log
+.venv-ml\Scripts\python.exe -u cost_per_clip.py --classifier  >> results\narrow_v1_v2_200\cost\run.log
+.venv-vlm\Scripts\python.exe cost_per_clip.py --table

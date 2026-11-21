@@ -1,0 +1,14 @@
+BASELINE: untrained Qwen/Qwen3-VL-4B-Instruct NF4 with the training prompt, fold 1 window A (2026-11-21T16:52:26+00:00; power start BatteryStatus 2 (2 = on AC mains), charge 80%, end BatteryStatus 2 (2 = on AC mains), charge 80%; peak allocated 3.56 GB)
+  windows 755, valid answers 755, fallbacks 0
+  type accuracy 0.3457; S 0.2800; mean point error 0.2477 (median 0.2291); mean of accuracy and S 0.3128
+  baselines on the same windows: majority type (rear-end) accuracy 0.3669; image centre S 0.3851, mean point error 0.2021
+  collision_visible answers {'false': 755}; agrees with t* inside the window 0.3444 (diagnostic)
+  per day / night: day n 599 acc 0.3372 S 0.2724; night n 156 acc 0.3782 S 0.3091
+  GPU s per window (generate) 2.73
+  confusion (rows true, columns predicted; fallbacks counted as rear-end):
+                 head-on  rear-end sideswipe    single    t-bone   correct
+    head-on            0        49         0         4       121   0/174
+    rear-end           0        89         2         2       184   89/277
+    sideswipe          0        49         3         1        54   3/107
+    single             0         6         0         0         7   0/13
+    t-bone             0        10         4         1       169   169/184
