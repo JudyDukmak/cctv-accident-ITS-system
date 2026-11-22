@@ -1,0 +1,67 @@
+{
+ "n": 755,
+ "valid": 755,
+ "type_accuracy": 0.30596026490066225,
+ "S": 0.634553460624397,
+ "mean_point_error": 0.1460911647764282,
+ "median_point_error": 0.08573582518838085,
+ "score_mean_acc_S": 0.47025686276252965,
+ "majority_type": "rear-end",
+ "majority_accuracy": 0.36688741721854307,
+ "centre_S": 0.3850629877705243,
+ "centre_mean_point_error": 0.2020841992812503,
+ "collision_visible_counts": {
+  "true": 755
+ },
+ "collision_visible_agrees_with_t_star_inside": 0.6556291390728477,
+ "gpu_s_per_window": 4.6699729819868425,
+ "confusion": {
+  "head-on": {
+   "head-on": 109,
+   "rear-end": 11,
+   "sideswipe": 7,
+   "single": 2,
+   "t-bone": 45
+  },
+  "rear-end": {
+   "head-on": 263,
+   "rear-end": 2,
+   "sideswipe": 0,
+   "single": 8,
+   "t-bone": 4
+  },
+  "sideswipe": {
+   "head-on": 103,
+   "rear-end": 0,
+   "sideswipe": 1,
+   "single": 0,
+   "t-bone": 3
+  },
+  "single": {
+   "head-on": 0,
+   "rear-end": 10,
+   "sideswipe": 0,
+   "single": 0,
+   "t-bone": 3
+  },
+  "t-bone": {
+   "head-on": 56,
+   "rear-end": 4,
+   "sideswipe": 1,
+   "single": 4,
+   "t-bone": 119
+  }
+ },
+ "per_day_night": {
+  "day": {
+   "n": 599,
+   "type_accuracy": 0.31886477462437396,
+   "S": 0.6412308993313777
+  },
+  "night": {
+   "n": 156,
+   "type_accuracy": 0.2564102564102564,
+   "S": 0.6089138081533623
+  }
+ }
+}

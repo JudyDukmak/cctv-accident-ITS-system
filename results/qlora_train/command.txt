@@ -1,0 +1,6 @@
+﻿.venv-vlm\Scripts\python.exe train_qlora.py --write-config
+.venv-vlm\Scripts\python.exe train_qlora.py --checks
+.venv-vlm\Scripts\python.exe -u train_qlora.py --baseline
+.venv-vlm\Scripts\python.exe -u train_qlora.py --smoke --max-steps 50
+.venv-vlm\Scripts\python.exe -u train_qlora.py --smoke --max-steps 55   (resume check)
+.venv-vlm\Scripts\python.exe -u train_qlora.py --train   (full run; resume with the same command)

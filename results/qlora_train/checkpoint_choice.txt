@@ -1,0 +1,4 @@
+CHECKPOINT CHOICE (2026-11-22T12:03:27+00:00): the epoch with the higher mean of type accuracy and S on fold 1 window A
+  epoch 1: accuracy 0.3060, S 0.6346, mean 0.4703
+  epoch 2: accuracy 0.2318, S 0.6755, mean 0.4537
+  CHOSEN: epoch 1 -> C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\runs\qlora_train\epoch1 (a tie keeps the earlier epoch)

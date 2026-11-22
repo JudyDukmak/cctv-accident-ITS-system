@@ -1,0 +1,231 @@
+W1121 19:56:40.429000 21116 .venv-vlm\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-21T16:56:41+00:00 power at start: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T16:56:41+00:00 training: 3154 examples per epoch, 6308 steps, warmup 189; code sha256 c1c153a30415315bf8846f693d4577dfe9e5dceab73fd6d73376c551a5c2873b
+Loading weights:   0%|          | 0/713 [00:00<?, ?it/s]Loading weights:   0%|          | 1/713 [00:00<06:06,  1.94it/s]Loading weights:   1%|          | 4/713 [00:00<01:31,  7.79it/s]Loading weights:   2%|▏         | 14/713 [00:00<00:25, 27.64it/s]Loading weights:   3%|▎         | 22/713 [00:00<00:17, 39.44it/s]Loading weights:   4%|▍         | 28/713 [00:00<00:15, 43.74it/s]Loading weights:   5%|▌         | 37/713 [00:01<00:12, 54.12it/s]Loading weights:   7%|▋         | 47/713 [00:01<00:10, 64.21it/s]Loading weights:   8%|▊         | 56/713 [00:01<00:09, 69.66it/s]Loading weights:   9%|▉         | 64/713 [00:01<00:09, 68.60it/s]Loading weights:  10%|█         | 72/713 [00:01<00:09, 66.14it/s]Loading weights:  11%|█▏        | 81/713 [00:01<00:08, 71.61it/s]Loading weights:  13%|█▎        | 91/713 [00:01<00:08, 76.68it/s]Loading weights:  14%|█▍        | 99/713 [00:01<00:07, 77.12it/s]Loading weights:  15%|█▌        | 107/713 [00:01<00:08, 73.82it/s]Loading weights:  16%|█▌        | 115/713 [00:02<00:08, 67.43it/s]Loading weights:  18%|█▊        | 125/713 [00:02<00:07, 75.55it/s]Loading weights:  19%|█▉        | 135/713 [00:02<00:07, 79.56it/s]Loading weights:  20%|██        | 144/713 [00:02<00:07, 80.75it/s]Loading weights:  21%|██▏       | 153/713 [00:02<00:07, 79.77it/s]Loading weights:  23%|██▎       | 162/713 [00:02<00:07, 76.06it/s]Loading weights:  24%|██▍       | 170/713 [00:02<00:07, 70.91it/s]Loading weights:  25%|██▌       | 180/713 [00:02<00:06, 77.31it/s]Loading weights:  27%|██▋       | 190/713 [00:03<00:06, 81.20it/s]Loading weights:  28%|██▊       | 199/713 [00:03<00:06, 81.41it/s]Loading weights:  29%|██▉       | 208/713 [00:03<00:06, 77.19it/s]Loading weights:  30%|███       | 216/713 [00:03<00:06, 73.88it/s]Loading weights:  31%|███▏      | 224/713 [00:03<00:06, 72.00it/s]Loading weights:  33%|███▎      | 234/713 [00:03<00:06, 77.04it/s]Loading weights:  34%|███▍      | 242/713 [00:03<00:06, 76.18it/s]Loading weights:  35%|███▌      | 250/713 [00:03<00:06, 75.59it/s]Loading weights:  36%|███▌      | 258/713 [00:04<00:06, 66.76it/s]Loading weights:  38%|███▊      | 268/713 [00:04<00:06, 72.90it/s]Loading weights:  39%|███▉      | 278/713 [00:04<00:05, 77.78it/s]Loading weights:  40%|████      | 286/713 [00:04<00:05, 76.94it/s]Loading weights:  41%|████      | 294/713 [00:04<00:05, 73.21it/s]Loading weights:  42%|████▏     | 302/713 [00:04<00:06, 67.61it/s]Loading weights:  44%|████▍     | 312/713 [00:04<00:05, 72.88it/s]Loading weights:  45%|████▌     | 322/713 [00:04<00:05, 77.93it/s]Loading weights:  46%|████▋     | 330/713 [00:04<00:04, 76.63it/s]Loading weights:  47%|████▋     | 338/713 [00:05<00:05, 73.75it/s]Loading weights:  49%|████▊     | 346/713 [00:05<00:05, 67.40it/s]Loading weights:  50%|████▉     | 356/713 [00:05<00:04, 73.44it/s]Loading weights:  51%|█████▏    | 366/713 [00:05<00:04, 77.96it/s]Loading weights:  52%|█████▏    | 374/713 [00:05<00:04, 76.05it/s]Loading weights:  54%|█████▎    | 382/713 [00:05<00:04, 73.94it/s]Loading weights:  55%|█████▍    | 390/713 [00:05<00:04, 68.05it/s]Loading weights:  60%|██████    | 428/713 [00:05<00:01, 147.66it/s]Loading weights:  68%|██████▊   | 488/713 [00:06<00:00, 267.80it/s]Loading weights:  76%|███████▋  | 545/713 [00:06<00:00, 349.66it/s]Loading weights:  84%|████████▍ | 598/713 [00:06<00:00, 397.40it/s]Loading weights:  92%|█████████▏| 656/713 [00:06<00:00, 445.70it/s]Loading weights:  98%|█████████▊| 702/713 [00:06<00:00, 372.06it/s]Loading weights: 100%|██████████| 713/713 [00:06<00:00, 109.31it/s]
+2026-11-21T16:56:49+00:00 trainable parameters 33,030,144; LoRA modules 252; dtype torch.float32
+[transformers] `use_cache=True` is incompatible with gradient checkpointing. Setting `use_cache=False`.
+2026-11-21T16:58:20+00:00 step 25/6308 (epoch 1) loss mean 0.7089 lr 2.65e-05 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.4 h
+2026-11-21T16:59:51+00:00 step 50/6308 (epoch 1) loss mean 0.6049 lr 5.29e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.3 h
+2026-11-21T17:01:22+00:00 step 75/6308 (epoch 1) loss mean 0.5391 lr 7.94e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.3 h
+2026-11-21T17:02:53+00:00 step 100/6308 (epoch 1) loss mean 0.5182 lr 1.06e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.3 h
+2026-11-21T17:04:24+00:00 step 125/6308 (epoch 1) loss mean 0.5440 lr 1.32e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.3 h
+2026-11-21T17:05:55+00:00 step 150/6308 (epoch 1) loss mean 0.5297 lr 1.59e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.2 h
+2026-11-21T17:07:26+00:00 step 175/6308 (epoch 1) loss mean 0.4996 lr 1.85e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.2 h
+2026-11-21T17:08:57+00:00 step 200/6308 (epoch 1) loss mean 0.5455 lr 2.00e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.2 h
+2026-11-21T17:10:29+00:00 step 225/6308 (epoch 1) loss mean 0.4970 lr 2.00e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.2 h
+2026-11-21T17:12:00+00:00 step 250/6308 (epoch 1) loss mean 0.5017 lr 2.00e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.1 h
+2026-11-21T17:13:31+00:00 step 275/6308 (epoch 1) loss mean 0.5688 lr 2.00e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.1 h
+2026-11-21T17:15:02+00:00 step 300/6308 (epoch 1) loss mean 0.5291 lr 2.00e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.1 h
+2026-11-21T17:16:34+00:00 step 325/6308 (epoch 1) loss mean 0.5346 lr 2.00e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.1 h
+2026-11-21T17:18:05+00:00 step 350/6308 (epoch 1) loss mean 0.5246 lr 2.00e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.0 h
+2026-11-21T17:19:36+00:00 step 375/6308 (epoch 1) loss mean 0.5000 lr 2.00e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.0 h
+2026-11-21T17:21:07+00:00 step 400/6308 (epoch 1) loss mean 0.5377 lr 1.99e-04 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 6.0 h
+2026-11-21T17:22:38+00:00 step 425/6308 (epoch 1) loss mean 0.5418 lr 1.99e-04 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.9 h
+2026-11-21T17:24:08+00:00 step 450/6308 (epoch 1) loss mean 0.5250 lr 1.99e-04 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.9 h
+2026-11-21T17:25:40+00:00 step 475/6308 (epoch 1) loss mean 0.5242 lr 1.99e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.9 h
+2026-11-21T17:27:11+00:00 step 500/6308 (epoch 1) loss mean 0.5698 lr 1.99e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.9 h
+C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\peft\utils\save_and_load.py:313: UserWarning: Could not find a config file in Qwen/Qwen3-VL-4B-Instruct - will assume that the vocabulary was not modified.
+  warnings.warn(
+2026-11-21T17:27:11+00:00 checkpoint step00500 saved (step 500)
+2026-11-21T17:27:11+00:00 power at checkpoint step00500: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T17:28:43+00:00 step 525/6308 (epoch 1) loss mean 0.5213 lr 1.99e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.9 h
+2026-11-21T17:30:13+00:00 step 550/6308 (epoch 1) loss mean 0.5082 lr 1.98e-04 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.8 h
+2026-11-21T17:31:44+00:00 step 575/6308 (epoch 1) loss mean 0.4886 lr 1.98e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.8 h
+2026-11-21T17:33:15+00:00 step 600/6308 (epoch 1) loss mean 0.4827 lr 1.98e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.8 h
+2026-11-21T17:34:46+00:00 step 625/6308 (epoch 1) loss mean 0.4749 lr 1.98e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.7 h
+2026-11-21T17:36:17+00:00 step 650/6308 (epoch 1) loss mean 0.4517 lr 1.97e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.7 h
+2026-11-21T17:37:48+00:00 step 675/6308 (epoch 1) loss mean 0.5172 lr 1.97e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.7 h
+2026-11-21T17:39:20+00:00 step 700/6308 (epoch 1) loss mean 0.4877 lr 1.97e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.7 h
+2026-11-21T17:40:51+00:00 step 725/6308 (epoch 1) loss mean 0.4696 lr 1.96e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.7 h
+2026-11-21T17:42:22+00:00 step 750/6308 (epoch 1) loss mean 0.4654 lr 1.96e-04 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.6 h
+2026-11-21T17:43:52+00:00 step 775/6308 (epoch 1) loss mean 0.5021 lr 1.96e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.6 h
+2026-11-21T17:45:23+00:00 step 800/6308 (epoch 1) loss mean 0.4993 lr 1.95e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.6 h
+2026-11-21T17:46:55+00:00 step 825/6308 (epoch 1) loss mean 0.4708 lr 1.95e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.6 h
+2026-11-21T17:48:26+00:00 step 850/6308 (epoch 1) loss mean 0.5067 lr 1.94e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.5 h
+2026-11-21T17:49:57+00:00 step 875/6308 (epoch 1) loss mean 0.4738 lr 1.94e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.5 h
+2026-11-21T17:51:28+00:00 step 900/6308 (epoch 1) loss mean 0.5121 lr 1.93e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.5 h
+2026-11-21T17:52:59+00:00 step 925/6308 (epoch 1) loss mean 0.5161 lr 1.93e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.4 h
+2026-11-21T17:54:30+00:00 step 950/6308 (epoch 1) loss mean 0.4822 lr 1.92e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.4 h
+2026-11-21T17:56:01+00:00 step 975/6308 (epoch 1) loss mean 0.5396 lr 1.92e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.4 h
+2026-11-21T17:57:32+00:00 step 1000/6308 (epoch 1) loss mean 0.4841 lr 1.91e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.4 h
+2026-11-21T17:57:33+00:00 checkpoint step01000 saved (step 1000)
+2026-11-21T17:57:33+00:00 power at checkpoint step01000: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T17:59:04+00:00 step 1025/6308 (epoch 1) loss mean 0.5087 lr 1.91e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.4 h
+2026-11-21T18:00:35+00:00 step 1050/6308 (epoch 1) loss mean 0.5045 lr 1.90e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.3 h
+2026-11-21T18:02:06+00:00 step 1075/6308 (epoch 1) loss mean 0.4765 lr 1.90e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.3 h
+2026-11-21T18:03:37+00:00 step 1100/6308 (epoch 1) loss mean 0.4716 lr 1.89e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.3 h
+2026-11-21T18:05:08+00:00 step 1125/6308 (epoch 1) loss mean 0.4625 lr 1.89e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.2 h
+2026-11-21T18:06:39+00:00 step 1150/6308 (epoch 1) loss mean 0.4464 lr 1.88e-04 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.2 h
+2026-11-21T18:08:10+00:00 step 1175/6308 (epoch 1) loss mean 0.4856 lr 1.87e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.2 h
+2026-11-21T18:09:41+00:00 step 1200/6308 (epoch 1) loss mean 0.4881 lr 1.87e-04 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.2 h
+2026-11-21T18:11:12+00:00 step 1225/6308 (epoch 1) loss mean 0.4980 lr 1.86e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.1 h
+2026-11-21T18:12:42+00:00 step 1250/6308 (epoch 1) loss mean 0.4535 lr 1.86e-04 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.1 h
+2026-11-21T18:14:13+00:00 step 1275/6308 (epoch 1) loss mean 0.4850 lr 1.85e-04 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.1 h
+2026-11-21T18:15:44+00:00 step 1300/6308 (epoch 1) loss mean 0.5091 lr 1.84e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.1 h
+2026-11-21T18:17:15+00:00 step 1325/6308 (epoch 1) loss mean 0.4576 lr 1.83e-04 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.0 h
+2026-11-21T18:18:46+00:00 step 1350/6308 (epoch 1) loss mean 0.4602 lr 1.83e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.0 h
+2026-11-21T18:20:17+00:00 step 1375/6308 (epoch 1) loss mean 0.4679 lr 1.82e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.0 h
+2026-11-21T18:21:49+00:00 step 1400/6308 (epoch 1) loss mean 0.4974 lr 1.81e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.0 h
+2026-11-21T18:23:20+00:00 step 1425/6308 (epoch 1) loss mean 0.4873 lr 1.81e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.0 h
+2026-11-21T18:24:52+00:00 step 1450/6308 (epoch 1) loss mean 0.5194 lr 1.80e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.9 h
+2026-11-21T18:26:23+00:00 step 1475/6308 (epoch 1) loss mean 0.4634 lr 1.79e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.9 h
+2026-11-21T18:27:55+00:00 step 1500/6308 (epoch 1) loss mean 0.4637 lr 1.78e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.9 h
+2026-11-21T18:27:55+00:00 checkpoint step01500 saved (step 1500)
+2026-11-21T18:27:55+00:00 power at checkpoint step01500: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T18:29:27+00:00 step 1525/6308 (epoch 1) loss mean 0.4663 lr 1.77e-04 3.69 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.9 h
+2026-11-21T18:30:58+00:00 step 1550/6308 (epoch 1) loss mean 0.4812 lr 1.77e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.8 h
+2026-11-21T18:32:29+00:00 step 1575/6308 (epoch 1) loss mean 0.4796 lr 1.76e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.8 h
+2026-11-21T18:34:01+00:00 step 1600/6308 (epoch 1) loss mean 0.4428 lr 1.75e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.8 h
+2026-11-21T18:35:33+00:00 step 1625/6308 (epoch 1) loss mean 0.4496 lr 1.74e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.8 h
+2026-11-21T18:37:04+00:00 step 1650/6308 (epoch 1) loss mean 0.4350 lr 1.73e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.7 h
+2026-11-21T18:38:36+00:00 step 1675/6308 (epoch 1) loss mean 0.4645 lr 1.72e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.7 h
+2026-11-21T18:40:07+00:00 step 1700/6308 (epoch 1) loss mean 0.4530 lr 1.71e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.7 h
+2026-11-21T18:41:39+00:00 step 1725/6308 (epoch 1) loss mean 0.4743 lr 1.70e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.7 h
+2026-11-21T18:43:11+00:00 step 1750/6308 (epoch 1) loss mean 0.4474 lr 1.70e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.6 h
+2026-11-21T18:44:42+00:00 step 1775/6308 (epoch 1) loss mean 0.4580 lr 1.69e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.6 h
+2026-11-21T18:46:14+00:00 step 1800/6308 (epoch 1) loss mean 0.4741 lr 1.68e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.6 h
+2026-11-21T18:47:45+00:00 step 1825/6308 (epoch 1) loss mean 0.4713 lr 1.67e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.5 h
+2026-11-21T18:49:17+00:00 step 1850/6308 (epoch 1) loss mean 0.4507 lr 1.66e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.5 h
+2026-11-21T18:50:48+00:00 step 1875/6308 (epoch 1) loss mean 0.4355 lr 1.65e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.5 h
+2026-11-21T18:52:20+00:00 step 1900/6308 (epoch 1) loss mean 0.4299 lr 1.64e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.5 h
+2026-11-21T18:53:51+00:00 step 1925/6308 (epoch 1) loss mean 0.4451 lr 1.63e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.5 h
+2026-11-21T18:55:23+00:00 step 1950/6308 (epoch 1) loss mean 0.4646 lr 1.62e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.4 h
+2026-11-21T18:56:54+00:00 step 1975/6308 (epoch 1) loss mean 0.4779 lr 1.61e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.4 h
+2026-11-21T18:58:26+00:00 step 2000/6308 (epoch 1) loss mean 0.4911 lr 1.60e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.4 h
+2026-11-21T18:58:26+00:00 checkpoint step02000 saved (step 2000)
+2026-11-21T18:58:26+00:00 power at checkpoint step02000: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T18:59:57+00:00 step 2025/6308 (epoch 1) loss mean 0.4641 lr 1.59e-04 3.68 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.4 h
+2026-11-21T19:01:29+00:00 step 2050/6308 (epoch 1) loss mean 0.4649 lr 1.58e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.3 h
+2026-11-21T19:03:01+00:00 step 2075/6308 (epoch 1) loss mean 0.4529 lr 1.57e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.3 h
+2026-11-21T19:04:32+00:00 step 2100/6308 (epoch 1) loss mean 0.4301 lr 1.56e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.3 h
+2026-11-21T19:06:03+00:00 step 2125/6308 (epoch 1) loss mean 0.4548 lr 1.55e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.2 h
+2026-11-21T19:07:35+00:00 step 2150/6308 (epoch 1) loss mean 0.4503 lr 1.53e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.2 h
+2026-11-21T19:09:06+00:00 step 2175/6308 (epoch 1) loss mean 0.4293 lr 1.52e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.2 h
+2026-11-21T19:10:38+00:00 step 2200/6308 (epoch 1) loss mean 0.4389 lr 1.51e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.2 h
+2026-11-21T19:12:09+00:00 step 2225/6308 (epoch 1) loss mean 0.4362 lr 1.50e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.1 h
+2026-11-21T19:13:41+00:00 step 2250/6308 (epoch 1) loss mean 0.4351 lr 1.49e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.1 h
+2026-11-21T19:15:12+00:00 step 2275/6308 (epoch 1) loss mean 0.4557 lr 1.48e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.1 h
+2026-11-21T19:16:44+00:00 step 2300/6308 (epoch 1) loss mean 0.4611 lr 1.47e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.1 h
+2026-11-21T19:18:15+00:00 step 2325/6308 (epoch 1) loss mean 0.4324 lr 1.46e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.0 h
+2026-11-21T19:19:47+00:00 step 2350/6308 (epoch 1) loss mean 0.4358 lr 1.45e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.0 h
+2026-11-21T19:21:18+00:00 step 2375/6308 (epoch 1) loss mean 0.4518 lr 1.43e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.0 h
+2026-11-21T19:22:50+00:00 step 2400/6308 (epoch 1) loss mean 0.4512 lr 1.42e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.0 h
+2026-11-21T19:24:21+00:00 step 2425/6308 (epoch 1) loss mean 0.4265 lr 1.41e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.9 h
+2026-11-21T19:25:52+00:00 step 2450/6308 (epoch 1) loss mean 0.4329 lr 1.40e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.9 h
+2026-11-21T19:27:24+00:00 step 2475/6308 (epoch 1) loss mean 0.4300 lr 1.39e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.9 h
+2026-11-21T19:28:55+00:00 step 2500/6308 (epoch 1) loss mean 0.4505 lr 1.37e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.9 h
+2026-11-21T19:28:56+00:00 checkpoint step02500 saved (step 2500)
+2026-11-21T19:28:56+00:00 power at checkpoint step02500: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T19:30:28+00:00 step 2525/6308 (epoch 1) loss mean 0.4077 lr 1.36e-04 3.69 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.9 h
+2026-11-21T19:31:59+00:00 step 2550/6308 (epoch 1) loss mean 0.4205 lr 1.35e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.8 h
+2026-11-21T19:33:31+00:00 step 2575/6308 (epoch 1) loss mean 0.4612 lr 1.34e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.8 h
+2026-11-21T19:35:02+00:00 step 2600/6308 (epoch 1) loss mean 0.4343 lr 1.33e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.8 h
+2026-11-21T19:36:34+00:00 step 2625/6308 (epoch 1) loss mean 0.4219 lr 1.31e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.7 h
+2026-11-21T19:38:05+00:00 step 2650/6308 (epoch 1) loss mean 0.4296 lr 1.30e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.7 h
+2026-11-21T19:39:37+00:00 step 2675/6308 (epoch 1) loss mean 0.4575 lr 1.29e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.7 h
+2026-11-21T19:41:09+00:00 step 2700/6308 (epoch 1) loss mean 0.4121 lr 1.28e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.7 h
+2026-11-21T19:42:40+00:00 step 2725/6308 (epoch 1) loss mean 0.4423 lr 1.27e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.6 h
+2026-11-21T19:44:11+00:00 step 2750/6308 (epoch 1) loss mean 0.4156 lr 1.25e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.6 h
+2026-11-21T19:45:43+00:00 step 2775/6308 (epoch 1) loss mean 0.4189 lr 1.24e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.6 h
+2026-11-21T19:47:14+00:00 step 2800/6308 (epoch 1) loss mean 0.4236 lr 1.23e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.6 h
+2026-11-21T19:48:46+00:00 step 2825/6308 (epoch 1) loss mean 0.4147 lr 1.22e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.5 h
+2026-11-21T19:50:17+00:00 step 2850/6308 (epoch 1) loss mean 0.4024 lr 1.20e-04 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.5 h
+2026-11-21T19:51:49+00:00 step 2875/6308 (epoch 1) loss mean 0.4282 lr 1.19e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.5 h
+2026-11-21T19:53:20+00:00 step 2900/6308 (epoch 1) loss mean 0.4119 lr 1.18e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.5 h
+2026-11-21T19:54:52+00:00 step 2925/6308 (epoch 1) loss mean 0.4237 lr 1.17e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.4 h
+2026-11-21T19:56:23+00:00 step 2950/6308 (epoch 1) loss mean 0.4341 lr 1.15e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.4 h
+2026-11-21T19:57:55+00:00 step 2975/6308 (epoch 1) loss mean 0.4370 lr 1.14e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.4 h
+2026-11-21T19:59:26+00:00 step 3000/6308 (epoch 1) loss mean 0.4387 lr 1.13e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.4 h
+2026-11-21T19:59:27+00:00 checkpoint step03000 saved (step 3000)
+2026-11-21T19:59:27+00:00 power at checkpoint step03000: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T20:00:58+00:00 step 3025/6308 (epoch 1) loss mean 0.4048 lr 1.11e-04 3.69 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.4 h
+2026-11-21T20:02:30+00:00 step 3050/6308 (epoch 1) loss mean 0.4508 lr 1.10e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.3 h
+2026-11-21T20:04:01+00:00 step 3075/6308 (epoch 1) loss mean 0.4076 lr 1.09e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.3 h
+2026-11-21T20:05:32+00:00 step 3100/6308 (epoch 1) loss mean 0.4237 lr 1.08e-04 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.3 h
+2026-11-21T20:07:04+00:00 step 3125/6308 (epoch 1) loss mean 0.4227 lr 1.06e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.2 h
+2026-11-21T20:08:35+00:00 step 3150/6308 (epoch 1) loss mean 0.4457 lr 1.05e-04 3.66 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.2 h
+2026-11-21T20:08:51+00:00 checkpoint epoch1 saved (step 3154)
+2026-11-21T20:08:51+00:00 power at checkpoint epoch1: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T20:16:55+00:00 validation 100/755
+2026-11-21T20:24:57+00:00 validation 200/755
+2026-11-21T20:32:52+00:00 validation 300/755
+2026-11-21T20:40:27+00:00 validation 400/755
+2026-11-21T20:48:17+00:00 validation 500/755
+2026-11-21T20:56:07+00:00 validation 600/755
+2026-11-21T21:03:53+00:00 validation 700/755
+2026-11-21T21:08:06+00:00 
+EPOCH 1 VALIDATION (fold 1 window A; step 3154; 2026-11-21T21:08:06+00:00)
+  windows 755, valid answers 755, fallbacks 0
+  type accuracy 0.3060; S 0.6346; mean point error 0.1461 (median 0.0857); mean of accuracy and S 0.4703
+  baselines on the same windows: majority type (rear-end) accuracy 0.3669; image centre S 0.3851, mean point error 0.2021
+  collision_visible answers {'true': 755}; agrees with t* inside the window 0.6556 (diagnostic)
+  per day / night: day n 599 acc 0.3189 S 0.6412; night n 156 acc 0.2564 S 0.6089
+  GPU s per window (generate) 4.67
+  confusion (rows true, columns predicted; fallbacks counted as rear-end):
+                 head-on  rear-end sideswipe    single    t-bone   correct
+    head-on          109        11         7         2        45   109/174
+    rear-end         263         2         0         8         4   2/277
+    sideswipe        103         0         1         0         3   1/107
+    single             0        10         0         0         3   0/13
+    t-bone            56         4         1         4       119   119/184
+2026-11-21T21:09:23+00:00 step 3175/6308 (epoch 2) loss mean 0.3891 lr 1.04e-04 145.90 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 127.0 h
+2026-11-21T21:10:54+00:00 step 3200/6308 (epoch 2) loss mean 0.4310 lr 1.02e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.1 h
+2026-11-21T21:12:25+00:00 step 3225/6308 (epoch 2) loss mean 0.4007 lr 1.01e-04 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.1 h
+2026-11-21T21:13:56+00:00 step 3250/6308 (epoch 2) loss mean 0.4115 lr 9.99e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.1 h
+2026-11-21T21:15:27+00:00 step 3275/6308 (epoch 2) loss mean 0.4211 lr 9.86e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.1 h
+2026-11-21T21:16:58+00:00 step 3300/6308 (epoch 2) loss mean 0.4205 lr 9.74e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.0 h
+2026-11-21T21:18:29+00:00 step 3325/6308 (epoch 2) loss mean 0.4083 lr 9.61e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.0 h
+2026-11-21T21:20:00+00:00 step 3350/6308 (epoch 2) loss mean 0.4160 lr 9.48e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.0 h
+2026-11-21T21:21:31+00:00 step 3375/6308 (epoch 2) loss mean 0.3985 lr 9.35e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.0 h
+2026-11-21T21:23:01+00:00 step 3400/6308 (epoch 2) loss mean 0.3907 lr 9.22e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.9 h
+2026-11-21T21:24:32+00:00 step 3425/6308 (epoch 2) loss mean 0.3965 lr 9.10e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.9 h
+2026-11-21T21:26:03+00:00 step 3450/6308 (epoch 2) loss mean 0.3943 lr 8.97e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.9 h
+2026-11-21T21:27:34+00:00 step 3475/6308 (epoch 2) loss mean 0.3841 lr 8.84e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.9 h
+2026-11-21T21:29:05+00:00 step 3500/6308 (epoch 2) loss mean 0.4217 lr 8.71e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.8 h
+2026-11-21T21:29:05+00:00 checkpoint step03500 saved (step 3500)
+2026-11-21T21:29:06+00:00 power at checkpoint step03500: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T21:30:37+00:00 step 3525/6308 (epoch 2) loss mean 0.4002 lr 8.59e-05 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.8 h
+2026-11-21T21:32:08+00:00 step 3550/6308 (epoch 2) loss mean 0.4024 lr 8.46e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.8 h
+2026-11-21T21:33:39+00:00 step 3575/6308 (epoch 2) loss mean 0.3920 lr 8.33e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.8 h
+2026-11-21T21:35:10+00:00 step 3600/6308 (epoch 2) loss mean 0.3948 lr 8.21e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.7 h
+2026-11-21T21:36:41+00:00 step 3625/6308 (epoch 2) loss mean 0.4168 lr 8.08e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.7 h
+2026-11-21T21:38:12+00:00 step 3650/6308 (epoch 2) loss mean 0.3943 lr 7.95e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.7 h
+2026-11-21T21:39:43+00:00 step 3675/6308 (epoch 2) loss mean 0.3718 lr 7.83e-05 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.7 h
+2026-11-21T21:41:14+00:00 step 3700/6308 (epoch 2) loss mean 0.3944 lr 7.70e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.6 h
+2026-11-21T21:42:44+00:00 step 3725/6308 (epoch 2) loss mean 0.3939 lr 7.58e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.6 h
+2026-11-21T21:44:15+00:00 step 3750/6308 (epoch 2) loss mean 0.3814 lr 7.45e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.6 h
+2026-11-21T21:45:46+00:00 step 3775/6308 (epoch 2) loss mean 0.3801 lr 7.33e-05 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.6 h
+2026-11-21T21:47:17+00:00 step 3800/6308 (epoch 2) loss mean 0.3702 lr 7.21e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.5 h
+2026-11-21T21:48:48+00:00 step 3825/6308 (epoch 2) loss mean 0.3776 lr 7.08e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.5 h
+2026-11-21T21:50:19+00:00 step 3850/6308 (epoch 2) loss mean 0.3760 lr 6.96e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.5 h
+2026-11-21T21:51:50+00:00 step 3875/6308 (epoch 2) loss mean 0.3783 lr 6.84e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.5 h
+2026-11-21T21:53:21+00:00 step 3900/6308 (epoch 2) loss mean 0.3728 lr 6.72e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.4 h
+2026-11-21T21:54:52+00:00 step 3925/6308 (epoch 2) loss mean 0.3678 lr 6.60e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.4 h
+2026-11-21T21:56:23+00:00 step 3950/6308 (epoch 2) loss mean 0.3820 lr 6.48e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.4 h
+2026-11-21T21:57:54+00:00 step 3975/6308 (epoch 2) loss mean 0.3526 lr 6.36e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.4 h
+2026-11-21T21:59:25+00:00 step 4000/6308 (epoch 2) loss mean 0.3674 lr 6.24e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.3 h
+2026-11-21T21:59:25+00:00 checkpoint step04000 saved (step 4000)
+2026-11-21T21:59:26+00:00 power at checkpoint step04000: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T22:00:57+00:00 step 4025/6308 (epoch 2) loss mean 0.3941 lr 6.12e-05 3.67 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.3 h
+2026-11-21T22:02:27+00:00 step 4050/6308 (epoch 2) loss mean 0.3964 lr 6.00e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.3 h
+2026-11-21T22:03:58+00:00 step 4075/6308 (epoch 2) loss mean 0.3947 lr 5.88e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.3 h
+2026-11-21T22:05:29+00:00 step 4100/6308 (epoch 2) loss mean 0.3795 lr 5.77e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.2 h
+2026-11-21T22:07:00+00:00 step 4125/6308 (epoch 2) loss mean 0.3718 lr 5.65e-05 3.65 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.2 h
+2026-11-21T22:08:31+00:00 step 4150/6308 (epoch 2) loss mean 0.3982 lr 5.54e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.2 h
+2026-11-21T22:10:02+00:00 step 4175/6308 (epoch 2) loss mean 0.3946 lr 5.42e-05 3.63 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.2 h
+2026-11-21T22:11:33+00:00 step 4200/6308 (epoch 2) loss mean 0.4071 lr 5.31e-05 3.64 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 2.1 h
+2026-11-21T22:13:59+00:00 step 4225/6308 (epoch 2) loss mean 0.4198 lr 5.19e-05 5.86 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 3.4 h
+2026-11-21T22:17:45+00:00 step 4250/6308 (epoch 2) loss mean 0.3774 lr 5.08e-05 9.01 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.2 h
+2026-11-21T22:21:31+00:00 step 4275/6308 (epoch 2) loss mean 0.3732 lr 4.97e-05 9.06 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.1 h
+2026-11-21T22:25:18+00:00 step 4300/6308 (epoch 2) loss mean 0.3785 lr 4.86e-05 9.09 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.1 h
+2026-11-21T22:29:06+00:00 step 4325/6308 (epoch 2) loss mean 0.3458 lr 4.75e-05 9.09 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.0 h
+2026-11-21T22:32:54+00:00 step 4350/6308 (epoch 2) loss mean 0.3507 lr 4.64e-05 9.11 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 5.0 h
+2026-11-21T22:36:42+00:00 step 4375/6308 (epoch 2) loss mean 0.3904 lr 4.53e-05 9.12 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.9 h
+2026-11-21T22:40:30+00:00 step 4400/6308 (epoch 2) loss mean 0.3530 lr 4.43e-05 9.14 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.8 h
+2026-11-21T22:44:19+00:00 step 4425/6308 (epoch 2) loss mean 0.3678 lr 4.32e-05 9.17 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.8 h
+2026-11-21T22:48:08+00:00 step 4450/6308 (epoch 2) loss mean 0.3772 lr 4.22e-05 9.16 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.7 h
+2026-11-21T22:51:57+00:00 step 4475/6308 (epoch 2) loss mean 0.3595 lr 4.11e-05 9.15 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.7 h
+2026-11-21T22:55:47+00:00 step 4500/6308 (epoch 2) loss mean 0.3858 lr 4.01e-05 9.18 s/step peak alloc 5.69 GB reserved 7.04 GB; ETA training 4.6 h
+2026-11-21T22:55:47+00:00 checkpoint step04500 saved (step 4500)
+2026-11-21T22:55:48+00:00 power at checkpoint step04500: BatteryStatus 1 (2 = on AC mains), charge 27%
+2026-11-21T22:55:48+00:00 PAUSED (resumable): on battery after checkpoint step04500
