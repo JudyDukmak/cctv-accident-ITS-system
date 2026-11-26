@@ -1,0 +1,99 @@
+command: .venv-ml/Scripts/python.exe visibility_audit.py --count   (2026-11-24T21:14:36Z)
+  250/2211 clips read
+  500/2211 clips read
+  750/2211 clips read
+  1000/2211 clips read
+  1250/2211 clips read
+  1500/2211 clips read
+  1750/2211 clips read
+  2000/2211 clips read
+{
+ "n_clips": 2211,
+ "tick_rule_holds": 2211,
+ "n_actors_distribution": {
+  "2": 2211
+ },
+ "ticks_absent": {
+  "-10": 0,
+  "-5": 0,
+  "0": 0,
+  "+5": 1,
+  "+10": 3
+ },
+ "actors_missing_by_tick": {
+  "-10": 63,
+  "-5": 41,
+  "0": 33,
+  "+5": 33,
+  "+10": 35
+ },
+ "clips_with_missing_by_tick": {
+  "-10": 50,
+  "-5": 35,
+  "0": 31,
+  "+5": 30,
+  "+10": 33
+ },
+ "visible_area_share_quantiles": {
+  "0.05": 0.14512,
+  "0.25": 0.2415,
+  "0.5": 0.2978,
+  "0.75": 0.3714,
+  "0.95": 0.5248999999999997
+ },
+ "box_area_px_quantiles": {
+  "0.05": 5819.5,
+  "0.25": 12938.0,
+  "0.5": 22194.0,
+  "0.75": 35402.0,
+  "0.95": 73663.0
+ },
+ "box_area_px_median_by_flag": {
+  "LOW_AT_IMPACT": {
+   "True": 15696.0,
+   "False": 22427.0
+  },
+  "LOW_AROUND_IMPACT": {
+   "True": 15504.0,
+   "False": 22356.0
+  }
+ }
+}
+by all:
+  all                  n  2211  LOW_AT_IMPACT   31 (0.014)  LOW_AROUND_IMPACT   16 (0.007)
+by scenario_id:
+  Town03_head-on       n   212  LOW_AT_IMPACT    1 (0.005)  LOW_AROUND_IMPACT    0 (0.000)
+  Town03_t-bone        n   184  LOW_AT_IMPACT    3 (0.016)  LOW_AROUND_IMPACT    1 (0.005)
+  Town04_rear-end      n   245  LOW_AT_IMPACT    8 (0.033)  LOW_AROUND_IMPACT    4 (0.016)
+  Town04_sideswipe     n   139  LOW_AT_IMPACT    1 (0.007)  LOW_AROUND_IMPACT    0 (0.000)
+  Town05_head-on       n   174  LOW_AT_IMPACT    1 (0.006)  LOW_AROUND_IMPACT    1 (0.006)
+  Town05_rear-end      n   277  LOW_AT_IMPACT    4 (0.014)  LOW_AROUND_IMPACT    3 (0.011)
+  Town05_sideswipe     n   107  LOW_AT_IMPACT    0 (0.000)  LOW_AROUND_IMPACT    0 (0.000)
+  Town06_head-on       n   202  LOW_AT_IMPACT    3 (0.015)  LOW_AROUND_IMPACT    2 (0.010)
+  Town06_sideswipe     n   159  LOW_AT_IMPACT    6 (0.038)  LOW_AROUND_IMPACT    2 (0.013)
+  Town07_rear-end      n   272  LOW_AT_IMPACT    1 (0.004)  LOW_AROUND_IMPACT    0 (0.000)
+  Town07_single        n    13  LOW_AT_IMPACT    0 (0.000)  LOW_AROUND_IMPACT    0 (0.000)
+  Town07_t-bone        n    43  LOW_AT_IMPACT    0 (0.000)  LOW_AROUND_IMPACT    0 (0.000)
+  Town10HD_single      n    53  LOW_AT_IMPACT    2 (0.038)  LOW_AROUND_IMPACT    2 (0.038)
+  Town10HD_t-bone      n   131  LOW_AT_IMPACT    1 (0.008)  LOW_AROUND_IMPACT    1 (0.008)
+by type:
+  head-on              n   588  LOW_AT_IMPACT    5 (0.009)  LOW_AROUND_IMPACT    3 (0.005)
+  rear-end             n   794  LOW_AT_IMPACT   13 (0.016)  LOW_AROUND_IMPACT    7 (0.009)
+  sideswipe            n   405  LOW_AT_IMPACT    7 (0.017)  LOW_AROUND_IMPACT    2 (0.005)
+  single               n    66  LOW_AT_IMPACT    2 (0.030)  LOW_AROUND_IMPACT    2 (0.030)
+  t-bone               n   358  LOW_AT_IMPACT    4 (0.011)  LOW_AROUND_IMPACT    2 (0.006)
+by weather:
+  clear                n   515  LOW_AT_IMPACT   12 (0.023)  LOW_AROUND_IMPACT    7 (0.014)
+  night                n   449  LOW_AT_IMPACT    6 (0.013)  LOW_AROUND_IMPACT    1 (0.002)
+  rain                 n   342  LOW_AT_IMPACT    2 (0.006)  LOW_AROUND_IMPACT    1 (0.003)
+  sunset               n   461  LOW_AT_IMPACT    5 (0.011)  LOW_AROUND_IMPACT    4 (0.009)
+  wet                  n   444  LOW_AT_IMPACT    6 (0.014)  LOW_AROUND_IMPACT    3 (0.007)
+by val_fold:
+  0                    n   770  LOW_AT_IMPACT   15 (0.019)  LOW_AROUND_IMPACT    9 (0.012)
+  1                    n   755  LOW_AT_IMPACT    8 (0.011)  LOW_AROUND_IMPACT    5 (0.007)
+  2                    n   686  LOW_AT_IMPACT    8 (0.012)  LOW_AROUND_IMPACT    2 (0.003)
+
+real	0m6.914s
+user	0m0.015s
+sys	0m0.015s
+exit 0

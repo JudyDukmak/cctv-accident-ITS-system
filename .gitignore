@@ -39,3 +39,11 @@ real_check/*.csv
 incoming/
 results/diagnostics/*/frames/
 results/real_test/scores/
+
+# big image folders and logs
+results/box_audit/clips/
+results/box_audit/grids/
+results/visibility_audit/check/
+gpu_check/*.log
+
+results/frame_audit

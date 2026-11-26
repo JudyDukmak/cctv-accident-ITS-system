@@ -1,0 +1,43 @@
+stem,looks_off,note
+Town03_head-on_sunset_05,no,box holds the white car 387 and the grey car 385 meeting at accident_frame
+Town03_head-on_rain_26,no,box holds the fire truck 387 and car 385 front to front; rain
+Town03_head-on_wet_11,no,box holds the red car 387 and the blue car 385 nose to nose
+Town03_t-bone_clear_03,no,box holds the white van 345 (tag truck) and car 343
+Town03_t-bone_clear_15,no,box holds the dark car 337 and the yellow taxi 335
+Town03_t-bone_clear_07,no,box holds the grey car 337 and the red car 335 meeting at an angle
+Town04_rear-end_sunset_12,no,"box holds the grey car 448 and the yellow taxi 450, one behind the other"
+Town04_rear-end_rain_27,no,"box holds cars 449 and 451, one behind the other; rain blur"
+Town04_rear-end_wet_30,yes,"the box agrees with the annotation, but at accident_frame its left half is covered by a tree that hides colliding car 449 (the same actor the segmentation filter dropped, check c); only the red car 451 shows at the right of the box, partly behind branches, and its blue box covers only its visible part; the collision itself is mostly not visible"
+Town04_sideswipe_sunset_21,no,box holds the dark car 449 and the red car 451 side by side
+Town04_sideswipe_rain_33,no,box holds the red car 448 and the white van 450 (tag truck) side by side; rain blur
+Town04_sideswipe_sunset_05,no,box holds the yellow taxi 449 and the red car 451 side by side
+Town05_head-on_sunset_48,no,"box holds cars 340 and 342, small and far from the camera; a black band covers the top of the frame (scene, not the box)"
+Town05_head-on_sunset_08,no,box holds car 340 and the white van 342 (tag truck)
+Town05_head-on_night_18,no,box holds the orange car 340 and car 342; car 342 is dark and hard to see at night
+Town05_rear-end_wet_145,no,box holds the fire truck 358 and car 356; car 356 is mostly hidden behind the truck
+Town05_rear-end_rain_229,no,"box holds cars 6153 and 6154, one behind the other; rain blur"
+Town05_rear-end_clear_202,no,box holds the red car 1242 and the white car 1243
+Town05_sideswipe_clear_26,no,box holds the two red cars 290 and 292 side by side
+Town05_sideswipe_sunset_33,no,box holds the dark car 290 and the yellow car 292
+Town05_sideswipe_clear_11,no,box holds the white vehicle 290 (tag truck) and the red car 292
+Town06_head-on_night_11,no,box holds the white car 2409 and truck 2411; the truck is almost invisible in the dark (its blue box shows a near-black area)
+Town06_head-on_sunset_10,no,"box touches the image bottom (check b edge): the fire truck 1418 is partly outside the image, so the box is clipped there; car 1416 is at the top of the box"
+Town06_head-on_clear_18,no,box holds the dark SUV 5392 and the red car 5390
+Town06_sideswipe_clear_04,no,"box holds the fire truck 374 and the small car 372 beside it, partly hidden by the truck"
+Town06_sideswipe_clear_00,no,box holds the grey car 372 and the yellow taxi 374
+Town06_sideswipe_night_45,no,box holds cars 372 and 374; both are dark and hard to see at night
+Town07_rear-end_sunset_16,no,"box holds the yellow taxi 207 and the red car 209, one behind the other"
+Town07_rear-end_rain_38,no,"box holds car 209 and the white SUV 207, one behind the other"
+Town07_rear-end_sunset_21,no,box holds the two red cars 207 and 209
+Town07_single_sunset_03,no,box holds the red car 223 and the small dynamic object 225 it hits
+Town07_single_clear_06,no,box holds the white vehicle 221 (tag truck) and the green dynamic object 223
+Town07_single_clear_07,no,box holds car 220 and the parasol-like dynamic object 222
+Town07_t-bone_clear_44,no,box holds the two white SUVs 229 and 227
+Town07_t-bone_clear_18,no,box holds the red car 227 and the grey car 229 meeting at an angle
+Town07_t-bone_clear_33,no,box holds the white van 229 (tag truck) and the white SUV 227
+Town10HD_single_wet_01,no,box holds the white car 211 and the small dynamic object 213
+Town10HD_single_sunset_04,no,box holds the white car 211 and the dynamic object 213
+Town10HD_single_rain_36,no,box holds vehicle 211 (tag truck) and dynamic object 213; the vehicle is partly behind a street banner; rain blur
+Town10HD_t-bone_clear_24,no,box holds the red car 207 and the yellow taxi 209
+Town10HD_t-bone_sunset_25,no,box holds the grey car 207 and the red car 209
+Town10HD_t-bone_sunset_51,no,box holds the yellow taxi 209 and the dark car 207; car 207 is partly behind a street banner

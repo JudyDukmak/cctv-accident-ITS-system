@@ -1,0 +1,3992 @@
+[
+ {
+  "stem": "Town03_head-on_sunset_05",
+  "scenario_id": "Town03_head-on",
+  "weather": "sunset",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 76,
+  "accident_time": 3.8,
+  "annotations_start_offset": 34,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town03_head-on_sunset_05.json\\Town03_head-on_sunset_05.json",
+  "annotation_found": true,
+  "n_collision_records": 360,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   385,
+   387
+  ],
+  "ann_box_px": [
+   654,
+   227,
+   830,
+   406
+  ],
+  "meta_box_px": [
+   654.0,
+   227.0,
+   830.0,
+   406.0
+  ],
+  "a_box_max_diff_px": 5.684341886080802e-14,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.4726383951244286,
+  "c_iou_enclosing_box": 0.7873920771965465,
+  "actor_enclosing_box_px": [
+   665,
+   238,
+   822,
+   396
+  ],
+  "c_pass": true,
+  "first_collision_tick": 110,
+  "d_frame_from_annotation": 76,
+  "d_pass": true,
+  "base_first_tick": 34,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 436,
+  "no_frames": 436,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 76.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   66,
+   76,
+   86
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   244,
+   54,
+   1367,
+   686
+  ]
+ },
+ {
+  "stem": "Town03_head-on_rain_26",
+  "scenario_id": "Town03_head-on",
+  "weather": "rain",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 57,
+  "accident_time": 2.85,
+  "annotations_start_offset": 52,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town03_head-on_rain_26.json\\Town03_head-on_rain_26.json",
+  "annotation_found": true,
+  "n_collision_records": 358,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   385,
+   387
+  ],
+  "ann_box_px": [
+   1018,
+   448,
+   1182,
+   809
+  ],
+  "meta_box_px": [
+   1018.0,
+   448.0,
+   1182.0,
+   809.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.7585467198162287,
+  "c_iou_enclosing_box": 0.8822883588946693,
+  "actor_enclosing_box_px": [
+   1022,
+   462,
+   1177,
+   799
+  ],
+  "c_pass": true,
+  "first_collision_tick": 109,
+  "d_frame_from_annotation": 57,
+  "d_pass": true,
+  "base_first_tick": 52,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 415,
+  "no_frames": 415,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 57.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   47,
+   57,
+   67
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   0,
+   0,
+   1920,
+   1080
+  ]
+ },
+ {
+  "stem": "Town03_head-on_wet_11",
+  "scenario_id": "Town03_head-on",
+  "weather": "wet",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 67,
+  "accident_time": 3.35,
+  "annotations_start_offset": 33,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town03_head-on_wet_11.json\\Town03_head-on_wet_11.json",
+  "annotation_found": true,
+  "n_collision_records": 266,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   385,
+   387
+  ],
+  "ann_box_px": [
+   978,
+   556,
+   1096,
+   922
+  ],
+  "meta_box_px": [
+   978.0,
+   556.0,
+   1096.0,
+   922.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.684078910808558,
+  "c_iou_enclosing_box": 0.882745207001945,
+  "actor_enclosing_box_px": [
+   985,
+   562,
+   1093,
+   915
+  ],
+  "c_pass": true,
+  "first_collision_tick": 100,
+  "d_frame_from_annotation": 67,
+  "d_pass": true,
+  "base_first_tick": 33,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 333,
+  "no_frames": 333,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 67.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   57,
+   67,
+   77
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   0,
+   0,
+   1920,
+   1080
+  ]
+ },
+ {
+  "stem": "Town03_t-bone_clear_03",
+  "scenario_id": "Town03_t-bone",
+  "weather": "clear",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 112,
+  "accident_time": 5.6,
+  "annotations_start_offset": 66,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town03_t-bone_clear_03.json\\Town03_t-bone_clear_03.json",
+  "annotation_found": true,
+  "n_collision_records": 285,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   343,
+   345
+  ],
+  "ann_box_px": [
+   845,
+   403,
+   986,
+   491
+  ],
+  "meta_box_px": [
+   845.0,
+   403.0,
+   986.0,
+   491.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.6512733720180529,
+  "c_iou_enclosing_box": 0.825354609929078,
+  "actor_enclosing_box_px": [
+   851,
+   408,
+   984,
+   485
+  ],
+  "c_pass": true,
+  "first_collision_tick": 178,
+  "d_frame_from_annotation": 112,
+  "d_pass": true,
+  "base_first_tick": 66,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 397,
+  "no_frames": 397,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 112.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   102,
+   112,
+   122
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   720,
+   321,
+   1140,
+   558
+  ]
+ },
+ {
+  "stem": "Town03_t-bone_clear_15",
+  "scenario_id": "Town03_t-bone",
+  "weather": "clear",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 130,
+  "accident_time": 6.5,
+  "annotations_start_offset": 43,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town03_t-bone_clear_15.json\\Town03_t-bone_clear_15.json",
+  "annotation_found": true,
+  "n_collision_records": 315,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   335,
+   337
+  ],
+  "ann_box_px": [
+   1400,
+   193,
+   1533,
+   348
+  ],
+  "meta_box_px": [
+   1400.0,
+   193.0,
+   1533.0,
+   348.0
+  ],
+  "a_box_max_diff_px": 5.684341886080802e-14,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.604656803298569,
+  "c_iou_enclosing_box": 0.7071064758670871,
+  "actor_enclosing_box_px": [
+   1408,
+   211,
+   1521,
+   340
+  ],
+  "c_pass": true,
+  "first_collision_tick": 173,
+  "d_frame_from_annotation": 130,
+  "d_pass": true,
+  "base_first_tick": 43,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 445,
+  "no_frames": 445,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 130.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   120,
+   130,
+   140
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   1090,
+   73,
+   1868,
+   511
+  ]
+ },
+ {
+  "stem": "Town03_t-bone_clear_07",
+  "scenario_id": "Town03_t-bone",
+  "weather": "clear",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 96,
+  "accident_time": 4.8,
+  "annotations_start_offset": 71,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town03_t-bone_clear_07.json\\Town03_t-bone_clear_07.json",
+  "annotation_found": true,
+  "n_collision_records": 339,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   335,
+   337
+  ],
+  "ann_box_px": [
+   314,
+   381,
+   484,
+   551
+  ],
+  "meta_box_px": [
+   314.0,
+   381.0,
+   484.0,
+   551.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.544083044982699,
+  "c_iou_enclosing_box": 0.7577854671280276,
+  "actor_enclosing_box_px": [
+   334,
+   393,
+   480,
+   543
+  ],
+  "c_pass": true,
+  "first_collision_tick": 167,
+  "d_frame_from_annotation": 96,
+  "d_pass": true,
+  "base_first_tick": 71,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 435,
+  "no_frames": 435,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 96.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   86,
+   96,
+   106
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   0,
+   192,
+   923,
+   711
+  ]
+ },
+ {
+  "stem": "Town04_rear-end_sunset_12",
+  "scenario_id": "Town04_rear-end",
+  "weather": "sunset",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 75,
+  "accident_time": 3.75,
+  "annotations_start_offset": 80,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town04_rear-end_sunset_12.json\\Town04_rear-end_sunset_12.json",
+  "annotation_found": true,
+  "n_collision_records": 320,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   448,
+   450
+  ],
+  "ann_box_px": [
+   846,
+   581,
+   941,
+   835
+  ],
+  "meta_box_px": [
+   846.0,
+   581.0,
+   941.0,
+   835.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.6067136344799006,
+  "c_iou_enclosing_box": 0.8482387070037298,
+  "actor_enclosing_box_px": [
+   851,
+   592,
+   937,
+   830
+  ],
+  "c_pass": true,
+  "first_collision_tick": 155,
+  "d_frame_from_annotation": 75,
+  "d_pass": true,
+  "base_first_tick": 80,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 395,
+  "no_frames": 395,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 75.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   65,
+   75,
+   85
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   6,
+   81,
+   1781,
+   1080
+  ]
+ },
+ {
+  "stem": "Town04_rear-end_rain_27",
+  "scenario_id": "Town04_rear-end",
+  "weather": "rain",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 102,
+  "accident_time": 5.1,
+  "annotations_start_offset": 43,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town04_rear-end_rain_27.json\\Town04_rear-end_rain_27.json",
+  "annotation_found": true,
+  "n_collision_records": 338,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   449,
+   451
+  ],
+  "ann_box_px": [
+   883,
+   475,
+   972,
+   641
+  ],
+  "meta_box_px": [
+   883.0,
+   475.0,
+   972.0,
+   641.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.5963178556924327,
+  "c_iou_enclosing_box": 0.8014078787058345,
+  "actor_enclosing_box_px": [
+   887,
+   486,
+   967,
+   634
+  ],
+  "c_pass": true,
+  "first_collision_tick": 145,
+  "d_frame_from_annotation": 102,
+  "d_pass": true,
+  "base_first_tick": 43,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 440,
+  "no_frames": 440,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 102.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   92,
+   102,
+   112
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   373,
+   243,
+   1479,
+   865
+  ]
+ },
+ {
+  "stem": "Town04_rear-end_wet_30",
+  "scenario_id": "Town04_rear-end",
+  "weather": "wet",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 120,
+  "accident_time": 6.0,
+  "annotations_start_offset": 38,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town04_rear-end_wet_30.json\\Town04_rear-end_wet_30.json",
+  "annotation_found": true,
+  "n_collision_records": 275,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   449,
+   451
+  ],
+  "ann_box_px": [
+   1194,
+   540,
+   1444,
+   618
+  ],
+  "meta_box_px": [
+   1194.0,
+   540.0,
+   1444.0,
+   618.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 1,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.15897435897435896,
+  "c_iou_enclosing_box": 0.15897435897435896,
+  "actor_enclosing_box_px": [
+   1353,
+   550,
+   1415,
+   600
+  ],
+  "c_pass": false,
+  "first_collision_tick": 158,
+  "d_frame_from_annotation": 120,
+  "d_pass": true,
+  "base_first_tick": 38,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 395,
+  "no_frames": 395,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 120.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   110,
+   120,
+   130
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   825,
+   335,
+   1689,
+   822
+  ]
+ },
+ {
+  "stem": "Town04_sideswipe_sunset_21",
+  "scenario_id": "Town04_sideswipe",
+  "weather": "sunset",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 159,
+  "accident_time": 7.95,
+  "annotations_start_offset": 122,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town04_sideswipe_sunset_21.json\\Town04_sideswipe_sunset_21.json",
+  "annotation_found": true,
+  "n_collision_records": 176,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   449,
+   451
+  ],
+  "ann_box_px": [
+   478,
+   387,
+   693,
+   504
+  ],
+  "meta_box_px": [
+   478.0,
+   387.0,
+   693.0,
+   504.0
+  ],
+  "a_box_max_diff_px": 5.684341886080802e-14,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.6432915921288014,
+  "c_iou_enclosing_box": 0.7024448419797257,
+  "actor_enclosing_box_px": [
+   494,
+   401,
+   684,
+   494
+  ],
+  "c_pass": true,
+  "first_collision_tick": 281,
+  "d_frame_from_annotation": 159,
+  "d_pass": true,
+  "base_first_tick": 122,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 335,
+  "no_frames": 335,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 159.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   149,
+   159,
+   169
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   229,
+   249,
+   898,
+   625
+  ]
+ },
+ {
+  "stem": "Town04_sideswipe_rain_33",
+  "scenario_id": "Town04_sideswipe",
+  "weather": "rain",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 118,
+  "accident_time": 5.9,
+  "annotations_start_offset": 164,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town04_sideswipe_rain_33.json\\Town04_sideswipe_rain_33.json",
+  "annotation_found": true,
+  "n_collision_records": 165,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   448,
+   450
+  ],
+  "ann_box_px": [
+   740,
+   513,
+   894,
+   607
+  ],
+  "meta_box_px": [
+   740.0,
+   513.0,
+   894.0,
+   607.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.7198121027908262,
+  "c_iou_enclosing_box": 0.843603205305333,
+  "actor_enclosing_box_px": [
+   748,
+   516,
+   890,
+   602
+  ],
+  "c_pass": true,
+  "first_collision_tick": 282,
+  "d_frame_from_annotation": 118,
+  "d_pass": true,
+  "base_first_tick": 164,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 283,
+  "no_frames": 283,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 118.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   108,
+   118,
+   128
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   586,
+   420,
+   1074,
+   695
+  ]
+ },
+ {
+  "stem": "Town04_sideswipe_sunset_05",
+  "scenario_id": "Town04_sideswipe",
+  "weather": "sunset",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 179,
+  "accident_time": 8.95,
+  "annotations_start_offset": 98,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town04_sideswipe_sunset_05.json\\Town04_sideswipe_sunset_05.json",
+  "annotation_found": true,
+  "n_collision_records": 189,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   449,
+   451
+  ],
+  "ann_box_px": [
+   488,
+   287,
+   673,
+   425
+  ],
+  "meta_box_px": [
+   488.0,
+   287.0,
+   673.0,
+   425.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.6385428907168038,
+  "c_iou_enclosing_box": 0.7170387779083431,
+  "actor_enclosing_box_px": [
+   503,
+   303,
+   665,
+   416
+  ],
+  "c_pass": true,
+  "first_collision_tick": 277,
+  "d_frame_from_annotation": 179,
+  "d_pass": true,
+  "base_first_tick": 98,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 368,
+  "no_frames": 368,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 179.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   169,
+   179,
+   189
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   135,
+   106,
+   987,
+   585
+  ]
+ },
+ {
+  "stem": "Town05_head-on_sunset_48",
+  "scenario_id": "Town05_head-on",
+  "weather": "sunset",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 154,
+  "accident_time": 7.7,
+  "annotations_start_offset": 46,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town05_head-on_sunset_48.json\\Town05_head-on_sunset_48.json",
+  "annotation_found": true,
+  "n_collision_records": 250,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   340,
+   342
+  ],
+  "ann_box_px": [
+   965,
+   372,
+   1162,
+   413
+  ],
+  "meta_box_px": [
+   965.0,
+   372.0,
+   1162.0,
+   413.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.8059923238826296,
+  "c_iou_enclosing_box": 0.8319920762659403,
+  "actor_enclosing_box_px": [
+   967,
+   377,
+   1159,
+   412
+  ],
+  "c_pass": true,
+  "first_collision_tick": 200,
+  "d_frame_from_annotation": 154,
+  "d_pass": true,
+  "base_first_tick": 46,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 404,
+  "no_frames": 404,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 154.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   144,
+   154,
+   164
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   666,
+   193,
+   1375,
+   591
+  ]
+ },
+ {
+  "stem": "Town05_head-on_sunset_08",
+  "scenario_id": "Town05_head-on",
+  "weather": "sunset",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 68,
+  "accident_time": 3.4,
+  "annotations_start_offset": 104,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town05_head-on_sunset_08.json\\Town05_head-on_sunset_08.json",
+  "annotation_found": true,
+  "n_collision_records": 196,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   340,
+   342
+  ],
+  "ann_box_px": [
+   1151,
+   107,
+   1413,
+   220
+  ],
+  "meta_box_px": [
+   1151.0,
+   107.0,
+   1413.0,
+   220.0
+  ],
+  "a_box_max_diff_px": 8.526512829121202e-14,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.5845774505167871,
+  "c_iou_enclosing_box": 0.8426332500168885,
+  "actor_enclosing_box_px": [
+   1158,
+   114,
+   1405,
+   215
+  ],
+  "c_pass": true,
+  "first_collision_tick": 172,
+  "d_frame_from_annotation": 68,
+  "d_pass": true,
+  "base_first_tick": 104,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 264,
+  "no_frames": 264,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 68.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   58,
+   68,
+   78
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   756,
+   0,
+   1682,
+   520
+  ]
+ },
+ {
+  "stem": "Town05_head-on_night_18",
+  "scenario_id": "Town05_head-on",
+  "weather": "night",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 84,
+  "accident_time": 4.2,
+  "annotations_start_offset": 95,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town05_head-on_night_18.json\\Town05_head-on_night_18.json",
+  "annotation_found": true,
+  "n_collision_records": 300,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   340,
+   342
+  ],
+  "ann_box_px": [
+   1013,
+   651,
+   1160,
+   894
+  ],
+  "meta_box_px": [
+   1013.0,
+   651.0,
+   1160.0,
+   894.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.5369950449315529,
+  "c_iou_enclosing_box": 0.770135214579659,
+  "actor_enclosing_box_px": [
+   1020,
+   669,
+   1151,
+   879
+  ],
+  "c_pass": true,
+  "first_collision_tick": 179,
+  "d_frame_from_annotation": 84,
+  "d_pass": true,
+  "base_first_tick": 95,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 384,
+  "no_frames": 384,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 84.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   74,
+   84,
+   94
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   412,
+   303,
+   1793,
+   1080
+  ]
+ },
+ {
+  "stem": "Town05_rear-end_wet_145",
+  "scenario_id": "Town05_rear-end",
+  "weather": "wet",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 193,
+  "accident_time": 9.65,
+  "annotations_start_offset": 28,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town05_rear-end_wet_145.json\\Town05_rear-end_wet_145.json",
+  "annotation_found": true,
+  "n_collision_records": 184,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   356,
+   358
+  ],
+  "ann_box_px": [
+   145,
+   421,
+   648,
+   678
+  ],
+  "meta_box_px": [
+   145.0,
+   421.0,
+   648.0,
+   678.0
+  ],
+  "a_box_max_diff_px": 5.684341886080802e-14,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.7076915936288881,
+  "c_iou_enclosing_box": 0.8166100672231205,
+  "actor_enclosing_box_px": [
+   174,
+   431,
+   637,
+   659
+  ],
+  "c_pass": true,
+  "first_collision_tick": 221,
+  "d_frame_from_annotation": 193,
+  "d_pass": true,
+  "base_first_tick": 28,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 377,
+  "no_frames": 377,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 193.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   183,
+   193,
+   203
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   0,
+   157,
+   1416,
+   954
+  ]
+ },
+ {
+  "stem": "Town05_rear-end_rain_229",
+  "scenario_id": "Town05_rear-end",
+  "weather": "rain",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 291,
+  "accident_time": 14.55,
+  "annotations_start_offset": 54,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town05_rear-end_rain_229.json\\Town05_rear-end_rain_229.json",
+  "annotation_found": true,
+  "n_collision_records": 68,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   6154,
+   6153
+  ],
+  "ann_box_px": [
+   608,
+   429,
+   807,
+   595
+  ],
+  "meta_box_px": [
+   608.0,
+   429.0,
+   807.0,
+   595.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.4781134588605679,
+  "c_iou_enclosing_box": 0.7822849185687474,
+  "actor_enclosing_box_px": [
+   621,
+   439,
+   798,
+   585
+  ],
+  "c_pass": true,
+  "first_collision_tick": 345,
+  "d_frame_from_annotation": 291,
+  "d_pass": true,
+  "base_first_tick": 54,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 359,
+  "no_frames": 359,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 291.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   281,
+   291,
+   301
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   337,
+   278,
+   1119,
+   718
+  ]
+ },
+ {
+  "stem": "Town05_rear-end_clear_202",
+  "scenario_id": "Town05_rear-end",
+  "weather": "clear",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 200,
+  "accident_time": 10.0,
+  "annotations_start_offset": 140,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town05_rear-end_clear_202.json\\Town05_rear-end_clear_202.json",
+  "annotation_found": true,
+  "n_collision_records": 116,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   1243,
+   1242
+  ],
+  "ann_box_px": [
+   1022,
+   583,
+   1201,
+   778
+  ],
+  "meta_box_px": [
+   1022.0,
+   583.0,
+   1201.0,
+   778.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.48488755192665806,
+  "c_iou_enclosing_box": 0.7795158286778399,
+  "actor_enclosing_box_px": [
+   1028,
+   597,
+   1189,
+   766
+  ],
+  "c_pass": true,
+  "first_collision_tick": 340,
+  "d_frame_from_annotation": 200,
+  "d_pass": true,
+  "base_first_tick": 140,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 316,
+  "no_frames": 316,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 200.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   190,
+   200,
+   210
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   602,
+   409,
+   1650,
+   998
+  ]
+ },
+ {
+  "stem": "Town05_sideswipe_clear_26",
+  "scenario_id": "Town05_sideswipe",
+  "weather": "clear",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 188,
+  "accident_time": 9.4,
+  "annotations_start_offset": 33,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town05_sideswipe_clear_26.json\\Town05_sideswipe_clear_26.json",
+  "annotation_found": true,
+  "n_collision_records": 280,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   290,
+   292
+  ],
+  "ann_box_px": [
+   1039,
+   211,
+   1188,
+   353
+  ],
+  "meta_box_px": [
+   1039.0,
+   211.0,
+   1188.0,
+   353.0
+  ],
+  "a_box_max_diff_px": 5.684341886080802e-14,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.518905378580206,
+  "c_iou_enclosing_box": 0.6182058795727384,
+  "actor_enclosing_box_px": [
+   1054,
+   233,
+   1174,
+   342
+  ],
+  "c_pass": true,
+  "first_collision_tick": 221,
+  "d_frame_from_annotation": 188,
+  "d_pass": true,
+  "base_first_tick": 33,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 468,
+  "no_frames": 468,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 188.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   178,
+   188,
+   198
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   788,
+   105,
+   1477,
+   492
+  ]
+ },
+ {
+  "stem": "Town05_sideswipe_sunset_33",
+  "scenario_id": "Town05_sideswipe",
+  "weather": "sunset",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 153,
+  "accident_time": 7.65,
+  "annotations_start_offset": 70,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town05_sideswipe_sunset_33.json\\Town05_sideswipe_sunset_33.json",
+  "annotation_found": true,
+  "n_collision_records": 187,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   290,
+   292
+  ],
+  "ann_box_px": [
+   876,
+   656,
+   1007,
+   778
+  ],
+  "meta_box_px": [
+   876.0,
+   656.0,
+   1007.0,
+   778.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.49418095357276937,
+  "c_iou_enclosing_box": 0.638968839944938,
+  "actor_enclosing_box_px": [
+   883,
+   675,
+   994,
+   767
+  ],
+  "c_pass": true,
+  "first_collision_tick": 223,
+  "d_frame_from_annotation": 153,
+  "d_pass": true,
+  "base_first_tick": 70,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 340,
+  "no_frames": 340,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 153.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   143,
+   153,
+   163
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   630,
+   566,
+   1216,
+   896
+  ]
+ },
+ {
+  "stem": "Town05_sideswipe_clear_11",
+  "scenario_id": "Town05_sideswipe",
+  "weather": "clear",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 191,
+  "accident_time": 9.55,
+  "annotations_start_offset": 34,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town05_sideswipe_clear_11.json\\Town05_sideswipe_clear_11.json",
+  "annotation_found": true,
+  "n_collision_records": 228,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   290,
+   292
+  ],
+  "ann_box_px": [
+   1060,
+   644,
+   1209,
+   809
+  ],
+  "meta_box_px": [
+   1060.0,
+   644.0,
+   1209.0,
+   809.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.64954240390482,
+  "c_iou_enclosing_box": 0.7516778523489933,
+  "actor_enclosing_box_px": [
+   1066,
+   660,
+   1198,
+   800
+  ],
+  "c_pass": true,
+  "first_collision_tick": 225,
+  "d_frame_from_annotation": 191,
+  "d_pass": true,
+  "base_first_tick": 34,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 419,
+  "no_frames": 419,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 191.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   181,
+   191,
+   201
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   711,
+   507,
+   1583,
+   997
+  ]
+ },
+ {
+  "stem": "Town06_head-on_night_11",
+  "scenario_id": "Town06_head-on",
+  "weather": "night",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 288,
+  "accident_time": 14.4,
+  "annotations_start_offset": 81,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town06_head-on_night_11.json\\Town06_head-on_night_11.json",
+  "annotation_found": true,
+  "n_collision_records": 199,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   2409,
+   2411
+  ],
+  "ann_box_px": [
+   709,
+   266,
+   899,
+   325
+  ],
+  "meta_box_px": [
+   709.0,
+   266.0,
+   899.0,
+   325.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.7546833184656556,
+  "c_iou_enclosing_box": 0.8117752007136485,
+  "actor_enclosing_box_px": [
+   716,
+   271,
+   898,
+   321
+  ],
+  "c_pass": true,
+  "first_collision_tick": 369,
+  "d_frame_from_annotation": 288,
+  "d_pass": true,
+  "base_first_tick": 81,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 487,
+  "no_frames": 487,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 288.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   278,
+   288,
+   298
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   429,
+   99,
+   1139,
+   498
+  ]
+ },
+ {
+  "stem": "Town06_head-on_sunset_10",
+  "scenario_id": "Town06_head-on",
+  "weather": "sunset",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 164,
+  "accident_time": 8.2,
+  "annotations_start_offset": 120,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town06_head-on_sunset_10.json\\Town06_head-on_sunset_10.json",
+  "annotation_found": true,
+  "n_collision_records": 162,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   1416,
+   1418
+  ],
+  "ann_box_px": [
+   1450,
+   884,
+   1814,
+   1079
+  ],
+  "meta_box_px": [
+   1450.0,
+   884.0,
+   1814.0,
+   1079.0
+  ],
+  "a_box_max_diff_px": 2.2737367544323206e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "bottom",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.5659763313609467,
+  "c_iou_enclosing_box": 0.8817413355874895,
+  "actor_enclosing_box_px": [
+   1460,
+   896,
+   1802,
+   1079
+  ],
+  "c_pass": true,
+  "first_collision_tick": 284,
+  "d_frame_from_annotation": 164,
+  "d_pass": true,
+  "base_first_tick": 120,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 326,
+  "no_frames": 326,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 164.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   154,
+   164,
+   174
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   921,
+   518,
+   1920,
+   1080
+  ]
+ },
+ {
+  "stem": "Town06_head-on_clear_18",
+  "scenario_id": "Town06_head-on",
+  "weather": "clear",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 289,
+  "accident_time": 14.45,
+  "annotations_start_offset": 75,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town06_head-on_clear_18.json\\Town06_head-on_clear_18.json",
+  "annotation_found": true,
+  "n_collision_records": 38,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   5390,
+   5392
+  ],
+  "ann_box_px": [
+   1027,
+   592,
+   1166,
+   673
+  ],
+  "meta_box_px": [
+   1027.0,
+   592.0,
+   1166.0,
+   673.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.5202948752109423,
+  "c_iou_enclosing_box": 0.8082422950528466,
+  "actor_enclosing_box_px": [
+   1031,
+   599,
+   1161,
+   669
+  ],
+  "c_pass": true,
+  "first_collision_tick": 364,
+  "d_frame_from_annotation": 289,
+  "d_pass": true,
+  "base_first_tick": 75,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 327,
+  "no_frames": 327,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 289.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   279,
+   289,
+   299
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   893,
+   517,
+   1305,
+   749
+  ]
+ },
+ {
+  "stem": "Town06_sideswipe_clear_04",
+  "scenario_id": "Town06_sideswipe",
+  "weather": "clear",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 195,
+  "accident_time": 9.75,
+  "annotations_start_offset": 171,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town06_sideswipe_clear_04.json\\Town06_sideswipe_clear_04.json",
+  "annotation_found": true,
+  "n_collision_records": 84,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   372,
+   374
+  ],
+  "ann_box_px": [
+   558,
+   714,
+   772,
+   883
+  ],
+  "meta_box_px": [
+   558.0,
+   714.0,
+   772.0,
+   883.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.6702151191727036,
+  "c_iou_enclosing_box": 0.8704860919095283,
+  "actor_enclosing_box_px": [
+   569,
+   721,
+   767,
+   880
+  ],
+  "c_pass": true,
+  "first_collision_tick": 366,
+  "d_frame_from_annotation": 195,
+  "d_pass": true,
+  "base_first_tick": 171,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 279,
+  "no_frames": 279,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 195.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   185,
+   195,
+   205
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   305,
+   586,
+   1048,
+   1004
+  ]
+ },
+ {
+  "stem": "Town06_sideswipe_clear_00",
+  "scenario_id": "Town06_sideswipe",
+  "weather": "clear",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 314,
+  "accident_time": 15.7,
+  "annotations_start_offset": 60,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town06_sideswipe_clear_00.json\\Town06_sideswipe_clear_00.json",
+  "annotation_found": true,
+  "n_collision_records": 71,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   372,
+   374
+  ],
+  "ann_box_px": [
+   631,
+   289,
+   707,
+   378
+  ],
+  "meta_box_px": [
+   631.0,
+   289.0,
+   707.0,
+   378.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.49541691306918983,
+  "c_iou_enclosing_box": 0.6726788882318155,
+  "actor_enclosing_box_px": [
+   639,
+   300,
+   704,
+   370
+  ],
+  "c_pass": true,
+  "first_collision_tick": 374,
+  "d_frame_from_annotation": 314,
+  "d_pass": true,
+  "base_first_tick": 60,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 385,
+  "no_frames": 385,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 314.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   304,
+   314,
+   324
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   411,
+   203,
+   927,
+   494
+  ]
+ },
+ {
+  "stem": "Town06_sideswipe_night_45",
+  "scenario_id": "Town06_sideswipe",
+  "weather": "night",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 255,
+  "accident_time": 12.75,
+  "annotations_start_offset": 122,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town06_sideswipe_night_45.json\\Town06_sideswipe_night_45.json",
+  "annotation_found": true,
+  "n_collision_records": 72,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   372,
+   374
+  ],
+  "ann_box_px": [
+   789,
+   380,
+   863,
+   426
+  ],
+  "meta_box_px": [
+   789.0,
+   380.0,
+   863.0,
+   426.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.5904817861339601,
+  "c_iou_enclosing_box": 0.6891891891891891,
+  "actor_enclosing_box_px": [
+   791,
+   388,
+   860,
+   422
+  ],
+  "c_pass": true,
+  "first_collision_tick": 377,
+  "d_frame_from_annotation": 255,
+  "d_pass": true,
+  "base_first_tick": 122,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 327,
+  "no_frames": 327,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 255.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   245,
+   255,
+   265
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   669,
+   316,
+   989,
+   496
+  ]
+ },
+ {
+  "stem": "Town07_rear-end_sunset_16",
+  "scenario_id": "Town07_rear-end",
+  "weather": "sunset",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 169,
+  "accident_time": 8.45,
+  "annotations_start_offset": 63,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town07_rear-end_sunset_16.json\\Town07_rear-end_sunset_16.json",
+  "annotation_found": true,
+  "n_collision_records": 110,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   207,
+   209
+  ],
+  "ann_box_px": [
+   924,
+   332,
+   1086,
+   629
+  ],
+  "meta_box_px": [
+   924.0,
+   332.0,
+   1086.0,
+   629.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.5505881863906555,
+  "c_iou_enclosing_box": 0.7560793116348672,
+  "actor_enclosing_box_px": [
+   931,
+   358,
+   1072,
+   616
+  ],
+  "c_pass": true,
+  "first_collision_tick": 232,
+  "d_frame_from_annotation": 169,
+  "d_pass": true,
+  "base_first_tick": 63,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 279,
+  "no_frames": 279,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 169.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   159,
+   169,
+   179
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   324,
+   120,
+   1705,
+   896
+  ]
+ },
+ {
+  "stem": "Town07_rear-end_rain_38",
+  "scenario_id": "Town07_rear-end",
+  "weather": "rain",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 174,
+  "accident_time": 8.7,
+  "annotations_start_offset": 57,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town07_rear-end_rain_38.json\\Town07_rear-end_rain_38.json",
+  "annotation_found": true,
+  "n_collision_records": 115,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   207,
+   209
+  ],
+  "ann_box_px": [
+   694,
+   346,
+   801,
+   515
+  ],
+  "meta_box_px": [
+   694.0,
+   346.0,
+   801.0,
+   515.0
+  ],
+  "a_box_max_diff_px": 5.684341886080802e-14,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.6467953326328596,
+  "c_iou_enclosing_box": 0.7695625725819831,
+  "actor_enclosing_box_px": [
+   697,
+   359,
+   795,
+   501
+  ],
+  "c_pass": true,
+  "first_collision_tick": 231,
+  "d_frame_from_annotation": 174,
+  "d_pass": true,
+  "base_first_tick": 57,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 289,
+  "no_frames": 289,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 174.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   164,
+   174,
+   184
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   401,
+   233,
+   1089,
+   620
+  ]
+ },
+ {
+  "stem": "Town07_rear-end_sunset_21",
+  "scenario_id": "Town07_rear-end",
+  "weather": "sunset",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 189,
+  "accident_time": 9.45,
+  "annotations_start_offset": 38,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town07_rear-end_sunset_21.json\\Town07_rear-end_sunset_21.json",
+  "annotation_found": true,
+  "n_collision_records": 153,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   207,
+   209
+  ],
+  "ann_box_px": [
+   871,
+   337,
+   1049,
+   494
+  ],
+  "meta_box_px": [
+   871.0,
+   337.0,
+   1049.0,
+   494.0
+  ],
+  "a_box_max_diff_px": 5.684341886080802e-14,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.4661490016460316,
+  "c_iou_enclosing_box": 0.7719888356115365,
+  "actor_enclosing_box_px": [
+   878,
+   351,
+   1039,
+   485
+  ],
+  "c_pass": true,
+  "first_collision_tick": 227,
+  "d_frame_from_annotation": 189,
+  "d_pass": true,
+  "base_first_tick": 38,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 342,
+  "no_frames": 342,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 189.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   179,
+   189,
+   199
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   640,
+   226,
+   1294,
+   594
+  ]
+ },
+ {
+  "stem": "Town07_single_sunset_03",
+  "scenario_id": "Town07_single",
+  "weather": "sunset",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 278,
+  "accident_time": 13.9,
+  "annotations_start_offset": 49,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town07_single_sunset_03.json\\Town07_single_sunset_03.json",
+  "annotation_found": true,
+  "n_collision_records": 31,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   223,
+   225
+  ],
+  "ann_box_px": [
+   988,
+   657,
+   1087,
+   828
+  ],
+  "meta_box_px": [
+   988.0,
+   657.0,
+   1087.0,
+   828.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.722133616870459,
+  "c_iou_enclosing_box": 0.8477760056707425,
+  "actor_enclosing_box_px": [
+   994,
+   664,
+   1086,
+   820
+  ],
+  "c_pass": true,
+  "first_collision_tick": 327,
+  "d_frame_from_annotation": 278,
+  "d_pass": true,
+  "base_first_tick": 49,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 309,
+  "no_frames": 309,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 278.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   268,
+   278,
+   288
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   509,
+   492,
+   1553,
+   1080
+  ]
+ },
+ {
+  "stem": "Town07_single_clear_06",
+  "scenario_id": "Town07_single",
+  "weather": "clear",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 256,
+  "accident_time": 12.8,
+  "annotations_start_offset": 82,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town07_single_clear_06.json\\Town07_single_clear_06.json",
+  "annotation_found": true,
+  "n_collision_records": 43,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   221,
+   223
+  ],
+  "ann_box_px": [
+   1233,
+   768,
+   1420,
+   938
+  ],
+  "meta_box_px": [
+   1233.0,
+   768.0,
+   1420.0,
+   938.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.6391632588864423,
+  "c_iou_enclosing_box": 0.8435042466184335,
+  "actor_enclosing_box_px": [
+   1236,
+   775,
+   1409,
+   930
+  ],
+  "c_pass": true,
+  "first_collision_tick": 338,
+  "d_frame_from_annotation": 256,
+  "d_pass": true,
+  "base_first_tick": 82,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 299,
+  "no_frames": 299,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 256.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   246,
+   256,
+   266
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   942,
+   607,
+   1783,
+   1080
+  ]
+ },
+ {
+  "stem": "Town07_single_clear_07",
+  "scenario_id": "Town07_single",
+  "weather": "clear",
+  "val_fold": "1",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 223,
+  "accident_time": 11.15,
+  "annotations_start_offset": 105,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town07_single_clear_07.json\\Town07_single_clear_07.json",
+  "annotation_found": true,
+  "n_collision_records": 43,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   220,
+   222
+  ],
+  "ann_box_px": [
+   1174,
+   631,
+   1345,
+   737
+  ],
+  "meta_box_px": [
+   1174.0,
+   631.0,
+   1345.0,
+   737.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.5158887785501489,
+  "c_iou_enclosing_box": 0.7391592188017213,
+  "actor_enclosing_box_px": [
+   1185,
+   644,
+   1339,
+   731
+  ],
+  "c_pass": true,
+  "first_collision_tick": 328,
+  "d_frame_from_annotation": 223,
+  "d_pass": true,
+  "base_first_tick": 105,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 266,
+  "no_frames": 266,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 223.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   213,
+   223,
+   233
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   1032,
+   538,
+   1551,
+   830
+  ]
+ },
+ {
+  "stem": "Town07_t-bone_clear_44",
+  "scenario_id": "Town07_t-bone",
+  "weather": "clear",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 103,
+  "accident_time": 5.15,
+  "annotations_start_offset": 44,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town07_t-bone_clear_44.json\\Town07_t-bone_clear_44.json",
+  "annotation_found": true,
+  "n_collision_records": 147,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   227,
+   229
+  ],
+  "ann_box_px": [
+   239,
+   295,
+   706,
+   495
+  ],
+  "meta_box_px": [
+   239.0,
+   295.0,
+   706.0,
+   495.0
+  ],
+  "a_box_max_diff_px": 1.4210854715202004e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.7423768736616703,
+  "c_iou_enclosing_box": 0.8135438972162741,
+  "actor_enclosing_box_px": [
+   244,
+   308,
+   699,
+   475
+  ],
+  "c_pass": true,
+  "first_collision_tick": 147,
+  "d_frame_from_annotation": 103,
+  "d_pass": true,
+  "base_first_tick": 44,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 250,
+  "no_frames": 250,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 103.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   93,
+   103,
+   113
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   0,
+   0,
+   1559,
+   877
+  ]
+ },
+ {
+  "stem": "Town07_t-bone_clear_18",
+  "scenario_id": "Town07_t-bone",
+  "weather": "clear",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 116,
+  "accident_time": 5.8,
+  "annotations_start_offset": 33,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town07_t-bone_clear_18.json\\Town07_t-bone_clear_18.json",
+  "annotation_found": true,
+  "n_collision_records": 218,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   227,
+   229
+  ],
+  "ann_box_px": [
+   801,
+   623,
+   1010,
+   894
+  ],
+  "meta_box_px": [
+   801.0,
+   623.0,
+   1010.0,
+   894.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.6039301541340772,
+  "c_iou_enclosing_box": 0.7437631314112184,
+  "actor_enclosing_box_px": [
+   818,
+   637,
+   995,
+   875
+  ],
+  "c_pass": true,
+  "first_collision_tick": 149,
+  "d_frame_from_annotation": 116,
+  "d_pass": true,
+  "base_first_tick": 33,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 334,
+  "no_frames": 334,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 116.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   106,
+   116,
+   126
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   61,
+   202,
+   1622,
+   1080
+  ]
+ },
+ {
+  "stem": "Town07_t-bone_clear_33",
+  "scenario_id": "Town07_t-bone",
+  "weather": "clear",
+  "val_fold": "2",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 111,
+  "accident_time": 5.55,
+  "annotations_start_offset": 37,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town07_t-bone_clear_33.json\\Town07_t-bone_clear_33.json",
+  "annotation_found": true,
+  "n_collision_records": 147,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   227,
+   229
+  ],
+  "ann_box_px": [
+   831,
+   680,
+   1212,
+   943
+  ],
+  "meta_box_px": [
+   831.0,
+   680.0,
+   1212.0,
+   943.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.6747302974960829,
+  "c_iou_enclosing_box": 0.8324501262437253,
+  "actor_enclosing_box_px": [
+   839,
+   695,
+   1197,
+   928
+  ],
+  "c_pass": true,
+  "first_collision_tick": 148,
+  "d_frame_from_annotation": 111,
+  "d_pass": true,
+  "base_first_tick": 37,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 258,
+  "no_frames": 258,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 111.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   101,
+   111,
+   121
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   314,
+   338,
+   1632,
+   1080
+  ]
+ },
+ {
+  "stem": "Town10HD_single_wet_01",
+  "scenario_id": "Town10HD_single",
+  "weather": "wet",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 114,
+  "accident_time": 5.7,
+  "annotations_start_offset": 34,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town10HD_single_wet_01.json\\Town10HD_single_wet_01.json",
+  "annotation_found": true,
+  "n_collision_records": 303,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   211,
+   213
+  ],
+  "ann_box_px": [
+   931,
+   582,
+   1084,
+   800
+  ],
+  "meta_box_px": [
+   931.0,
+   582.0,
+   1084.0,
+   800.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.6549439347604485,
+  "c_iou_enclosing_box": 0.8660430533069496,
+  "actor_enclosing_box_px": [
+   931,
+   582,
+   1074,
+   784
+  ],
+  "c_pass": true,
+  "first_collision_tick": 148,
+  "d_frame_from_annotation": 114,
+  "d_pass": true,
+  "base_first_tick": 34,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 417,
+  "no_frames": 417,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 114.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   104,
+   114,
+   124
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   152,
+   85,
+   1920,
+   1080
+  ]
+ },
+ {
+  "stem": "Town10HD_single_sunset_04",
+  "scenario_id": "Town10HD_single",
+  "weather": "sunset",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 90,
+  "accident_time": 4.5,
+  "annotations_start_offset": 58,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town10HD_single_sunset_04.json\\Town10HD_single_sunset_04.json",
+  "annotation_found": true,
+  "n_collision_records": 302,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   211,
+   213
+  ],
+  "ann_box_px": [
+   956,
+   655,
+   1210,
+   790
+  ],
+  "meta_box_px": [
+   956.0,
+   655.0,
+   1210.0,
+   790.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.626071741032371,
+  "c_iou_enclosing_box": 0.8643919510061242,
+  "actor_enclosing_box_px": [
+   956,
+   664,
+   1203,
+   784
+  ],
+  "c_pass": true,
+  "first_collision_tick": 148,
+  "d_frame_from_annotation": 90,
+  "d_pass": true,
+  "base_first_tick": 58,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 392,
+  "no_frames": 392,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 90.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   80,
+   90,
+   100
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   635,
+   417,
+   1812,
+   1080
+  ]
+ },
+ {
+  "stem": "Town10HD_single_rain_36",
+  "scenario_id": "Town10HD_single",
+  "weather": "rain",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 215,
+  "accident_time": 10.75,
+  "annotations_start_offset": 32,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town10HD_single_rain_36.json\\Town10HD_single_rain_36.json",
+  "annotation_found": true,
+  "n_collision_records": 134,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   211,
+   213
+  ],
+  "ann_box_px": [
+   973,
+   483,
+   1059,
+   603
+  ],
+  "meta_box_px": [
+   973.0,
+   483.0,
+   1059.0,
+   603.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.789922480620155,
+  "c_iou_enclosing_box": 0.8114341085271318,
+  "actor_enclosing_box_px": [
+   975,
+   485,
+   1054,
+   591
+  ],
+  "c_pass": true,
+  "first_collision_tick": 247,
+  "d_frame_from_annotation": 215,
+  "d_pass": true,
+  "base_first_tick": 32,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 349,
+  "no_frames": 349,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 215.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   205,
+   215,
+   225
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   724,
+   369,
+   1296,
+   690
+  ]
+ },
+ {
+  "stem": "Town10HD_t-bone_clear_24",
+  "scenario_id": "Town10HD_t-bone",
+  "weather": "clear",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 126,
+  "accident_time": 6.3,
+  "annotations_start_offset": 56,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town10HD_t-bone_clear_24.json\\Town10HD_t-bone_clear_24.json",
+  "annotation_found": true,
+  "n_collision_records": 232,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   207,
+   209
+  ],
+  "ann_box_px": [
+   1262,
+   463,
+   1578,
+   743
+  ],
+  "meta_box_px": [
+   1262.0,
+   463.0,
+   1578.0,
+   743.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.560748191681736,
+  "c_iou_enclosing_box": 0.7269439421338155,
+  "actor_enclosing_box_px": [
+   1282,
+   487,
+   1550,
+   727
+  ],
+  "c_pass": true,
+  "first_collision_tick": 182,
+  "d_frame_from_annotation": 126,
+  "d_pass": true,
+  "base_first_tick": 56,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 358,
+  "no_frames": 358,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 126.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   116,
+   126,
+   136
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   433,
+   189,
+   1920,
+   1026
+  ]
+ },
+ {
+  "stem": "Town10HD_t-bone_sunset_25",
+  "scenario_id": "Town10HD_t-bone",
+  "weather": "sunset",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 107,
+  "accident_time": 5.35,
+  "annotations_start_offset": 74,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town10HD_t-bone_sunset_25.json\\Town10HD_t-bone_sunset_25.json",
+  "annotation_found": true,
+  "n_collision_records": 238,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   207,
+   209
+  ],
+  "ann_box_px": [
+   1217,
+   450,
+   1420,
+   668
+  ],
+  "meta_box_px": [
+   1217.0,
+   450.0,
+   1420.0,
+   668.0
+  ],
+  "a_box_max_diff_px": 0.0,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.5654178153387265,
+  "c_iou_enclosing_box": 0.7434356216387219,
+  "actor_enclosing_box_px": [
+   1228,
+   466,
+   1403,
+   654
+  ],
+  "c_pass": true,
+  "first_collision_tick": 181,
+  "d_frame_from_annotation": 107,
+  "d_pass": true,
+  "base_first_tick": 74,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 345,
+  "no_frames": 345,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 107.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   97,
+   107,
+   117
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   722,
+   223,
+   1865,
+   866
+  ]
+ },
+ {
+  "stem": "Town10HD_t-bone_sunset_51",
+  "scenario_id": "Town10HD_t-bone",
+  "weather": "sunset",
+  "val_fold": "0",
+  "W": 1920,
+  "H": 1080,
+  "fps": 20.0,
+  "accident_frame": 51,
+  "accident_time": 2.55,
+  "annotations_start_offset": 131,
+  "annotation_file": "ACCIDENT\\dataset\\synthetic_videos\\annotations\\Town10HD_t-bone_sunset_51.json\\Town10HD_t-bone_sunset_51.json",
+  "annotation_found": true,
+  "n_collision_records": 249,
+  "first_record_is_earliest": true,
+  "collision_ids": [
+   207,
+   209
+  ],
+  "ann_box_px": [
+   863,
+   338,
+   1039,
+   425
+  ],
+  "meta_box_px": [
+   863.0,
+   338.0,
+   1039.0,
+   425.0
+  ],
+  "a_box_max_diff_px": 1.1368683772161603e-13,
+  "a_pass": true,
+  "b_pass": true,
+  "b_touches_edge": "",
+  "n_actors": 2,
+  "n_actors_with_box": 2,
+  "c_min_share_inside": 1.0,
+  "c_iou_union": 0.5363113897596656,
+  "c_iou_enclosing_box": 0.7314524555903866,
+  "actor_enclosing_box_px": [
+   868,
+   350,
+   1028,
+   420
+  ],
+  "c_pass": true,
+  "first_collision_tick": 182,
+  "d_frame_from_annotation": 51,
+  "d_pass": true,
+  "base_first_tick": 131,
+  "base_ticks_contiguous": true,
+  "base_n_ticks": 300,
+  "no_frames": 300,
+  "base_first_tick_eq_offset": true,
+  "accident_time_x_fps": 51.0,
+  "e_vis_fields": [],
+  "object_keys": [
+   "2d_bbox",
+   "extent",
+   "id",
+   "location",
+   "rotation",
+   "tag"
+  ],
+  "top_keys": [
+   "base",
+   "collision",
+   "sensor"
+  ],
+  "collision_keys": [
+   "collision_bbox",
+   "ids",
+   "iteration"
+  ],
+  "frames_drawn": [
+   41,
+   51,
+   61
+  ],
+  "frames_clamped": false,
+  "decoded_size": [
+   [
+    1920,
+    1080
+   ]
+  ],
+  "decoded_size_eq_meta": true,
+  "grid_crop_px": [
+   647,
+   216,
+   1232,
+   546
+  ]
+ }
+]

@@ -1,0 +1,45 @@
+command: .venv-ml/Scripts/python.exe box_audit.py --audit   (2026-11-24T20:46:26Z)
+Town03_head-on_sunset_05: a True b True c True d True min share 1.0 IoU 0.4726383951244286 -> Town03_head-on_sunset_05.jpg
+Town03_head-on_rain_26: a True b True c True d True min share 1.0 IoU 0.7585467198162287 -> Town03_head-on_rain_26.jpg
+Town03_head-on_wet_11: a True b True c True d True min share 1.0 IoU 0.684078910808558 -> Town03_head-on_wet_11.jpg
+Town03_t-bone_clear_03: a True b True c True d True min share 1.0 IoU 0.6512733720180529 -> Town03_t-bone_clear_03.jpg
+Town03_t-bone_clear_15: a True b True c True d True min share 1.0 IoU 0.604656803298569 -> Town03_t-bone_clear_15.jpg
+Town03_t-bone_clear_07: a True b True c True d True min share 1.0 IoU 0.544083044982699 -> Town03_t-bone_clear_07.jpg
+Town04_rear-end_sunset_12: a True b True c True d True min share 1.0 IoU 0.6067136344799006 -> Town04_rear-end_sunset_12.jpg
+Town04_rear-end_rain_27: a True b True c True d True min share 1.0 IoU 0.5963178556924327 -> Town04_rear-end_rain_27.jpg
+Town04_rear-end_wet_30: a True b True c False d True min share 1.0 IoU 0.15897435897435896 -> Town04_rear-end_wet_30.jpg
+Town04_sideswipe_sunset_21: a True b True c True d True min share 1.0 IoU 0.6432915921288014 -> Town04_sideswipe_sunset_21.jpg
+Town04_sideswipe_rain_33: a True b True c True d True min share 1.0 IoU 0.7198121027908262 -> Town04_sideswipe_rain_33.jpg
+Town04_sideswipe_sunset_05: a True b True c True d True min share 1.0 IoU 0.6385428907168038 -> Town04_sideswipe_sunset_05.jpg
+Town05_head-on_sunset_48: a True b True c True d True min share 1.0 IoU 0.8059923238826296 -> Town05_head-on_sunset_48.jpg
+Town05_head-on_sunset_08: a True b True c True d True min share 1.0 IoU 0.5845774505167871 -> Town05_head-on_sunset_08.jpg
+Town05_head-on_night_18: a True b True c True d True min share 1.0 IoU 0.5369950449315529 -> Town05_head-on_night_18.jpg
+Town05_rear-end_wet_145: a True b True c True d True min share 1.0 IoU 0.7076915936288881 -> Town05_rear-end_wet_145.jpg
+Town05_rear-end_rain_229: a True b True c True d True min share 1.0 IoU 0.4781134588605679 -> Town05_rear-end_rain_229.jpg
+Town05_rear-end_clear_202: a True b True c True d True min share 1.0 IoU 0.48488755192665806 -> Town05_rear-end_clear_202.jpg
+Town05_sideswipe_clear_26: a True b True c True d True min share 1.0 IoU 0.518905378580206 -> Town05_sideswipe_clear_26.jpg
+Town05_sideswipe_sunset_33: a True b True c True d True min share 1.0 IoU 0.49418095357276937 -> Town05_sideswipe_sunset_33.jpg
+Town05_sideswipe_clear_11: a True b True c True d True min share 1.0 IoU 0.64954240390482 -> Town05_sideswipe_clear_11.jpg
+Town06_head-on_night_11: a True b True c True d True min share 1.0 IoU 0.7546833184656556 -> Town06_head-on_night_11.jpg
+Town06_head-on_sunset_10: a True b True c True d True min share 1.0 IoU 0.5659763313609467 -> Town06_head-on_sunset_10.jpg
+Town06_head-on_clear_18: a True b True c True d True min share 1.0 IoU 0.5202948752109423 -> Town06_head-on_clear_18.jpg
+Town06_sideswipe_clear_04: a True b True c True d True min share 1.0 IoU 0.6702151191727036 -> Town06_sideswipe_clear_04.jpg
+Town06_sideswipe_clear_00: a True b True c True d True min share 1.0 IoU 0.49541691306918983 -> Town06_sideswipe_clear_00.jpg
+Town06_sideswipe_night_45: a True b True c True d True min share 1.0 IoU 0.5904817861339601 -> Town06_sideswipe_night_45.jpg
+Town07_rear-end_sunset_16: a True b True c True d True min share 1.0 IoU 0.5505881863906555 -> Town07_rear-end_sunset_16.jpg
+Town07_rear-end_rain_38: a True b True c True d True min share 1.0 IoU 0.6467953326328596 -> Town07_rear-end_rain_38.jpg
+Town07_rear-end_sunset_21: a True b True c True d True min share 1.0 IoU 0.4661490016460316 -> Town07_rear-end_sunset_21.jpg
+Town07_single_sunset_03: a True b True c True d True min share 1.0 IoU 0.722133616870459 -> Town07_single_sunset_03.jpg
+Town07_single_clear_06: a True b True c True d True min share 1.0 IoU 0.6391632588864423 -> Town07_single_clear_06.jpg
+Town07_single_clear_07: a True b True c True d True min share 1.0 IoU 0.5158887785501489 -> Town07_single_clear_07.jpg
+Town07_t-bone_clear_44: a True b True c True d True min share 1.0 IoU 0.7423768736616703 -> Town07_t-bone_clear_44.jpg
+Town07_t-bone_clear_18: a True b True c True d True min share 1.0 IoU 0.6039301541340772 -> Town07_t-bone_clear_18.jpg
+Town07_t-bone_clear_33: a True b True c True d True min share 1.0 IoU 0.6747302974960829 -> Town07_t-bone_clear_33.jpg
+Town10HD_single_wet_01: a True b True c True d True min share 1.0 IoU 0.6549439347604485 -> Town10HD_single_wet_01.jpg
+Town10HD_single_sunset_04: a True b True c True d True min share 1.0 IoU 0.626071741032371 -> Town10HD_single_sunset_04.jpg
+Town10HD_single_rain_36: a True b True c True d True min share 1.0 IoU 0.789922480620155 -> Town10HD_single_rain_36.jpg
+Town10HD_t-bone_clear_24: a True b True c True d True min share 1.0 IoU 0.560748191681736 -> Town10HD_t-bone_clear_24.jpg
+Town10HD_t-bone_sunset_25: a True b True c True d True min share 1.0 IoU 0.5654178153387265 -> Town10HD_t-bone_sunset_25.jpg
+Town10HD_t-bone_sunset_51: a True b True c True d True min share 1.0 IoU 0.5363113897596656 -> Town10HD_t-bone_sunset_51.jpg
+wrote 42 clip images, 14 grids, checks.csv, actors.csv, checks.json
+exit 0

@@ -1,0 +1,233 @@
+command: .venv-ml/Scripts/python.exe box_audit.py --report   (2026-11-24T20:49:12Z)
+GROUND-TRUTH BOX AUDIT (synthetic only; no real clip, label or metadata file was opened; no label, manifest or frozen file was changed)
+
+Clips: 42 = 3 per scenario x 14 scenarios (synthetic_split.csv scenario_id), numpy default_rng(0); list in LIST.txt (written before any image).
+Sources: metadata-synthetic.csv (box x1,y1,x2,y2, accident_frame, annotations_start_offset), the clip's annotation JSON (collision[0] = first collision record; base[tick].objects = per-tick objects with 2d_bbox).
+Annotation code (ACCIDENT/generation/.../core): collision_bbox = enclosing box of the colliding actors' projected 3D boxes, clipped to the image (collisions.py, get_circumferential_bbox); base 2d_bbox = projected box shrunk to the visible segmentation pixels, and objects with too few visible pixels are dropped (bbox_segmentation.py, filter_bboxes_by_segmentation).
+
+CHECKS
+  a: metadata box == collision[0].collision_bbox (pixels; pass if max |diff| <= 0.5 px)
+  b: metadata box inside the image (0 <= x1 < x2 <= 1, same for y); 'edge' = box touches the image border
+  c: each colliding actor (collision[0].ids) has a 2D box at the collision tick that overlaps the metadata box (min share = smallest share of an actor box inside the metadata box; IoU = metadata box vs the pixel union of the actor boxes)
+  d: collision[0].iteration - annotations_start_offset == accident_frame
+
+clip                              a  a_px  b edge          c  act minshr  IoU_u  d  tick
+Town03_head-on_sunset_05          Y  0.00  Y -             Y 2/2   1.000  0.473  Y   110
+Town03_head-on_rain_26            Y  0.00  Y -             Y 2/2   1.000  0.759  Y   109
+Town03_head-on_wet_11             Y  0.00  Y -             Y 2/2   1.000  0.684  Y   100
+Town03_t-bone_clear_03            Y  0.00  Y -             Y 2/2   1.000  0.651  Y   178
+Town03_t-bone_clear_15            Y  0.00  Y -             Y 2/2   1.000  0.605  Y   173
+Town03_t-bone_clear_07            Y  0.00  Y -             Y 2/2   1.000  0.544  Y   167
+Town04_rear-end_sunset_12         Y  0.00  Y -             Y 2/2   1.000  0.607  Y   155
+Town04_rear-end_rain_27           Y  0.00  Y -             Y 2/2   1.000  0.596  Y   145
+Town04_rear-end_wet_30            Y  0.00  Y -             N 1/2   1.000  0.159  Y   158
+Town04_sideswipe_sunset_21        Y  0.00  Y -             Y 2/2   1.000  0.643  Y   281
+Town04_sideswipe_rain_33          Y  0.00  Y -             Y 2/2   1.000  0.720  Y   282
+Town04_sideswipe_sunset_05        Y  0.00  Y -             Y 2/2   1.000  0.639  Y   277
+Town05_head-on_sunset_48          Y  0.00  Y -             Y 2/2   1.000  0.806  Y   200
+Town05_head-on_sunset_08          Y  0.00  Y -             Y 2/2   1.000  0.585  Y   172
+Town05_head-on_night_18           Y  0.00  Y -             Y 2/2   1.000  0.537  Y   179
+Town05_rear-end_wet_145           Y  0.00  Y -             Y 2/2   1.000  0.708  Y   221
+Town05_rear-end_rain_229          Y  0.00  Y -             Y 2/2   1.000  0.478  Y   345
+Town05_rear-end_clear_202         Y  0.00  Y -             Y 2/2   1.000  0.485  Y   340
+Town05_sideswipe_clear_26         Y  0.00  Y -             Y 2/2   1.000  0.519  Y   221
+Town05_sideswipe_sunset_33        Y  0.00  Y -             Y 2/2   1.000  0.494  Y   223
+Town05_sideswipe_clear_11         Y  0.00  Y -             Y 2/2   1.000  0.650  Y   225
+Town06_head-on_night_11           Y  0.00  Y -             Y 2/2   1.000  0.755  Y   369
+Town06_head-on_sunset_10          Y  0.00  Y bottom        Y 2/2   1.000  0.566  Y   284
+Town06_head-on_clear_18           Y  0.00  Y -             Y 2/2   1.000  0.520  Y   364
+Town06_sideswipe_clear_04         Y  0.00  Y -             Y 2/2   1.000  0.670  Y   366
+Town06_sideswipe_clear_00         Y  0.00  Y -             Y 2/2   1.000  0.495  Y   374
+Town06_sideswipe_night_45         Y  0.00  Y -             Y 2/2   1.000  0.590  Y   377
+Town07_rear-end_sunset_16         Y  0.00  Y -             Y 2/2   1.000  0.551  Y   232
+Town07_rear-end_rain_38           Y  0.00  Y -             Y 2/2   1.000  0.647  Y   231
+Town07_rear-end_sunset_21         Y  0.00  Y -             Y 2/2   1.000  0.466  Y   227
+Town07_single_sunset_03           Y  0.00  Y -             Y 2/2   1.000  0.722  Y   327
+Town07_single_clear_06            Y  0.00  Y -             Y 2/2   1.000  0.639  Y   338
+Town07_single_clear_07            Y  0.00  Y -             Y 2/2   1.000  0.516  Y   328
+Town07_t-bone_clear_44            Y  0.00  Y -             Y 2/2   1.000  0.742  Y   147
+Town07_t-bone_clear_18            Y  0.00  Y -             Y 2/2   1.000  0.604  Y   149
+Town07_t-bone_clear_33            Y  0.00  Y -             Y 2/2   1.000  0.675  Y   148
+Town10HD_single_wet_01            Y  0.00  Y -             Y 2/2   1.000  0.655  Y   148
+Town10HD_single_sunset_04         Y  0.00  Y -             Y 2/2   1.000  0.626  Y   148
+Town10HD_single_rain_36           Y  0.00  Y -             Y 2/2   1.000  0.790  Y   247
+Town10HD_t-bone_clear_24          Y  0.00  Y -             Y 2/2   1.000  0.561  Y   182
+Town10HD_t-bone_sunset_25         Y  0.00  Y -             Y 2/2   1.000  0.565  Y   181
+Town10HD_t-bone_sunset_51         Y  0.00  Y -             Y 2/2   1.000  0.536  Y   182
+
+TOTALS
+  a: pass 42/42
+  b: pass 42/42
+  c: pass 41/42
+  d: pass 42/42
+  b: boxes touching the image border: 1/42
+  c: colliding actors 84; with a 2D box at the collision tick 83; share inside the metadata box = 1.000 for 83; IoU (union) median 0.604, min 0.159
+  d: base first tick == annotations_start_offset 42/42; base ticks contiguous 42/42; number of base ticks == no_frames 42/42; accident_time x fps == accident_frame 42/42; collision[0] is the earliest record 42/42
+  frames: decoded size == metadata size 42/42; frames clamped at the clip ends 0/42
+
+e. VISIBILITY / OCCLUSION FIELDS
+  fields whose name contains ['visib', 'occlu', 'trunc', 'hidden']: none in any of the 42 files
+  object keys in base: [['2d_bbox', 'extent', 'id', 'location', 'rotation', 'tag']]; collision record keys: [('collision_bbox', 'ids', 'iteration')]; top-level keys: [('base', 'collision', 'sensor')]
+  Indirect signal only (from the annotation code, not a field): an object is in base at a tick only if enough of its pixels are visible in the segmentation image, and its 2d_bbox covers its visible pixels.
+  colliding actors missing from base: at the collision tick 1/84, at accident_frame - 10 1/84, at accident_frame + 10 0/84
+    Town04_rear-end_wet_30 id 449 : in base at -10 True, at the collision tick False, at +10 True
+    Town04_rear-end_wet_30 id 451 car: in base at -10 False, at the collision tick True, at +10 True
+
+PER-ACTOR DETAIL (share of the actor's 2D box inside the metadata box; tag)
+  Town03_head-on_sunset_05         id    385 car        box [733, 320, 822, 396]     share 1.000
+  Town03_head-on_sunset_05         id    387 car        box [665, 238, 750, 337]     share 1.000
+  Town03_head-on_rain_26           id    385 car        box [1092, 462, 1148, 555]   share 1.000
+  Town03_head-on_rain_26           id    387 truck      box [1022, 536, 1177, 799]   share 1.000
+  Town03_head-on_wet_11            id    385 car        box [1017, 562, 1093, 728]   share 1.000
+  Town03_head-on_wet_11            id    387 car        box [985, 731, 1077, 915]    share 1.000
+  Town03_t-bone_clear_03           id    343 car        box [906, 449, 984, 485]     share 1.000
+  Town03_t-bone_clear_03           id    345 truck      box [851, 408, 934, 483]     share 1.000
+  Town03_t-bone_clear_15           id    335 car        box [1434, 255, 1514, 340]   share 1.000
+  Town03_t-bone_clear_15           id    337 car        box [1408, 211, 1521, 276]   share 1.000
+  Town03_t-bone_clear_07           id    335 car        box [418, 393, 480, 497]     share 1.000
+  Town03_t-bone_clear_07           id    337 car        box [334, 449, 448, 543]     share 1.000
+  Town04_rear-end_sunset_12        id    448 car        box [851, 592, 913, 700]     share 1.000
+  Town04_rear-end_sunset_12        id    450 car        box [877, 694, 937, 830]     share 1.000
+  Town04_rear-end_rain_27          id    449 car        box [887, 486, 941, 564]     share 1.000
+  Town04_rear-end_rain_27          id    451 car        box [908, 546, 967, 634]     share 1.000
+  Town04_rear-end_wet_30           id    449            no 2D box at the collision tick
+  Town04_rear-end_wet_30           id    451 car        box [1353, 550, 1415, 600]   share 1.000
+  Town04_sideswipe_sunset_21       id    449 car        box [494, 412, 611, 489]     share 1.000
+  Town04_sideswipe_sunset_21       id    451 car        box [587, 401, 684, 494]     share 1.000
+  Town04_sideswipe_rain_33         id    448 car        box [748, 545, 804, 602]     share 1.000
+  Town04_sideswipe_rain_33         id    450 truck      box [792, 516, 890, 596]     share 1.000
+  Town04_sideswipe_sunset_05       id    449 car        box [503, 303, 607, 398]     share 1.000
+  Town04_sideswipe_sunset_05       id    451 car        box [595, 309, 665, 416]     share 1.000
+  Town05_head-on_sunset_48         id    340 car        box [967, 377, 1054, 412]    share 1.000
+  Town05_head-on_sunset_48         id    342 car        box [1054, 378, 1159, 411]   share 1.000
+  Town05_head-on_sunset_08         id    340 car        box [1158, 154, 1269, 215]   share 1.000
+  Town05_head-on_sunset_08         id    342 truck      box [1264, 114, 1405, 190]   share 1.000
+  Town05_head-on_night_18          id    340 car        box [1062, 669, 1151, 783]   share 1.000
+  Town05_head-on_night_18          id    342 car        box [1020, 769, 1108, 879]   share 1.000
+  Town05_rear-end_wet_145          id    356 car        box [543, 479, 637, 547]     share 1.000
+  Town05_rear-end_wet_145          id    358 truck      box [174, 431, 549, 659]     share 1.000
+  Town05_rear-end_rain_229         id   6154 car        box [703, 439, 798, 521]     share 1.000
+  Town05_rear-end_rain_229         id   6153 car        box [621, 503, 723, 585]     share 1.000
+  Town05_rear-end_clear_202        id   1243 car        box [1085, 660, 1189, 766]   share 1.000
+  Town05_rear-end_clear_202        id   1242 car        box [1028, 597, 1109, 674]   share 1.000
+  Town05_sideswipe_clear_26        id    290 car        box [1054, 256, 1129, 342]   share 1.000
+  Town05_sideswipe_clear_26        id    292 car        box [1071, 233, 1174, 304]   share 1.000
+  Town05_sideswipe_sunset_33       id    290 car        box [883, 675, 968, 728]     share 1.000
+  Town05_sideswipe_sunset_33       id    292 car        box [929, 695, 994, 767]     share 1.000
+  Town05_sideswipe_clear_11        id    290 truck      box [1066, 677, 1159, 800]   share 1.000
+  Town05_sideswipe_clear_11        id    292 car        box [1099, 660, 1198, 750]   share 1.000
+  Town06_head-on_night_11          id   2409 car        box [716, 271, 818, 321]     share 1.000
+  Town06_head-on_night_11          id   2411 truck      box [818, 279, 898, 321]     share 1.000
+  Town06_head-on_sunset_10         id   1416 car        box [1460, 896, 1565, 993]   share 1.000
+  Town06_head-on_sunset_10         id   1418 truck      box [1547, 959, 1802, 1079]  share 1.000
+  Town06_head-on_clear_18          id   5390 car        box [1090, 628, 1161, 669]   share 1.000
+  Town06_head-on_clear_18          id   5392 car        box [1031, 599, 1096, 646]   share 1.000
+  Town06_sideswipe_clear_04        id    372 car        box [569, 836, 663, 880]     share 1.000
+  Town06_sideswipe_clear_04        id    374 truck      box [594, 721, 767, 838]     share 1.000
+  Town06_sideswipe_clear_00        id    372 car        box [639, 325, 677, 370]     share 1.000
+  Town06_sideswipe_clear_00        id    374 car        box [674, 300, 704, 358]     share 1.000
+  Town06_sideswipe_night_45        id    372 car        box [791, 388, 832, 422]     share 1.000
+  Town06_sideswipe_night_45        id    374 car        box [831, 392, 860, 414]     share 1.000
+  Town07_rear-end_sunset_16        id    207 car        box [931, 358, 1030, 485]    share 1.000
+  Town07_rear-end_sunset_16        id    209 car        box [968, 478, 1072, 616]    share 1.000
+  Town07_rear-end_rain_38          id    207 car        box [709, 387, 795, 501]     share 1.000
+  Town07_rear-end_rain_38          id    209 car        box [697, 359, 756, 407]     share 1.000
+  Town07_rear-end_sunset_21        id    207 car        box [878, 406, 962, 485]     share 1.000
+  Town07_rear-end_sunset_21        id    209 car        box [955, 351, 1039, 429]    share 1.000
+  Town07_single_sunset_03          id    223 car        box [994, 673, 1074, 820]    share 1.000
+  Town07_single_sunset_03          id    225 dynamic    box [1057, 664, 1086, 690]   share 1.000
+  Town07_single_clear_06           id    221 truck      box [1261, 809, 1409, 930]   share 1.000
+  Town07_single_clear_06           id    223 dynamic    box [1236, 775, 1290, 832]   share 1.000
+  Town07_single_clear_07           id    220 car        box [1222, 673, 1339, 731]   share 1.000
+  Town07_single_clear_07           id    222 dynamic    box [1185, 644, 1239, 700]   share 1.000
+  Town07_t-bone_clear_44           id    227 car        box [403, 318, 699, 462]     share 1.000
+  Town07_t-bone_clear_44           id    229 car        box [244, 308, 410, 475]     share 1.000
+  Town07_t-bone_clear_18           id    227 car        box [840, 637, 918, 782]     share 1.000
+  Town07_t-bone_clear_18           id    229 car        box [818, 717, 995, 875]     share 1.000
+  Town07_t-bone_clear_33           id    227 car        box [1058, 695, 1197, 871]   share 1.000
+  Town07_t-bone_clear_33           id    229 truck      box [839, 744, 1108, 928]    share 1.000
+  Town10HD_single_wet_01           id    211 car        box [947, 637, 1074, 784]    share 1.000
+  Town10HD_single_wet_01           id    213 dynamic    box [931, 582, 987, 643]     share 1.000
+  Town10HD_single_sunset_04        id    211 car        box [1020, 688, 1203, 784]   share 1.000
+  Town10HD_single_sunset_04        id    213 dynamic    box [956, 664, 1016, 729]    share 1.000
+  Town10HD_single_rain_36          id    211 truck      box [975, 485, 1054, 585]    share 1.000
+  Town10HD_single_rain_36          id    213 dynamic    box [1003, 546, 1045, 591]   share 1.000
+  Town10HD_t-bone_clear_24         id    207 car        box [1282, 540, 1456, 727]   share 1.000
+  Town10HD_t-bone_clear_24         id    209 car        box [1375, 487, 1550, 623]   share 1.000
+  Town10HD_t-bone_sunset_25        id    207 car        box [1228, 544, 1403, 654]   share 1.000
+  Town10HD_t-bone_sunset_25        id    209 car        box [1304, 466, 1378, 582]   share 1.000
+  Town10HD_t-bone_sunset_51        id    207 car        box [912, 370, 1028, 420]    share 1.000
+  Town10HD_t-bone_sunset_51        id    209 car        box [868, 350, 949, 388]     share 1.000
+
+CLIPS WHERE A CHECK FAILS OR THE BOXES LOOK OFF
+  Town04_rear-end_wet_30: check c fails; visual judgement: the box agrees with the annotation, but at accident_frame its left half is covered by a tree that hides colliding car 449 (the same actor the segmentation filter dropped, check c); only the red car 451 shows at the right of the box, partly behind branches, and its blue box covers only its visible part; the collision itself is mostly not visible
+
+VISUAL JUDGEMENT (all entries in this section are my visual judgement from clips/*.jpg and grids/*.jpg, not computed checks)
+  Town03_head-on_sunset_05         looks off: no   box holds the white car 387 and the grey car 385 meeting at accident_frame
+  Town03_head-on_rain_26           looks off: no   box holds the fire truck 387 and car 385 front to front; rain
+  Town03_head-on_wet_11            looks off: no   box holds the red car 387 and the blue car 385 nose to nose
+  Town03_t-bone_clear_03           looks off: no   box holds the white van 345 (tag truck) and car 343
+  Town03_t-bone_clear_15           looks off: no   box holds the dark car 337 and the yellow taxi 335
+  Town03_t-bone_clear_07           looks off: no   box holds the grey car 337 and the red car 335 meeting at an angle
+  Town04_rear-end_sunset_12        looks off: no   box holds the grey car 448 and the yellow taxi 450, one behind the other
+  Town04_rear-end_rain_27          looks off: no   box holds cars 449 and 451, one behind the other; rain blur
+  Town04_rear-end_wet_30           looks off: yes  the box agrees with the annotation, but at accident_frame its left half is covered by a tree that hides colliding car 449 (the same actor the segmentation filter dropped, check c); only the red car 451 shows at the right of the box, partly behind branches, and its blue box covers only its visible part; the collision itself is mostly not visible
+  Town04_sideswipe_sunset_21       looks off: no   box holds the dark car 449 and the red car 451 side by side
+  Town04_sideswipe_rain_33         looks off: no   box holds the red car 448 and the white van 450 (tag truck) side by side; rain blur
+  Town04_sideswipe_sunset_05       looks off: no   box holds the yellow taxi 449 and the red car 451 side by side
+  Town05_head-on_sunset_48         looks off: no   box holds cars 340 and 342, small and far from the camera; a black band covers the top of the frame (scene, not the box)
+  Town05_head-on_sunset_08         looks off: no   box holds car 340 and the white van 342 (tag truck)
+  Town05_head-on_night_18          looks off: no   box holds the orange car 340 and car 342; car 342 is dark and hard to see at night
+  Town05_rear-end_wet_145          looks off: no   box holds the fire truck 358 and car 356; car 356 is mostly hidden behind the truck
+  Town05_rear-end_rain_229         looks off: no   box holds cars 6153 and 6154, one behind the other; rain blur
+  Town05_rear-end_clear_202        looks off: no   box holds the red car 1242 and the white car 1243
+  Town05_sideswipe_clear_26        looks off: no   box holds the two red cars 290 and 292 side by side
+  Town05_sideswipe_sunset_33       looks off: no   box holds the dark car 290 and the yellow car 292
+  Town05_sideswipe_clear_11        looks off: no   box holds the white vehicle 290 (tag truck) and the red car 292
+  Town06_head-on_night_11          looks off: no   box holds the white car 2409 and truck 2411; the truck is almost invisible in the dark (its blue box shows a near-black area)
+  Town06_head-on_sunset_10         looks off: no   box touches the image bottom (check b edge): the fire truck 1418 is partly outside the image, so the box is clipped there; car 1416 is at the top of the box
+  Town06_head-on_clear_18          looks off: no   box holds the dark SUV 5392 and the red car 5390
+  Town06_sideswipe_clear_04        looks off: no   box holds the fire truck 374 and the small car 372 beside it, partly hidden by the truck
+  Town06_sideswipe_clear_00        looks off: no   box holds the grey car 372 and the yellow taxi 374
+  Town06_sideswipe_night_45        looks off: no   box holds cars 372 and 374; both are dark and hard to see at night
+  Town07_rear-end_sunset_16        looks off: no   box holds the yellow taxi 207 and the red car 209, one behind the other
+  Town07_rear-end_rain_38          looks off: no   box holds car 209 and the white SUV 207, one behind the other
+  Town07_rear-end_sunset_21        looks off: no   box holds the two red cars 207 and 209
+  Town07_single_sunset_03          looks off: no   box holds the red car 223 and the small dynamic object 225 it hits
+  Town07_single_clear_06           looks off: no   box holds the white vehicle 221 (tag truck) and the green dynamic object 223
+  Town07_single_clear_07           looks off: no   box holds car 220 and the parasol-like dynamic object 222
+  Town07_t-bone_clear_44           looks off: no   box holds the two white SUVs 229 and 227
+  Town07_t-bone_clear_18           looks off: no   box holds the red car 227 and the grey car 229 meeting at an angle
+  Town07_t-bone_clear_33           looks off: no   box holds the white van 229 (tag truck) and the white SUV 227
+  Town10HD_single_wet_01           looks off: no   box holds the white car 211 and the small dynamic object 213
+  Town10HD_single_sunset_04        looks off: no   box holds the white car 211 and the dynamic object 213
+  Town10HD_single_rain_36          looks off: no   box holds vehicle 211 (tag truck) and dynamic object 213; the vehicle is partly behind a street banner; rain blur
+  Town10HD_t-bone_clear_24         looks off: no   box holds the red car 207 and the yellow taxi 209
+  Town10HD_t-bone_sunset_25        looks off: no   box holds the grey car 207 and the red car 209
+  Town10HD_t-bone_sunset_51        looks off: no   box holds the yellow taxi 209 and the dark car 207; car 207 is partly behind a street banner
+
+FIGURE 6 WITH THE t* FRAME (fig6_tstar.png)
+  Left panel of each pair = the cached frame figure 6 used (nearest t* inside window A); right = the frame at accident_frame built with the cache's own steps (vz.decode -> model_frames -> JPEG q95). Same boxes on both.
+  The figure-6 frame rebuilt from the video with the same steps vs the cache: max pixel diff 0 over the 8 windows.
+  good location  Town03_t-bone_rain_20          figure frame   73 at   3.65 s; t* frame   73 at   3.65 s; gap  +0.00 s; t* inside window True
+  good location  Town05_sideswipe_sunset_18     figure frame  127 at   6.35 s; t* frame  128 at   6.40 s; gap  +0.05 s; t* inside window True
+  bad location   Town05_rear-end_rain_142       figure frame  110 at   5.50 s; t* frame  173 at   8.65 s; gap  +3.15 s; t* inside window False
+  bad location   Town05_rear-end_rain_126       figure frame  198 at   9.90 s; t* frame  244 at  12.20 s; gap  +2.30 s; t* inside window False
+  correct type   Town05_head-on_clear_07        figure frame   96 at   4.80 s; t* frame   54 at   2.70 s; gap  -2.10 s; t* inside window False
+  correct type   Town05_head-on_clear_42        figure frame   73 at   3.65 s; t* frame   75 at   3.75 s; gap  +0.10 s; t* inside window True
+  wrong type     Town05_sideswipe_sunset_31     figure frame   80 at   4.00 s; t* frame  141 at   7.05 s; gap  +3.05 s; t* inside window False
+  wrong type     Town05_sideswipe_clear_00      figure frame   80 at   4.00 s; t* frame  173 at   8.65 s; gap  +4.65 s; t* inside window False
+
+  Visual judgement on fig6_tstar.png:
+    Town03_t-bone_rain_20: same frame on both panels (gap 0.00 s); the green box is on the two colliding vehicles.
+    Town05_sideswipe_sunset_18: frames 0.05 s apart, look the same; the green box is on the white and the red car.
+    Town05_rear-end_rain_142: the green box is small and far (rain haze); at this scale I cannot tell whether it holds the colliding vehicles in either frame (not judged).
+    Town05_rear-end_rain_126: at 9.90 s the green box is on empty road; at t* (12.20 s) it holds the colliding vehicles.
+    Town05_head-on_clear_07: the figure frame is 2.10 s after t*; at t* the green box holds the fire truck and the dark car.
+    Town05_head-on_clear_42: frames 0.10 s apart; the green box is on the two dark cars at the left in both.
+    Town05_sideswipe_sunset_31: at 4.00 s the green box is on empty road; at t* (7.05 s) it holds the yellow taxi and the other car.
+    Town05_sideswipe_clear_00: at 4.00 s the green box is on empty road; at t* (8.65 s) it holds the yellow taxi and the red car.
+    Summary: in 7 of the 8 windows the true box sits on the colliding vehicles at t* (the 8th, rain_142, is too small to judge). Where figure 6 showed the box on empty road, the shown frame was 2.3-4.65 s before t* (t* outside window A), so the box was not wrong, the frame was.
+
+Nothing was fixed. Files: LIST.txt, list.csv, checks.csv, checks.json, actors.csv, clips/*.jpg (42), grids/*.jpg (14), fig6_tstar.png, fig6_tstar.csv, visual.csv, visual_fig6.txt, run_log_*.txt, report.txt.
+exit 0
