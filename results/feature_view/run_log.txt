@@ -1,0 +1,60 @@
+command: .venv-ml/Scripts/python.exe feature_view.py   (2026-11-25T22:46:00Z)
+SAVED TYPE-PROBE FEATURES: cache/type_probe_A/ (written by type_probe_A.py --extract, 2026-11-25)
+
+features_fold0.npz: numpy .npz (uncompressed, np.savez), 22804083 bytes; features from Classifier fold model 0 (runs/C_cctv_seed0/fold_0/checkpoints/best.pt)
+  rgb_path   dtype object  shape (3678,)
+  window_idx dtype int64   shape (3678,)
+  feat       dtype float32 shape (3678, 2, 768)
+  logit      dtype float32 shape (3678, 2)
+  rows: one per (clip, Classifier window), 3678 rows, sorted by rgb_path then window_idx; 2211 clips; each row is the t* window of its clip (1467), the frozen out-of-fold t_hat window (1467), or both (744); 0 rows match neither
+  rgb_path[i]   the clip (synthetic video path); window_idx[i] the Classifier window (index in synthetic_window_labels.csv; 16 frames at 8 fps from t_start = 0.5 * window_idx s)
+  feat[i, j, :] 768 numbers = the input of the Classifier's head, fc_norm(mean over tokens of the last hidden states); j = 0 original frames, j = 1 horizontally flipped frames; columns 0..767 are the feature dimensions (no names)
+  logit[i, j]   the Classifier's window logit (accident score before the sigmoid) for the same window and flip
+  row 0: Town03_head-on_clear_00.mp4 window 5 (t*+t_hat); feat[0,0,:5] = -0.109274, -0.248406, 0.350607, 0.418219, -0.566555; feat[0,1,:5] = 0.125444, -0.282693, 0.637973, 0.379119, -0.720691; logit [3.796875, 3.71875]
+  row 1: Town03_head-on_clear_01.mp4 window 4 (t*+t_hat); feat[1,0,:5] = -0.081615, 0.735783, 0.754076, 0.578533, -0.611996; feat[1,1,:5] = -0.082206, 0.634941, 0.309777, 0.299051, -0.841445; logit [2.71875, 3.484375]
+  row 2: Town03_head-on_clear_03.mp4 window 3 (t*+t_hat); feat[2,0,:5] = 0.710100, 0.723048, 0.559004, 0.566579, -1.699945; feat[2,1,:5] = 0.441470, 0.471517, 0.439385, 0.348066, -1.327020; logit [3.875, 3.546875]
+
+features_fold1.npz: numpy .npz (uncompressed, np.savez), 22804083 bytes; features from Classifier fold model 1 (runs/C_cctv_seed0/fold_1/checkpoints/best.pt)
+  rgb_path   dtype object  shape (3678,)
+  window_idx dtype int64   shape (3678,)
+  feat       dtype float32 shape (3678, 2, 768)
+  logit      dtype float32 shape (3678, 2)
+  rows: one per (clip, Classifier window), 3678 rows, sorted by rgb_path then window_idx; 2211 clips; each row is the t* window of its clip (1467), the frozen out-of-fold t_hat window (1467), or both (744); 0 rows match neither
+  row 0: Town03_head-on_clear_00.mp4 window 5 (t*+t_hat); feat[0,0,:5] = -0.421169, 0.110456, -0.244562, 0.333894, -0.317873; feat[0,1,:5] = -0.222977, -0.005115, -0.052427, 0.416138, -0.223304; logit [4.25, 3.296875]
+  row 1: Town03_head-on_clear_01.mp4 window 4 (t*+t_hat); feat[1,0,:5] = -0.022774, 0.687420, 0.690036, 0.349511, -0.566136; feat[1,1,:5] = -0.096842, 0.709395, 0.385547, 0.400107, -0.318694; logit [4.625, 3.59375]
+  row 2: Town03_head-on_clear_03.mp4 window 3 (t*+t_hat); feat[2,0,:5] = 0.493721, 0.836471, -0.119942, 0.422972, -1.138983; feat[2,1,:5] = 0.278566, 0.821599, -0.036033, 0.326647, -0.949133; logit [5.0, 4.78125]
+
+features_fold2.npz: numpy .npz (uncompressed, np.savez), 22804083 bytes; features from Classifier fold model 2 (runs/C_cctv_seed0/fold_2/checkpoints/best.pt)
+  rgb_path   dtype object  shape (3678,)
+  window_idx dtype int64   shape (3678,)
+  feat       dtype float32 shape (3678, 2, 768)
+  logit      dtype float32 shape (3678, 2)
+  rows: one per (clip, Classifier window), 3678 rows, sorted by rgb_path then window_idx; 2211 clips; each row is the t* window of its clip (1467), the frozen out-of-fold t_hat window (1467), or both (744); 0 rows match neither
+  row 0: Town03_head-on_clear_00.mp4 window 5 (t*+t_hat); feat[0,0,:5] = -0.326782, 0.385343, -0.450094, 0.506768, 0.217184; feat[0,1,:5] = -0.107328, 0.233700, -0.397625, 0.586464, 0.334367; logit [3.671875, 3.421875]
+  row 1: Town03_head-on_clear_01.mp4 window 4 (t*+t_hat); feat[1,0,:5] = -0.323045, 0.904576, 0.296936, 0.534163, -0.391555; feat[1,1,:5] = -0.267166, 0.778214, 0.241545, 0.501745, -0.143618; logit [1.71875, 1.1640625]
+  row 2: Town03_head-on_clear_03.mp4 window 3 (t*+t_hat); feat[2,0,:5] = 0.133468, 1.096357, -0.648828, 0.458513, -1.148091; feat[2,1,:5] = 0.177979, 0.958327, -0.632548, 0.230944, -0.971498; logit [5.4375, 5.34375]
+
+The three files hold the same rows (same clips and windows, same order); only the fold model differs. For clips in fold k, fold model k is out of sample; for the other clips it was trained on them.
+
+PCA (fold model 1, t_hat windows, 2211 clips x 768 standardised features):
+ component  variance_share  cumulative
+         1          0.1623      0.1623
+         2          0.0727      0.2350
+         3          0.0426      0.2776
+         4          0.0393      0.3169
+         5          0.0333      0.3503
+         6          0.0304      0.3806
+         7          0.0241      0.4048
+         8          0.0207      0.4255
+         9          0.0196      0.4451
+        10          0.0168      0.4620
+
+Silhouette (standardised 768 numbers, Euclidean):
+                               scope  grouped_by  n_points  n_groups  silhouette  silhouette_labels_shuffled
+                      all 2211 clips         map      2211         6      0.0279                     -0.0065
+                      all 2211 clips scenario_id      2211        14      0.0282                     -0.0229
+                      all 2211 clips        type      2211         5      0.0034                     -0.0267
+fold-1 clips (encoder out of sample)         map       755         3      0.0889                     -0.0094
+fold-1 clips (encoder out of sample) scenario_id       755         5      0.0756                     -0.0133
+fold-1 clips (encoder out of sample)        type       755         5      0.0756                     -0.0285
+exit 0
