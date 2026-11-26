@@ -1,0 +1,29 @@
+{
+ "n": 100,
+ "frames": {
+  "all_indices_equal": true,
+  "all_t_hat_equal_manifest_centre": true,
+  "all_jpeg_bytes_equal": true,
+  "max_abs_over_all": 0,
+  "mean_abs_over_all": 0.0
+ },
+ "answers": {
+  "raw_identical": 100,
+  "type_or_box_differs": []
+ },
+ "metrics": {
+  "runner": {
+   "type_accuracy": 0.26,
+   "S": 0.6153490154767184
+  },
+  "saved_epoch1": {
+   "type_accuracy": 0.26,
+   "S": 0.6153490154767184
+  },
+  "abs_diff": {
+   "type_accuracy": 0.0,
+   "S": 0.0
+  }
+ },
+ "PASS": true
+}

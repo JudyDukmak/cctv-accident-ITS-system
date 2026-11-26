@@ -1,0 +1,9 @@
+command: .venv-vlm\Scripts\python.exe run_cascade.py --run --data real --clips DOES_NOT_EXIST.csv --pred 0=DOES_NOT_EXIST.csv --out results\real_cascade_test_refusal --frames-dir cache\real_cascade_refusal   (2026-11-23T09:17:55Z)
+ERROR: real mode needs C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\results\real_cascade\APPROVED.txt (created by the user, never by this script); not found, nothing was read
+exit 1
+command: .venv-ml\Scripts\python.exe run_cascade.py --score --data real --out results\real_cascade_test_refusal
+ERROR: real scoring needs C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\results\real_cascade\APPROVED.txt; not found, nothing was read
+exit 1
+ls: cannot access 'results/real_cascade': No such file or directory
+ls: cannot access 'results/real_cascade_test_refusal': No such file or directory
+ls: cannot access 'cache/real_cascade_refusal': No such file or directory

@@ -1,0 +1,4 @@
+Cascade dry-run list, written 2026-11-23T09:17:55+00:00 before any run
+100 of the 755 fold-1 window-A rows of results\qlora_data\manifest.csv (sha256 c0c1d9b74ae327aef0e8a8b1fa467b5afda048346f953a9f030ae14554f7f719): rows sorted by rgb_path, positions drawn with numpy default_rng(0).choice(755, 100, replace=False), kept in rgb_path order. t_hat: Classifier seed 0 (the source of window A), results\diagnostics\C_cctv_seeds012\seed0_frozen\tta_clip_predictions_flip.csv (sha256 253cf005aa0264f3accd590cc43fdaad40e9dd59dfa4a5c6acc8dbe93a91434d).
+types: {'head-on': 19, 'rear-end': 40, 'sideswipe': 18, 'single': 2, 't-bone': 21}
+dry_list.csv sha256 9b4fb9a9b4b490cf82c7ba8f69b0827adff4ec58189da281882e46aaa66712d9
