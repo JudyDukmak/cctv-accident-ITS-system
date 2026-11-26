@@ -1,0 +1,55 @@
+TYPE PROBE, OPTION A: REPORT (synthetic only; no real clip, label or metadata file opened; no checkpoint, frozen file, split or manifest changed; nothing committed)
+Pre-registration: PLAN.txt sha256 abc245b68809ec1f2af2215e4f9eae1a02451cc0659f9e2dc0e503ec4e6fc156 (checked by every mode).
+
+1. SAFETY CHECK (5 fold-k clips per fold model, every window, original + flipped; saved head on the extracted feature vs the saved window score on this GPU; tolerance 0.005)
+  fold model 0: 184 windows (368 passes); hooked head output == model logit: True; head on feature == model logit: True; max |score diff| vs saved 7.18e-08 (mean 1.34e-08); PASS True
+  fold model 1: 156 windows (312 passes); hooked head output == model logit: True; head on feature == model logit: True; max |score diff| vs saved 5.51e-08 (mean 8.51e-09); PASS True
+  fold model 2: 132 windows (264 passes); hooked head output == model logit: True; head on feature == model logit: True; max |score diff| vs saved 7.02e-08 (mean 1.14e-08); PASS True
+  verdict: PASS (GPU NVIDIA GeForce RTX 5060 Laptop GPU)
+
+   Same comparison on every extracted window of fold k (fold model k, saved scores exist only for its own validation windows):
+  fold model 0: 1349 fold-0 windows; max |score diff| 1.03e-07; hook == model True
+  fold model 1: 1319 fold-1 windows; max |score diff| 1.03e-07; hook == model True
+  fold model 2: 1010 fold-2 windows; max |score diff| 1.03e-07; hook == model True
+
+2. WINDOWS AND FEATURES
+  clips 2211; t* window == t_hat window in 744 clips; unique windows 3678, each scored by all 3 fold models, original + flipped
+  GPU time (forward passes, synchronised): fold model 0 173.5 s (23.6 ms per pass), fold model 1 173.4 s (23.6 ms per pass), fold model 2 173.7 s (23.6 ms per pass); total 520.7 s; safety check 24.4 s; power at end BatteryStatus 2 (2 = on AC mains), charge 79%
+
+3. INNER CV (leave one scenario out on the training folds; pooled inner macro accuracy per C)
+  fold 0: C 0.01: 0.1121, C 0.1: 0.0934, C 1: 0.0862, C 10: 0.0826  -> chosen C 0.01 (9 scenarios)
+  fold 1: C 0.01: 0.0015, C 0.1: 0.0012, C 1: 0.0008, C 10: 0.0016  -> chosen C 10 (9 scenarios)
+  fold 2: C 0.01: 0.0636, C 0.1: 0.0677, C 1: 0.0706, C 10: 0.0716  -> chosen C 10 (10 scenarios)
+
+4. OUT-OF-FOLD RESULTS (t_hat window)
+  set          n  macro acc  accuracy  per-type recall
+  fold 0     770     0.2134    0.2442  head-on 0.005, rear-end 0.376, sideswipe 0.633, single 0.000, t-bone 0.053
+  fold 1     755     0.2434    0.3338  head-on 0.408, rear-end 0.408, sideswipe 0.075, single 0.000, t-bone 0.326
+  fold 2     686     0.0774    0.0875  head-on 0.226, rear-end 0.037, sideswipe 0.000, t-bone 0.047  (macro over 4 types)
+  pooled    2211     0.1809    0.2261  head-on 0.204, rear-end 0.271, sideswipe 0.237, single 0.000, t-bone 0.193
+  confusion matrices: confusion_{pooled,fold0,fold1,fold2}_{counts,rownorm}.csv, confusion.png
+
+  pooled confusion (rows true, columns predicted; head-on, rear-end, sideswipe, single, t-bone):
+    head-on      120   139   277     5    47
+    rear-end     334   215   136    75    34
+    sideswipe    262    39    96     5     3
+    single        41    21     0     0     4
+    t-bone       108   122    46    13    69
+
+4b. POST-HOC, DESCRIPTIVE (added after seeing the results; not part of the plan): map vs type
+  Each scenario is one map + one type. For each fold-k test clip: is its map present in the training folds, and is the predicted type one of the types that map has in the training folds (a 'same-map training type')?
+  fold 0: 770 test clips; map seen in training 202; of those, prediction = a same-map training type 182 (0.901); true type = a same-map training type 0; accuracy where the map was seen 0.0050, where not 0.3292 (n 568)
+  fold 1: 755 test clips; map seen in training 197; of those, prediction = a same-map training type 36 (0.183); true type = a same-map training type 0; accuracy where the map was seen 0.3046, where not 0.3441 (n 558)
+  fold 2: 686 test clips; map seen in training 686; of those, prediction = a same-map training type 231 (0.337); true type = a same-map training type 0; accuracy where the map was seen 0.0875, where not nan (n 0)
+  The inner leave-one-scenario-out macro accuracies (section 3) are far below chance (0.2) in every fold; this is consistent with the features carrying the map/scene more than the collision type (interpretation, not tested).
+
+5. FOLD 1 COMPARISON (755 clips)
+  model                         accuracy  macro acc
+  majority (rear-end)             0.3669     0.2000
+  QLoRA epoch 1 (window A)        0.3060     0.2579
+  probe A (t_hat window)          0.3338     0.2434
+  SUCCESS RULE (probe beats both, in accuracy AND macro accuracy, on fold 1): NOT MET
+  Note: QLoRA saw a 4 s window A (16 frames, 448 x 256); the probe sees the Classifier's 2 s window nearest t_hat (16 frames, 224 x 224). Both are centred on the same frozen out-of-fold t_hat.
+
+The plan's seed 1 / 2 repeat applies only on success; not run.
+Files: PLAN.txt, safety.json, windows.csv, extract_check.json, inner_cv.csv, predictions_oof.csv, metrics.json, comparison_fold1.csv, confusion_*.csv, confusion.png, run_log_*.txt, report.txt; features in cache/type_probe_A/ (gitignored).

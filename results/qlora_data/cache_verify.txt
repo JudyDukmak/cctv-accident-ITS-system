@@ -1,0 +1,13 @@
+Cache check through the real processor (no model); 2026-11-21T15:42:58+00:00
+  Town03_head-on_clear_00 window A, narrow v1 layout (pairs): model input 448 x 256; cached vs model input |diff| mean 1.21, 99th pct 5, max 67 (0-255; JPEG q95)
+  Town03_head-on_clear_00 window A, narrow v2 layout (duplicated): model input 448 x 256; cached vs model input |diff| mean 1.21, 99th pct 5, max 67 (0-255; JPEG q95)
+    PIL bicubic 448 x 256 (before JPEG) vs model input: max |diff| 2
+    cached 448 x 256 frames given to the processor: grid_thw [8, 16, 28] (16 x 28 patches = 448 x 256, i.e. not resized again); frame indices match: True
+  Town03_head-on_clear_00 window B, narrow v1 layout (pairs): model input 448 x 256; cached vs model input |diff| mean 1.21, 99th pct 5, max 52 (0-255; JPEG q95)
+  Town03_head-on_clear_00 window B, narrow v2 layout (duplicated): model input 448 x 256; cached vs model input |diff| mean 1.21, 99th pct 5, max 52 (0-255; JPEG q95)
+    PIL bicubic 448 x 256 (before JPEG) vs model input: max |diff| 1
+    cached 448 x 256 frames given to the processor: grid_thw [8, 16, 28] (16 x 28 patches = 448 x 256, i.e. not resized again); frame indices match: True
+  Town03_head-on_night_00 window B, narrow v1 layout (pairs): model input 448 x 256; cached vs model input |diff| mean 1.32, 99th pct 7, max 64 (0-255; JPEG q95)
+  Town03_head-on_night_00 window B, narrow v2 layout (duplicated): model input 448 x 256; cached vs model input |diff| mean 1.32, 99th pct 7, max 64 (0-255; JPEG q95)
+    PIL bicubic 448 x 256 (before JPEG) vs model input: max |diff| 2
+    cached 448 x 256 frames given to the processor: grid_thw [8, 16, 28] (16 x 28 patches = 448 x 256, i.e. not resized again); frame indices match: True

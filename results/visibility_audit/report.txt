@@ -1,0 +1,88 @@
+LOW-VISIBILITY COUNT, ALL SYNTHETIC CLIPS (read only; synthetic only; no real clip, label or metadata file opened; no label, manifest, split, result or frozen file changed; nothing removed or flagged in the training data; no model, no GPU)
+
+Signal: a colliding actor (collision[0].ids) missing from base[tick].objects = LOW VISIBILITY at that tick. The simulator drops an object when too few of its pixels are visible in the segmentation image; causes can be an occluder, the image edge, or the object being very small or far. It is called low visibility, not occlusion.
+Note (expectation, not verified here): CARLA's segmentation camera labels classes, not lit pixels, so darkness alone should not drop an object; a vehicle can be in base and still be hard to see at night (seen in the box audit).
+Tick rule: tick = accident_frame + annotations_start_offset == collision[0].iteration held for 2211/2211 clips (the script stops on any failure). Ticks -10/-5/+5/+10 = accident_frame -10/-5/+5/+10 frames (-0.5/-0.25/+0.25/+0.5 s at 20 fps). A tick not in the file counts as absent, never as missing.
+Flags (fixed before counting): LOW_AT_IMPACT = >= 1 colliding actor missing at the collision tick; LOW_AROUND_IMPACT = >= 1 colliding actor (the same one) missing at the collision tick and at both the -5 and +5 ticks.
+
+1. PER-CLIP RECORD (clips.csv, 2211 rows)
+  colliding actors per clip: {'2': 2211}
+  ticks absent from the file: {'-10': 0, '-5': 0, '0': 0, '+5': 1, '+10': 3}
+  clips with >= 1 colliding actor missing, by tick: {'-10': 50, '-5': 35, '0': 31, '+5': 30, '+10': 33}
+  colliding actors missing, by tick: {'-10': 63, '-5': 41, '0': 33, '+5': 33, '+10': 35}
+  c. visible-box area / metadata-box area, actors present at the collision tick, quantiles 5/25/50/75/95%: 0.145, 0.241, 0.298, 0.371, 0.525
+  d. metadata box area in pixels, quantiles 5/25/50/75/95%: 5820, 12938, 22194, 35402, 73663
+  median metadata box area by flag (px): LOW_AT_IMPACT: flagged 15696, unflagged 22427; LOW_AROUND_IMPACT: flagged 15504, unflagged 22356
+
+2-3. COUNTS (n, flagged count, share)
+  by all:
+    group                    n         LOW_AT_IMPACT     LOW_AROUND_IMPACT
+    all                   2211         31 (0.014)          16 (0.007)
+  by scenario_id:
+    group                    n         LOW_AT_IMPACT     LOW_AROUND_IMPACT
+    Town03_head-on         212          1 (0.005)           0 (0.000)
+    Town03_t-bone          184          3 (0.016)           1 (0.005)
+    Town04_rear-end        245          8 (0.033)           4 (0.016)
+    Town04_sideswipe       139          1 (0.007)           0 (0.000)
+    Town05_head-on         174          1 (0.006)           1 (0.006)
+    Town05_rear-end        277          4 (0.014)           3 (0.011)
+    Town05_sideswipe       107          0 (0.000)           0 (0.000)
+    Town06_head-on         202          3 (0.015)           2 (0.010)
+    Town06_sideswipe       159          6 (0.038)           2 (0.013)
+    Town07_rear-end        272          1 (0.004)           0 (0.000)
+    Town07_single           13          0 (0.000)           0 (0.000)
+    Town07_t-bone           43          0 (0.000)           0 (0.000)
+    Town10HD_single         53          2 (0.038)           2 (0.038)
+    Town10HD_t-bone        131          1 (0.008)           1 (0.008)
+  by type:
+    group                    n         LOW_AT_IMPACT     LOW_AROUND_IMPACT
+    head-on                588          5 (0.009)           3 (0.005)
+    rear-end               794         13 (0.016)           7 (0.009)
+    sideswipe              405          7 (0.017)           2 (0.005)
+    single                  66          2 (0.030)           2 (0.030)
+    t-bone                 358          4 (0.011)           2 (0.006)
+  by weather:
+    group                    n         LOW_AT_IMPACT     LOW_AROUND_IMPACT
+    clear                  515         12 (0.023)           7 (0.014)
+    night                  449          6 (0.013)           1 (0.002)
+    rain                   342          2 (0.006)           1 (0.003)
+    sunset                 461          5 (0.011)           4 (0.009)
+    wet                    444          6 (0.014)           3 (0.007)
+  by val_fold:
+    group                    n         LOW_AT_IMPACT     LOW_AROUND_IMPACT
+    0                      770         15 (0.019)           9 (0.012)
+    1                      755          8 (0.011)           5 (0.007)
+    2                      686          8 (0.012)           2 (0.003)
+
+4. VISUAL CHECK OF THE SIGNAL (CHECK_LIST.txt written before drawing; images in check/; every entry below is my VISUAL JUDGEMENT, not a computed check)
+  In the images: green = metadata box, blue = colliding actors present at the collision tick; an actor missing at impact is drawn dashed orange at its nearest tick where it is present (aid only).
+  [LOW_AT_IMPACT] Town06_sideswipe_night_46        judgement: visible-overlap missing truck 374: a dark vehicle shape is visible inside its dashed box (tick +1), overlapping the other colliding actor 372, whose visible box is small; not hidden by another object or the edge; dark scene, but the shape is visible
+  [LOW_AT_IMPACT] Town06_head-on_clear_26          judgement: visible-overlap missing car 422 is the red car plainly visible next to the yellow taxi 424, about the same size; not hidden, not small: the signal is wrong here (likely the two touching cars' pixels were resolved to one actor)
+  [LOW_AT_IMPACT] Town03_head-on_night_49          judgement: hidden-object  missing truck 385 is behind the colliding fire truck 387 (its dashed box at tick +1 is a thin sliver at the fire truck's right side)
+  [LOW_AT_IMPACT] Town05_rear-end_clear_237        judgement: mixed          both actors missing; the red car at the left of the box is visible (car 2569, dashed box at tick +2), the right half of the box is behind a tree (the other actor is likely hidden there)
+  [LOW_AT_IMPACT] Town04_rear-end_night_48         judgement: small          both colliding cars are small and far; missing car 451 (dashed box at tick -1) is a few pixels wide; dark scene, only a red light shows
+  [LOW_AT_IMPACT] Town04_rear-end_clear_51         judgement: hidden-object  missing car 451 is behind a non-colliding fire truck that fills the metadata box (last seen at tick -13, -0.65 s); only the other car shows at the box's right end
+  [LOW_AT_IMPACT] Town05_head-on_rain_52           judgement: hidden-object  missing truck 342 is behind the colliding fire truck 340 (dashed box at tick -7 is a thin sliver at the fire truck's right edge)
+  [LOW_AT_IMPACT] Town05_rear-end_sunset_237       judgement: hidden-object  missing car 3460 is behind a tree that covers the right half of the box; only the yellow taxi 3459 shows
+  [unflagged    ] Town07_rear-end_rain_20          judgement: visible        both cars 206 and 208 clearly visible
+  [unflagged    ] Town04_sideswipe_clear_13        judgement: visible        both cars 449 and 451 clearly visible
+  [unflagged    ] Town07_t-bone_clear_32           judgement: visible        both cars 227 and 229 clearly visible
+  [unflagged    ] Town04_sideswipe_sunset_21       judgement: visible        both cars 449 and 451 clearly visible
+  [unflagged    ] Town10HD_single_clear_02         judgement: visible        car 211 visible; the dynamic object 213 is small but visible at the top of the box
+  [unflagged    ] Town04_rear-end_clear_22         judgement: visible        both cars 451 and 449 clearly visible
+  [unflagged    ] Town07_rear-end_night_40         judgement: dark           NOT flagged, but car 209's box is pure black: the car cannot be seen in the dark although it is in base; van 207 is dimly visible. Darkness is not captured by this signal
+  [unflagged    ] Town05_sideswipe_sunset_26       judgement: partly-hidden  fire truck 292 visible; vehicle 290 (tag truck) partly under/behind the fire truck but still in base
+  flagged clips by judgement: hidden-object 4, mixed 1, small 1, visible-overlap 2
+  unflagged clips by judgement: dark 1, partly-hidden 1, visible 6
+
+5. EXPLORATORY (decided before looking): fold-1 window A, saved epoch-1 answers (no model run)
+  windows 755; recomputed overall type accuracy 0.3060, S 0.6346 (equal to val_epoch1_metrics.json)
+  flag               group         n  type acc       S  t* inside  rear-end share
+  LOW_AT_IMPACT      flagged       8    0.5000  0.2190     0.2500          0.5000
+  LOW_AT_IMPACT      unflagged   747    0.3039  0.6390     0.6600          0.3655
+  LOW_AROUND_IMPACT  flagged       5    0.4000  0.1739     0.2000          0.6000
+  LOW_AROUND_IMPACT  unflagged   750    0.3053  0.6376     0.6587          0.3653
+  types of the flagged windows: {'LOW_AT_IMPACT': {'rear-end': 4, 't-bone': 3, 'head-on': 1}, 'LOW_AROUND_IMPACT': {'rear-end': 3, 'head-on': 1, 't-bone': 1}}
+  Caution: exploratory, one fold, one checkpoint, no test of significance; groups differ in type mix and in the share of windows that contain t*, both of which affect accuracy and S on their own.
+
+Nothing was fixed or excluded. Files: clips.csv (per-clip record, all 2211 clips), counts.csv, counts.json, CHECK_LIST.txt, check_list.csv, check/*.jpg, visual.csv, explore_fold1_A.csv/json, run_log_*.txt, report.txt.

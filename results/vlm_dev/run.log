@@ -1,0 +1,260 @@
+2026-11-16T10:59:21+00:00 wrote results\vlm_dev\PROTOCOL.txt
+W1116 14:00:25.499000 27308 .venv-vlm\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-16T11:00:26+00:00 loading Qwen/Qwen3-VL-4B-Instruct (nf4)
+Loading weights:   0%|          | 0/713 [00:00<?, ?it/s]Loading weights:   0%|          | 1/713 [00:01<18:59,  1.60s/it]Loading weights:   0%|          | 3/713 [00:02<07:01,  1.68it/s]Loading weights:   1%|          | 4/713 [00:02<05:00,  2.36it/s]Loading weights:   1%|          | 8/713 [00:02<01:53,  6.22it/s]Loading weights:   2%|▏         | 11/713 [00:02<01:15,  9.28it/s]Loading weights:   2%|▏         | 14/713 [00:02<00:58, 12.03it/s]Loading weights:   2%|▏         | 17/713 [00:02<00:57, 12.02it/s]Loading weights:   3%|▎         | 22/713 [00:02<00:38, 17.92it/s]Loading weights:   4%|▎         | 25/713 [00:03<00:36, 18.65it/s]Loading weights:   4%|▍         | 28/713 [00:03<00:42, 16.22it/s]Loading weights:   5%|▍         | 33/713 [00:03<00:31, 21.46it/s]Loading weights:   5%|▌         | 36/713 [00:03<00:30, 22.22it/s]Loading weights:   5%|▌         | 39/713 [00:03<00:37, 18.16it/s]Loading weights:   6%|▌         | 44/713 [00:03<00:28, 23.73it/s]Loading weights:   7%|▋         | 47/713 [00:04<00:28, 23.50it/s]Loading weights:   7%|▋         | 50/713 [00:04<00:34, 19.10it/s]Loading weights:   8%|▊         | 55/713 [00:04<00:26, 24.69it/s]Loading weights:   8%|▊         | 58/713 [00:04<00:26, 24.54it/s]Loading weights:   9%|▊         | 61/713 [00:04<00:33, 19.65it/s]Loading weights:   9%|▉         | 66/713 [00:04<00:26, 24.82it/s]Loading weights:  10%|▉         | 69/713 [00:04<00:26, 24.26it/s]Loading weights:  10%|█         | 72/713 [00:05<00:32, 19.56it/s]Loading weights:  11%|█         | 77/713 [00:05<00:25, 25.20it/s]Loading weights:  11%|█▏        | 81/713 [00:05<00:29, 21.25it/s]Loading weights:  12%|█▏        | 84/713 [00:05<00:28, 22.15it/s]Loading weights:  12%|█▏        | 89/713 [00:05<00:23, 26.70it/s]Loading weights:  13%|█▎        | 93/713 [00:06<00:33, 18.45it/s]Loading weights:  14%|█▍        | 99/713 [00:06<00:25, 23.80it/s]Loading weights:  14%|█▍        | 103/713 [00:06<00:29, 20.64it/s]Loading weights:  15%|█▍        | 106/713 [00:06<00:29, 20.90it/s]Loading weights:  15%|█▌        | 110/713 [00:06<00:25, 23.47it/s]Loading weights:  16%|█▌        | 113/713 [00:06<00:25, 23.53it/s]Loading weights:  16%|█▋        | 116/713 [00:07<00:31, 18.78it/s]Loading weights:  17%|█▋        | 121/713 [00:07<00:26, 22.45it/s]Loading weights:  17%|█▋        | 124/713 [00:07<00:27, 21.19it/s]Loading weights:  18%|█▊        | 127/713 [00:07<00:35, 16.58it/s]Loading weights:  19%|█▊        | 132/713 [00:07<00:27, 21.29it/s]Loading weights:  19%|█▉        | 135/713 [00:08<00:27, 21.15it/s]Loading weights:  19%|█▉        | 138/713 [00:08<00:32, 17.44it/s]Loading weights:  20%|██        | 143/713 [00:08<00:25, 22.26it/s]Loading weights:  20%|██        | 146/713 [00:08<00:26, 21.62it/s]Loading weights:  21%|██        | 149/713 [00:08<00:31, 17.63it/s]Loading weights:  22%|██▏       | 154/713 [00:09<00:24, 22.38it/s]Loading weights:  22%|██▏       | 157/713 [00:09<00:25, 22.17it/s]Loading weights:  22%|██▏       | 160/713 [00:09<00:30, 18.20it/s]Loading weights:  23%|██▎       | 165/713 [00:09<00:23, 23.06it/s]Loading weights:  24%|██▎       | 168/713 [00:09<00:24, 22.02it/s]Loading weights:  24%|██▍       | 171/713 [00:09<00:30, 17.60it/s]Loading weights:  25%|██▍       | 176/713 [00:10<00:24, 22.22it/s]Loading weights:  25%|██▌       | 179/713 [00:10<00:25, 21.23it/s]Loading weights:  26%|██▌       | 182/713 [00:10<00:31, 16.71it/s]Loading weights:  26%|██▌       | 187/713 [00:10<00:24, 21.14it/s]Loading weights:  27%|██▋       | 190/713 [00:10<00:24, 21.21it/s]Loading weights:  27%|██▋       | 193/713 [00:11<00:31, 16.48it/s]Loading weights:  28%|██▊       | 198/713 [00:11<00:24, 20.78it/s]Loading weights:  28%|██▊       | 201/713 [00:11<00:24, 20.97it/s]Loading weights:  29%|██▊       | 204/713 [00:11<00:30, 16.68it/s]Loading weights:  29%|██▉       | 209/713 [00:11<00:24, 20.96it/s]Loading weights:  30%|██▉       | 212/713 [00:12<00:26, 19.09it/s]Loading weights:  30%|███       | 215/713 [00:12<00:31, 15.58it/s]Loading weights:  31%|███       | 220/713 [00:12<00:24, 20.14it/s]Loading weights:  31%|███▏      | 223/713 [00:12<00:23, 20.47it/s]Loading weights:  32%|███▏      | 226/713 [00:12<00:30, 15.87it/s]Loading weights:  32%|███▏      | 231/713 [00:13<00:23, 20.17it/s]Loading weights:  33%|███▎      | 234/713 [00:13<00:23, 20.13it/s]Loading weights:  33%|███▎      | 237/713 [00:13<00:29, 16.24it/s]Loading weights:  34%|███▍      | 242/713 [00:13<00:22, 20.55it/s]Loading weights:  34%|███▍      | 245/713 [00:13<00:22, 20.92it/s]Loading weights:  35%|███▍      | 248/713 [00:14<00:27, 16.84it/s]Loading weights:  35%|███▌      | 253/713 [00:14<00:21, 21.68it/s]Loading weights:  36%|███▌      | 256/713 [00:14<00:22, 20.28it/s]Loading weights:  36%|███▋      | 259/713 [00:14<00:27, 16.28it/s]Loading weights:  37%|███▋      | 264/713 [00:14<00:21, 20.96it/s]Loading weights:  37%|███▋      | 267/713 [00:14<00:21, 20.76it/s]Loading weights:  38%|███▊      | 270/713 [00:15<00:26, 16.77it/s]Loading weights:  39%|███▊      | 275/713 [00:15<00:20, 21.64it/s]Loading weights:  39%|███▉      | 278/713 [00:15<00:19, 22.00it/s]Loading weights:  39%|███▉      | 281/713 [00:15<00:24, 17.64it/s]Loading weights:  40%|████      | 286/713 [00:15<00:19, 21.88it/s]Loading weights:  41%|████      | 289/713 [00:15<00:19, 21.47it/s]Loading weights:  41%|████      | 292/713 [00:16<00:24, 17.05it/s]Loading weights:  42%|████▏     | 297/713 [00:16<00:19, 21.44it/s]Loading weights:  42%|████▏     | 300/713 [00:16<00:19, 20.85it/s]Loading weights:  42%|████▏     | 303/713 [00:16<00:25, 16.23it/s]Loading weights:  43%|████▎     | 308/713 [00:16<00:19, 20.99it/s]Loading weights:  44%|████▎     | 311/713 [00:17<00:19, 20.48it/s]Loading weights:  44%|████▍     | 314/713 [00:17<00:24, 16.15it/s]Loading weights:  45%|████▍     | 319/713 [00:17<00:18, 21.07it/s]Loading weights:  45%|████▌     | 322/713 [00:17<00:19, 19.87it/s]Loading weights:  46%|████▌     | 325/713 [00:18<00:24, 15.53it/s]Loading weights:  46%|████▋     | 330/713 [00:18<00:18, 20.49it/s]Loading weights:  47%|████▋     | 333/713 [00:18<00:19, 19.80it/s]Loading weights:  47%|████▋     | 336/713 [00:18<00:23, 16.18it/s]Loading weights:  48%|████▊     | 341/713 [00:18<00:17, 20.83it/s]Loading weights:  48%|████▊     | 344/713 [00:18<00:17, 20.94it/s]Loading weights:  49%|████▊     | 347/713 [00:19<00:22, 16.43it/s]Loading weights:  49%|████▉     | 352/713 [00:19<00:17, 20.52it/s]Loading weights:  50%|████▉     | 355/713 [00:19<00:18, 19.77it/s]Loading weights:  50%|█████     | 358/713 [00:19<00:22, 15.88it/s]Loading weights:  51%|█████     | 363/713 [00:19<00:17, 20.15it/s]Loading weights:  51%|█████▏    | 366/713 [00:20<00:17, 19.50it/s]Loading weights:  52%|█████▏    | 369/713 [00:20<00:22, 15.46it/s]Loading weights:  52%|█████▏    | 374/713 [00:20<00:17, 19.54it/s]Loading weights:  53%|█████▎    | 377/713 [00:20<00:17, 19.20it/s]Loading weights:  53%|█████▎    | 380/713 [00:21<00:22, 15.08it/s]Loading weights:  54%|█████▍    | 385/713 [00:21<00:16, 19.41it/s]Loading weights:  54%|█████▍    | 388/713 [00:21<00:16, 19.13it/s]Loading weights:  55%|█████▍    | 391/713 [00:21<00:20, 15.43it/s]Loading weights:  56%|█████▌    | 396/713 [00:21<00:15, 20.21it/s]Loading weights:  58%|█████▊    | 414/713 [00:21<00:06, 48.50it/s]Loading weights:  60%|██████    | 428/713 [00:21<00:04, 64.50it/s]Loading weights:  62%|██████▏   | 442/713 [00:22<00:03, 76.09it/s]Loading weights:  65%|██████▍   | 462/713 [00:22<00:02, 100.85it/s]Loading weights:  67%|██████▋   | 476/713 [00:22<00:02, 109.37it/s]Loading weights:  69%|██████▊   | 490/713 [00:22<00:01, 113.73it/s]Loading weights:  72%|███████▏  | 510/713 [00:22<00:01, 134.28it/s]Loading weights:  74%|███████▎  | 525/713 [00:22<00:01, 135.28it/s]Loading weights:  76%|███████▌  | 540/713 [00:22<00:01, 132.24it/s]Loading weights:  78%|███████▊  | 558/713 [00:22<00:01, 138.69it/s]Loading weights:  81%|████████  | 574/713 [00:22<00:01, 133.55it/s]Loading weights:  83%|████████▎ | 594/713 [00:23<00:00, 144.63it/s]Loading weights:  86%|████████▌ | 610/713 [00:23<00:00, 142.36it/s]Loading weights:  88%|████████▊ | 628/713 [00:23<00:00, 152.21it/s]Loading weights:  90%|█████████ | 644/713 [00:23<00:00, 144.74it/s]Loading weights:  92%|█████████▏| 659/713 [00:23<00:00, 137.79it/s]Loading weights:  95%|█████████▌| 678/713 [00:23<00:00, 146.35it/s]Loading weights:  97%|█████████▋| 693/713 [00:23<00:00, 109.48it/s]Loading weights:  99%|█████████▉| 706/713 [00:24<00:00, 64.50it/s] Loading weights: 100%|██████████| 713/713 [00:24<00:00, 29.15it/s]
+2026-11-16T11:00:57+00:00 model loaded in 30.2 s on NVIDIA GeForce RTX 5060 Laptop GPU
+2026-11-16T11:00:57+00:00 clip 1/32 Town05_head-on_wet_24: coarse
+2026-11-16T11:01:16+00:00 clip 1/32: fine (v1, v2) and narrow
+2026-11-16T11:01:22+00:00   v1: t_c 6.0, t_fine 3.8, t_full 3.80, fallback -, gate False
+2026-11-16T11:01:28+00:00   v2: t_c 6.0, t_fine 5.7, t_full 5.70, fallback -, gate False
+2026-11-16T11:01:34+00:00 clip 2/32 Town05_head-on_rain_42: coarse
+2026-11-16T11:01:55+00:00 clip 2/32: fine (v1, v2) and narrow
+2026-11-16T11:02:01+00:00   v1: t_c 6.0, t_fine 3.8, t_full 3.80, fallback -, gate False
+2026-11-16T11:02:07+00:00   v2: t_c 2.0, t_fine 2.2, t_full 2.20, fallback -, gate False
+2026-11-16T11:02:13+00:00 clip 3/32 Town06_head-on_sunset_35: coarse
+2026-11-16T11:02:26+00:00 clip 3/32: fine (v1, v2) and narrow
+2026-11-16T11:02:32+00:00   v1: t_c 4.0, t_fine 2.6, t_full 2.60, fallback -, gate False
+2026-11-16T11:02:38+00:00   v2: t_c 3.0, t_fine None, t_full 3.00, fallback fine, gate False
+2026-11-16T11:02:44+00:00 clip 4/32 Town03_head-on_night_03: coarse
+2026-11-16T11:03:02+00:00 clip 4/32: fine (v1, v2) and narrow
+2026-11-16T11:03:08+00:00   v1: t_c 10.0, t_fine 7.55, t_full 7.55, fallback -, gate False
+2026-11-16T11:03:14+00:00   v2: t_c 10.0, t_fine 6.1, t_full 10.00, fallback -, gate True
+2026-11-16T11:03:20+00:00 clip 5/32 Town03_head-on_night_12: coarse
+2026-11-16T11:03:40+00:00 clip 5/32: fine (v1, v2) and narrow
+2026-11-16T11:03:47+00:00   v1: t_c 16.0, t_fine 16.15, t_full 16.15, fallback -, gate False
+2026-11-16T11:03:53+00:00   v2: t_c 1.0, t_fine 2.7, t_full 2.70, fallback -, gate False
+2026-11-16T11:03:59+00:00 clip 6/32 Town03_head-on_night_08: coarse
+2026-11-16T11:04:17+00:00 clip 6/32: fine (v1, v2) and narrow
+2026-11-16T11:04:23+00:00   v1: t_c 16.0, t_fine 12.4, t_full 12.40, fallback -, gate False
+2026-11-16T11:04:29+00:00   v2: t_c 4.0, t_fine 2.2, t_full 2.20, fallback -, gate False
+2026-11-16T11:04:35+00:00 clip 7/32 Town05_rear-end_wet_235: coarse
+2026-11-16T11:04:51+00:00 clip 7/32: fine (v1, v2) and narrow
+2026-11-16T11:04:57+00:00   v1: t_c 10.0, t_fine 8.6, t_full 8.60, fallback -, gate False
+2026-11-16T11:05:03+00:00   v2: t_c 1.0, t_fine 0.6, t_full 0.60, fallback -, gate False
+2026-11-16T11:05:09+00:00 clip 8/32 Town05_rear-end_sunset_213: coarse
+2026-11-16T11:05:25+00:00 clip 8/32: fine (v1, v2) and narrow
+2026-11-16T11:05:31+00:00   v1: t_c 12.0, t_fine 10.6, t_full 10.60, fallback -, gate False
+2026-11-16T11:05:37+00:00   v2: t_c 12.0, t_fine 10.0, t_full 10.00, fallback -, gate False
+2026-11-16T11:05:43+00:00 clip 9/32 Town07_rear-end_sunset_58: coarse
+2026-11-16T11:05:57+00:00 clip 9/32: fine (v1, v2) and narrow
+2026-11-16T11:06:03+00:00   v1: t_c 8.0, t_fine 6.6, t_full 6.60, fallback -, gate False
+2026-11-16T11:06:09+00:00   v2: t_c 7.0, t_fine 6.0, t_full 6.00, fallback -, gate False
+2026-11-16T11:06:15+00:00 clip 10/32 Town07_rear-end_night_09: coarse
+2026-11-16T11:06:30+00:00 clip 10/32: fine (v1, v2) and narrow
+2026-11-16T11:06:36+00:00   v1: t_c 10.0, t_fine 7.45, t_full 7.45, fallback -, gate False
+2026-11-16T11:06:42+00:00   v2: t_c 10.0, t_fine 8.8, t_full 8.80, fallback -, gate False
+2026-11-16T11:06:49+00:00 clip 11/32 Town05_rear-end_night_214: coarse
+2026-11-16T11:07:12+00:00 clip 11/32: fine (v1, v2) and narrow
+2026-11-16T11:07:18+00:00   v1: t_c 16.0, t_fine 15.95, t_full 15.95, fallback -, gate False
+2026-11-16T11:07:25+00:00   v2: t_c 17.0, t_fine 17.2, t_full 17.20, fallback -, gate False
+2026-11-16T11:07:30+00:00 clip 12/32 Town05_rear-end_night_231: coarse
+2026-11-16T11:07:49+00:00 clip 12/32: fine (v1, v2) and narrow
+2026-11-16T11:07:56+00:00   v1: t_c 12.0, t_fine 11.1, t_full 11.10, fallback -, gate False
+2026-11-16T11:08:02+00:00   v2: t_c 10.0, t_fine 8.0, t_full 8.00, fallback -, gate False
+2026-11-16T11:08:08+00:00 clip 13/32 Town06_sideswipe_sunset_07: coarse
+2026-11-16T11:08:20+00:00 clip 13/32: fine (v1, v2) and narrow
+2026-11-16T11:08:26+00:00   v1: t_c 6.0, t_fine 4.45, t_full 4.45, fallback -, gate False
+2026-11-16T11:08:32+00:00   v2: t_c 5.0, t_fine 3.0, t_full 3.00, fallback -, gate False
+2026-11-16T11:08:38+00:00 clip 14/32 Town06_sideswipe_clear_33: coarse
+2026-11-16T11:08:56+00:00 clip 14/32: fine (v1, v2) and narrow
+2026-11-16T11:09:03+00:00   v1: t_c 12.0, t_fine 11.1, t_full 11.10, fallback -, gate False
+2026-11-16T11:09:09+00:00   v2: t_c 1.0, t_fine None, t_full 1.00, fallback fine, gate False
+2026-11-16T11:09:15+00:00 clip 15/32 Town04_sideswipe_wet_06: coarse
+2026-11-16T11:09:33+00:00 clip 15/32: fine (v1, v2) and narrow
+2026-11-16T11:09:39+00:00   v1: t_c 16.0, t_fine 16.15, t_full 16.15, fallback -, gate False
+2026-11-16T11:09:46+00:00   v2: t_c 16.0, t_fine 15.7, t_full 15.70, fallback -, gate False
+2026-11-16T11:09:52+00:00 clip 16/32 Town06_sideswipe_night_25: coarse
+2026-11-16T11:10:21+00:00 clip 16/32: fine (v1, v2) and narrow
+2026-11-16T11:10:27+00:00   v1: t_c 12.0, t_fine 11.1, t_full 11.10, fallback -, gate False
+2026-11-16T11:10:34+00:00   v2: t_c 12.0, t_fine 10.0, t_full 10.00, fallback -, gate False
+2026-11-16T11:10:40+00:00 clip 17/32 Town05_sideswipe_night_29: coarse
+2026-11-16T11:11:02+00:00 clip 17/32: fine (v1, v2) and narrow
+2026-11-16T11:11:09+00:00   v1: t_c 14.0, t_fine 13.1, t_full 13.10, fallback -, gate False
+2026-11-16T11:11:15+00:00   v2: t_c 12.0, t_fine 10.0, t_full 10.00, fallback -, gate False
+2026-11-16T11:11:21+00:00 clip 18/32 Town04_sideswipe_night_05: coarse
+2026-11-16T11:11:51+00:00 clip 18/32: fine (v1, v2) and narrow
+2026-11-16T11:11:58+00:00   v1: t_c 16.0, t_fine 16.15, t_full 16.15, fallback -, gate False
+2026-11-16T11:12:05+00:00   v2: t_c 1.0, t_fine 5.0, t_full 5.00, fallback -, gate False
+2026-11-16T11:12:11+00:00 clip 19/32 Town07_single_sunset_15: coarse
+2026-11-16T11:12:26+00:00 clip 19/32: fine (v1, v2) and narrow
+2026-11-16T11:12:32+00:00   v1: t_c 12.0, t_fine 10.05, t_full 10.05, fallback -, gate False
+2026-11-16T11:12:39+00:00   v2: t_c 12.0, t_fine 11.0, t_full 11.00, fallback -, gate False
+2026-11-16T11:12:45+00:00 clip 20/32 Town10HD_single_wet_01: coarse
+2026-11-16T11:13:01+00:00 clip 20/32: fine (v1, v2) and narrow
+2026-11-16T11:13:07+00:00   v1: t_c 10.0, t_fine 8.6, t_full 8.60, fallback -, gate False
+2026-11-16T11:13:14+00:00   v2: t_c 1.0, t_fine None, t_full 1.00, fallback fine, gate False
+2026-11-16T11:13:19+00:00 clip 21/32 Town07_single_clear_07: coarse
+2026-11-16T11:13:34+00:00 clip 21/32: fine (v1, v2) and narrow
+2026-11-16T11:13:41+00:00   v1: t_c 10.0, t_fine 8.35, t_full 8.35, fallback -, gate False
+2026-11-16T11:13:47+00:00   v2: t_c 5.0, t_fine 2.0, t_full 2.00, fallback -, gate False
+2026-11-16T11:13:53+00:00 clip 22/32 Town10HD_single_night_20: coarse
+2026-11-16T11:14:09+00:00 clip 22/32: fine (v1) and narrow
+2026-11-16T11:14:15+00:00   v1: t_c 10.0, t_fine 8.7, t_full 8.70, fallback -, gate False
+2026-11-16T11:14:15+00:00   v2: t_c None, t_fine None, t_full 6.83, fallback coarse, gate False
+2026-11-16T11:14:21+00:00 clip 23/32 Town10HD_single_night_23: coarse
+2026-11-16T11:14:39+00:00 clip 23/32: fine (v1, v2) and narrow
+2026-11-16T11:14:45+00:00   v1: t_c 10.0, t_fine 8.25, t_full 8.25, fallback -, gate False
+2026-11-16T11:14:51+00:00   v2: t_c 5.0, t_fine 3.0, t_full 3.00, fallback -, gate False
+2026-11-16T11:14:58+00:00 clip 24/32 Town10HD_single_night_09: coarse
+2026-11-16T11:15:21+00:00 clip 24/32: fine (v1, v2) and narrow
+2026-11-16T11:15:27+00:00   v1: t_c 12.0, t_fine 11.1, t_full 11.10, fallback -, gate False
+2026-11-16T11:15:34+00:00   v2: t_c 10.0, t_fine 7.0, t_full 7.00, fallback -, gate False
+2026-11-16T11:15:40+00:00 clip 25/32 Town03_t-bone_clear_08: coarse
+2026-11-16T11:16:00+00:00 clip 25/32: fine (v1, v2) and narrow
+2026-11-16T11:16:07+00:00   v1: t_c 14.0, t_fine 13.35, t_full 13.35, fallback -, gate False
+2026-11-16T11:16:14+00:00   v2: t_c 12.0, t_fine 8.6, t_full 8.60, fallback -, gate False
+2026-11-16T11:16:19+00:00 clip 26/32 Town03_t-bone_clear_01: coarse
+2026-11-16T11:16:34+00:00 clip 26/32: fine (v1, v2) and narrow
+2026-11-16T11:16:40+00:00   v1: t_c 10.0, t_fine 9.1, t_full 9.10, fallback -, gate False
+2026-11-16T11:16:47+00:00   v2: t_c 1.0, t_fine None, t_full 1.00, fallback fine, gate False
+2026-11-16T11:16:52+00:00 clip 27/32 Town03_t-bone_wet_16: coarse
+2026-11-16T11:17:11+00:00 clip 27/32: fine (v1, v2) and narrow
+2026-11-16T11:17:17+00:00   v1: t_c 10.0, t_fine 9.1, t_full 9.10, fallback -, gate False
+2026-11-16T11:17:23+00:00   v2: t_c 1.0, t_fine None, t_full 1.00, fallback fine, gate False
+2026-11-16T11:17:29+00:00 clip 28/32 Town10HD_t-bone_night_26: coarse
+2026-11-16T11:17:46+00:00 clip 28/32: fine (v1, v2) and narrow
+2026-11-16T11:17:53+00:00   v1: t_c 4.0, t_fine 0.5, t_full 0.50, fallback -, gate False
+2026-11-16T11:17:59+00:00   v2: t_c 2.0, t_fine 2.2, t_full 2.20, fallback -, gate False
+2026-11-16T11:18:05+00:00 clip 29/32 Town03_t-bone_night_42: coarse
+2026-11-16T11:18:33+00:00 clip 29/32: fine (v1, v2) and narrow
+2026-11-16T11:18:39+00:00   v1: t_c 12.0, t_fine 11.1, t_full 11.10, fallback -, gate False
+2026-11-16T11:18:46+00:00   v2: t_c 10.0, t_fine 6.6, t_full 6.60, fallback -, gate False
+2026-11-16T11:18:52+00:00 clip 30/32 Town03_t-bone_night_51: coarse
+2026-11-16T11:19:17+00:00 clip 30/32: fine (v1, v2) and narrow
+2026-11-16T11:19:24+00:00   v1: t_c 14.0, t_fine 13.1, t_full 13.10, fallback -, gate False
+2026-11-16T11:19:31+00:00   v2: t_c 12.0, t_fine 10.0, t_full 10.00, fallback -, gate False
+2026-11-16T11:19:35+00:00 clip 31/32 Town06_head-on_clear_01: coarse
+2026-11-16T11:19:49+00:00 clip 31/32: fine (v1, v2) and narrow
+2026-11-16T11:19:54+00:00   v1: t_c 10.0, t_fine 9.1, t_full 9.10, fallback -, gate False
+2026-11-16T11:20:00+00:00   v2: t_c 1.0, t_fine None, t_full 1.00, fallback fine, gate False
+2026-11-16T11:20:04+00:00 clip 32/32 Town04_rear-end_night_32: coarse
+2026-11-16T11:20:35+00:00 clip 32/32: fine (v1, v2) and narrow
+2026-11-16T11:20:42+00:00   v1: t_c 12.45, t_fine 11.55, t_full 11.55, fallback -, gate False
+2026-11-16T11:20:49+00:00   v2: t_c 10.0, t_fine 6.6, t_full 6.60, fallback -, gate False
+Zero-shot VLM development run on 32 synthetic clips (results\vlm_dev); 2026-11-16T11:20:55+00:00; Qwen/Qwen3-VL-4B-Instruct nf4 on NVIDIA GeForce RTX 5060 Laptop GPU, load 30.2 s. Protocol: PROTOCOL.txt. Synthetic labels only.
+
+FULL SCAN v1 per clip (t*, coarse answer -> t_c, fine answer -> t_fine, t_full, error = t_full - t*)
+clip                               type        dur     t*  coarse    t_c    fine t_fine t_full   error flags
+Town05_head-on_wet_24              head-on    22.1   7.80       6   6.00       7   3.80   3.80   -4.00 
+Town05_head-on_rain_42             head-on    22.5   6.05       6   6.00       7   3.80   3.80   -2.25 
+Town06_head-on_sunset_35           head-on    14.0   9.95       4   4.00      10   2.60   2.60   -7.35 
+Town03_head-on_night_03            head-on    22.6   4.45      10  10.00       6   7.55   7.55   +3.10 
+Town03_head-on_night_12            head-on    20.9   3.75      16  16.00      16  16.15  16.15  +12.40 
+Town03_head-on_night_08            head-on    16.6   3.65      16  16.00      15  12.40  12.40   +8.75 coarse edge
+Town05_rear-end_wet_235            rear-end   15.5  11.05      10  10.00      10   8.60   8.60   -2.45 
+Town05_rear-end_sunset_213         rear-end   19.2  12.35      12  12.00      10  10.60  10.60   -1.75 
+Town07_rear-end_sunset_58          rear-end   13.3   8.20       8   8.00      10   6.60   6.60   -1.60 
+Town07_rear-end_night_09           rear-end   12.9   3.80      10  10.00      10   7.45   7.45   +3.65 
+Town05_rear-end_night_214          rear-end   19.6  11.65      16  16.00      17  15.95  15.95   +4.30 
+Town05_rear-end_night_231          rear-end   17.0  11.95      12  12.00      12  11.10  11.10   -0.85 
+Town06_sideswipe_sunset_07         sideswipe   9.9   7.90       6   6.00      10   4.45   4.45   -3.45 
+Town06_sideswipe_clear_33          sideswipe  17.5  14.05      12  12.00      12  11.10  11.10   -2.95 
+Town04_sideswipe_wet_06            sideswipe  20.1   9.40      16  16.00      16  16.15  16.15   +6.75 
+Town06_sideswipe_night_25          sideswipe  27.2  17.30      12  12.00      12  11.10  11.10   -6.20 
+Town05_sideswipe_night_29          sideswipe  19.9   7.85      14  14.00      12  13.10  13.10   +5.25 
+Town04_sideswipe_night_05          sideswipe  21.9   9.20      16  16.00      16  16.15  16.15   +6.95 
+Town07_single_sunset_15            single     15.0  13.25      12  12.00      12  10.05  10.05   -3.20 
+Town10HD_single_wet_01             single     20.9   5.70      10  10.00      10   8.60   8.60   +2.90 
+Town07_single_clear_07             single     13.3  11.15      10  10.00      12   8.35   8.35   -2.80 
+Town10HD_single_night_20           single     13.7   5.80      10  10.00      12   8.70   8.70   +2.90 
+Town10HD_single_night_23           single     13.2   4.20      10  10.00      12   8.25   8.25   +4.05 
+Town10HD_single_night_09           single     21.6   5.55      12  12.00      12  11.10  11.10   +5.55 
+Town03_t-bone_clear_08             t-bone     22.6   5.25      14  14.00      13  13.35  13.35   +8.10 
+Town03_t-bone_clear_01             t-bone     16.4   6.15      10  10.00      12   9.10   9.10   +2.95 
+Town03_t-bone_wet_16               t-bone     19.8   5.40      10  10.00      12   9.10   9.10   +3.70 
+Town10HD_t-bone_night_26           t-bone     14.4   7.50       4   4.00       2   0.50   0.50   -7.00 
+Town03_t-bone_night_42             t-bone     25.6   6.65      12  12.00      12  11.10  11.10   +4.45 
+Town03_t-bone_night_51             t-bone     19.1   7.00      14  14.00      12  13.10  13.10   +6.10 
+Town06_head-on_clear_01            head-on    17.8  14.40      10  10.00      12   9.10   9.10   -5.30 
+Town04_rear-end_night_32           rear-end   32.2   4.20      12  12.45      12  11.55  11.55   +7.35 
+
+FULL SCAN v2 per clip (t*, coarse answer -> t_c, fine answer -> t_fine, t_full, error = t_full - t*)
+clip                               type        dur     t*  coarse    t_c    fine t_fine t_full   error flags
+Town05_head-on_wet_24              head-on    22.1   7.80     6.0   6.00     5.7   5.70   5.70   -2.10 
+Town05_head-on_rain_42             head-on    22.5   6.05     2.0   2.00     2.2   2.20   2.20   -3.85 
+Town06_head-on_sunset_35           head-on    14.0   9.95     3.0   3.00     0.0      -   3.00   -6.95 fallback fine; fine: rule A: t < 0.3 s
+Town03_head-on_night_03            head-on    22.6   4.45    10.0  10.00     6.1   6.10  10.00   +5.55 GATE
+Town03_head-on_night_12            head-on    20.9   3.75     1.0   1.00     2.7   2.70   2.70   -1.05 coarse edge
+Town03_head-on_night_08            head-on    16.6   3.65     4.0   4.00     2.2   2.20   2.20   -1.45 
+Town05_rear-end_wet_235            rear-end   15.5  11.05     1.0   1.00     0.6   0.60   0.60  -10.45 coarse edge
+Town05_rear-end_sunset_213         rear-end   19.2  12.35    12.0  12.00    10.0  10.00  10.00   -2.35 
+Town07_rear-end_sunset_58          rear-end   13.3   8.20     7.0   7.00     6.0   6.00   6.00   -2.20 
+Town07_rear-end_night_09           rear-end   12.9   3.80    10.0  10.00     8.8   8.80   8.80   +5.00 
+Town05_rear-end_night_214          rear-end   19.6  11.65    17.0  17.00    17.2  17.20  17.20   +5.55 
+Town05_rear-end_night_231          rear-end   17.0  11.95    10.0  10.00     8.0   8.00   8.00   -3.95 
+Town06_sideswipe_sunset_07         sideswipe   9.9   7.90     5.0   5.00     3.0   3.00   3.00   -4.90 
+Town06_sideswipe_clear_33          sideswipe  17.5  14.05     1.0   1.00     0.0      -   1.00  -13.05 fallback fine; coarse edge; fine: rule A: t < 0.3 s
+Town04_sideswipe_wet_06            sideswipe  20.1   9.40    16.0  16.00    15.7  15.70  15.70   +6.30 
+Town06_sideswipe_night_25          sideswipe  27.2  17.30    12.0  12.00    10.0  10.00  10.00   -7.30 
+Town05_sideswipe_night_29          sideswipe  19.9   7.85    12.0  12.00    10.0  10.00  10.00   +2.15 
+Town04_sideswipe_night_05          sideswipe  21.9   9.20     1.0   1.00     5.0   5.00   5.00   -4.20 coarse edge
+Town07_single_sunset_15            single     15.0  13.25    12.0  12.00    11.0  11.00  11.00   -2.25 
+Town10HD_single_wet_01             single     20.9   5.70     1.0   1.00     0.0      -   1.00   -4.70 fallback fine; coarse edge; fine: rule A: t < 0.3 s
+Town07_single_clear_07             single     13.3  11.15     5.0   5.00     2.0   2.00   2.00   -9.15 
+Town10HD_single_night_20           single     13.7   5.80     0.0      -    None      -   6.83   +1.03 fallback coarse; coarse edge; coarse: rule A: t < 0.3 s
+Town10HD_single_night_23           single     13.2   4.20     5.0   5.00     3.0   3.00   3.00   -1.20 
+Town10HD_single_night_09           single     21.6   5.55    10.0  10.00     7.0   7.00   7.00   +1.45 
+Town03_t-bone_clear_08             t-bone     22.6   5.25    12.0  12.00     8.6   8.60   8.60   +3.35 
+Town03_t-bone_clear_01             t-bone     16.4   6.15     1.0   1.00     0.0      -   1.00   -5.15 fallback fine; coarse edge; fine: rule A: t < 0.3 s
+Town03_t-bone_wet_16               t-bone     19.8   5.40     1.0   1.00     0.0      -   1.00   -4.40 fallback fine; coarse edge; fine: rule A: t < 0.3 s
+Town10HD_t-bone_night_26           t-bone     14.4   7.50     2.0   2.00     2.2   2.20   2.20   -5.30 
+Town03_t-bone_night_42             t-bone     25.6   6.65    10.0  10.00     6.6   6.60   6.60   -0.05 
+Town03_t-bone_night_51             t-bone     19.1   7.00    12.0  12.00    10.0  10.00  10.00   +3.00 
+Town06_head-on_clear_01            head-on    17.8  14.40     1.0   1.00     0.0      -   1.00  -13.40 fallback fine; coarse edge; fine: rule A: t < 0.3 s
+Town04_rear-end_night_32           rear-end   32.2   4.20    10.0  10.00     6.6   6.60   6.60   +2.40 
+
+TOTALS per version (n = 32; selection criterion = within_2s, ties to the simpler version)
+                                      v1        v2
+  n_clips                             32        32
+  within_2s                       0.0938    0.1875
+  T@1                             0.0442    0.1208
+  coarse at first/last frame      0.0312    0.2812
+  t_full within 10% of midpoint   0.4062    0.2188
+  coarse invalid (parse/range)         0         0
+  coarse rule A                        0         1
+  fine invalid (parse/range)           0         0
+  fine rule A                          0         6
+  coarse fallbacks                     0         1
+  fine fallbacks                       0         6
+  gated (rule B)                       0         1
+  digit strings                        0         0
+  GPU s per clip (full scan)      9.6576    9.7056
+  median |error| s                4.0250    4.0750
+
+NARROW CALL (t_hat +- 2 s; same input and prompt for v1 and v2, run once): valid 32/32; type accuracy 0.1250 (4/32, fallbacks counted as rear-end); point error (Euclidean, normalised image coordinates) mean 0.2065, median 0.1899; GPU s per clip 5.82
+  predicted types: head-on 1, rear-end 15, sideswipe 16, single 0, t-bone 0
+  true types:      head-on 7, rear-end 7, sideswipe 6, single 6, t-bone 6
+clip                               type      pred          x     y    cx    cy   err valid
+Town05_head-on_wet_24              head-on   sideswipe  0.45  0.35  0.58  0.35 0.128 True
+Town05_head-on_rain_42             head-on   rear-end   0.45  0.45  0.25  0.39 0.204 True
+Town06_head-on_sunset_35           head-on   rear-end   0.35  0.35  0.51  0.54 0.248 True
+Town03_head-on_night_03            head-on   sideswipe  0.48  0.42  0.42  0.09 0.335 True
+Town03_head-on_night_12            head-on   sideswipe  0.50  0.50  0.57  0.78 0.288 True
+Town03_head-on_night_08            head-on   sideswipe  0.40  0.40  0.33  0.44 0.079 True
+Town05_rear-end_wet_235            rear-end  rear-end   0.72  0.45  0.56  0.44 0.160 True
+Town05_rear-end_sunset_213         rear-end  sideswipe  0.50  0.45  0.51  0.59 0.140 True
+Town07_rear-end_sunset_58          rear-end  head-on    0.30  0.25  0.32  0.39 0.140 True
+Town07_rear-end_night_09           rear-end  sideswipe  0.45  0.45  0.50  0.30 0.158 True
+Town05_rear-end_night_214          rear-end  sideswipe  0.50  0.35  0.57  0.48 0.145 True
+Town05_rear-end_night_231          rear-end  rear-end   0.50  0.45  0.51  0.55 0.100 True
+Town06_sideswipe_sunset_07         sideswipe rear-end   0.48  0.32  0.55  0.94 0.628 True
+Town06_sideswipe_clear_33          sideswipe rear-end   0.38  0.48  0.31  0.52 0.081 True
+Town04_sideswipe_wet_06            sideswipe rear-end   0.40  0.20  0.29  0.30 0.151 True
+Town06_sideswipe_night_25          sideswipe rear-end   0.57  0.42  0.65  0.62 0.215 True
+Town05_sideswipe_night_29          sideswipe sideswipe  0.48  0.42  0.40  0.57 0.166 True
+Town04_sideswipe_night_05          sideswipe rear-end   0.28  0.25  0.30  0.35 0.102 True
+Town07_single_sunset_15            single    rear-end   0.35  0.35  0.42  0.61 0.265 True
+Town10HD_single_wet_01             single    sideswipe  0.45  0.35  0.52  0.64 0.299 True
+Town07_single_clear_07             single    sideswipe  0.50  0.40  0.66  0.63 0.281 True
+Town10HD_single_night_20           single    rear-end   0.57  0.45  0.43  0.59 0.199 True
+Town10HD_single_night_23           single    rear-end   0.42  0.32  0.42  0.51 0.194 True
+Town10HD_single_night_09           single    rear-end   0.50  0.30  0.52  0.46 0.161 True
+Town03_t-bone_clear_08             t-bone    sideswipe  0.50  0.50  0.28  0.47 0.218 True
+Town03_t-bone_clear_01             t-bone    sideswipe  0.50  0.50  0.58  0.45 0.098 True
+Town03_t-bone_wet_16               t-bone    sideswipe  0.50  0.30  0.59  0.48 0.197 True
+Town10HD_t-bone_night_26           t-bone    sideswipe  0.50  0.40  0.60  0.34 0.116 True
+Town03_t-bone_night_42             t-bone    sideswipe  0.45  0.45  0.63  0.43 0.185 True
+Town03_t-bone_night_51             t-bone    sideswipe  0.50  0.40  0.67  0.74 0.377 True
+Town06_head-on_clear_01            head-on   rear-end   0.50  0.50  0.54  0.76 0.266 True
+Town04_rear-end_night_32           rear-end  rear-end   0.50  0.40  0.65  0.64 0.283 True
+

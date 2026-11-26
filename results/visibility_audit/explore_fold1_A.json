@@ -1,0 +1,56 @@
+{
+ "n_windows": 755,
+ "overall_type_accuracy": 0.30596026490066225,
+ "overall_S": 0.634553460624397,
+ "matches_val_epoch1_metrics": true,
+ "groups": [
+  {
+   "flag": "LOW_AT_IMPACT",
+   "group": "flagged",
+   "n": 8,
+   "type_accuracy": 0.5,
+   "S": 0.21897479180646548,
+   "share_t_star_inside_window": 0.25,
+   "majority_type_rear_end_share": 0.5
+  },
+  {
+   "flag": "LOW_AT_IMPACT",
+   "group": "unflagged",
+   "n": 747,
+   "type_accuracy": 0.3038821954484605,
+   "S": 0.6390041023252584,
+   "share_t_star_inside_window": 0.6599732262382865,
+   "majority_type_rear_end_share": 0.3654618473895582
+  },
+  {
+   "flag": "LOW_AROUND_IMPACT",
+   "group": "flagged",
+   "n": 5,
+   "type_accuracy": 0.4,
+   "S": 0.17390412554149243,
+   "share_t_star_inside_window": 0.2,
+   "majority_type_rear_end_share": 0.6
+  },
+  {
+   "flag": "LOW_AROUND_IMPACT",
+   "group": "unflagged",
+   "n": 750,
+   "type_accuracy": 0.30533333333333335,
+   "S": 0.6376244561916163,
+   "share_t_star_inside_window": 0.6586666666666666,
+   "majority_type_rear_end_share": 0.36533333333333334
+  }
+ ],
+ "flagged_types": {
+  "LOW_AT_IMPACT": {
+   "rear-end": 4,
+   "t-bone": 3,
+   "head-on": 1
+  },
+  "LOW_AROUND_IMPACT": {
+   "rear-end": 3,
+   "head-on": 1,
+   "t-bone": 1
+  }
+ }
+}

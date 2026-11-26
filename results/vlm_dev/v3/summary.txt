@@ -1,0 +1,98 @@
+Zero-shot VLM development run on 32 synthetic clips (results\vlm_dev\v3); 2026-11-16T11:52:16+00:00; Qwen/Qwen3-VL-4B-Instruct nf4 on NVIDIA GeForce RTX 5060 Laptop GPU, load 7.6 s. Protocol: PROTOCOL.txt. Synthetic labels only.
+
+FULL SCAN v3 per clip (t*, coarse answer -> t_c, fine answer -> t_fine, t_full, error = t_full - t*)
+clip                               type        dur     t*  coarse    t_c    fine t_fine t_full   error flags
+Town05_head-on_wet_24              head-on    22.1   7.80     5.9   5.90     5.5   5.50   5.50   -2.30 
+Town05_head-on_rain_42             head-on    22.5   6.05     1.5   1.50     0.6   0.60   0.60   -5.45 
+Town06_head-on_sunset_35           head-on    14.0   9.95     0.9   0.90     0.0      -   0.90   -9.05 fallback fine; fine: rule A: t < 0.3 s
+Town03_head-on_night_03            head-on    22.6   4.45     7.5   7.50     5.3   5.30   5.30   +0.85 
+Town03_head-on_night_12            head-on    20.9   3.75    15.3  15.30    15.3  15.30  15.30  +11.55 
+Town03_head-on_night_08            head-on    16.6   3.65     1.1   1.10     4.5   4.50   4.50   +0.85 
+Town05_rear-end_wet_235            rear-end   15.5  11.05     0.0      -    None      -   7.75   -3.30 fallback coarse; coarse edge; coarse: rule A: t < 0.3 s
+Town05_rear-end_sunset_213         rear-end   19.2  12.35    11.2  11.20    10.5  10.50  10.50   -1.85 
+Town07_rear-end_sunset_58          rear-end   13.3   8.20     7.0   7.00     5.5   5.50   5.50   -2.70 
+Town07_rear-end_night_09           rear-end   12.9   3.80     8.6   8.60     8.8   8.80   8.80   +5.00 
+Town05_rear-end_night_214          rear-end   19.6  11.65     5.2   5.20     3.2   3.20   3.20   -8.45 
+Town05_rear-end_night_231          rear-end   17.0  11.95     1.1   1.10     0.6   0.60   0.60  -11.35 
+Town06_sideswipe_sunset_07         sideswipe   9.9   7.90     5.9   5.90     5.3   5.30   5.30   -2.60 
+Town06_sideswipe_clear_33          sideswipe  17.5  14.05    12.2  12.20     8.7   8.70   8.70   -5.35 
+Town04_sideswipe_wet_06            sideswipe  20.1   9.40    10.0  10.00    10.0  10.00  10.00   +0.60 
+Town06_sideswipe_night_25          sideswipe  27.2  17.30    18.0  18.00    15.0  15.00  15.00   -2.30 
+Town05_sideswipe_night_29          sideswipe  19.9   7.85    10.0  10.00     6.5   6.50   6.50   -1.35 
+Town04_sideswipe_night_05          sideswipe  21.9   9.20     0.0      -    None      -  10.93   +1.73 fallback coarse; coarse edge; coarse: rule A: t < 0.3 s
+Town07_single_sunset_15            single     15.0  13.25    11.0  11.00    11.0  11.00  11.00   -2.25 
+Town10HD_single_wet_01             single     20.9   5.70     0.0      -    None      -  10.43   +4.73 fallback coarse; coarse edge; coarse: rule A: t < 0.3 s
+Town07_single_clear_07             single     13.3  11.15     0.0      -    None      -   6.65   -4.50 fallback coarse; coarse edge; coarse: rule A: t < 0.3 s
+Town10HD_single_night_20           single     13.7   5.80     7.2   7.20     6.5   6.50   6.50   +0.70 
+Town10HD_single_night_23           single     13.2   4.20     4.0   4.00     3.0   3.00   3.00   -1.20 
+Town10HD_single_night_09           single     21.6   5.55    12.0  12.00    12.0  12.00  12.00   +6.45 
+Town03_t-bone_clear_08             t-bone     22.6   5.25    12.0  12.00    12.0  12.00  12.00   +6.75 
+Town03_t-bone_clear_01             t-bone     16.4   6.15     1.0   1.00     2.5   2.50   2.50   -3.65 
+Town03_t-bone_wet_16               t-bone     19.8   5.40     0.0      -    None      -   9.88   +4.47 fallback coarse; coarse edge; coarse: rule A: t < 0.3 s
+Town10HD_t-bone_night_26           t-bone     14.4   7.50     2.9   2.90     2.6   2.60   2.60   -4.90 
+Town03_t-bone_night_42             t-bone     25.6   6.65    13.7  13.70    11.3  11.30  11.30   +4.65 
+Town03_t-bone_night_51             t-bone     19.1   7.00    12.0  12.00    10.5  10.50  10.50   +3.50 
+Town06_head-on_clear_01            head-on    17.8  14.40     1.2   1.20     0.0      -   1.20  -13.20 fallback fine; fine: rule A: t < 0.3 s
+Town04_rear-end_night_32           rear-end   32.2   4.20     2.1   2.10     2.6   2.60   2.60   -1.60 
+
+TOTALS per version (n = 32; selection criterion = within_2s, ties to the simpler version)
+                                      v3
+  n_clips                             32
+  within_2s                       0.2812
+  T@1                             0.1523
+  coarse at first/last frame      0.1562
+  t_full within 10% of midpoint   0.5000
+  coarse invalid (parse/range)         0
+  coarse rule A                        5
+  fine invalid (parse/range)           0
+  fine rule A                          2
+  coarse fallbacks                     5
+  fine fallbacks                       2
+  gated (rule B)                       0
+  digit strings                        0
+  GPU s per clip (full scan)      4.5759
+  median |error| s                3.5750
+
+NARROW CALL (t_hat +- 2 s; same input and prompt for v1 and v2, run once): valid 32/32; type accuracy 0.1250 (4/32, fallbacks counted as rear-end); point error (Euclidean, normalised image coordinates) mean 0.2065, median 0.1899; GPU s per clip 1.96
+  predicted types: head-on 1, rear-end 15, sideswipe 16, single 0, t-bone 0
+  true types:      head-on 7, rear-end 7, sideswipe 6, single 6, t-bone 6
+clip                               type      pred          x     y    cx    cy   err valid
+Town05_head-on_wet_24              head-on   sideswipe  0.45  0.35  0.58  0.35 0.128 True
+Town05_head-on_rain_42             head-on   rear-end   0.45  0.45  0.25  0.39 0.204 True
+Town06_head-on_sunset_35           head-on   rear-end   0.35  0.35  0.51  0.54 0.248 True
+Town03_head-on_night_03            head-on   sideswipe  0.48  0.42  0.42  0.09 0.335 True
+Town03_head-on_night_12            head-on   sideswipe  0.50  0.50  0.57  0.78 0.288 True
+Town03_head-on_night_08            head-on   sideswipe  0.40  0.40  0.33  0.44 0.079 True
+Town05_rear-end_wet_235            rear-end  rear-end   0.72  0.45  0.56  0.44 0.160 True
+Town05_rear-end_sunset_213         rear-end  sideswipe  0.50  0.45  0.51  0.59 0.140 True
+Town07_rear-end_sunset_58          rear-end  head-on    0.30  0.25  0.32  0.39 0.140 True
+Town07_rear-end_night_09           rear-end  sideswipe  0.45  0.45  0.50  0.30 0.158 True
+Town05_rear-end_night_214          rear-end  sideswipe  0.50  0.35  0.57  0.48 0.145 True
+Town05_rear-end_night_231          rear-end  rear-end   0.50  0.45  0.51  0.55 0.100 True
+Town06_sideswipe_sunset_07         sideswipe rear-end   0.48  0.32  0.55  0.94 0.628 True
+Town06_sideswipe_clear_33          sideswipe rear-end   0.38  0.48  0.31  0.52 0.081 True
+Town04_sideswipe_wet_06            sideswipe rear-end   0.40  0.20  0.29  0.30 0.151 True
+Town06_sideswipe_night_25          sideswipe rear-end   0.57  0.42  0.65  0.62 0.215 True
+Town05_sideswipe_night_29          sideswipe sideswipe  0.48  0.42  0.40  0.57 0.166 True
+Town04_sideswipe_night_05          sideswipe rear-end   0.28  0.25  0.30  0.35 0.102 True
+Town07_single_sunset_15            single    rear-end   0.35  0.35  0.42  0.61 0.265 True
+Town10HD_single_wet_01             single    sideswipe  0.45  0.35  0.52  0.64 0.299 True
+Town07_single_clear_07             single    sideswipe  0.50  0.40  0.66  0.63 0.281 True
+Town10HD_single_night_20           single    rear-end   0.57  0.45  0.43  0.59 0.199 True
+Town10HD_single_night_23           single    rear-end   0.42  0.32  0.42  0.51 0.194 True
+Town10HD_single_night_09           single    rear-end   0.50  0.30  0.52  0.46 0.161 True
+Town03_t-bone_clear_08             t-bone    sideswipe  0.50  0.50  0.28  0.47 0.218 True
+Town03_t-bone_clear_01             t-bone    sideswipe  0.50  0.50  0.58  0.45 0.098 True
+Town03_t-bone_wet_16               t-bone    sideswipe  0.50  0.30  0.59  0.48 0.197 True
+Town10HD_t-bone_night_26           t-bone    sideswipe  0.50  0.40  0.60  0.34 0.116 True
+Town03_t-bone_night_42             t-bone    sideswipe  0.45  0.45  0.63  0.43 0.185 True
+Town03_t-bone_night_51             t-bone    sideswipe  0.50  0.40  0.67  0.74 0.377 True
+Town06_head-on_clear_01            head-on   rear-end   0.50  0.50  0.54  0.76 0.266 True
+Town04_rear-end_night_32           rear-end  rear-end   0.50  0.40  0.65  0.64 0.283 True
+
+SELECTION (pre-registered: share within 2 s on the 32 clips; ties go to the simpler version); results\vlm_dev\totals.csv for the earlier versions
+  v1: within_2s 0.0938, T@1 0.0442
+  v2: within_2s 0.1875, T@1 0.1208
+  v3: within_2s 0.2812, T@1 0.1523
+  selected: v3
+  narrow call re-run (same input and prompt): 32/32 raw outputs identical to results\vlm_dev\narrow.csv

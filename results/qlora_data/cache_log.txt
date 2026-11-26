@@ -1,0 +1,25 @@
+2026-11-21T15:34:21+00:00 START: 2211 clips, 4422 windows, 8 workers
+2026-11-21T15:34:36+00:00 100/2211 clips ({'skipped': 1, 'written': 99}), 0.12 GB so far, 15 s
+2026-11-21T15:34:50+00:00 200/2211 clips ({'skipped': 1, 'written': 199}), 0.25 GB so far, 29 s
+2026-11-21T15:35:07+00:00 300/2211 clips ({'skipped': 1, 'written': 299}), 0.38 GB so far, 46 s
+2026-11-21T15:35:24+00:00 400/2211 clips ({'skipped': 1, 'written': 399}), 0.52 GB so far, 63 s
+2026-11-21T15:35:50+00:00 500/2211 clips ({'skipped': 1, 'written': 499}), 0.62 GB so far, 89 s
+2026-11-21T15:36:09+00:00 600/2211 clips ({'skipped': 1, 'written': 599}), 0.76 GB so far, 108 s
+2026-11-21T15:36:35+00:00 700/2211 clips ({'skipped': 1, 'written': 699}), 0.86 GB so far, 134 s
+2026-11-21T15:36:56+00:00 800/2211 clips ({'skipped': 1, 'written': 799}), 0.98 GB so far, 155 s
+2026-11-21T15:37:22+00:00 900/2211 clips ({'skipped': 1, 'written': 899}), 1.12 GB so far, 181 s
+2026-11-21T15:37:52+00:00 1000/2211 clips ({'skipped': 1, 'written': 999}), 1.24 GB so far, 211 s
+2026-11-21T15:38:15+00:00 1100/2211 clips ({'skipped': 1, 'written': 1099}), 1.39 GB so far, 234 s
+2026-11-21T15:38:39+00:00 1200/2211 clips ({'skipped': 1, 'written': 1199}), 1.52 GB so far, 258 s
+2026-11-21T15:39:04+00:00 1300/2211 clips ({'skipped': 1, 'written': 1299}), 1.64 GB so far, 283 s
+2026-11-21T15:39:26+00:00 1400/2211 clips ({'skipped': 1, 'written': 1399}), 1.78 GB so far, 305 s
+2026-11-21T15:39:56+00:00 1500/2211 clips ({'skipped': 1, 'written': 1499}), 1.88 GB so far, 335 s
+2026-11-21T15:40:19+00:00 1600/2211 clips ({'skipped': 1, 'written': 1599}), 2.00 GB so far, 358 s
+2026-11-21T15:40:47+00:00 1700/2211 clips ({'skipped': 1, 'written': 1699}), 2.12 GB so far, 386 s
+2026-11-21T15:41:13+00:00 1800/2211 clips ({'skipped': 1, 'written': 1799}), 2.24 GB so far, 412 s
+2026-11-21T15:41:34+00:00 1900/2211 clips ({'skipped': 1, 'written': 1899}), 2.39 GB so far, 433 s
+2026-11-21T15:41:57+00:00 2000/2211 clips ({'skipped': 1, 'written': 1999}), 2.51 GB so far, 456 s
+2026-11-21T15:42:17+00:00 2100/2211 clips ({'skipped': 1, 'written': 2099}), 2.66 GB so far, 476 s
+2026-11-21T15:42:40+00:00 2200/2211 clips ({'skipped': 1, 'written': 2199}), 2.82 GB so far, 499 s
+2026-11-21T15:42:41+00:00 2211/2211 clips ({'skipped': 1, 'written': 2210}), 2.83 GB so far, 500 s
+2026-11-21T15:42:41+00:00 DONE: {'skipped': 1, 'written': 2210}; 0 errors; 4422 window files, 2.834 GB (672 KB per window); wall 500 s with 8 workers

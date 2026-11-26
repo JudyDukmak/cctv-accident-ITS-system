@@ -1,0 +1,79 @@
+Narrow v1 (frozen) vs narrow v2 on 200 synthetic clips; report 2026-11-21T13:57:32+00:00. Synthetic labels only; no real clip or real label opened. Protocol: PROTOCOL.txt; list: LIST.txt.
+power: 2026-11-21T13:24:46+00:00 START/RESUME: 0 clips done, 200 to do; power BatteryStatus 2 (2 = on AC mains), charge 80%
+       2026-11-21T13:57:11+00:00 FINISHED: 200 clips; power at end BatteryStatus 2 (2 = on AC mains), charge 80%
+S: sigma_x 0.127199, sigma_y 0.118818, spatial_k 1.0 (scorer_config.json); point error = Euclidean distance in image fractions (width and height as 1). Type accuracy counts fallbacks as their fallback type (rear-end); 'accuracy on valid answers' leaves fallbacks out (secondary).
+
+1. SIDE BY SIDE (all 200 clips)
+                                          narrow v1    narrow v2
+  valid answers                                 200          200
+  fallbacks                                       0            0
+  type correct                                   22           47
+  type accuracy                              0.1100       0.2350
+  type accuracy on valid answers             0.1100       0.2350
+  location score S                           0.3513       0.2689
+  mean point error                           0.2143       0.2607
+  median point error                         0.1891       0.2371
+  flagged answers (any flag)                    n/a            0   (v1 parser has no flags)
+    swapped x (x1 > x2)                           -            0
+    swapped y (y1 > y2)                           -            0
+    bbox digit strings                            -            0
+    collision_type trimmed / lower-cased            -            0
+    answer hit max_new_tokens (160)               -            0
+    missing keys (not invalid)                    -            0   {}
+  v1 invalid reasons: none
+  v2 invalid reasons: none
+  v1: GPU s per clip (synchronised generate) mean 1.95, median 1.92, max 3.44; peak allocated 3.42 GB; visual tokens ['896']
+  v2: GPU s per clip (synchronised generate) mean 5.81, median 5.70, max 7.07; peak allocated 4.98 GB; visual tokens ['1792']
+  v2 answer length: mean 62.9, max 87 new tokens
+
+2. BASELINES (same 200 clips)
+  majority type (rear-end, the most frequent synthetic type): type accuracy 0.2000 (the list is balanced, 40 per type, so any single type scores 0.2000)
+  image centre (0.5, 0.5): S 0.4040, mean point error 0.1888, median 0.1811
+
+3.1 CONFUSION MATRIX narrow v1 (rows true type, columns predicted type; fallbacks counted as predicted rear-end)
+  true \ predicted   head-on  rear-end sideswipe    single    t-bone  correct of which fallbacks
+  head-on                  0        14        24         0         2     0/40                  0
+  rear-end                 0        13        27         0         0    13/40                  0
+  sideswipe                0        31         9         0         0     9/40                  0
+  single                   1        21        18         0         0     0/40                  0
+  t-bone                   1         2        37         0         0     0/40                  0
+
+3.2 CONFUSION MATRIX narrow v2 (rows true type, columns predicted type; fallbacks counted as predicted rear-end)
+  true \ predicted   head-on  rear-end sideswipe    single    t-bone  correct of which fallbacks
+  head-on                  8         1         0         0        31     8/40                  0
+  rear-end                 4         0         0         0        36     0/40                  0
+  sideswipe               24         4         0         0        12     0/40                  0
+  single                  15         1         0         0        24     0/40                  0
+  t-bone                   1         0         0         0        39    39/40                  0
+
+  paired (secondary): both correct 0, only v1 22, only v2 47, neither 131
+
+4. NARROW v2 collision_visible (diagnostic only; changes no prediction)
+  collision_visible = false: 195/200 = 0.9750
+  false      n 195  type accuracy 0.2308 (45/195), valid 195, S 0.2699
+  true       n   5  type accuracy 0.4000 (2/5), valid 5, S 0.2299
+
+5. NARROW v2 'motion' ANSWERS PER TRUE TYPE (trimmed, lower-cased; all answers, valid or not)
+  true type        crossing       opposite same direction
+  head-on                28             11              1
+  rear-end               29             11              0
+  sideswipe               7             29              4
+  single                  8             31              1
+  t-bone                 37              3              0
+
+6. DAY / NIGHT
+         version     n  valid  accuracy       S  mean err
+  day    v1        113    113    0.0796  0.3611    0.2099
+  day    v2        113    113    0.2035  0.2872    0.2522
+  day    centre    113                   0.3941    0.1910
+  night  v1         87     87    0.1494  0.3385    0.2199
+  night  v2         87     87    0.2759  0.2450    0.2717
+  night  centre     87                   0.4168    0.1859
+
+7. PER TYPE (type accuracy and S)
+  type         n  v1 acc  v2 acc    v1 S    v2 S  centre S
+  head-on     40  0.0000  0.2000  0.4345  0.3087    0.4116
+  rear-end    40  0.3250  0.0000  0.4093  0.3140    0.4509
+  sideswipe   40  0.2250  0.0000  0.3112  0.2589    0.3527
+  single      40  0.0000  0.0000  0.3271  0.2436    0.5384
+  t-bone      40  0.0000  0.9750  0.2741  0.2192    0.2664

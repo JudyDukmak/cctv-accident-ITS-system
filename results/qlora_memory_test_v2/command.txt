@@ -1,0 +1,41 @@
+2026-11-21T14:02:04+00:00
+.venv-vlm\Scripts\python.exe -u vlm_qlora_memory_test.py --layout v2 (HF_HUB_OFFLINE=1, TRANSFORMERS_OFFLINE=1 in the child processes)
+script sha256 ee956ec98aee44d83f05f2a6449390cd00a5a51c5aa71a19b459aa8f720dba1c
+
+QLoRA memory and speed test: Qwen3-VL-4B-Instruct (NF4) on the local GPU. Synthetic clips only; no accuracy.
+
+Measures whether QLoRA fine-tuning of the narrow call fits in GPU memory and how long a step takes. It does not
+evaluate anything: the loss is logged only to show that the steps run.
+
+Setup (fixed before the run):
+  model   Qwen/Qwen3-VL-4B-Instruct, 4-bit NF4 (double quant, bf16 compute), loaded as in vlm_smoke_test.load_model
+  LoRA    on the language model's attention (q/k/v/o_proj) and MLP (gate/up/down_proj) projections, alpha = 2 x rank,
+          dropout 0.05, no bias; vision tower and all other weights frozen
+  train   gradient checkpointing on (non-reentrant), use_cache off, batch 1, AdamW lr 1e-4, seed 0, N_STEPS steps
+          cycling over N_CLIPS clips (clip k at steps k, k + 4, ...)
+  input   the narrow-call layout: n frames evenly over t* +- 2 s (shifted inside the clip), full frame resized to
+          448 x 256 pixel area, native Qwen pairing (2 frames per temporal token group); prompt = narrow v1 prompt
+          (16 frames) or its 8-frame text (narrow v2 prompt) for 8 frames; target = the JSON answer
+          {"collision_type", "x", "y"} from the synthetic labels (x, y rounded to 3 decimals); loss on the target only
+  clips   the first development clip (vlm_dev_clips.csv order) of each of head-on, rear-end, sideswipe, t-bone
+  attempts 1: 16 frames, rank 16; if it does not fit: 2: 8 frames, rank 16; if not: 3: 8 frames, rank 8
+  fits    = all N_STEPS steps run without CUDA out-of-memory and the peak reserved memory is at most 0.97 x the GPU's
+          total memory (the stage-test criterion; on Windows the driver can spill into shared system memory instead
+          of failing, which this catches)
+  timing  seconds per step = synchronised time of host-to-GPU copy + forward + backward + optimizer step (frames are
+          decoded and processed on the CPU before the first step); step 1 is reported apart (warm-up), the mean and
+          median over steps 2..N_STEPS are the step time
+  power   mains (Win32_Battery BatteryStatus 2) checked at the start and before each attempt; on battery: stop
+
+Each attempt runs in its own child process (clean GPU memory). Outputs in results/qlora_memory_test/.
+Usage (from cctv-accident-ITS-system/):  .venv-vlm\Scripts\python.exe -u vlm_qlora_memory_test.py
+
+--layout v2 (added 2026-11-21; the default layout v1 above is unchanged): the narrow-v2 input of narrow_prompt_v2.py
+  instead: the n frames over t* +- 2 s each duplicated (one frame per temporal token group, its own timestamp; 16
+  frames = 1,792 visual tokens), prompt PROMPT_V2 (for 8 frames the same text with "These 16 frames" -> "These 8
+  frames"), target = a JSON answer in the v2 format from the synthetic labels: {"vehicles": placeholder text,
+  "motion": the motion option of the true type, "collision_visible": true, "collision_type": the true type,
+  "bbox_2d": the true box x1, y1, x2, y2 in 0-1000 (rounded)}; the vehicles text is a fixed placeholder (memory test
+  only, no description labels exist). Attempts: 1: 16 frames, rank 16; if it does not fit: 2: 8 frames, rank 16.
+  Outputs in results/qlora_memory_test_v2/.
+    .venv-vlm\Scripts\python.exe -u vlm_qlora_memory_test.py --layout v2

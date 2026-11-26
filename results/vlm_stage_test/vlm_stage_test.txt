@@ -1,0 +1,54 @@
+Zero-shot VLM stage planning test (memory, speed, output format; NO accuracy; 2 synthetic clips; no real clip or real label opened)
+started: 2026-11-15T22:31:11+00:00
+GPU: NVIDIA GeForce RTX 5060 Laptop GPU, driver 595.71, total memory 7.96 GB; OVER_VRAM threshold 7.72 GB
+versions: python 3.12.2, torch 2.10.0+cu128, torchvision 0.25.0+cu128, transformers 5.22.1, accelerate 1.15.0, bitsandbytes 0.50.2, peft 0.21.2, qwen-vl-utils 0.0.14, av 19.0.2, pillow 13.0.0, numpy 2.5.4, nvidia-ml-py 13.615.71, huggingface-hub 2.4.0
+clip: synthetic_videos/videos/head-on/Town06_head-on_clear_01.mp4 (val fold 0); 1920x1080, 356 frames, 17.8 s; narrow window centre t_hat 14.488 s (saved out-of-fold C_cctv_seed0 frozen prediction)
+clip: synthetic_videos/videos/rear-end/Town04_rear-end_night_32.mp4 (val fold 0); 1920x1080, 644 frames, 32.2 s; narrow window centre t_hat 30.308 s (saved out-of-fold C_cctv_seed0 frozen prediction)
+frames resized to longer side 448 px (PIL bicubic); generate greedy, max_new_tokens 64; 4-bit = NF4, double quant, bf16 compute
+narrow16: 16 frames evenly over t_hat +- 2.0 s; prompt: These frames come from a fixed traffic camera and show a collision. Answer with one JSON object and nothing else, in this exact form: {"collision_type": "<one of head-on, rear-end, sideswipe, single, t-bone>", "x": <number 0-1>, "y": <number 0-1>}. collision_type is the type of collision (single means a single-vehicle crash). x and y give the collision point in the image as fractions of the image width (x, from the left) and height (y, from the top).
+full1fps / full2fps: whole clip at 1 / 2 fps, frame number k (0 = first) drawn top-left (28 px, white on black); prompt (DRAFT, not frozen): These {n} frames were sampled in time order at {fps:g} frames per second from a fixed traffic camera. Each frame shows its frame number in the top-left corner (0 is the first frame). A collision happens in this video. Answer with one JSON object and nothing else, in this exact form: {{"frame": <the frame number at which the collision first happens>}}.
+Qwen3-VL merges 2 consecutive frames into one temporal token group (timestamp = mean of the two); an odd frame count repeats the last frame.
+Offline (HF_HUB_OFFLINE=1, TRANSFORMERS_OFFLINE=1), children run with python -u. Limits per combination: model load 600 s, each call 300 s; a combination over a limit is killed and FAILED.
+Each clip is run 2 times per process: Call1 includes CUDA warm-up, Call2 is the warm time. PkAlloc = peak allocated during the calls of that clip; MaxRes = peak reserved over the process (load included); NVML pk = device-wide peak. JSON / Valid per call (narrow: collision_type in the 5 types and x, y in [0, 1]; full: integer frame in [0, n-1]). No answer is compared with a label.
+
+| Config  | Input    | Clip                     | Frames | VisTok | InTok | Load s | Call1 s | Call2 s | PkAlloc GB | MaxRes GB | NVML pk GB | JSON    | Valid   | Status |
+|---------|----------|--------------------------|--------|--------|-------|--------|---------|---------|------------|-----------|------------|---------|---------|--------|
+| 2B-bf16 | narrow16 | Town06_head-on_clear_01  | 16     | 896    | 1094  | 3.5    | 1.73    | 1.19    | 4.37       | 4.41      | 4.78       | yes/yes | yes/yes | OK     |
+| 2B-bf16 | narrow16 | Town04_rear-end_night_32 | 16     | 896    | 1094  | 3.5    | 1.13    | 1.18    | 4.37       | 4.41      | 4.78       | yes/yes | yes/yes | OK     |
+| 2B-bf16 | full1fps | Town06_head-on_clear_01  | 18     | 1008   | 1168  | 3.5    | 1.18    | 0.60    | 4.40       | 5.11      | 5.48       | yes/yes | yes/yes | OK     |
+| 2B-bf16 | full1fps | Town04_rear-end_night_32 | 33     | 1904   | 2136  | 3.5    | 1.38    | 1.34    | 5.04       | 5.11      | 5.48       | yes/yes | yes/yes | OK     |
+| 2B-bf16 | full2fps | Town06_head-on_clear_01  | 36     | 2016   | 2252  | 3.3    | 1.86    | 1.38    | 5.14       | 7.08      | 7.48       | yes/yes | yes/yes | OOM    |
+| 2B-nf4  | narrow16 | Town06_head-on_clear_01  | 16     | 896    | 1094  | 4.9    | 1.55    | 1.16    | 1.87       | 1.91      | 2.28       | yes/yes | yes/yes | OK     |
+| 2B-nf4  | narrow16 | Town04_rear-end_night_32 | 16     | 896    | 1094  | 4.9    | 1.26    | 1.30    | 1.87       | 1.91      | 2.28       | yes/yes | yes/yes | OK     |
+| 2B-nf4  | full1fps | Town06_head-on_clear_01  | 18     | 1008   | 1168  | 4.5    | 1.17    | 0.81    | 1.91       | 2.62      | 2.99       | yes/yes | no/no   | OK     |
+| 2B-nf4  | full1fps | Town04_rear-end_night_32 | 33     | 1904   | 2136  | 4.5    | 1.42    | 1.42    | 2.55       | 2.62      | 2.99       | yes/yes | no/no   | OK     |
+| 2B-nf4  | full2fps | Town06_head-on_clear_01  | 36     | 2016   | 2252  | 4.6    | 1.81    | 1.44    | 2.64       | 4.98      | 5.35       | yes/yes | no/no   | OK     |
+| 2B-nf4  | full2fps | Town04_rear-end_night_32 | 65     | 3696   | 4067  | 4.6    | 3.27    | 3.20    | 4.60       | 4.98      | 5.35       | yes/yes | no/no   | OK     |
+| 4B-nf4  | narrow16 | Town06_head-on_clear_01  | 16     | 896    | 1094  | 10.3   | 2.92    | 2.07    | 3.35       | 3.42      | 3.79       | yes/yes | yes/yes | OK     |
+| 4B-nf4  | narrow16 | Town04_rear-end_night_32 | 16     | 896    | 1094  | 10.3   | 1.81    | 1.83    | 3.35       | 3.42      | 3.79       | yes/yes | yes/yes | OK     |
+| 4B-nf4  | full1fps | Town06_head-on_clear_01  | 18     | 1008   | 1168  | 9.0    | 1.65    | 1.24    | 3.42       | 4.71      | 5.08       | yes/yes | yes/yes | OK     |
+| 4B-nf4  | full1fps | Town04_rear-end_night_32 | 33     | 1904   | 2136  | 9.0    | 2.59    | 2.53    | 4.56       | 4.71      | 5.08       | yes/yes | yes/yes | OK     |
+| 4B-nf4  | full2fps | Town06_head-on_clear_01  | 36     | 2016   | 2252  | 8.8    | 3.09    | 2.69    | 4.73       | 6.89      | 7.45       | yes/yes | yes/yes | OOM    |
+
+Not run:
+ 4B-bf16: not run: the bf16 weights are 8.88 GB (total_size in model.safetensors.index.json), more than the 7.96 GB of GPU memory
+
+Raw outputs (call 2; call 1 is the same input):
+ 2B-bf16 narrow16 | Town06_head-on_clear_01: '```json\n{"collision_type": "single", "x": 0.4, "y": 0.2}\n```'
+ 2B-bf16 narrow16 | Town04_rear-end_night_32: '```json\n{"collision_type": "single", "x": 0.4, "y": 0.2}\n```'
+ 2B-bf16 full1fps | Town06_head-on_clear_01: '{"frame": 0}'
+ 2B-bf16 full1fps | Town04_rear-end_night_32: '```json\n{"frame": 0}\n```'
+ 2B-bf16 full2fps | Town06_head-on_clear_01: '```json\n{"frame": 0}\n```'
+ 2B-bf16 full2fps: error: synthetic_videos/videos/rear-end/Town04_rear-end_night_32.mp4 call 1: CUDA out of memory. Tried to allocate 254.00 MiB. GPU 0 has a total capacity of 7.96 GiB of which 0 bytes is free. Of the allocated memory 6.74 GiB is allocated by PyTorch, and 350.83 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)
+ 2B-nf4 narrow16 | Town06_head-on_clear_01: '{"collision_type": "single", "x": 0.2, "y": 0.2}'
+ 2B-nf4 narrow16 | Town04_rear-end_night_32: '```json\n{"collision_type": "single", "x": 0.2, "y": 0.2}\n```'
+ 2B-nf4 full1fps | Town06_head-on_clear_01: '```json\n{"frame": "0"}\n```'
+ 2B-nf4 full1fps | Town04_rear-end_night_32: '```json\n{"frame": "32"}\n```'
+ 2B-nf4 full2fps | Town06_head-on_clear_01: '```json\n{"frame": "0"}\n```'
+ 2B-nf4 full2fps | Town04_rear-end_night_32: '```json\n{"frame": "31"}\n```'
+ 4B-nf4 narrow16 | Town06_head-on_clear_01: '{"collision_type": "rear-end", "x": 0.5, "y": 0.35}'
+ 4B-nf4 narrow16 | Town04_rear-end_night_32: '{"collision_type": "rear-end", "x": 0.5, "y": 0.4}'
+ 4B-nf4 full1fps | Town06_head-on_clear_01: '{"frame": 10}'
+ 4B-nf4 full1fps | Town04_rear-end_night_32: '{"frame": 12}'
+ 4B-nf4 full2fps | Town06_head-on_clear_01: '{"frame": 12}'
+ 4B-nf4 full2fps: error: synthetic_videos/videos/rear-end/Town04_rear-end_night_32.mp4 call 1: CUDA out of memory. Tried to allocate 1.97 GiB. GPU 0 has a total capacity of 7.96 GiB of which 1.20 GiB is free. Of the allocated memory 5.33 GiB is allocated by PyTorch, and 326.31 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CONF=expandable_segments:True to avoid fragmentation.  See documentation for Memory Management  (https://pytorch.org/docs/stable/notes/cuda.html#environment-variables)

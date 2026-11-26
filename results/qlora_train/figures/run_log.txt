@@ -1,0 +1,21 @@
+command: .venv-ml\Scripts\python.exe results\qlora_train\figures\make_figures.py   (2026-11-22T21:40:49Z)
+recomputed metrics match the saved metrics JSON for all three models
+| model | n | valid_answers | type_accuracy | S | mean_acc_S | mean_point_error | median_point_error | acc_day | S_day | acc_night | S_night | collision_visible_true | visible_agrees_t_star_inside | gpu_s_per_window |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| untrained | 755 | 755 | 0.3457 | 0.2800 | 0.3128 | 0.2477 | 0.2291 | 0.3372 | 0.2724 | 0.3782 | 0.3091 | 0 | 0.3444 | 2.7313 |
+| epoch 1 | 755 | 755 | 0.3060 | 0.6346 | 0.4703 | 0.1461 | 0.0857 | 0.3189 | 0.6412 | 0.2564 | 0.6089 | 755 | 0.6556 | 4.6700 |
+| epoch 2 | 755 | 755 | 0.2318 | 0.6755 | 0.4537 | 0.1345 | 0.0565 | 0.2321 | 0.6855 | 0.2308 | 0.6372 | 740 | 0.6649 | 4.2249 |
+| majority type (rear-end) | 755 | — | 0.3669 | — | — | — | — | 0.3656 | — | 0.3718 | — | — | — | — |
+| image centre | 755 | — | — | 0.3851 | — | 0.2021 | 0.1799 | — | 0.3847 | — | 0.3865 | — | — | — |
+examples:
+  good location  pool  312  synthetic_videos/videos/t-bone/Town03_t-bone_rain_20.mp4  true t-bone pred t-bone err 0.026
+  good location  pool  312  synthetic_videos/videos/sideswipe/Town05_sideswipe_sunset_18.mp4  true sideswipe pred head-on err 0.012
+  bad location   pool  127  synthetic_videos/videos/rear-end/Town05_rear-end_rain_142.mp4  true rear-end pred head-on err 0.304
+  bad location   pool  127  synthetic_videos/videos/rear-end/Town05_rear-end_rain_126.mp4  true rear-end pred head-on err 0.488
+  correct type   pool  230  synthetic_videos/videos/head-on/Town05_head-on_clear_07.mp4  true head-on pred head-on err 0.414
+  correct type   pool  230  synthetic_videos/videos/head-on/Town05_head-on_clear_42.mp4  true head-on pred head-on err 0.166
+  wrong type     pool  521  synthetic_videos/videos/sideswipe/Town05_sideswipe_sunset_31.mp4  true sideswipe pred head-on err 0.093
+  wrong type     pool  521  synthetic_videos/videos/sideswipe/Town05_sideswipe_clear_00.mp4  true sideswipe pred head-on err 0.437
+slow steps (gpu_s > 6): 277 from 4224 to 4500
+wrote: FIGURES.md, examples.csv, fig1_confusion.png, fig2_training_curve.png, fig3_location_cdf.png, fig4_per_type.png, fig5_day_night.png, fig6_examples.png, per_type.csv, run_log.txt, summary.csv, summary.md
+exit 0

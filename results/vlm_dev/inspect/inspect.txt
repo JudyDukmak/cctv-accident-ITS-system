@@ -1,0 +1,46 @@
+Bug checks (no model; processor Qwen/Qwen3-VL-4B-Instruct); 2026-11-16T11:44:49+00:00
+
+1. VERSION 2 TIMESTAMPS: synthetic_videos/videos/head-on/Town05_head-on_wet_24.mp4 (duration 22.15 s, no_frames 443, fps given to the processor = no_frames / duration = 20.000000)
+  coarse: 23 frames, grid_thw [12, 16, 28], 12 timestamp tokens for 12 2-frame groups
+  group   frame idx    true times s true mean    prompt text   diff
+      0     [0, 20]     0.00 / 1.00     0.500  <0.5 seconds>  +0.00
+      1    [40, 60]     2.00 / 3.00     2.500  <2.5 seconds>  +0.00
+      2   [80, 100]     4.00 / 5.00     4.500  <4.5 seconds>  +0.00
+      3  [120, 140]     6.00 / 7.00     6.500  <6.5 seconds>  +0.00
+      4  [160, 180]     8.00 / 9.00     8.500  <8.5 seconds>  +0.00
+      5  [200, 220]   10.00 / 11.00    10.500 <10.5 seconds>  +0.00
+      6  [240, 260]   12.00 / 13.00    12.500 <12.5 seconds>  +0.00
+      7  [280, 300]   14.00 / 15.00    14.500 <14.5 seconds>  +0.00
+      8  [320, 340]   16.00 / 17.00    16.500 <16.5 seconds>  +0.00
+      9  [360, 380]   18.00 / 19.00    18.500 <18.5 seconds>  +0.00
+     10  [400, 420]   20.00 / 21.00    20.500 <20.5 seconds>  +0.00
+     11       [440]           22.00    22.000 <22.0 seconds>  +0.00
+  max |text - true pair mean| = 0.000 s (text has one decimal); count match True; frames_indices given = sampled indices: True by construction (metadata not returned by the processor)
+  first characters of the video part of the prompt: '<0.5 seconds><|vision_start|><|video_pad|><|video_pad|><|video_pad|><|'
+  fine (t_c 6.00 s from the v2 run): 32 frames, grid_thw [16, 16, 28], 16 timestamp tokens for 16 2-frame groups
+  group   frame idx    true times s true mean    prompt text   diff
+      0    [40, 45]     2.00 / 2.25     2.125  <2.1 seconds>  -0.02
+      1    [50, 55]     2.50 / 2.75     2.625  <2.6 seconds>  -0.02
+      2    [61, 66]     3.05 / 3.30     3.175  <3.2 seconds>  +0.03
+      3    [71, 76]     3.55 / 3.80     3.675  <3.7 seconds>  +0.03
+      4    [81, 86]     4.05 / 4.30     4.175  <4.2 seconds>  +0.03
+      5    [92, 97]     4.60 / 4.85     4.725  <4.7 seconds>  -0.02
+      6  [102, 107]     5.10 / 5.35     5.225  <5.2 seconds>  -0.02
+      7  [112, 117]     5.60 / 5.85     5.725  <5.7 seconds>  -0.02
+      8  [123, 128]     6.15 / 6.40     6.275  <6.3 seconds>  +0.02
+      9  [133, 138]     6.65 / 6.90     6.775  <6.8 seconds>  +0.02
+     10  [143, 148]     7.15 / 7.40     7.275  <7.3 seconds>  +0.02
+     11  [154, 159]     7.70 / 7.95     7.825  <7.8 seconds>  -0.03
+     12  [164, 169]     8.20 / 8.45     8.325  <8.3 seconds>  -0.02
+     13  [174, 179]     8.70 / 8.95     8.825  <8.8 seconds>  -0.02
+     14  [185, 190]     9.25 / 9.50     9.375  <9.4 seconds>  +0.03
+     15  [195, 200]    9.75 / 10.00     9.875  <9.9 seconds>  +0.03
+  max |text - true pair mean| = 0.025 s (text has one decimal); count match True; frames_indices given = sampled indices: True by construction (metadata not returned by the processor)
+
+2. VERSION 1 FRAME NUMBERS: synthetic_videos/videos/head-on/Town05_head-on_wet_24.mp4, coarse and fine inputs as the model receives them
+  coarse: 23 frames, model resolution 448 x 256 (W x H), grid v1_coarse_Town05_head-on_wet_24.png (4 per row, numbers 0..22 in order)
+  fine: 32 frames, model resolution 448 x 256 (W x H), grid v1_fine_Town05_head-on_wet_24.png (4 per row, numbers 0..31 in order)
+
+3. NARROW CALL INPUTS (t_hat +- 2 s, 16 frames), as the model receives them
+  Town05_head-on_wet_24 (day, wet): t_hat 8.14 s, t* 7.80 s, frames 123..203 (6.15-10.15 s), model resolution 448 x 256, grid narrow_Town05_head-on_wet_24.png; true point (0.58, 0.35)
+  Town03_head-on_night_03 (night, night): t_hat 4.67 s, t* 4.45 s, frames 53..133 (2.65-6.65 s), model resolution 448 x 256, grid narrow_Town03_head-on_night_03.png; true point (0.42, 0.09)

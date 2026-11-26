@@ -1,0 +1,17 @@
+stem,judgement,note
+Town06_sideswipe_night_46,visible-overlap,"missing truck 374: a dark vehicle shape is visible inside its dashed box (tick +1), overlapping the other colliding actor 372, whose visible box is small; not hidden by another object or the edge; dark scene, but the shape is visible"
+Town06_head-on_clear_26,visible-overlap,"missing car 422 is the red car plainly visible next to the yellow taxi 424, about the same size; not hidden, not small: the signal is wrong here (likely the two touching cars' pixels were resolved to one actor)"
+Town03_head-on_night_49,hidden-object,missing truck 385 is behind the colliding fire truck 387 (its dashed box at tick +1 is a thin sliver at the fire truck's right side)
+Town05_rear-end_clear_237,mixed,"both actors missing; the red car at the left of the box is visible (car 2569, dashed box at tick +2), the right half of the box is behind a tree (the other actor is likely hidden there)"
+Town04_rear-end_night_48,small,"both colliding cars are small and far; missing car 451 (dashed box at tick -1) is a few pixels wide; dark scene, only a red light shows"
+Town04_rear-end_clear_51,hidden-object,"missing car 451 is behind a non-colliding fire truck that fills the metadata box (last seen at tick -13, -0.65 s); only the other car shows at the box's right end"
+Town05_head-on_rain_52,hidden-object,missing truck 342 is behind the colliding fire truck 340 (dashed box at tick -7 is a thin sliver at the fire truck's right edge)
+Town05_rear-end_sunset_237,hidden-object,missing car 3460 is behind a tree that covers the right half of the box; only the yellow taxi 3459 shows
+Town07_rear-end_rain_20,visible,both cars 206 and 208 clearly visible
+Town04_sideswipe_clear_13,visible,both cars 449 and 451 clearly visible
+Town07_t-bone_clear_32,visible,both cars 227 and 229 clearly visible
+Town04_sideswipe_sunset_21,visible,both cars 449 and 451 clearly visible
+Town10HD_single_clear_02,visible,car 211 visible; the dynamic object 213 is small but visible at the top of the box
+Town04_rear-end_clear_22,visible,both cars 451 and 449 clearly visible
+Town07_rear-end_night_40,dark,"NOT flagged, but car 209's box is pure black: the car cannot be seen in the dark although it is in base; van 207 is dimly visible. Darkness is not captured by this signal"
+Town05_sideswipe_sunset_26,partly-hidden,fire truck 292 visible; vehicle 290 (tag truck) partly under/behind the fire truck but still in base

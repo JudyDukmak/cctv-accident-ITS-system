@@ -1,0 +1,9 @@
+Narrow v1 vs v2 test list, written 2026-11-21T13:24:36+00:00 before any model call
+test_clips.csv sha256 2a313416abf524023e2b3b60b132aa039eae538b0f1afc14fc9199c9cc8899a7; 200 synthetic clips; seed 1 (numpy default_rng); none of the 32 design clips (vlm_dev_clips.csv sha256 bba63401d1627ed890acff574d31d20058044361a51242562464a2e26135645a)
+rule: 40 per collision type; 20 day + 20 night, or all night clips and the rest day when a type has fewer than 20 night clips; pools sorted by rgb_path; strata in TYPES order, day then night
+head-on: pool outside the design clips day 454, night 127 -> drawn day 20, night 20
+rear-end: pool outside the design clips day 627, night 160 -> drawn day 20, night 20
+sideswipe: pool outside the design clips day 319, night 80 -> drawn day 20, night 20
+single: pool outside the design clips day 53, night 7 -> drawn day 33, night 7
+t-bone: pool outside the design clips day 293, night 59 -> drawn day 20, night 20
+fold counts: 0 89, 1 56, 2 55

@@ -1,0 +1,8 @@
+command (HF_HUB_OFFLINE=1): .venv-vlm/Scripts/python.exe -u run_cascade.py --run --data synthetic --clips results/cascade_dry_run/dry_list.csv --pred 0=results/diagnostics/C_cctv_seeds012/seed0_frozen/tta_clip_predictions_flip.csv --out results/cascade_dry_run --frames-dir cache/cascade_dry_run_v1   (2026-11-23T09:18:50Z)
+2026-11-23T09:18:52+00:00 START/RESUME: 0 windows done, 100 to do; power BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-23T09:19:05+00:00 model loaded: base Qwen/Qwen3-VL-4B-Instruct (nf4) + adapter epoch1
+2026-11-23T09:21:21+00:00 25/100 windows; power BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-23T09:23:40+00:00 50/100 windows; power BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-23T09:25:56+00:00 75/100 windows; power BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-23T09:28:18+00:00 FINISHED: 100 windows; power at end BatteryStatus 2 (2 = on AC mains), charge 80%
+exit 0

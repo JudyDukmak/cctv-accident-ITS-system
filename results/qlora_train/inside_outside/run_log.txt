@@ -1,0 +1,101 @@
+command: .venv-ml\Scripts\python.exe results\qlora_train\inside_outside\inside_outside.py   (2026-11-23T08:32:03Z)
+INSIDE vs OUTSIDE ANALYSIS — QLoRA validation, fold 1 window A (755 synthetic windows)
+EXPLORATORY: this split was decided after seeing figure 6 (results/qlora_train/figures/). It is not part of the evaluation
+fixed in CONFIG.txt before training, did not affect training or the checkpoint choice (epoch 1, unchanged), and no model was
+run. Inside = the first frame time <= t* <= the last frame time of window A (manifest t_star_inside). Window A is
+centred on the classifier's out-of-fold t_hat (C_cctv seed 0), so 'outside' means the classifier's t_hat was far
+from t*. Point error is in normalised image units; S uses scorer_config.json.
+
+1. Models by group (all-group rows reproduce the saved metrics JSON)
+  model        group    n  type_accuracy       S  median_point_error  share_error_above_0.4
+  untrained   inside  495         0.3838  0.2915              0.2220                 0.1152
+  untrained  outside  260         0.2731  0.2580              0.2468                 0.1769
+  untrained      all  755         0.3457  0.2800              0.2291                 0.1364
+  epoch 1     inside  495         0.4101  0.7433              0.0265                 0.0788
+  epoch 1    outside  260         0.1077  0.4274              0.1579                 0.1615
+  epoch 1        all  755         0.3060  0.6346              0.0857                 0.1073
+  epoch 2     inside  495         0.3071  0.8096              0.0203                 0.0566
+  epoch 2    outside  260         0.0885  0.4203              0.1518                 0.2077
+  epoch 2        all  755         0.2318  0.6755              0.0565                 0.1086
+
+2. Baselines within each group (group majority = most common true type in that group; computed from labels)
+  group      n  group_majority_type  group_majority_accuracy  rear_end_accuracy  centre_S  centre_median_point_error  centre_share_error_above_0.4
+  inside   495              head-on                   0.3232             0.2687    0.3742                     0.1918                        0.0465
+  outside  260             rear-end                   0.5538             0.5538    0.4057                     0.1620                        0.0769
+  all      755             rear-end                   0.3669             0.3669    0.3851                     0.1799                        0.0570
+
+3. Row-normalised confusion, t* inside only (rows true, columns predicted; n_true per row)
+  epoch 1
+  true         n  head-on  rear-end  sideswipe  single  t-bone
+  head-on    160   0.6438    0.0563     0.0312  0.0063  0.2625
+  rear-end   133   0.9474    0.0075     0.0000  0.0376  0.0075
+  sideswipe   40   0.9750    0.0000     0.0250  0.0000  0.0000
+  single       7   0.0000    0.7143     0.0000  0.0000  0.2857
+  t-bone     155   0.3097    0.0258     0.0065  0.0258  0.6323
+  epoch 2
+  true         n  head-on  rear-end  sideswipe  single  t-bone
+  head-on    160   0.8000    0.1562     0.0250  0.0187  0.0000
+  rear-end   133   0.9323    0.0677     0.0000  0.0000  0.0000
+  sideswipe   40   0.9750    0.0000     0.0250  0.0000  0.0000
+  single       7   0.0000    1.0000     0.0000  0.0000  0.0000
+  t-bone     155   0.4903    0.2903     0.1161  0.0129  0.0903
+
+4. How the groups differ (true labels; |t_hat - t*| in seconds)
+  group      n  share_night  share_head-on  share_rear-end  share_sideswipe  share_single  share_t-bone
+  inside   495       0.2040         0.3232          0.2687           0.0808        0.0141        0.3131
+  outside  260       0.2115         0.0538          0.5538           0.2577        0.0231        0.1115
+  all      755       0.2066         0.2305          0.3669           0.1417        0.0172        0.2437
+  group    abs_that_minus_tstar_mean     p05     p25  median     p75      p95      max  share_above_2s
+  inside                      0.3825  0.0263  0.1798  0.3036  0.4470   1.2664   2.1190          0.0020
+  outside                     6.1864  2.1703  3.6908  5.9569  8.3963  10.7413  15.4387          1.0000
+  all                         2.3812  0.0569  0.2609  0.4628  3.8571   9.3286  15.4387          0.3457
+
+4b. Extra (stratified): accuracy and S per true type within each group (small n in some cells)
+  model           type    group    n  type_accuracy       S  centre_S
+  untrained    head-on   inside  160         0.0000  0.3234    0.3454
+  untrained    head-on  outside   14         0.0000  0.3101    0.2883
+  untrained   rear-end   inside  133         0.3158  0.3177    0.5063
+  untrained   rear-end  outside  144         0.3264  0.2990    0.4333
+  untrained  sideswipe   inside   40         0.0250  0.1954    0.4445
+  untrained  sideswipe  outside   67         0.0299  0.2135    0.4804
+  untrained     single   inside    7         0.0000  0.0324    0.3822
+  untrained     single  outside    6         0.0000  0.0342    0.2832
+  untrained     t-bone   inside  155         0.9484  0.2727    0.2721
+  untrained     t-bone  outside   29         0.7586  0.1782    0.1780
+  epoch 1      head-on   inside  160         0.6438  0.7732    0.3454
+  epoch 1      head-on  outside   14         0.4286  0.3958    0.2883
+  epoch 1     rear-end   inside  133         0.0075  0.7537    0.5063
+  epoch 1     rear-end  outside  144         0.0069  0.4282    0.4333
+  epoch 1    sideswipe   inside   40         0.0250  0.7495    0.4445
+  epoch 1    sideswipe  outside   67         0.0000  0.5610    0.4804
+  epoch 1       single   inside    7         0.0000  0.6832    0.3822
+  epoch 1       single  outside    6         0.0000  0.3382    0.2832
+  epoch 1       t-bone   inside  155         0.6323  0.7048    0.2721
+  epoch 1       t-bone  outside   29         0.7241  0.1489    0.1780
+  epoch 2      head-on   inside  160         0.8000  0.8596    0.3454
+  epoch 2      head-on  outside   14         0.5000  0.6116    0.2883
+  epoch 2     rear-end   inside  133         0.0677  0.7546    0.5063
+  epoch 2     rear-end  outside  144         0.0833  0.3863    0.4333
+  epoch 2    sideswipe   inside   40         0.0250  0.8347    0.4445
+  epoch 2    sideswipe  outside   67         0.0000  0.5372    0.4804
+  epoch 2       single   inside    7         0.0000  0.7157    0.3822
+  epoch 2       single  outside    6         0.0000  0.2694    0.2832
+  epoch 2       t-bone   inside  155         0.0903  0.8028    0.2721
+  epoch 2       t-bone  outside   29         0.1379  0.2581    0.1780
+
+5. Share of windows with t* inside window A, per fold (manifest, all window-A rows)
+  fold     n  n_inside  share_inside
+  0      770       540        0.7013
+  1      755       495        0.6556
+  2      686       636        0.9271
+  all   2211      1671        0.7558
+  earlier number 0.7558 (results/qlora_data/report.txt) reproduced: all folds 1671/2211 = 0.7558
+
+6. Interpretation (exploratory; no causal claim)
+  (1) Both trained epochs score much better when t* is inside window A (S 0.7433 vs 0.4274 for epoch 1 and 0.8096 vs 0.4203 for epoch 2; type accuracy 0.4101 vs 0.1077 and 0.3071 vs 0.0885), while the untrained model's S gap is small (+0.0336).
+  (2) The two groups are different clips, not the same clips with a different window: the outside group has more rear-end (0.5538 vs 0.2687) and sideswipe (0.2577 vs 0.0808) and fewer head-on (0.0538 vs 0.3232), a similar night share (0.2115 vs 0.2040), and by construction a much larger classifier timing error (median |t_hat - t*| 5.96 s vs 0.30 s), so they are clips the classifier found hard to time and may be harder for other reasons too.
+  (3) Much of the type-accuracy gap could come from this type mix rather than from the window: the trained models almost never name rear-end or sideswipe in either group (epoch 1 rear-end accuracy 0.0075 inside vs 0.0069 outside), and for t-bone epoch 1 is not worse outside (0.7241 vs 0.6323 inside; n 29 outside).
+  (4) The S gap is present within every true type for both epochs, while the frame-blind image-centre baseline is higher outside (0.4057 vs 0.3742), so box position alone does not account for it; it is consistent with the collision being out of view, but this split cannot separate that from the clips being hard, which would need t*-centred windows for the same clips (fold-1 window B is in the manifest and cache but has no saved answers; evaluating it needs a model run).
+  (5) The overall inside share 0.7558 is reproduced; fold 1 has the lowest inside share (0.6556, vs 0.7013 fold 0 and 0.9271 fold 2), so fold-1 validation numbers mix the two groups in a different proportion than the other folds would.
+
+exit 0

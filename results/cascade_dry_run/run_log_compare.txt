@@ -1,0 +1,28 @@
+command: .venv-vlm\Scripts\python.exe run_cascade.py --compare   (2026-11-23T09:28:35Z)
+{
+ "n": 100,
+ "frames": {
+  "all_indices_equal": true,
+  "all_t_hat_equal_manifest_centre": true,
+  "all_jpeg_bytes_equal": true,
+  "max_abs_over_all": 0,
+  "mean_abs_over_all": 0.0
+ },
+ "metrics": {
+  "runner": {
+   "type_accuracy": 0.26,
+   "S": 0.6153490154767184
+  },
+  "saved_epoch1": {
+   "type_accuracy": 0.26,
+   "S": 0.6153490154767184
+  },
+  "abs_diff": {
+   "type_accuracy": 0.0,
+   "S": 0.0
+  }
+ },
+ "PASS": true
+}
+raw identical 100 / 100 ; type or box differs: 0
+exit 0

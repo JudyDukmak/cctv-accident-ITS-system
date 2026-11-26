@@ -1,0 +1,81 @@
+W1121 16:57:36.338000 35540 .venv-vlm\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-21T13:57:36+00:00 loading Qwen/Qwen3-VL-4B-Instruct (nf4)
+Loading weights:   0%|          | 0/713 [00:00<?, ?it/s]Loading weights:   0%|          | 1/713 [00:00<10:34,  1.12it/s]Loading weights:   0%|          | 3/713 [00:01<03:12,  3.68it/s]Loading weights:   1%|          | 8/713 [00:01<01:03, 11.16it/s]Loading weights:   2%|▏         | 15/713 [00:01<00:33, 20.84it/s]Loading weights:   4%|▎         | 25/713 [00:01<00:20, 34.22it/s]Loading weights:   4%|▍         | 31/713 [00:01<00:17, 38.44it/s]Loading weights:   5%|▌         | 37/713 [00:01<00:16, 42.11it/s]Loading weights:   6%|▌         | 44/713 [00:01<00:13, 48.55it/s]Loading weights:   7%|▋         | 50/713 [00:01<00:14, 46.34it/s]Loading weights:   8%|▊         | 59/713 [00:01<00:12, 52.51it/s]Loading weights:  10%|▉         | 69/713 [00:02<00:11, 57.02it/s]Loading weights:  11%|█         | 75/713 [00:02<00:11, 55.59it/s]Loading weights:  11%|█▏        | 81/713 [00:02<00:11, 53.05it/s]Loading weights:  12%|█▏        | 89/713 [00:02<00:10, 59.50it/s]Loading weights:  13%|█▎        | 96/713 [00:02<00:11, 52.65it/s]Loading weights:  14%|█▍        | 102/713 [00:02<00:11, 53.81it/s]Loading weights:  15%|█▌        | 108/713 [00:02<00:11, 51.19it/s]Loading weights:  16%|█▌        | 114/713 [00:03<00:12, 48.45it/s]Loading weights:  17%|█▋        | 124/713 [00:03<00:11, 53.15it/s]Loading weights:  18%|█▊        | 130/713 [00:03<00:11, 49.92it/s]Loading weights:  19%|█▉        | 136/713 [00:03<00:11, 48.20it/s]Loading weights:  20%|██        | 143/713 [00:03<00:10, 51.88it/s]Loading weights:  21%|██        | 149/713 [00:03<00:12, 46.46it/s]Loading weights:  22%|██▏       | 157/713 [00:03<00:10, 52.52it/s]Loading weights:  23%|██▎       | 163/713 [00:03<00:10, 50.26it/s]Loading weights:  24%|██▎       | 169/713 [00:04<00:11, 48.24it/s]Loading weights:  25%|██▍       | 177/713 [00:04<00:09, 55.30it/s]Loading weights:  26%|██▌       | 183/713 [00:04<00:11, 47.59it/s]Loading weights:  27%|██▋       | 190/713 [00:04<00:10, 51.74it/s]Loading weights:  27%|██▋       | 196/713 [00:04<00:10, 49.14it/s]Loading weights:  28%|██▊       | 202/713 [00:04<00:10, 46.97it/s]Loading weights:  29%|██▉       | 210/713 [00:04<00:09, 54.68it/s]Loading weights:  30%|███       | 216/713 [00:05<00:10, 47.56it/s]Loading weights:  31%|███▏      | 223/713 [00:05<00:09, 51.24it/s]Loading weights:  32%|███▏      | 229/713 [00:05<00:09, 48.77it/s]Loading weights:  33%|███▎      | 235/713 [00:05<00:10, 46.90it/s]Loading weights:  34%|███▍      | 242/713 [00:05<00:09, 52.04it/s]Loading weights:  35%|███▍      | 248/713 [00:05<00:10, 45.13it/s]Loading weights:  36%|███▌      | 256/713 [00:05<00:08, 51.96it/s]Loading weights:  37%|███▋      | 262/713 [00:05<00:09, 49.17it/s]Loading weights:  38%|███▊      | 268/713 [00:06<00:09, 46.97it/s]Loading weights:  39%|███▊      | 275/713 [00:06<00:08, 51.04it/s]Loading weights:  39%|███▉      | 281/713 [00:06<00:09, 44.83it/s]Loading weights:  41%|████      | 289/713 [00:06<00:08, 51.08it/s]Loading weights:  41%|████▏     | 295/713 [00:06<00:08, 48.86it/s]Loading weights:  42%|████▏     | 301/713 [00:06<00:08, 46.80it/s]Loading weights:  43%|████▎     | 308/713 [00:06<00:07, 51.70it/s]Loading weights:  44%|████▍     | 314/713 [00:07<00:08, 45.79it/s]Loading weights:  45%|████▌     | 322/713 [00:07<00:07, 53.20it/s]Loading weights:  46%|████▌     | 328/713 [00:07<00:07, 51.41it/s]Loading weights:  47%|████▋     | 334/713 [00:07<00:07, 47.41it/s]Loading weights:  48%|████▊     | 341/713 [00:07<00:07, 51.04it/s]Loading weights:  49%|████▊     | 347/713 [00:07<00:08, 44.68it/s]Loading weights:  50%|████▉     | 355/713 [00:07<00:07, 50.87it/s]Loading weights:  51%|█████     | 361/713 [00:08<00:07, 48.51it/s]Loading weights:  51%|█████▏    | 367/713 [00:08<00:07, 43.71it/s]Loading weights:  52%|█████▏    | 372/713 [00:08<00:07, 44.42it/s]Loading weights:  53%|█████▎    | 377/713 [00:08<00:07, 45.29it/s]Loading weights:  54%|█████▎    | 382/713 [00:08<00:07, 41.64it/s]Loading weights:  54%|█████▍    | 388/713 [00:08<00:07, 41.59it/s]Loading weights:  55%|█████▌    | 393/713 [00:08<00:08, 37.12it/s]Loading weights:  57%|█████▋    | 406/713 [00:08<00:05, 57.69it/s]Loading weights:  61%|██████▏   | 438/713 [00:09<00:02, 121.26it/s]Loading weights:  65%|██████▌   | 464/713 [00:09<00:01, 154.04it/s]Loading weights:  70%|██████▉   | 498/713 [00:09<00:01, 201.70it/s]Loading weights:  74%|███████▍  | 526/713 [00:09<00:00, 219.32it/s]Loading weights:  79%|███████▉  | 562/713 [00:09<00:00, 249.60it/s]Loading weights:  84%|████████▎ | 596/713 [00:09<00:00, 265.56it/s]Loading weights:  88%|████████▊ | 624/713 [00:09<00:00, 269.17it/s]Loading weights:  92%|█████████▏| 656/713 [00:09<00:00, 275.18it/s]Loading weights:  96%|█████████▋| 688/713 [00:09<00:00, 257.15it/s]Loading weights: 100%|██████████| 713/713 [00:10<00:00, 69.47it/s] 
+2026-11-21T13:57:48+00:00 model loaded in 11.8 s on NVIDIA GeForce RTX 5060 Laptop GPU
+2026-11-21T13:57:52+00:00 narrow_v1 Town06_head-on_clear_01 warm-up: GPU 2.46 s, wall 3.77 s, peak 3.42 GB
+2026-11-21T13:57:55+00:00 narrow_v1 Town06_head-on_clear_01 repeat 1: GPU 1.80 s, wall 2.99 s, peak 3.42 GB
+2026-11-21T13:57:58+00:00 narrow_v1 Town06_head-on_clear_01 repeat 2: GPU 1.79 s, wall 2.98 s, peak 3.42 GB
+2026-11-21T13:58:01+00:00 narrow_v1 Town06_head-on_clear_01 repeat 3: GPU 1.78 s, wall 2.96 s, peak 3.42 GB
+2026-11-21T13:58:07+00:00 narrow_v2 Town06_head-on_clear_01 warm-up: GPU 5.67 s, wall 6.89 s, peak 4.98 GB
+2026-11-21T13:58:14+00:00 narrow_v2 Town06_head-on_clear_01 repeat 1: GPU 5.69 s, wall 6.88 s, peak 4.98 GB
+2026-11-21T13:58:21+00:00 narrow_v2 Town06_head-on_clear_01 repeat 2: GPU 5.70 s, wall 6.93 s, peak 4.98 GB
+2026-11-21T13:58:28+00:00 narrow_v2 Town06_head-on_clear_01 repeat 3: GPU 5.71 s, wall 6.92 s, peak 4.98 GB
+2026-11-21T13:58:35+00:00 full_scan_v3 Town06_head-on_clear_01 warm-up: GPU 4.87 s, wall 6.97 s, peak 4.43 GB
+2026-11-21T13:58:42+00:00 full_scan_v3 Town06_head-on_clear_01 repeat 1: GPU 4.85 s, wall 6.91 s, peak 4.43 GB
+2026-11-21T13:58:49+00:00 full_scan_v3 Town06_head-on_clear_01 repeat 2: GPU 4.85 s, wall 6.91 s, peak 4.43 GB
+2026-11-21T13:58:56+00:00 full_scan_v3 Town06_head-on_clear_01 repeat 3: GPU 4.79 s, wall 6.83 s, peak 4.43 GB
+2026-11-21T13:59:01+00:00 narrow_v1 Town04_rear-end_night_32 warm-up: GPU 2.10 s, wall 5.22 s, peak 3.42 GB
+2026-11-21T13:59:06+00:00 narrow_v1 Town04_rear-end_night_32 repeat 1: GPU 1.86 s, wall 5.04 s, peak 3.42 GB
+2026-11-21T13:59:11+00:00 narrow_v1 Town04_rear-end_night_32 repeat 2: GPU 1.91 s, wall 5.01 s, peak 3.42 GB
+2026-11-21T13:59:16+00:00 narrow_v1 Town04_rear-end_night_32 repeat 3: GPU 1.93 s, wall 5.07 s, peak 3.42 GB
+2026-11-21T13:59:25+00:00 narrow_v2 Town04_rear-end_night_32 warm-up: GPU 5.67 s, wall 8.79 s, peak 4.98 GB
+2026-11-21T13:59:34+00:00 narrow_v2 Town04_rear-end_night_32 repeat 1: GPU 5.76 s, wall 8.90 s, peak 4.98 GB
+2026-11-21T13:59:43+00:00 narrow_v2 Town04_rear-end_night_32 repeat 2: GPU 5.68 s, wall 8.81 s, peak 4.98 GB
+2026-11-21T13:59:51+00:00 narrow_v2 Town04_rear-end_night_32 repeat 3: GPU 5.67 s, wall 8.84 s, peak 4.98 GB
+2026-11-21T14:00:01+00:00 full_scan_v3 Town04_rear-end_night_32 warm-up: GPU 4.95 s, wall 9.20 s, peak 4.44 GB
+2026-11-21T14:00:10+00:00 full_scan_v3 Town04_rear-end_night_32 repeat 1: GPU 4.79 s, wall 9.03 s, peak 4.44 GB
+2026-11-21T14:00:19+00:00 full_scan_v3 Town04_rear-end_night_32 repeat 2: GPU 4.80 s, wall 9.05 s, peak 4.44 GB
+2026-11-21T14:00:28+00:00 full_scan_v3 Town04_rear-end_night_32 repeat 3: GPU 4.83 s, wall 9.02 s, peak 4.44 GB
+{
+ "part": "vlm",
+ "power_start": "BatteryStatus 2 (2 = on AC mains), charge 80%",
+ "model": "Qwen/Qwen3-VL-4B-Instruct",
+ "precision": "nf4",
+ "repeats": 3,
+ "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+ "load_s": 11.822408400010318,
+ "weights_alloc_gb": 2.7102584838867188,
+ "power_end": "BatteryStatus 2 (2 = on AC mains), charge 80%"
+}
+wrote C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\results\narrow_v1_v2_200\cost\vlm.json
+W1121 17:00:44.269000 29304 .venv-ml\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+Loading weights:   0%|          | 0/186 [00:00<?, ?it/s]Loading weights:  21%|██        | 39/186 [00:00<00:00, 364.48it/s]Loading weights:  41%|████      | 76/186 [00:00<00:00, 328.94it/s]Loading weights: 100%|██████████| 186/186 [00:00<00:00, 817.30it/s]
+Loading weights:   0%|          | 0/186 [00:00<?, ?it/s]Loading weights:  22%|██▏       | 41/186 [00:00<00:00, 391.93it/s]Loading weights:  44%|████▎     | 81/186 [00:00<00:00, 331.19it/s]Loading weights: 100%|██████████| 186/186 [00:00<00:00, 732.79it/s]
+Loading weights:   0%|          | 0/186 [00:00<?, ?it/s]Loading weights:  20%|█▉        | 37/186 [00:00<00:00, 351.90it/s]Loading weights:  39%|███▉      | 73/186 [00:00<00:00, 315.34it/s]Loading weights: 100%|██████████| 186/186 [00:00<00:00, 809.26it/s]
+2026-11-21T14:00:56+00:00 classifier Town06_head-on_clear_01 warm-up: 32 windows, cache 0.72 s, GPU 3.88 s, wall 7.03 s
+2026-11-21T14:01:03+00:00 classifier Town06_head-on_clear_01 repeat 1: 32 windows, cache 0.70 s, GPU 3.71 s, wall 6.45 s
+2026-11-21T14:01:09+00:00 classifier Town06_head-on_clear_01 repeat 2: 32 windows, cache 0.70 s, GPU 3.65 s, wall 6.39 s
+2026-11-21T14:01:16+00:00 classifier Town06_head-on_clear_01 repeat 3: 32 windows, cache 0.72 s, GPU 3.68 s, wall 6.50 s
+2026-11-21T14:01:28+00:00 classifier Town04_rear-end_night_32 warm-up: 61 windows, cache 1.22 s, GPU 7.02 s, wall 11.78 s
+2026-11-21T14:01:39+00:00 classifier Town04_rear-end_night_32 repeat 1: 61 windows, cache 1.24 s, GPU 7.11 s, wall 11.67 s
+2026-11-21T14:01:51+00:00 classifier Town04_rear-end_night_32 repeat 2: 61 windows, cache 1.23 s, GPU 7.09 s, wall 11.68 s
+2026-11-21T14:02:03+00:00 classifier Town04_rear-end_night_32 repeat 3: 61 windows, cache 1.21 s, GPU 7.14 s, wall 11.73 s
+{
+ "part": "classifier",
+ "power_start": "BatteryStatus 2 (2 = on AC mains), charge 80%",
+ "run": "C_cctv_seed0",
+ "folds": [
+  0,
+  1,
+  2
+ ],
+ "post_processing": {
+  "tta": "flip (mean of orig and hflip sigmoid scores per fold model)",
+  "fold_models": [
+   0,
+   1,
+   2
+  ],
+  "ensemble": "mean of the fold models' TTA window scores",
+  "smooth": 3,
+  "interp": "parabola",
+  "fallback": "clips without a window: t_hat = duration / 2, confidence 0 (decision 2026-11-15)"
+ },
+ "repeats": 3,
+ "loader_workers": 0,
+ "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+ "load_s_3_models": 4.800285100005567,
+ "weights_alloc_gb": 0.9636740684509277,
+ "power_end": "BatteryStatus 2 (2 = on AC mains), charge 80%"
+}
+wrote C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\results\narrow_v1_v2_200\cost\classifier.json

@@ -1,0 +1,17 @@
+Label audit of the synthetic collision labels; 2026-11-21T15:33:58+00:00; ACCIDENT\dataset\metadata-synthetic.csv (2211 clips). Synthetic only.
+columns: rgb_path, annotations_path, type, accident_time, accident_frame, center_x, center_y, x1, y1, x2, y2, map, weather, camera_position, no_frames, duration, height, width, annotations_start_offset
+collision location columns: center_x, center_y (collision point, fractions of width / height), x1, y1, x2, y2 (collision box, fractions), accident_time (t*, s), accident_frame (frame index of t*); also annotations_path (per-frame annotation file, not used here)
+frame sizes (width x height): {('1920', '1080'): 2211}
+accident_frame - t* x fps (fps = no_frames / duration): min 0.0000, max 0.0000, |diff| > 0.5 frame: 0
+centre vs box midpoint, max |difference| per clip: max 2.22e-16, clips > 1e-6: 0
+checks (count, first examples):
+  type missing or not one of the 5: 0
+  t*, no_frames or duration missing: 0
+  t* outside [0, last frame time]: 0
+  accident_frame missing: 0
+  box missing: 0
+  box outside the image [0, 1]: 0
+  box empty or reversed: 0
+  centre missing: 0
+  centre outside the box: 0
+types: {'sideswipe': 405, 'rear-end': 794, 'single': 66, 'head-on': 588, 't-bone': 358}

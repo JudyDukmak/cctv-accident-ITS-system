@@ -1,0 +1,20 @@
+command: .venv-ml/Scripts/python.exe visibility_audit.py --pick   (2026-11-24T21:14:49Z)
+Visual-check list: up to 8 LOW_AT_IMPACT clips then up to 8 unflagged clips, numpy default_rng(0), one generator, rng.choice(sorted pool, k, replace=False). Written before drawing.
+
+LOW_AT_IMPACT  (pool   31)  Town06_sideswipe_night_46        night   fold 2  missing at impact [374]  LOW_AROUND_IMPACT False
+LOW_AT_IMPACT  (pool   31)  Town06_head-on_clear_26          clear   fold 0  missing at impact [422]  LOW_AROUND_IMPACT False
+LOW_AT_IMPACT  (pool   31)  Town03_head-on_night_49          night   fold 2  missing at impact [385]  LOW_AROUND_IMPACT False
+LOW_AT_IMPACT  (pool   31)  Town05_rear-end_clear_237        clear   fold 1  missing at impact [2569, 2570]  LOW_AROUND_IMPACT False
+LOW_AT_IMPACT  (pool   31)  Town04_rear-end_night_48         night   fold 0  missing at impact [451]  LOW_AROUND_IMPACT False
+LOW_AT_IMPACT  (pool   31)  Town04_rear-end_clear_51         clear   fold 0  missing at impact [451]  LOW_AROUND_IMPACT True
+LOW_AT_IMPACT  (pool   31)  Town05_head-on_rain_52           rain    fold 1  missing at impact [342]  LOW_AROUND_IMPACT True
+LOW_AT_IMPACT  (pool   31)  Town05_rear-end_sunset_237       sunset  fold 1  missing at impact [3460]  LOW_AROUND_IMPACT True
+unflagged      (pool 2180)  Town07_rear-end_rain_20          rain    fold 2  missing at impact []  LOW_AROUND_IMPACT False
+unflagged      (pool 2180)  Town04_sideswipe_clear_13        clear   fold 0  missing at impact []  LOW_AROUND_IMPACT False
+unflagged      (pool 2180)  Town07_t-bone_clear_32           clear   fold 2  missing at impact []  LOW_AROUND_IMPACT False
+unflagged      (pool 2180)  Town04_sideswipe_sunset_21       sunset  fold 0  missing at impact []  LOW_AROUND_IMPACT False
+unflagged      (pool 2180)  Town10HD_single_clear_02         clear   fold 0  missing at impact []  LOW_AROUND_IMPACT False
+unflagged      (pool 2180)  Town04_rear-end_clear_22         clear   fold 0  missing at impact []  LOW_AROUND_IMPACT False
+unflagged      (pool 2180)  Town07_rear-end_night_40         night   fold 2  missing at impact []  LOW_AROUND_IMPACT False
+unflagged      (pool 2180)  Town05_sideswipe_sunset_26       sunset  fold 1  missing at impact []  LOW_AROUND_IMPACT False
+exit 0

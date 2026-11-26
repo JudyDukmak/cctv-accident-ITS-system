@@ -1,0 +1,8 @@
+Cascade run started 2026-11-23T09:18:04+00:00; data synthetic; type source qlora
+command: run_cascade.py --run --data synthetic --clips results/cascade_dry_run/dry_list.csv --pred 0=results/diagnostics/C_cctv_seeds012/seed0_frozen/tta_clip_predictions_flip.csv --out results/cascade_dry_run/smoke --frames-dir cache/cascade_dry_run_smoke --limit 3
+clips: results/cascade_dry_run/dry_list.csv (3 clips, sha256 9b4fb9a9b4b490cf82c7ba8f69b0827adff4ec58189da281882e46aaa66712d9)
+seed 0: results\diagnostics\C_cctv_seeds012\seed0_frozen\tta_clip_predictions_flip.csv (sha256 253cf005aa0264f3accd590cc43fdaad40e9dd59dfa4a5c6acc8dbe93a91434d), path column rgb_path, t_hat column t_hat
+checkpoint: epoch 1 C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\runs\qlora_train\epoch1 (adapter sha256 da2a5a1f97260768c448b7dfa5063b34fdc5493ffd3f9cd6cb9afb95959fc4cb), from results\qlora_train\checkpoint_choice.txt
+prompt sha256 3ad1575d9961d4dbb64159fff9258ee3ab0aa8c4e5cab2d7fa35b8c719ef430f (train_qlora.PROMPT; CONFIG.txt checked); greedy, max_new_tokens 64; parser narrow_prompt_v2.parse_v2
+window: vz.window_times(t_hat, 2.0 s, 16) + vz.to_indices; frames: build_qlora_data.cache_clip into C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\cache\cascade_dry_run_smoke (JPEG quality 95, 448x256)
+sha256 run_cascade.py fed113d4420dda081db64631f0a31e79cfd49d5f9bcbc0cdbe3cc717552a4401

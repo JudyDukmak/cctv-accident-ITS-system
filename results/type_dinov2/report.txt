@@ -1,0 +1,72 @@
+TYPE MODEL: DINOv2 LINEAR PROBE: REPORT (synthetic only; no real clip, label or metadata file opened; no frozen file, checkpoint, split, manifest or earlier result changed; nothing committed)
+PLAN.txt sha256 e7a46dcc977a7d6e47ae52be2a4ed451ffa73ce679b1d5a8fd5cde70fb095a76 (checked by every mode). Every setting fixed in advance; no search.
+
+1. INPUT
+  2211 clips; frames decoded with vlm_zero_shot.decode at 1920x1080, resized to 224x224 (bicubic); t* frame == t_hat frame in 90 clips. Contact sheet: contact_sheet.png.
+
+2. SAFETY CHECK
+  5 frames (Town04_rear-end_clear_08 t*, Town04_rear-end_night_46 t_hat, Town07_rear-end_clear_24 t_hat, Town04_sideswipe_clear_41 t*, Town03_t-bone_clear_29 t*) encoded twice in separate passes (float32): identical True, max |diff| 0.0e+00 -> PASS
+  (information) the same 5 frames inside the full run's batches of 32: max |diff| 0.00e+00 vs the safety pass
+
+3. FEATURES AND GPU TIME
+  cache\type_dinov2\features.npz shape [2211, 2, 768] ([:, 0] t* frame, [:, 1] t_hat frame); sha256 665a763839d1976e...
+  GPU (synchronised forward) 30.0 s for 4422 frames (6.78 ms per frame), wall 30.6 s; safety check 0.53 s; GPU NVIDIA GeForce RTX 5060 Laptop GPU; power BatteryStatus 2 (2 = on AC mains), charge 80% / at end BatteryStatus 2 (2 = on AC mains), charge 80%
+
+4. SYNTHETIC CHECKS (information only; train on t* frames, test on t_hat frames; C = 1 fixed)
+  Both splits are biased for collision type, as found earlier: each scenario is one map + one type, the scenario folds put the same map in training and test with a different type (probe A: accuracy 0.005 on fold-0 clips whose map was in training), and leaving one map out still leaves each test map with only 2-3 types and the training maps' own map-type pairing (probe A map: pooled macro accuracy below chance). Neither split is a clean estimate of type recognition on unseen scenes.
+
+  (a) scenario folds
+    test set       n DINOv2 macro DINOv2 acc          majority (type) maj macro  maj acc probe A macro probe A acc
+    fold 0       770       0.1024     0.1156                 rear-end    0.2000   0.3182        0.2134      0.2442
+    fold 1       755       0.1600     0.1987                 rear-end    0.2000   0.3669        0.2434      0.3338
+    fold 2       686       0.0024     0.0029                 rear-end    0.2500   0.3965        0.0774      0.0875
+    pooled      2211       0.0845     0.1090               (per part)    0.2000   0.3591        0.1809      0.2261
+    DINOv2 per-type recall, pooled: head-on 0.102, rear-end 0.134, sideswipe 0.173, single 0.000, t-bone 0.014
+      fold 0    recall: head-on 0.015, rear-end 0.159, sideswipe 0.338, single 0.000, t-bone 0.000
+      fold 1    recall: head-on 0.316, rear-end 0.242, sideswipe 0.215, single 0.000, t-bone 0.027
+      fold 2    recall: head-on 0.009, rear-end 0.000, sideswipe 0.000, t-bone 0.000
+    pooled confusion (rows true, columns predicted; head-on, rear-end, sideswipe, single, t-bone):
+      head-on       60   167   321     1    39
+      rear-end     525   106   121    25    17
+      sideswipe    314    19    70     0     2
+      single        21    37     1     0     7
+      t-bone       242     3    73    35     5
+
+  (b) leave one map out
+    test set       n DINOv2 macro DINOv2 acc          majority (type) maj macro  maj acc probe A macro probe A acc
+    Town03       396       0.0071     0.0076                 rear-end    0.0000   0.0000        0.1456      0.1490
+    Town04       384       0.0636     0.0573                  head-on    0.0000   0.0000        0.2955      0.2917
+    Town05       558       0.2349     0.2437                 rear-end    0.3333   0.4964        0.2755      0.3065
+    Town06       361       0.0000     0.0000                 rear-end    0.0000   0.0000        0.0056      0.0055
+    Town07       328       0.0000     0.0000                  head-on    0.0000   0.0000        0.0599      0.0396
+    Town10HD     184       0.0000     0.0000                 rear-end    0.0000   0.0000        0.0115      0.0163
+    pooled      2211       0.0526     0.0728               (per part)    0.0698   0.1253        0.1239      0.1628
+    DINOv2 per-type recall, pooled: head-on 0.102, rear-end 0.092, sideswipe 0.069, single 0.000, t-bone 0.000
+      Town03    recall: head-on 0.014, t-bone 0.000
+      Town04    recall: rear-end 0.041, sideswipe 0.086
+      Town05    recall: head-on 0.328, rear-end 0.227, sideswipe 0.150
+      Town06    recall: head-on 0.000, sideswipe 0.000
+      Town07    recall: rear-end 0.000, single 0.000, t-bone 0.000
+      Town10HD  recall: single 0.000, t-bone 0.000
+    pooled confusion (rows true, columns predicted; head-on, rear-end, sideswipe, single, t-bone):
+      head-on       60   356   153     1    18
+      rear-end     634    73    48    10    29
+      sideswipe    213   162    28     0     2
+      single        32    32     2     0     0
+      t-bone       125    62    86    85     0
+
+  Fold-1 clips (755), same clips:
+    model                             accuracy  macro acc
+    majority (rear-end)                 0.3669     0.2000
+    QLoRA epoch 1 (window A)            0.3060     0.2579
+    probe A (scenario folds)            0.3338     0.2434
+    probe A map (leave one map out)     0.2517     0.2002
+    DINOv2 (scenario folds)             0.1987     0.1600
+  Confusion matrices: confusion_<split>_pooled_{counts,rownorm}.csv, confusion_<split>_<fold or map>_{counts,rownorm}.csv, confusion.png
+
+5. FINAL MODEL (t* frames of all 2211 clips, C = 1, balanced weights)
+  models\type_dinov2\type_head_dinov2.npz (44468 bytes, sha256 f1c965d8eb9b2221...): W (768 x 5), b, scaler mean and SD, class order; settings in models\type_dinov2\type_head_dinov2.json (1231 bytes)
+  trained on: head-on 588, rear-end 794, sideswipe 405, single 66, t-bone 358; in-sample accuracy 1.0000 (training data, not an estimate)
+  Note: models/ is not in .gitignore, so the folder shows as untracked; nothing was committed.
+
+Files: PLAN.txt, contact_sheet.png, safety.json, features.json, checks.json, predictions_checks.csv, final.json, confusion_*.csv, confusion.png, run_log_*.txt, report.txt; cache/type_dinov2/ (frames224.npy, frames_index.csv, features.npz; gitignored); models/type_dinov2/.

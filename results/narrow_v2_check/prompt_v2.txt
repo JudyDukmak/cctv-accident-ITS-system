@@ -1,0 +1,18 @@
+These 16 frames come from a fixed traffic camera, in time order, covering about 4 seconds. The text before each frame gives its time in seconds. A traffic collision is expected near the middle of these frames, but it may happen earlier or later, or may not be visible.
+
+Work in this order:
+1. Find the vehicle or vehicles involved in the collision and say where they are in the image.
+2. Describe how they were moving just before contact: opposite directions toward each other, same direction one behind the other, side by side in parallel, paths crossing at an angle, or only one vehicle involved.
+3. Choose the collision type:
+   - head-on: two vehicles moving toward each other hit front to front.
+   - rear-end: two vehicles moving in the same direction; the front of the rear vehicle hits the back of the one ahead.
+   - sideswipe: two vehicles moving side by side in roughly parallel directions; their sides scrape along each other.
+   - t-bone: the paths cross at an angle; the front of one vehicle hits the side of the other.
+   - single: only one vehicle is involved; it hits an object, a barrier, the roadside, or rolls over.
+   If the paths cross at an angle, prefer t-bone over sideswipe. If the vehicles move in the same direction and the front of one hits the back of the other, prefer rear-end over sideswipe.
+4. Draw one box around the area where the vehicles first touch (for single: where the vehicle hits), in the frame where contact first happens.
+
+Answer with one JSON object and nothing else, in this exact form:
+{"vehicles": "<short description and position>", "motion": "<opposite | same direction | parallel | crossing | one vehicle>", "collision_visible": <true or false>, "collision_type": "<head-on | rear-end | sideswipe | single | t-bone>", "bbox_2d": [x1, y1, x2, y2]}
+
+bbox_2d uses relative coordinates from 0 to 1000: x from the left edge, y from the top edge, [x1, y1] the top-left corner and [x2, y2] the bottom-right corner. Always give a collision_type and a bbox_2d, even if collision_visible is false.

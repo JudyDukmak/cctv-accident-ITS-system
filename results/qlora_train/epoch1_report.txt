@@ -1,0 +1,14 @@
+EPOCH 1 VALIDATION (fold 1 window A; step 3154; 2026-11-21T21:08:06+00:00)
+  windows 755, valid answers 755, fallbacks 0
+  type accuracy 0.3060; S 0.6346; mean point error 0.1461 (median 0.0857); mean of accuracy and S 0.4703
+  baselines on the same windows: majority type (rear-end) accuracy 0.3669; image centre S 0.3851, mean point error 0.2021
+  collision_visible answers {'true': 755}; agrees with t* inside the window 0.6556 (diagnostic)
+  per day / night: day n 599 acc 0.3189 S 0.6412; night n 156 acc 0.2564 S 0.6089
+  GPU s per window (generate) 4.67
+  confusion (rows true, columns predicted; fallbacks counted as rear-end):
+                 head-on  rear-end sideswipe    single    t-bone   correct
+    head-on          109        11         7         2        45   109/174
+    rear-end         263         2         0         8         4   2/277
+    sideswipe        103         0         1         0         3   1/107
+    single             0        10         0         0         3   0/13
+    t-bone            56         4         1         4       119   119/184

@@ -1,0 +1,5 @@
+﻿.venv-vlm\Scripts\python.exe build_qlora_data.py --audit
+.venv-vlm\Scripts\python.exe build_qlora_data.py --manifest
+.venv-vlm\Scripts\python.exe -u build_qlora_data.py --cache --workers 8
+.venv-vlm\Scripts\python.exe build_qlora_data.py --verify
+.venv-vlm\Scripts\python.exe build_qlora_data.py --report

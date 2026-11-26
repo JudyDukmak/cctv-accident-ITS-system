@@ -1,0 +1,2 @@
+2026-11-16T13:06:04+00:00 START/RESUME: 0 clips done, 2211 to do; power BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-16T17:23:10+00:00 FINISHED: 2211 clips; power at end BatteryStatus 2 (2 = on AC mains), charge 80%

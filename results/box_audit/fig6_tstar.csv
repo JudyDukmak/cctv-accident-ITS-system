@@ -1,0 +1,9 @@
+category,rgb_path,frame_shown_k,frame_shown_index,frame_shown_time_s,accident_frame,accident_time,tstar_frame_time_s,gap_s,t_star_inside,win_start_s,win_end_s,rebuilt_shown_frame_max_pixel_diff_vs_cache
+good location,synthetic_videos/videos/t-bone/Town03_t-bone_rain_20.mp4,7,73,3.65,73,3.65,3.65,0.0,True,2.05,6.05,0
+good location,synthetic_videos/videos/sideswipe/Town05_sideswipe_sunset_18.mp4,7,127,6.35,128,6.4,6.4,0.05000000000000071,True,4.75,8.75,0
+bad location,synthetic_videos/videos/rear-end/Town05_rear-end_rain_142.mp4,16,110,5.5,173,8.65,8.65,3.1500000000000004,False,1.5,5.5,0
+bad location,synthetic_videos/videos/rear-end/Town05_rear-end_rain_126.mp4,16,198,9.9,244,12.2,12.2,2.299999999999999,False,5.9,9.9,0
+correct type,synthetic_videos/videos/head-on/Town05_head-on_clear_07.mp4,1,96,4.8,54,2.7,2.7,-2.0999999999999996,False,4.8,8.8,0
+correct type,synthetic_videos/videos/head-on/Town05_head-on_clear_42.mp4,7,73,3.65,75,3.75,3.75,0.10000000000000009,True,2.05,6.05,0
+wrong type,synthetic_videos/videos/sideswipe/Town05_sideswipe_sunset_31.mp4,16,80,4.0,141,7.05,7.05,3.05,False,0.0,4.0,0
+wrong type,synthetic_videos/videos/sideswipe/Town05_sideswipe_clear_00.mp4,16,80,4.0,173,8.65,8.65,4.65,False,0.0,4.0,0

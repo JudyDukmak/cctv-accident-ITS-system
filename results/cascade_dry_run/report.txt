@@ -1,0 +1,39 @@
+CASCADE DRY RUN (synthetic only; no real clip, real label or real metadata file opened) - report 2026-11-23T09:28:47+00:00
+
+1. RUNNER
+  run_cascade.py; RUN_INFO.txt:
+    Cascade run started 2026-11-23T09:18:52+00:00; data synthetic; type source qlora
+    command: run_cascade.py --run --data synthetic --clips results/cascade_dry_run/dry_list.csv --pred 0=results/diagnostics/C_cctv_seeds012/seed0_frozen/tta_clip_predictions_flip.csv --out results/cascade_dry_run --frames-dir cache/cascade_dry_run_v1
+    clips: results/cascade_dry_run/dry_list.csv (100 clips, sha256 9b4fb9a9b4b490cf82c7ba8f69b0827adff4ec58189da281882e46aaa66712d9)
+    seed 0: results\diagnostics\C_cctv_seeds012\seed0_frozen\tta_clip_predictions_flip.csv (sha256 253cf005aa0264f3accd590cc43fdaad40e9dd59dfa4a5c6acc8dbe93a91434d), path column rgb_path, t_hat column t_hat
+    checkpoint: epoch 1 C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\runs\qlora_train\epoch1 (adapter sha256 da2a5a1f97260768c448b7dfa5063b34fdc5493ffd3f9cd6cb9afb95959fc4cb), from results\qlora_train\checkpoint_choice.txt
+    prompt sha256 3ad1575d9961d4dbb64159fff9258ee3ab0aa8c4e5cab2d7fa35b8c719ef430f (train_qlora.PROMPT; CONFIG.txt checked); greedy, max_new_tokens 64; parser narrow_prompt_v2.parse_v2
+    window: vz.window_times(t_hat, 2.0 s, 16) + vz.to_indices; frames: build_qlora_data.cache_clip into C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\cache\cascade_dry_run_v1 (JPEG quality 95, 448x256)
+    sha256 run_cascade.py fed113d4420dda081db64631f0a31e79cfd49d5f9bcbc0cdbe3cc717552a4401
+  power: 2026-11-23T09:18:52+00:00 START/RESUME: 0 windows done, 100 to do; power BatteryStatus 2 (2 = on AC mains), charge 80%
+         2026-11-23T09:28:18+00:00 FINISHED: 100 windows; power at end BatteryStatus 2 (2 = on AC mains), charge 80%
+  real mode refusal test: see run_log_real_refusal.txt
+
+2. DRY RUN vs THE SAVED EPOCH-1 VALIDATION (same 100 fold-1 window-A windows; LIST.txt)
+  frames: frame indices equal to the manifest for all windows True; t_hat equal to the manifest window-A centre True; JPEG bytes identical to the cache True; decoded pixel difference vs the cache: max 0, mean 0.0000
+  answers: raw answer identical 100/100; windows whose type or box differs: 0
+  metrics on these 100: runner type accuracy 0.2600, S 0.6153; saved epoch-1 type accuracy 0.2600, S 0.6153; |difference| 0.0000 and 0.0000 (tolerance 0.005)
+  VERDICT: PASS (frames identical and both metrics within 0.005)
+
+3. OFFICIAL SCORER (accs_scorer.score_all; T from the Classifier t_hat, S and C from the runner; sigma_x 0.127199, sigma_y 0.118818 from scorer_config.json; ACCS at sigma_t 1 s)
+  seed 0: N 100; T@0.5 0.4397, T@1 0.5205, T@2 0.5988; S 0.6153; C 0.2600 (macro 0.2551); ACCS 0.4058
+  mean over seeds (1 seed(s)): T@1 0.5205, S 0.6153, C 0.2600, ACCS 0.4058
+  reference, saved epoch-1 answers on the same clips with the same T: S 0.6153, C 0.2600, ACCS 0.4058
+
+4. TIME
+  generate (GPU) per window: mean 4.69 s, median 4.65 s, max 5.19 s (n 100); frame building (decode + resize + JPEG, CPU) per window: mean 0.76 s, max 1.32 s; model load 13 s
+  estimate for 400 clips x 3 seeds = 1200 windows: 1200 x (4.69 + 0.76) s = 1.82 h, plus the model load. In the real run each clip is decoded once for its 3 windows, so the frame-building share can be smaller; but vz.decode reads from the start of the clip to the last frame needed, so its cost grows with t_hat and with the real clips' length and resolution, which this synthetic dry run does not measure.
+
+5. STILL UNDECIDED
+  - type source: only 'qlora' exists (epoch-1 type accuracy 0.3060 on fold 1 window A, below the majority-type baseline 0.3669); a separate type model would be added in type_from_source() (--type-source).
+  - window: window A = t_hat +- 2 s, 16 frames; t* lies outside it for 0.2442 of all synthetic window-A windows (fold 1: 0.3444), where S drops (results/qlora_train/inside_outside/report.txt). Whether to keep, widen or move it is open.
+  - real clips whose decoded size is not 452 x 254 (aspect other than 16:9): build_qlora_data.model_frames refuses them; the runner records 'ERROR frames' and no answer, and the scorer refuses to score. A rule is needed before the real run (the QLoRA model saw only 448 x 256 frames).
+  - real files that end before metadata no_frames (decision 2026-11-15): a window reaching past the last decodable frame makes vz.decode refuse; same handling as above, rule needed.
+  - the real Classifier prediction files (columns, fallback rows, non-finite t_hat) were not opened here; the runner checks the given path and t_hat columns at start and refuses a missing clip or a non-finite t_hat.
+  - real scoring reads real_test_set.csv (only with APPROVED.txt) and needs the columns path, accident_time, center_x, center_y, type; not checked here (no real file opened).
+  - how the 3 seeds are reported (mean and SD over seeds, as for the Classifier) is implemented; confirm.

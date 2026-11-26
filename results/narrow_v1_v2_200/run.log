@@ -1,0 +1,223 @@
+Narrow v1 vs v2 on 200 synthetic clips; protocol written 2026-11-21T13:24:45+00:00 BEFORE the first model call.
+clips: test_clips.csv sha256 2a313416abf524023e2b3b60b132aa039eae538b0f1afc14fc9199c9cc8899a7 (see LIST.txt); synthetic only, no real clip or label
+window centre (both versions): t_hat = results\diagnostics\C_cctv_seeds012\seed0_frozen\tta_clip_predictions_flip.csv (C_cctv seed 0, frozen post-processing, out-of-fold: checked per clip)
+model: Qwen/Qwen3-VL-4B-Instruct nf4 (NF4, double quant, bf16 compute), loaded once
+narrow v1 (frozen; vlm_zero_shot.py sha256 f5675fc8357d1c66e67a72e8ff22873e5bcda6da3d1e223bdbc646678c9867f0, narrow prompt v1 sha256 f0feb553b7431e6e46ccca5cdb163c8b8b88afa1760cbaa9040c8d7c79be17d0): 16 frames over t_hat +- 2 s, 114688 px area, native pairing, greedy, max_new_tokens 64; valid = vlm_smoke_test.parse_output values_ok; invalid -> fallback
+narrow v2 (narrow_prompt_v2.py sha256 04105b13fa6aa94ca2366c2781d7fb285e4f0edfee26178c3666be3f7a3473c8, PROMPT_V2 sha256 a9d22e3352d17765273e38c33115a81d3d0b9b1e7258f0f4b3693731bf109764): 16 frames over t_hat +- 2 s, 114688 px area, each frame duplicated (own timestamp), greedy, max_new_tokens 160; valid / flags / point = parse_v2 (digit strings and type normalisation accepted and flagged); invalid -> fallback
+fallback (both): type rear-end, point (0.5, 0.5); counted
+collision_visible (v2) is stored as a diagnostic only; it changes no prediction
+metrics: type accuracy (fallbacks included as their fallback type); location score S = mean exp(-(dx^2 / 2 sigma_x^2 + dy^2 / 2 sigma_y^2)) with sigma_x, sigma_y and spatial_k from scorer_config.json (accs_scorer formula); point error = Euclidean distance in image fractions; baselines on the same clips: majority type (rear-end) and the image centre (0.5, 0.5)
+mains power checked at start, every 25 clips and at the end; nothing is chosen from this run here (report only)
+2026-11-21T13:24:46+00:00 START/RESUME: 0 clips done, 200 to do; power BatteryStatus 2 (2 = on AC mains), charge 80%
+W1121 16:24:50.021000 17756 .venv-vlm\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-21T13:24:50+00:00 loading Qwen/Qwen3-VL-4B-Instruct (nf4)
+Loading weights:   0%|          | 0/713 [00:00<?, ?it/s]Loading weights:   0%|          | 1/713 [00:00<08:54,  1.33it/s]Loading weights:   0%|          | 3/713 [00:01<03:37,  3.26it/s]Loading weights:   1%|▏         | 9/713 [00:01<01:02, 11.30it/s]Loading weights:   2%|▏         | 15/713 [00:01<00:36, 19.04it/s]Loading weights:   4%|▎         | 25/713 [00:01<00:21, 31.92it/s]Loading weights:   4%|▍         | 31/713 [00:01<00:18, 36.18it/s]Loading weights:   5%|▌         | 37/713 [00:01<00:17, 39.48it/s]Loading weights:   7%|▋         | 47/713 [00:01<00:13, 49.16it/s]Loading weights:   7%|▋         | 53/713 [00:01<00:13, 49.54it/s]Loading weights:   8%|▊         | 59/713 [00:02<00:13, 49.93it/s]Loading weights:   9%|▉         | 67/713 [00:02<00:11, 57.30it/s]Loading weights:  10%|█         | 74/713 [00:02<00:11, 54.21it/s]Loading weights:  11%|█▏        | 81/713 [00:02<00:11, 53.08it/s]Loading weights:  13%|█▎        | 91/713 [00:02<00:10, 58.91it/s]Loading weights:  14%|█▎        | 98/713 [00:02<00:10, 59.50it/s]Loading weights:  15%|█▍        | 105/713 [00:02<00:11, 53.26it/s]Loading weights:  16%|█▌        | 114/713 [00:02<00:10, 55.78it/s]Loading weights:  17%|█▋        | 124/713 [00:03<00:09, 59.96it/s]Loading weights:  18%|█▊        | 131/713 [00:03<00:09, 58.92it/s]Loading weights:  19%|█▉        | 137/713 [00:03<00:11, 50.07it/s]Loading weights:  20%|██        | 146/713 [00:03<00:09, 58.74it/s]Loading weights:  21%|██▏       | 153/713 [00:03<00:09, 58.16it/s]Loading weights:  22%|██▏       | 160/713 [00:03<00:10, 52.23it/s]Loading weights:  24%|██▎       | 169/713 [00:03<00:09, 55.28it/s]Loading weights:  25%|██▍       | 177/713 [00:04<00:08, 60.43it/s]Loading weights:  26%|██▌       | 184/713 [00:04<00:09, 55.44it/s]Loading weights:  27%|██▋       | 191/713 [00:04<00:09, 54.05it/s]Loading weights:  28%|██▊       | 201/713 [00:04<00:08, 58.38it/s]Loading weights:  29%|██▉       | 207/713 [00:04<00:08, 56.39it/s]Loading weights:  30%|██▉       | 213/713 [00:04<00:09, 54.46it/s]Loading weights:  31%|███▏      | 223/713 [00:04<00:08, 59.23it/s]Loading weights:  32%|███▏      | 229/713 [00:05<00:08, 56.26it/s]Loading weights:  33%|███▎      | 235/713 [00:05<00:09, 51.79it/s]Loading weights:  34%|███▍      | 245/713 [00:05<00:08, 54.75it/s]Loading weights:  35%|███▌      | 251/713 [00:05<00:08, 51.39it/s]Loading weights:  36%|███▌      | 257/713 [00:05<00:09, 49.57it/s]Loading weights:  37%|███▋      | 264/713 [00:05<00:08, 51.87it/s]Loading weights:  38%|███▊      | 270/713 [00:05<00:09, 44.87it/s]Loading weights:  39%|███▉      | 278/713 [00:06<00:08, 50.10it/s]Loading weights:  40%|███▉      | 284/713 [00:06<00:08, 47.71it/s]Loading weights:  41%|████      | 290/713 [00:06<00:09, 46.47it/s]Loading weights:  42%|████▏     | 297/713 [00:06<00:08, 51.40it/s]Loading weights:  42%|████▏     | 303/713 [00:06<00:09, 45.28it/s]Loading weights:  44%|████▎     | 311/713 [00:06<00:07, 51.55it/s]Loading weights:  44%|████▍     | 317/713 [00:06<00:08, 48.72it/s]Loading weights:  45%|████▌     | 323/713 [00:06<00:08, 46.54it/s]Loading weights:  46%|████▋     | 331/713 [00:07<00:07, 53.33it/s]Loading weights:  47%|████▋     | 337/713 [00:07<00:08, 46.61it/s]Loading weights:  48%|████▊     | 344/713 [00:07<00:07, 50.26it/s]Loading weights:  49%|████▉     | 350/713 [00:07<00:07, 47.70it/s]Loading weights:  50%|████▉     | 356/713 [00:07<00:07, 45.33it/s]Loading weights:  51%|█████     | 363/713 [00:07<00:06, 50.75it/s]Loading weights:  52%|█████▏    | 369/713 [00:07<00:07, 44.42it/s]Loading weights:  53%|█████▎    | 377/713 [00:08<00:06, 50.47it/s]Loading weights:  54%|█████▎    | 383/713 [00:08<00:06, 47.91it/s]Loading weights:  55%|█████▍    | 389/713 [00:08<00:07, 45.34it/s]Loading weights:  55%|█████▌    | 394/713 [00:08<00:07, 44.98it/s]Loading weights:  58%|█████▊    | 416/713 [00:08<00:03, 86.44it/s]Loading weights:  62%|██████▏   | 442/713 [00:08<00:02, 128.78it/s]Loading weights:  67%|██████▋   | 476/713 [00:08<00:01, 183.16it/s]Loading weights:  72%|███████▏  | 510/713 [00:08<00:00, 224.10it/s]Loading weights:  77%|███████▋  | 546/713 [00:09<00:00, 257.45it/s]Loading weights:  81%|████████  | 574/713 [00:09<00:00, 259.64it/s]Loading weights:  85%|████████▌ | 608/713 [00:09<00:00, 281.71it/s]Loading weights:  90%|█████████ | 642/713 [00:09<00:00, 294.11it/s]Loading weights:  94%|█████████▍| 672/713 [00:09<00:00, 291.25it/s]Loading weights:  98%|█████████▊| 702/713 [00:09<00:00, 189.89it/s]Loading weights: 100%|██████████| 713/713 [00:09<00:00, 72.69it/s] 
+2026-11-21T13:25:01+00:00 model loaded in 11.6 s on NVIDIA GeForce RTX 5060 Laptop GPU
+2026-11-21T13:25:12+00:00 1/200 Town03_head-on_sunset_33: v1 sideswipe (ok, 3.4 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:25:21+00:00 2/200 Town05_head-on_wet_28: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:25:30+00:00 3/200 Town03_head-on_clear_14: v1 rear-end (ok, 1.8 s) v2 t-bone (ok, 5.8 s, 61 tokens); true head-on
+2026-11-21T13:25:38+00:00 4/200 Town03_head-on_sunset_47: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:25:48+00:00 5/200 Town03_head-on_rain_25: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:25:57+00:00 6/200 Town06_head-on_clear_30: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true head-on
+2026-11-21T13:26:07+00:00 7/200 Town05_head-on_rain_04: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.9 s, 64 tokens); true head-on
+2026-11-21T13:26:17+00:00 8/200 Town06_head-on_wet_19: v1 rear-end (ok, 2.0 s) v2 head-on (ok, 5.7 s, 60 tokens); true head-on
+2026-11-21T13:26:26+00:00 9/200 Town03_head-on_clear_43: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:26:34+00:00 10/200 Town05_head-on_clear_32: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.6 s, 61 tokens); true head-on
+2026-11-21T13:26:44+00:00 11/200 Town06_head-on_wet_16: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.8 s, 60 tokens); true head-on
+2026-11-21T13:26:53+00:00 12/200 Town05_head-on_rain_26: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:27:03+00:00 13/200 Town06_head-on_sunset_37: v1 sideswipe (ok, 2.0 s) v2 rear-end (ok, 6.0 s, 67 tokens); true head-on
+2026-11-21T13:27:12+00:00 14/200 Town06_head-on_sunset_11: v1 rear-end (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:27:21+00:00 15/200 Town03_head-on_clear_17: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:27:30+00:00 16/200 Town06_head-on_sunset_19: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.5 s, 59 tokens); true head-on
+2026-11-21T13:27:39+00:00 17/200 Town03_head-on_wet_15: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:27:48+00:00 18/200 Town05_head-on_clear_27: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.9 s, 61 tokens); true head-on
+2026-11-21T13:27:57+00:00 19/200 Town03_head-on_sunset_40: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.6 s, 61 tokens); true head-on
+2026-11-21T13:28:06+00:00 20/200 Town05_head-on_sunset_09: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:28:17+00:00 21/200 Town06_head-on_night_49: v1 rear-end (ok, 1.8 s) v2 t-bone (ok, 5.8 s, 61 tokens); true head-on
+2026-11-21T13:28:27+00:00 22/200 Town06_head-on_night_10: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true head-on
+2026-11-21T13:28:37+00:00 23/200 Town03_head-on_night_42: v1 rear-end (ok, 2.1 s) v2 t-bone (ok, 5.9 s, 61 tokens); true head-on
+2026-11-21T13:28:46+00:00 24/200 Town03_head-on_night_44: v1 sideswipe (ok, 2.3 s) v2 t-bone (ok, 5.8 s, 61 tokens); true head-on
+2026-11-21T13:28:57+00:00 25/200 Town06_head-on_night_43: v1 sideswipe (ok, 2.1 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:28:57+00:00 power check after 25 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:29:06+00:00 26/200 Town03_head-on_night_36: v1 sideswipe (ok, 2.1 s) v2 t-bone (ok, 5.7 s, 62 tokens); true head-on
+2026-11-21T13:29:18+00:00 27/200 Town06_head-on_night_05: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true head-on
+2026-11-21T13:29:27+00:00 28/200 Town03_head-on_night_19: v1 t-bone (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:29:36+00:00 29/200 Town03_head-on_night_16: v1 t-bone (ok, 1.9 s) v2 t-bone (ok, 5.8 s, 61 tokens); true head-on
+2026-11-21T13:29:47+00:00 30/200 Town05_head-on_night_35: v1 sideswipe (ok, 2.2 s) v2 t-bone (ok, 5.6 s, 61 tokens); true head-on
+2026-11-21T13:29:55+00:00 31/200 Town03_head-on_night_11: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:30:04+00:00 32/200 Town06_head-on_night_14: v1 rear-end (ok, 1.8 s) v2 head-on (ok, 5.6 s, 60 tokens); true head-on
+2026-11-21T13:30:15+00:00 33/200 Town05_head-on_night_21: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 6.4 s, 76 tokens); true head-on
+2026-11-21T13:30:24+00:00 34/200 Town03_head-on_night_27: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true head-on
+2026-11-21T13:30:34+00:00 35/200 Town05_head-on_night_20: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true head-on
+2026-11-21T13:30:42+00:00 36/200 Town03_head-on_night_06: v1 rear-end (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:30:51+00:00 37/200 Town03_head-on_night_39: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 62 tokens); true head-on
+2026-11-21T13:31:03+00:00 38/200 Town06_head-on_night_11: v1 sideswipe (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true head-on
+2026-11-21T13:31:13+00:00 39/200 Town06_head-on_night_38: v1 rear-end (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:31:23+00:00 40/200 Town03_head-on_night_51: v1 rear-end (ok, 1.8 s) v2 t-bone (ok, 5.7 s, 61 tokens); true head-on
+2026-11-21T13:31:31+00:00 41/200 Town07_rear-end_clear_10: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.6 s, 61 tokens); true rear-end
+2026-11-21T13:31:41+00:00 42/200 Town07_rear-end_sunset_05: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 6.4 s, 73 tokens); true rear-end
+2026-11-21T13:31:50+00:00 43/200 Town05_rear-end_wet_136: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:31:59+00:00 44/200 Town05_rear-end_sunset_212: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.9 s, 61 tokens); true rear-end
+2026-11-21T13:32:09+00:00 45/200 Town07_rear-end_rain_09: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 6.5 s, 75 tokens); true rear-end
+2026-11-21T13:32:18+00:00 46/200 Town04_rear-end_rain_53: v1 rear-end (ok, 2.0 s) v2 head-on (ok, 5.6 s, 60 tokens); true rear-end
+2026-11-21T13:32:27+00:00 47/200 Town05_rear-end_clear_225: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:32:37+00:00 48/200 Town04_rear-end_wet_19: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.8 s, 61 tokens); true rear-end
+2026-11-21T13:32:47+00:00 49/200 Town07_rear-end_rain_08: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.8 s, 61 tokens); true rear-end
+2026-11-21T13:32:56+00:00 50/200 Town05_rear-end_wet_219: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:32:56+00:00 power check after 50 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:33:06+00:00 51/200 Town07_rear-end_rain_35: v1 sideswipe (ok, 2.1 s) v2 t-bone (ok, 6.4 s, 74 tokens); true rear-end
+2026-11-21T13:33:15+00:00 52/200 Town04_rear-end_sunset_39: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 62 tokens); true rear-end
+2026-11-21T13:33:26+00:00 53/200 Town05_rear-end_rain_218: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:33:36+00:00 54/200 Town04_rear-end_clear_35: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.6 s, 61 tokens); true rear-end
+2026-11-21T13:33:45+00:00 55/200 Town07_rear-end_wet_43: v1 rear-end (ok, 1.8 s) v2 t-bone (ok, 5.9 s, 67 tokens); true rear-end
+2026-11-21T13:33:54+00:00 56/200 Town05_rear-end_wet_127: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:34:03+00:00 57/200 Town07_rear-end_sunset_02: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:34:12+00:00 58/200 Town04_rear-end_clear_41: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true rear-end
+2026-11-21T13:34:21+00:00 59/200 Town05_rear-end_sunset_215: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.8 s, 62 tokens); true rear-end
+2026-11-21T13:34:30+00:00 60/200 Town05_rear-end_clear_213: v1 sideswipe (ok, 2.2 s) v2 t-bone (ok, 5.8 s, 61 tokens); true rear-end
+2026-11-21T13:34:40+00:00 61/200 Town05_rear-end_night_124: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:34:49+00:00 62/200 Town05_rear-end_night_215: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:35:03+00:00 63/200 Town04_rear-end_night_48: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true rear-end
+2026-11-21T13:35:15+00:00 64/200 Town07_rear-end_night_19: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 7.1 s, 87 tokens); true rear-end
+2026-11-21T13:35:25+00:00 65/200 Town07_rear-end_night_31: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.8 s, 61 tokens); true rear-end
+2026-11-21T13:35:35+00:00 66/200 Town04_rear-end_night_47: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.6 s, 61 tokens); true rear-end
+2026-11-21T13:35:45+00:00 67/200 Town07_rear-end_night_52: v1 rear-end (ok, 2.0 s) v2 t-bone (ok, 6.4 s, 73 tokens); true rear-end
+2026-11-21T13:35:55+00:00 68/200 Town04_rear-end_night_41: v1 rear-end (ok, 2.0 s) v2 t-bone (ok, 5.6 s, 61 tokens); true rear-end
+2026-11-21T13:36:05+00:00 69/200 Town07_rear-end_night_29: v1 rear-end (ok, 2.1 s) v2 t-bone (ok, 5.6 s, 61 tokens); true rear-end
+2026-11-21T13:36:15+00:00 70/200 Town07_rear-end_night_22: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 6.4 s, 75 tokens); true rear-end
+2026-11-21T13:36:25+00:00 71/200 Town05_rear-end_night_226: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:36:35+00:00 72/200 Town07_rear-end_night_01: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:36:45+00:00 73/200 Town04_rear-end_night_42: v1 rear-end (ok, 1.8 s) v2 head-on (ok, 5.6 s, 60 tokens); true rear-end
+2026-11-21T13:36:53+00:00 74/200 Town04_rear-end_night_01: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:37:03+00:00 75/200 Town07_rear-end_night_18: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:37:03+00:00 power check after 75 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:37:13+00:00 76/200 Town05_rear-end_night_132: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true rear-end
+2026-11-21T13:37:23+00:00 77/200 Town05_rear-end_night_148: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true rear-end
+2026-11-21T13:37:32+00:00 78/200 Town07_rear-end_night_02: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 6.1 s, 69 tokens); true rear-end
+2026-11-21T13:37:42+00:00 79/200 Town05_rear-end_night_232: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true rear-end
+2026-11-21T13:37:51+00:00 80/200 Town04_rear-end_night_36: v1 sideswipe (ok, 1.9 s) v2 head-on (ok, 5.5 s, 60 tokens); true rear-end
+2026-11-21T13:38:00+00:00 81/200 Town04_sideswipe_sunset_17: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.7 s, 60 tokens); true sideswipe
+2026-11-21T13:38:10+00:00 82/200 Town05_sideswipe_rain_41: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 6.4 s, 75 tokens); true sideswipe
+2026-11-21T13:38:20+00:00 83/200 Town06_sideswipe_clear_24: v1 rear-end (ok, 1.8 s) v2 t-bone (ok, 5.8 s, 64 tokens); true sideswipe
+2026-11-21T13:38:29+00:00 84/200 Town06_sideswipe_sunset_11: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.8 s, 60 tokens); true sideswipe
+2026-11-21T13:38:39+00:00 85/200 Town06_sideswipe_sunset_26: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 6.5 s, 73 tokens); true sideswipe
+2026-11-21T13:38:49+00:00 86/200 Town06_sideswipe_sunset_21: v1 rear-end (ok, 1.9 s) v2 rear-end (ok, 6.2 s, 68 tokens); true sideswipe
+2026-11-21T13:38:59+00:00 87/200 Town06_sideswipe_rain_39: v1 rear-end (ok, 1.8 s) v2 head-on (ok, 5.9 s, 67 tokens); true sideswipe
+2026-11-21T13:39:10+00:00 88/200 Town06_sideswipe_rain_17: v1 rear-end (ok, 2.1 s) v2 head-on (ok, 6.3 s, 75 tokens); true sideswipe
+2026-11-21T13:39:20+00:00 89/200 Town04_sideswipe_clear_27: v1 rear-end (ok, 1.8 s) v2 t-bone (ok, 6.8 s, 84 tokens); true sideswipe
+2026-11-21T13:39:31+00:00 90/200 Town06_sideswipe_rain_26: v1 sideswipe (ok, 2.0 s) v2 head-on (ok, 6.0 s, 67 tokens); true sideswipe
+2026-11-21T13:39:41+00:00 91/200 Town04_sideswipe_clear_33: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true sideswipe
+2026-11-21T13:39:50+00:00 92/200 Town04_sideswipe_sunset_42: v1 sideswipe (ok, 1.9 s) v2 head-on (ok, 5.4 s, 58 tokens); true sideswipe
+2026-11-21T13:40:00+00:00 93/200 Town04_sideswipe_rain_44: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true sideswipe
+2026-11-21T13:40:10+00:00 94/200 Town04_sideswipe_wet_31: v1 rear-end (ok, 2.0 s) v2 head-on (ok, 5.6 s, 60 tokens); true sideswipe
+2026-11-21T13:40:20+00:00 95/200 Town06_sideswipe_sunset_31: v1 rear-end (ok, 1.8 s) v2 head-on (ok, 5.8 s, 63 tokens); true sideswipe
+2026-11-21T13:40:29+00:00 96/200 Town06_sideswipe_sunset_43: v1 rear-end (ok, 2.0 s) v2 rear-end (ok, 6.0 s, 63 tokens); true sideswipe
+2026-11-21T13:40:39+00:00 97/200 Town06_sideswipe_clear_12: v1 rear-end (ok, 2.1 s) v2 head-on (ok, 6.4 s, 68 tokens); true sideswipe
+2026-11-21T13:40:49+00:00 98/200 Town06_sideswipe_sunset_10: v1 rear-end (ok, 2.0 s) v2 rear-end (ok, 6.6 s, 73 tokens); true sideswipe
+2026-11-21T13:41:00+00:00 99/200 Town04_sideswipe_sunset_31: v1 rear-end (ok, 2.0 s) v2 head-on (ok, 5.6 s, 60 tokens); true sideswipe
+2026-11-21T13:41:09+00:00 100/200 Town05_sideswipe_rain_23: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.8 s, 61 tokens); true sideswipe
+2026-11-21T13:41:09+00:00 power check after 100 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:41:20+00:00 101/200 Town04_sideswipe_night_20: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true sideswipe
+2026-11-21T13:41:32+00:00 102/200 Town06_sideswipe_night_30: v1 rear-end (ok, 2.1 s) v2 head-on (ok, 5.9 s, 65 tokens); true sideswipe
+2026-11-21T13:41:42+00:00 103/200 Town05_sideswipe_night_06: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.9 s, 61 tokens); true sideswipe
+2026-11-21T13:41:54+00:00 104/200 Town04_sideswipe_night_40: v1 rear-end (ok, 2.1 s) v2 head-on (ok, 6.6 s, 79 tokens); true sideswipe
+2026-11-21T13:42:06+00:00 105/200 Town04_sideswipe_night_15: v1 rear-end (ok, 1.8 s) v2 head-on (ok, 5.6 s, 60 tokens); true sideswipe
+2026-11-21T13:42:17+00:00 106/200 Town05_sideswipe_night_32: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 6.6 s, 79 tokens); true sideswipe
+2026-11-21T13:42:27+00:00 107/200 Town04_sideswipe_night_44: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.9 s, 60 tokens); true sideswipe
+2026-11-21T13:42:36+00:00 108/200 Town05_sideswipe_night_27: v1 rear-end (ok, 2.1 s) v2 t-bone (ok, 5.7 s, 61 tokens); true sideswipe
+2026-11-21T13:42:46+00:00 109/200 Town05_sideswipe_night_02: v1 sideswipe (ok, 2.1 s) v2 t-bone (ok, 5.9 s, 61 tokens); true sideswipe
+2026-11-21T13:42:56+00:00 110/200 Town05_sideswipe_night_25: v1 rear-end (ok, 2.1 s) v2 t-bone (ok, 5.7 s, 61 tokens); true sideswipe
+2026-11-21T13:43:07+00:00 111/200 Town06_sideswipe_night_16: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.9 s, 63 tokens); true sideswipe
+2026-11-21T13:43:17+00:00 112/200 Town05_sideswipe_night_12: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true sideswipe
+2026-11-21T13:43:28+00:00 113/200 Town06_sideswipe_night_21: v1 rear-end (ok, 1.8 s) v2 head-on (ok, 6.4 s, 70 tokens); true sideswipe
+2026-11-21T13:43:39+00:00 114/200 Town04_sideswipe_night_35: v1 rear-end (ok, 1.8 s) v2 head-on (ok, 5.8 s, 60 tokens); true sideswipe
+2026-11-21T13:43:51+00:00 115/200 Town04_sideswipe_night_41: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 6.2 s, 66 tokens); true sideswipe
+2026-11-21T13:44:01+00:00 116/200 Town06_sideswipe_night_29: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true sideswipe
+2026-11-21T13:44:10+00:00 117/200 Town05_sideswipe_night_33: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 62 tokens); true sideswipe
+2026-11-21T13:44:22+00:00 118/200 Town06_sideswipe_night_37: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 6.4 s, 73 tokens); true sideswipe
+2026-11-21T13:44:33+00:00 119/200 Town06_sideswipe_night_15: v1 rear-end (ok, 2.0 s) v2 rear-end (ok, 5.8 s, 59 tokens); true sideswipe
+2026-11-21T13:44:44+00:00 120/200 Town04_sideswipe_night_04: v1 rear-end (ok, 2.0 s) v2 head-on (ok, 6.2 s, 70 tokens); true sideswipe
+2026-11-21T13:44:53+00:00 121/200 Town07_single_clear_01: v1 sideswipe (ok, 2.1 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:45:03+00:00 122/200 Town07_single_clear_09: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.8 s, 61 tokens); true single
+2026-11-21T13:45:12+00:00 123/200 Town10HD_single_clear_07: v1 sideswipe (ok, 1.9 s) v2 head-on (ok, 5.7 s, 60 tokens); true single
+2026-11-21T13:45:21+00:00 124/200 Town10HD_single_clear_03: v1 rear-end (ok, 2.0 s) v2 t-bone (ok, 5.8 s, 61 tokens); true single
+2026-11-21T13:45:30+00:00 125/200 Town10HD_single_clear_01: v1 sideswipe (ok, 2.1 s) v2 t-bone (ok, 5.9 s, 61 tokens); true single
+2026-11-21T13:45:31+00:00 power check after 125 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:45:39+00:00 126/200 Town10HD_single_wet_17: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:45:48+00:00 127/200 Town10HD_single_clear_19: v1 head-on (ok, 1.9 s) v2 head-on (ok, 5.8 s, 60 tokens); true single
+2026-11-21T13:45:57+00:00 128/200 Town10HD_single_wet_32: v1 sideswipe (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true single
+2026-11-21T13:46:07+00:00 129/200 Town10HD_single_clear_18: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:46:15+00:00 130/200 Town10HD_single_clear_00: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.8 s, 61 tokens); true single
+2026-11-21T13:46:24+00:00 131/200 Town10HD_single_wet_33: v1 rear-end (ok, 1.8 s) v2 head-on (ok, 5.8 s, 60 tokens); true single
+2026-11-21T13:46:34+00:00 132/200 Town10HD_single_sunset_10: v1 sideswipe (ok, 2.2 s) v2 head-on (ok, 5.8 s, 60 tokens); true single
+2026-11-21T13:46:43+00:00 133/200 Town10HD_single_rain_37: v1 rear-end (ok, 2.2 s) v2 head-on (ok, 5.8 s, 60 tokens); true single
+2026-11-21T13:46:53+00:00 134/200 Town10HD_single_rain_25: v1 sideswipe (ok, 2.1 s) v2 head-on (ok, 5.7 s, 60 tokens); true single
+2026-11-21T13:47:02+00:00 135/200 Town10HD_single_clear_04: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.8 s, 61 tokens); true single
+2026-11-21T13:47:11+00:00 136/200 Town10HD_single_rain_21: v1 sideswipe (ok, 2.1 s) v2 head-on (ok, 5.6 s, 59 tokens); true single
+2026-11-21T13:47:21+00:00 137/200 Town10HD_single_wet_16: v1 rear-end (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:47:30+00:00 138/200 Town10HD_single_sunset_04: v1 sideswipe (ok, 2.2 s) v2 t-bone (ok, 5.9 s, 61 tokens); true single
+2026-11-21T13:47:41+00:00 139/200 Town07_single_wet_00: v1 rear-end (ok, 2.0 s) v2 t-bone (ok, 6.7 s, 76 tokens); true single
+2026-11-21T13:47:50+00:00 140/200 Town10HD_single_clear_13: v1 rear-end (ok, 2.2 s) v2 t-bone (ok, 5.9 s, 61 tokens); true single
+2026-11-21T13:47:59+00:00 141/200 Town10HD_single_clear_10: v1 sideswipe (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true single
+2026-11-21T13:48:08+00:00 142/200 Town10HD_single_clear_05: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:48:17+00:00 143/200 Town10HD_single_rain_33: v1 rear-end (ok, 1.8 s) v2 head-on (ok, 5.6 s, 60 tokens); true single
+2026-11-21T13:48:26+00:00 144/200 Town10HD_single_wet_13: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:48:35+00:00 145/200 Town10HD_single_wet_18: v1 rear-end (ok, 2.1 s) v2 rear-end (ok, 5.7 s, 60 tokens); true single
+2026-11-21T13:48:45+00:00 146/200 Town10HD_single_clear_02: v1 sideswipe (ok, 2.2 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:48:55+00:00 147/200 Town10HD_single_rain_36: v1 rear-end (ok, 2.1 s) v2 t-bone (ok, 5.8 s, 64 tokens); true single
+2026-11-21T13:49:04+00:00 148/200 Town07_single_clear_06: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:49:13+00:00 149/200 Town10HD_single_clear_06: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:49:23+00:00 150/200 Town07_single_sunset_29: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.8 s, 61 tokens); true single
+2026-11-21T13:49:23+00:00 power check after 150 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:49:33+00:00 151/200 Town07_single_sunset_03: v1 rear-end (ok, 2.1 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:49:42+00:00 152/200 Town10HD_single_clear_15: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:49:51+00:00 153/200 Town10HD_single_wet_15: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.7 s, 60 tokens); true single
+2026-11-21T13:50:00+00:00 154/200 Town10HD_single_night_33: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.6 s, 60 tokens); true single
+2026-11-21T13:50:10+00:00 155/200 Town10HD_single_night_22: v1 rear-end (ok, 1.8 s) v2 head-on (ok, 5.6 s, 60 tokens); true single
+2026-11-21T13:50:19+00:00 156/200 Town10HD_single_night_13: v1 rear-end (ok, 1.9 s) v2 head-on (ok, 5.5 s, 59 tokens); true single
+2026-11-21T13:50:29+00:00 157/200 Town10HD_single_night_30: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:50:38+00:00 158/200 Town10HD_single_night_26: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:50:48+00:00 159/200 Town10HD_single_night_25: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true single
+2026-11-21T13:50:57+00:00 160/200 Town10HD_single_night_24: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.6 s, 61 tokens); true single
+2026-11-21T13:51:06+00:00 161/200 Town10HD_t-bone_sunset_25: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:51:15+00:00 162/200 Town10HD_t-bone_wet_45: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:51:24+00:00 163/200 Town03_t-bone_wet_06: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:51:33+00:00 164/200 Town10HD_t-bone_clear_13: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:51:42+00:00 165/200 Town10HD_t-bone_wet_04: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:51:52+00:00 166/200 Town10HD_t-bone_sunset_48: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 6.4 s, 75 tokens); true t-bone
+2026-11-21T13:52:00+00:00 167/200 Town07_t-bone_clear_19: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:52:09+00:00 168/200 Town03_t-bone_clear_04: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:52:18+00:00 169/200 Town07_t-bone_clear_29: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:52:27+00:00 170/200 Town03_t-bone_wet_07: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:52:36+00:00 171/200 Town07_t-bone_clear_38: v1 sideswipe (ok, 2.1 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:52:46+00:00 172/200 Town10HD_t-bone_wet_49: v1 sideswipe (ok, 2.1 s) v2 t-bone (ok, 6.7 s, 80 tokens); true t-bone
+2026-11-21T13:52:56+00:00 173/200 Town10HD_t-bone_clear_25: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:53:05+00:00 174/200 Town07_t-bone_clear_15: v1 rear-end (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:53:14+00:00 175/200 Town07_t-bone_clear_44: v1 head-on (ok, 2.0 s) v2 head-on (ok, 5.6 s, 60 tokens); true t-bone
+2026-11-21T13:53:14+00:00 power check after 175 clips: BatteryStatus 2 (2 = on AC mains), charge 80%
+2026-11-21T13:53:23+00:00 176/200 Town10HD_t-bone_sunset_18: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:53:32+00:00 177/200 Town10HD_t-bone_wet_35: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.8 s, 62 tokens); true t-bone
+2026-11-21T13:53:41+00:00 178/200 Town03_t-bone_clear_34: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.8 s, 61 tokens); true t-bone
+2026-11-21T13:53:51+00:00 179/200 Town03_t-bone_rain_21: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:54:00+00:00 180/200 Town03_t-bone_rain_40: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:54:09+00:00 181/200 Town03_t-bone_night_33: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:54:18+00:00 182/200 Town03_t-bone_night_36: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:54:27+00:00 183/200 Town03_t-bone_night_49: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:54:36+00:00 184/200 Town03_t-bone_night_31: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:54:46+00:00 185/200 Town03_t-bone_night_24: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:54:54+00:00 186/200 Town03_t-bone_night_16: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:55:04+00:00 187/200 Town03_t-bone_night_08: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:55:13+00:00 188/200 Town10HD_t-bone_night_23: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:55:24+00:00 189/200 Town10HD_t-bone_night_15: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 6.4 s, 76 tokens); true t-bone
+2026-11-21T13:55:34+00:00 190/200 Town10HD_t-bone_night_08: v1 rear-end (ok, 2.0 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:55:44+00:00 191/200 Town10HD_t-bone_night_25: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:55:53+00:00 192/200 Town03_t-bone_night_00: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:56:03+00:00 193/200 Town03_t-bone_night_50: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:56:12+00:00 194/200 Town10HD_t-bone_night_18: v1 sideswipe (ok, 1.8 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:56:22+00:00 195/200 Town10HD_t-bone_night_03: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:56:31+00:00 196/200 Town03_t-bone_night_35: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.7 s, 61 tokens); true t-bone
+2026-11-21T13:56:42+00:00 197/200 Town10HD_t-bone_night_20: v1 sideswipe (ok, 2.0 s) v2 t-bone (ok, 6.8 s, 83 tokens); true t-bone
+2026-11-21T13:56:53+00:00 198/200 Town10HD_t-bone_night_07: v1 sideswipe (ok, 2.1 s) v2 t-bone (ok, 6.2 s, 72 tokens); true t-bone
+2026-11-21T13:57:02+00:00 199/200 Town03_t-bone_night_29: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:57:11+00:00 200/200 Town03_t-bone_night_14: v1 sideswipe (ok, 1.9 s) v2 t-bone (ok, 5.6 s, 61 tokens); true t-bone
+2026-11-21T13:57:11+00:00 FINISHED: 200 clips; power at end BatteryStatus 2 (2 = on AC mains), charge 80%

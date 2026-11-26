@@ -1,0 +1,61 @@
+TYPE PROBE, OPTION A: PRE-REGISTRATION (written 2026-11-25, before any feature was computed)
+Synthetic only. No real clip, real label or real metadata file is opened, listed or read. No Classifier checkpoint,
+frozen file, split or manifest is changed. Nothing is committed.
+
+== Plan as given (verbatim) ==
+- Features: our window Classifier (VideoMAE-Base, C_cctv, seed 0), frozen. Encoder output before the classification head (mean of the last hidden states, 768 numbers), averaged over the original and the horizontally flipped frames.
+- Folds: for validation fold k, the features of every clip come from Classifier fold model k (the one that did not train on fold k). The probe is trained on the other two folds and tested on fold k. Repeat for k = 0, 1, 2 and pool the out-of-fold predictions.
+- Windows: the Classifier's own window (same frames, size and preprocessing), the one whose centre is nearest the target time. Training uses two windows per clip, one for t* and one for the out-of-fold t_hat of the same fold model; testing uses the t_hat window only.
+- Head: logistic regression, class-balanced weights (each type counts equally), L2 strength chosen from {0.01, 0.1, 1, 10} by inner cross-validation grouped by scenario on the training folds only; features standardised with training-fold statistics only.
+- Main metric: macro accuracy over the 5 types, pooled out-of-fold. Also accuracy, per-type recall, and confusion matrices.
+- Success rule: an improvement only if it beats both the majority baseline and QLoRA epoch 1 on fold 1, in both accuracy and macro accuracy.
+- If it succeeds: repeat with Classifier seeds 1 and 2 and report mean and SD. Do not do this step now.
+
+== Where the code differed from the plan, and the decisions taken (user, 2026-11-25, before any feature) ==
+1. Feature. In the Classifier (transformers VideoMAEForVideoClassification, use_mean_pooling), the head's input is
+   fc_norm(mean over tokens of the last hidden states): a LayerNorm follows the mean. DECISION: the feature is exactly
+   the head's input, fc_norm(mean(last hidden states)), 768 numbers (captured with a forward hook on model.classifier),
+   so the saved head applied to it gives the window logit.
+2. Training t_hat. For a training clip (fold j != k) the only out-of-fold t_hat comes from fold model j. DECISION:
+   training clips use their frozen out-of-fold t_hat (fold model j; flip TTA + smoothing 3 + parabola), from
+   results/diagnostics/C_cctv_seeds012/seed0_frozen/tta_clip_predictions_flip.csv, the same t_hat that window A and
+   QLoRA used. Test clips (fold k) use the same file (there it is fold model k's own out-of-fold t_hat). Features of
+   every window still come from fold model k.
+3. L2 strength. DECISION: the values are sklearn's C (inverse strength): minimise
+   C * sum_i w_i * crossentropy_i + 0.5 * ||W||^2 (intercepts not penalised), C in {0.01, 0.1, 1, 10}.
+4. Fitting. scikit-learn and scipy are not installed in .venv-ml. DECISION: no dependency change; multinomial
+   logistic regression in torch, float64, full-batch L-BFGS (strong Wolfe line search), on CPU. Convex, so it reaches
+   the same optimum as sklearn's lbfgs solver.
+
+== Implementation details fixed now ==
+- Classifier: runs/C_cctv_seed0/fold_k/checkpoints/best.pt for k = 0, 1, 2, loaded read-only with
+  analyse_predictions.load_best (run-hash and best-check checks), built with train_classifier.build_model, eval mode,
+  bf16 autocast as train_classifier.val_logits. Frames: train_classifier.WindowDataset on cache/frames224_v1 (16 frames
+  at 8 fps from grid position k0 = 8 * t_start; 224 x 224; VideoMAE processor mean/std; no augmentation); horizontal
+  flip = the dataset's own flip code (2*row + 1). Window grid: synthetic_window_labels.csv (read through
+  train_classifier.load_labels, hash-checked against split_manifest.json).
+- Window choice: per clip, the window whose t_centre is nearest the target time (t* = metadata accident_time via the
+  window labels' t_star; or the frozen t_hat); ties -> the earlier window. If the t* and t_hat windows are the same
+  window, the clip still contributes two (identical) training rows.
+- Feature per window = mean of the feature of the original frames and the feature of the flipped frames.
+- Safety check (before extraction, per fold model k): 5 clips of fold k drawn with numpy default_rng(0) from the
+  sorted fold-k clips; every window of those clips, original and flipped. The saved head applied to the extracted
+  feature, sigmoid, must equal the saved window score on this GPU (results/diagnostics/postproc_C_cctv_seed0/tta/
+  fold_k/val_window_scores_orig.csv and _hflip.csv, the scores the frozen t_hat was built from) within 0.005
+  absolute; and the hooked head output must equal the model's own logit exactly. Stop if either fails. The same
+  comparison is repeated on every extracted fold-k window and reported.
+- Class weights: balanced over the classes present in the training rows, w_c = n / (K_present * n_c); a type absent
+  from the training rows gets no output (it cannot be predicted).
+- Standardisation: mean and SD of the training rows only (SD 0 -> 1), in the outer fit and in every inner fit.
+- Inner CV: leave-one-scenario-out over the scenarios in the training folds; each inner fit trains on both windows of
+  the inner-training clips and predicts the t_hat window of the held-out scenario's clips; the pooled inner
+  predictions give macro accuracy for each C; choose the highest; ties -> the smaller C (stronger shrinkage).
+- Outer fit: the chosen C, all training-fold clips (two windows each); predict the t_hat window of every fold-k clip.
+- Macro accuracy = mean per-type recall over the types present in the evaluated clips (fold 2 has no 'single' clip,
+  so its per-fold macro accuracy is over 4 types; pooled over all 2211 clips it is over 5).
+- Comparison on fold 1 (755 clips): majority baseline (always 'rear-end', the majority type of the QLoRA epoch-1
+  metrics file) and QLoRA epoch 1 (results/qlora_train/val_epoch1.csv, window A), accuracy and macro accuracy
+  recomputed from the saved files. Success = probe fold-1 accuracy > both AND probe fold-1 macro accuracy > both.
+- Features saved to cache/type_probe_A/ (gitignored); results to results/type_probe_A/; nothing is overwritten;
+  each run's command and output in results/type_probe_A/run_log_*.txt. GPU only for feature extraction; mains power
+  required.

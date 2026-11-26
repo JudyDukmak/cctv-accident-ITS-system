@@ -1,0 +1,44 @@
+DINOv2 PROBE: TWO VARIANTS: PRE-REGISTRATION (written 2026-11-26, before any frame or feature of the variants was computed)
+Synthetic only; no real file. type_dinov2.py and results/type_dinov2/ are only read (functions imported). Nothing is
+committed. Mains power; HF_HUB_OFFLINE=1.
+
+== Plan as given (verbatim) ==
+- V1 "paper default": the model's own processor (AutoImageProcessor for facebook/dinov2-base, default settings: resize shortest edge 256, centre crop 224).
+- V2 "higher resolution": whole frame squashed to 518x518, bicubic, model mean and std.
+- Everything else exactly as results\type_dinov2\PLAN.txt: frames at t* (train) and t_hat seed 0 (test), CLS feature, logistic regression, standardised, balanced weights, C = 1, no search.
+- Both variants are information only. Neither result changes any setting. If DINOv2 is later run on real clips as a reference, V1 is used, because it is the closest to the paper; this is decided now.
+- For each variant also compute the silhouette score of the t_hat features grouped by map and by type (all 2,211 clips), as in results\feature_view\, with a shuffled-label reference.
+
+== Checked against the code before writing ==
+- AutoImageProcessor.from_pretrained("facebook/dinov2-base", revision f9e44c814b77203eaa57a6bdbbd535f21ede1415) with
+  default settings returns BitImageProcessor: resize shortest edge 256 (bicubic, resample 3), centre crop 224 x 224,
+  rescale 1/255, normalise mean 0.485 0.456 0.406 / std 0.229 0.224 0.225; output float32 (1, 3, 224, 224);
+  repeated calls on the same image give identical output. For a 1920 x 1080 frame the crop keeps the central part
+  of the frame (the left and right sides are cut).
+
+== Implementation details fixed now ==
+- Frames: the same frame indices as results/type_dinov2 (cache/type_dinov2/frames_index.csv, read only: nearest t*
+  and nearest frozen out-of-fold t_hat of C_cctv seed 0), decoded again at full resolution with
+  vlm_zero_shot.decode (the frame audit's decoder), in worker processes.
+  V1: the processor's pixel_values (float32, 3 x 224 x 224), computed in the worker on the full RGB frame, stored as
+      is in cache/type_dinov2_variants/v1_pixel_values.npy (2211, 2, 3, 224, 224).
+  V2: PIL Image.resize((518, 518), Image.BICUBIC) of the full frame, uint8, in cache/type_dinov2_variants/
+      v2_frames518.npy (2211, 2, 518, 518, 3); normalised on the GPU as type_dinov2.encode does (/255, mean, std).
+- Encoder: type_dinov2.load_encoder (dinov2-base, float32, eval); V2 through type_dinov2.encode; V1 through the same
+  steps on the processor's pixel values (no further normalisation). Feature = pooler_output = CLS after the final
+  layer norm (checked equal to last_hidden_state[:, 0] on every batch). Batch 32; if V2 runs out of GPU memory at 32,
+  batch 8 (stated in the report). Peak GPU memory of V2 = torch.cuda.max_memory_allocated during its pass.
+- Safety check per variant: 5 frames (numpy default_rng(0) over the 2211 x 2 frames, as results/type_dinov2) encoded
+  twice in separate passes; features must be identical (np.array_equal); stop otherwise.
+- Head and checks exactly as results/type_dinov2: type_probe_A.train_predict / fit_lr with C = 1, balanced weights,
+  standardisation on training rows; train on t* features, test on t_hat features; (a) scenario folds 0/1/2,
+  (b) leave one map out; majority baseline per part (training clips, ties alphabetical); fold-1 table with the
+  majority, QLoRA epoch 1, probe A, probe A map, DINOv2 224 squash (results/type_dinov2/checks.json) and V1, V2.
+- In-sample training accuracy: the head fitted on the t* features of all 2211 clips (C = 1), accuracy on the same
+  rows (as results/type_dinov2/final.json); no model file is saved for the variants.
+- Silhouette: feature_view.silhouette on the t_hat features of all 2211 clips, standardised over the 2211 rows,
+  Euclidean; grouped by map and by type; shuffled-label reference with numpy default_rng(0) (one permutation each,
+  map first, then type). The same is computed for the 224 squash features (cache/type_dinov2/features.npz, read only).
+- Contact sheet per variant: the same 6 clips as results/type_dinov2/contact_sheet.png; V1 shown as the processor
+  output de-normalised to 0..255 for display; V2 at 518 x 518.
+- Outputs in results/type_dinov2_variants/ (never overwritten); run_log_*.txt per run.

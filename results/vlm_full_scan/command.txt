@@ -1,0 +1,4 @@
+command (from cctv-accident-ITS-system/, first start 2026-11-16T13:06:03Z; the same command resumes):
+  HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 .venv-vlm/Scripts/python.exe -u vlm_zero_shot.py --full-scan run   (output appended to run.log)
+then: .venv-vlm/Scripts/python.exe vlm_zero_shot.py --full-scan report
+frozen protocol: FROZEN.txt (git commit 644f4e3); power at start and stops: run_events.txt

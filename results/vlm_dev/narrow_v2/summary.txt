@@ -1,0 +1,71 @@
+Narrow call v1 vs v2 on 32 synthetic development clips; 2026-11-16T12:44:58+00:00; Qwen/Qwen3-VL-4B-Instruct nf4 on NVIDIA GeForce RTX 5060 Laptop GPU, load 8.0 s. Protocol: PROTOCOL.txt. Synthetic labels only.
+
+PER CLIP (narrow v2; v1 = the re-run, 32/32 raw outputs identical to results/vlm_dev/narrow.csv)
+clip                               true      v1 pred   v2 pred       x     y    cx    cy v2 err valid
+Town05_head-on_wet_24              head-on   sideswipe sideswipe  0.50  0.40  0.58  0.35  0.092 True
+Town05_head-on_rain_42             head-on   rear-end  rear-end   0.48  0.45  0.25  0.39  0.233 True
+Town06_head-on_sunset_35           head-on   rear-end  rear-end   0.45  0.45  0.51  0.54  0.108 True
+Town03_head-on_night_03            head-on   sideswipe sideswipe  0.45  0.45  0.42  0.09  0.361 True
+Town03_head-on_night_12            head-on   sideswipe sideswipe  0.50  0.50  0.57  0.78  0.288 True
+Town03_head-on_night_08            head-on   sideswipe sideswipe  0.38  0.38  0.33  0.44  0.077 True
+Town05_rear-end_wet_235            rear-end  rear-end  sideswipe  0.52  0.48  0.56  0.44  0.059 True
+Town05_rear-end_sunset_213         rear-end  sideswipe sideswipe  0.57  0.62  0.51  0.59  0.071 True
+Town07_rear-end_sunset_58          rear-end  head-on   head-on    0.35  0.35  0.32  0.39  0.047 True
+Town07_rear-end_night_09           rear-end  sideswipe single     0.50  0.50  0.50  0.30  0.200 True
+Town05_rear-end_night_214          rear-end  sideswipe rear-end   0.50  0.50  0.57  0.48  0.071 True
+Town05_rear-end_night_231          rear-end  rear-end  rear-end   0.50  0.45  0.51  0.55  0.100 True
+Town06_sideswipe_sunset_07         sideswipe rear-end  rear-end   0.50  0.30  0.55  0.94  0.646 True
+Town06_sideswipe_clear_33          sideswipe rear-end  rear-end   0.35  0.52  0.31  0.52  0.042 True
+Town04_sideswipe_wet_06            sideswipe rear-end  sideswipe  0.30  0.20  0.29  0.30  0.101 True
+Town06_sideswipe_night_25          sideswipe rear-end  rear-end   0.60  0.50  0.65  0.62  0.129 True
+Town05_sideswipe_night_29          sideswipe sideswipe rear-end   0.45  0.55  0.40  0.57  0.049 True
+Town04_sideswipe_night_05          sideswipe rear-end  rear-end   0.30  0.30  0.30  0.35  0.050 True
+Town07_single_sunset_15            single    rear-end  sideswipe  0.38  0.52  0.42  0.61  0.094 True
+Town10HD_single_wet_01             single    sideswipe rear-end   0.27  0.32  0.52  0.64  0.409 True
+Town07_single_clear_07             single    sideswipe sideswipe  0.50  0.35  0.66  0.63  0.323 True
+Town10HD_single_night_20           single    rear-end  rear-end   0.60  0.50  0.43  0.59  0.193 True
+Town10HD_single_night_23           single    rear-end  rear-end   0.37  0.32  0.42  0.51  0.200 True
+Town10HD_single_night_09           single    rear-end  rear-end   0.50  0.30  0.52  0.46  0.161 True
+Town03_t-bone_clear_08             t-bone    sideswipe sideswipe  0.30  0.30  0.28  0.47  0.168 True
+Town03_t-bone_clear_01             t-bone    sideswipe sideswipe  0.50  0.40  0.58  0.45  0.094 True
+Town03_t-bone_wet_16               t-bone    sideswipe sideswipe  0.57  0.45  0.59  0.48  0.032 True
+Town10HD_t-bone_night_26           t-bone    sideswipe sideswipe  0.50  0.40  0.60  0.34  0.116 True
+Town03_t-bone_night_42             t-bone    sideswipe sideswipe  0.30  0.40  0.63  0.43  0.335 True
+Town03_t-bone_night_51             t-bone    sideswipe sideswipe  0.55  0.55  0.67  0.74  0.221 True
+Town06_head-on_clear_01            head-on   rear-end  rear-end   0.45  0.35  0.54  0.76  0.423 True
+Town04_rear-end_night_32           rear-end  rear-end  rear-end   0.50  0.50  0.65  0.64  0.206 True
+
+TOTALS (peak memory: max over the calls, per call, model weights included)
+                                           v1              v2
+  frames                                   16               8
+  visual tokens                           896            1792
+  valid answers                         32/32           32/32
+  type accuracy                 0.1250 (4/32)   0.1250 (4/32)
+  point error mean                     0.2065          0.1781
+  point error median                   0.1899          0.1227
+  GPU s per clip                         1.99            3.34
+  peak GPU memory allocated GB           3.42            4.42
+  peak GPU memory reserved GB            5.50            5.50
+
+CONFUSION narrow v1 (rows = true type, columns = predicted type)
+  true / pred    head-on  rear-end sideswipe    single    t-bone
+  head-on              0         3         4         0         0
+  rear-end             1         3         3         0         0
+  sideswipe            0         5         1         0         0
+  single               0         4         2         0         0
+  t-bone               0         0         6         0         0
+
+CONFUSION narrow v2 (rows = true type, columns = predicted type)
+  true / pred    head-on  rear-end sideswipe    single    t-bone
+  head-on              0         3         4         0         0
+  rear-end             1         3         2         1         0
+  sideswipe            0         5         1         0         0
+  single               0         4         2         0         0
+  t-bone               0         0         6         0         0
+
+BASELINES on the same clips
+  majority type 'rear-end': type accuracy 0.2188 (7/32)
+  image-centre point (0.5, 0.5): point error mean 0.1811, median 0.1828
+
+DECISION (pre-registered: adopt v2 if its type accuracy > v1's 4/32; a tie keeps v1): v2 4/32 -> keep narrow v1 (tie: the simpler version)
+narrow v1 re-run: 32/32 raw outputs identical to results/vlm_dev/narrow.csv

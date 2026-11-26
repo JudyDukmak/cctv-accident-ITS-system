@@ -1,0 +1,2 @@
+﻿.venv-ml\Scripts\python.exe confidence_vs_error.py --routing-t1 --out-dir results\routing_T1
+.venv-vlm\Scripts\python.exe results\real_test\routing_count\routing_count.py --tau 0.0 --out results\routing_T1\real_frozen400_below_tau.txt

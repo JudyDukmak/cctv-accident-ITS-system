@@ -1,0 +1,5 @@
+command (from cctv-accident-ITS-system/, 2026-11-16T10:59:20Z):
+  HF_HUB_OFFLINE=1 TRANSFORMERS_OFFLINE=1 .venv-vlm/Scripts/python.exe -u vlm_zero_shot.py --run --clips vlm_dev_clips.csv --versions 1 2 --out-dir results/vlm_dev
+clips: vlm_dev_clips.csv sha256 bba63401d1627ed890acff574d31d20058044361a51242562464a2e26135645a
+code: git HEAD c8479da + uncommitted vlm_zero_shot.py sha256 2eb5b626d0cfd79cdfd43bcad545064528c51aca460e5f2f5ea92dd544cfeb26, gpu_check/vlm_smoke_test.py sha256 be7f0dd53f6ade017d4c1a5963eba0ac078620c0ba8fc6d599e20d9cc862b417
+terminal output: run.log

@@ -1,0 +1,55 @@
+QLoRA training configuration; written 2026-11-21T16:16:58+00:00 BEFORE any training step; the decisions below do not change after this (every GPU mode compares them with CONFIG_JSON and refuses to run if they differ).
+git commit cf4d3a2ccdf074d31a00cf87e280a53c02ce0f12 (branch vlm-zero-shot); working tree has uncommitted changes: the files below are hashed
+sha256 train_qlora.py: c1c153a30415315bf8846f693d4577dfe9e5dceab73fd6d73376c551a5c2873b
+sha256 build_qlora_data.py: 9dc66b592d0d2ead3ede7c2f656e72aab1785a88bd2d7d68940783704be16247
+sha256 narrow_prompt_v2.py: 04105b13fa6aa94ca2366c2781d7fb285e4f0edfee26178c3666be3f7a3473c8
+sha256 vlm_zero_shot.py: f5675fc8357d1c66e67a72e8ff22873e5bcda6da3d1e223bdbc646678c9867f0
+sha256 gpu_check/vlm_smoke_test.py: be7f0dd53f6ade017d4c1a5963eba0ac078620c0ba8fc6d599e20d9cc862b417
+sha256 results/qlora_data/manifest.csv: c0c1d9b74ae327aef0e8a8b1fa467b5afda048346f953a9f030ae14554f7f719
+sha256 synthetic_split.csv: 965e1104208e3e7e53e64ebcac8f8d467c6647797c706560fb71fe503ad8fb19
+sha256 scorer_config.json: 51adbe41930a7fca694be3ebb2caeba8eb1aac6bccf83dc4e463f2a4fd26d088
+data: 2912 training windows (folds 0, 2, windows A and B) -> 3154 per epoch after single oversampling; by type {'head-on': 828, 'rear-end': 1034, 'sideswipe': 596, 'single': 348, 't-bone': 348}; validation 755 windows (fold 1, window A)
+steps: 3154 per epoch, 6308 in all, warmup 189
+
+PROMPT (full text between the lines):
+----------------------------------------
+These 16 frames come from a fixed traffic camera, in time order, covering about 4 seconds. The text before the frames gives their times in seconds. A traffic collision is expected near the middle of these frames, but it may happen earlier or later, or may not be visible.
+
+   - head-on: two vehicles moving toward each other hit front to front.
+   - rear-end: two vehicles moving in the same direction; the front of the rear vehicle hits the back of the one ahead.
+   - sideswipe: two vehicles moving side by side in roughly parallel directions; their sides scrape along each other.
+   - t-bone: the paths cross at an angle; the front of one vehicle hits the side of the other.
+   - single: only one vehicle is involved; it hits an object, a barrier, the roadside, or rolls over.
+   If the paths cross at an angle, prefer t-bone over sideswipe. If the vehicles move in the same direction and the front of one hits the back of the other, prefer rear-end over sideswipe.
+
+Answer with one JSON object and nothing else, in this exact form: {"collision_visible": <true or false>, "collision_type": "<head-on | rear-end | sideswipe | single | t-bone>", "bbox_2d": [x1, y1, x2, y2]}. bbox_2d uses relative coordinates from 0 to 1000: x from the left edge, y from the top edge, [x1, y1] the top-left corner and [x2, y2] the bottom-right corner. Always give a collision_type and a bbox_2d, even if collision_visible is false.
+----------------------------------------
+
+input_layout: v1: the 16 cached frames of the window (manifest frame_indices, 448 x 256 JPEG cache), native frame pairs (2 frames per temporal token group: 8 groups, 896 visual tokens), the processor's own timestamps from the frame indices and fps
+prompt_sha256: 3ad1575d9961d4dbb64159fff9258ee3ab0aa8c4e5cab2d7fa35b8c719ef430f
+prompt_assembly: PART1 + blank line + PROMPT_V2 text from '   - head-on:' to 'prefer rear-end over sideswipe.' (verbatim, incl. its 3-space indentation) + blank line + ANSWER
+target: {"collision_visible": t* inside the window (first to last frame time), "collision_type": type, "bbox_2d": [x1, y1, x2, y2] = round-half-up(1000 x metadata box)} as json.dumps (keys in this order)
+loss: cross-entropy on the answer tokens only: the target JSON and <|im_end|>; prompt, video and the newline after <|im_end|> masked (-100)
+train: folds 0 and 2 of synthetic_split.csv, windows A and B (manifest)
+validation: fold 1, window A (no flip)
+single_oversampling: single training windows repeated until their count equals the t-bone training windows: whole copies, then the remainder drawn without replacement with default_rng(seed)
+augmentation: horizontal flip with p 0.5 per training example per epoch (all 16 frames; box x1' = 1000 - x2, x2' = 1000 - x1); nothing else
+model: Qwen/Qwen3-VL-4B-Instruct, 4-bit NF4 (double quant, bf16 compute), sdpa attention
+lora: {'r': 16, 'alpha': 32, 'dropout': 0.05, 'bias': 'none', 'target_modules': '.*language_model.*\\.(self_attn\\.(q_proj|k_proj|v_proj|o_proj)|mlp\\.(gate_proj|up_proj|down_proj))'}
+gradient_checkpointing: on (non-reentrant), use_cache off in training
+batch: 1
+optimizer: torch.optim.AdamW, lr 2e-4, torch defaults otherwise (betas 0.9 / 0.999, eps 1e-8, weight_decay 0.01)
+schedule: cosine with 3% linear warmup (transformers get_cosine_schedule_with_warmup), stepped every example, over 2 epochs
+lr: 0.0002
+warmup_frac: 0.03
+epochs: 2
+seed: 0
+gradient_clipping: none (not in the decisions)
+epoch_order: default_rng(seed * 1000 + epoch).permutation, flips default_rng(seed * 1000 + epoch) after it
+validation_decoding: greedy, max_new_tokens 64; answer parsed by narrow_prompt_v2.parse_v2 (point = box centre; invalid -> rear-end, (0.5, 0.5), counted)
+validation_metrics: type accuracy, per-type confusion, S (scorer_config.json sigmas), mean point error, valid answers; baselines on the same windows: majority training type and the image centre
+checkpoint_choice: the epoch with the higher mean of type accuracy and S on fold 1 window A
+save_every_steps: 500
+power: mains checked at start, at every checkpoint (every 500 steps and epoch end) and at the end; on battery: checkpoint saved, run paused (exit 4), resumable
+
+CONFIG_JSON {"input_layout": "v1: the 16 cached frames of the window (manifest frame_indices, 448 x 256 JPEG cache), native frame pairs (2 frames per temporal token group: 8 groups, 896 visual tokens), the processor's own timestamps from the frame indices and fps", "prompt_sha256": "3ad1575d9961d4dbb64159fff9258ee3ab0aa8c4e5cab2d7fa35b8c719ef430f", "prompt_assembly": "PART1 + blank line + PROMPT_V2 text from '   - head-on:' to 'prefer rear-end over sideswipe.' (verbatim, incl. its 3-space indentation) + blank line + ANSWER", "target": "{\"collision_visible\": t* inside the window (first to last frame time), \"collision_type\": type, \"bbox_2d\": [x1, y1, x2, y2] = round-half-up(1000 x metadata box)} as json.dumps (keys in this order)", "loss": "cross-entropy on the answer tokens only: the target JSON and <|im_end|>; prompt, video and the newline after <|im_end|> masked (-100)", "train": "folds 0 and 2 of synthetic_split.csv, windows A and B (manifest)", "validation": "fold 1, window A (no flip)", "single_oversampling": "single training windows repeated until their count equals the t-bone training windows: whole copies, then the remainder drawn without replacement with default_rng(seed)", "augmentation": "horizontal flip with p 0.5 per training example per epoch (all 16 frames; box x1' = 1000 - x2, x2' = 1000 - x1); nothing else", "model": "Qwen/Qwen3-VL-4B-Instruct, 4-bit NF4 (double quant, bf16 compute), sdpa attention", "lora": {"r": 16, "alpha": 32, "dropout": 0.05, "bias": "none", "target_modules": ".*language_model.*\\.(self_attn\\.(q_proj|k_proj|v_proj|o_proj)|mlp\\.(gate_proj|up_proj|down_proj))"}, "gradient_checkpointing": "on (non-reentrant), use_cache off in training", "batch": 1, "optimizer": "torch.optim.AdamW, lr 2e-4, torch defaults otherwise (betas 0.9 / 0.999, eps 1e-8, weight_decay 0.01)", "schedule": "cosine with 3% linear warmup (transformers get_cosine_schedule_with_warmup), stepped every example, over 2 epochs", "lr": 0.0002, "warmup_frac": 0.03, "epochs": 2, "seed": 0, "gradient_clipping": "none (not in the decisions)", "epoch_order": "default_rng(seed * 1000 + epoch).permutation, flips default_rng(seed * 1000 + epoch) after it", "validation_decoding": "greedy, max_new_tokens 64; answer parsed by narrow_prompt_v2.parse_v2 (point = box centre; invalid -> rear-end, (0.5, 0.5), counted)", "validation_metrics": "type accuracy, per-type confusion, S (scorer_config.json sigmas), mean point error, valid answers; baselines on the same windows: majority training type and the image centre", "checkpoint_choice": "the epoch with the higher mean of type accuracy and S on fold 1 window A", "save_every_steps": 500, "power": "mains checked at start, at every checkpoint (every 500 steps and epoch end) and at the end; on battery: checkpoint saved, run paused (exit 4), resumable"}

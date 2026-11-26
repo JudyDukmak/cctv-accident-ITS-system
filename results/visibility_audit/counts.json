@@ -1,0 +1,316 @@
+{
+ "n_clips": 2211,
+ "tick_rule_holds": 2211,
+ "n_actors_distribution": {
+  "2": 2211
+ },
+ "ticks_absent": {
+  "-10": 0,
+  "-5": 0,
+  "0": 0,
+  "+5": 1,
+  "+10": 3
+ },
+ "actors_missing_by_tick": {
+  "-10": 63,
+  "-5": 41,
+  "0": 33,
+  "+5": 33,
+  "+10": 35
+ },
+ "clips_with_missing_by_tick": {
+  "-10": 50,
+  "-5": 35,
+  "0": 31,
+  "+5": 30,
+  "+10": 33
+ },
+ "visible_area_share_quantiles": {
+  "0.05": 0.14512,
+  "0.25": 0.2415,
+  "0.5": 0.2978,
+  "0.75": 0.3714,
+  "0.95": 0.5248999999999997
+ },
+ "box_area_px_quantiles": {
+  "0.05": 5819.5,
+  "0.25": 12938.0,
+  "0.5": 22194.0,
+  "0.75": 35402.0,
+  "0.95": 73663.0
+ },
+ "box_area_px_median_by_flag": {
+  "LOW_AT_IMPACT": {
+   "True": 15696.0,
+   "False": 22427.0
+  },
+  "LOW_AROUND_IMPACT": {
+   "True": 15504.0,
+   "False": 22356.0
+  }
+ },
+ "tables": {
+  "all": [
+   {
+    "by": "all",
+    "group": "all",
+    "n": 2211,
+    "LOW_AT_IMPACT": 31,
+    "LOW_AROUND_IMPACT": 16,
+    "LOW_AT_IMPACT_share": 0.014020805065581185,
+    "LOW_AROUND_IMPACT_share": 0.007236544549977386
+   }
+  ],
+  "scenario_id": [
+   {
+    "by": "scenario_id",
+    "group": "Town03_head-on",
+    "n": 212,
+    "LOW_AT_IMPACT": 1,
+    "LOW_AROUND_IMPACT": 0,
+    "LOW_AT_IMPACT_share": 0.0047169811320754715,
+    "LOW_AROUND_IMPACT_share": 0.0
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town03_t-bone",
+    "n": 184,
+    "LOW_AT_IMPACT": 3,
+    "LOW_AROUND_IMPACT": 1,
+    "LOW_AT_IMPACT_share": 0.016304347826086956,
+    "LOW_AROUND_IMPACT_share": 0.005434782608695652
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town04_rear-end",
+    "n": 245,
+    "LOW_AT_IMPACT": 8,
+    "LOW_AROUND_IMPACT": 4,
+    "LOW_AT_IMPACT_share": 0.0326530612244898,
+    "LOW_AROUND_IMPACT_share": 0.0163265306122449
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town04_sideswipe",
+    "n": 139,
+    "LOW_AT_IMPACT": 1,
+    "LOW_AROUND_IMPACT": 0,
+    "LOW_AT_IMPACT_share": 0.007194244604316547,
+    "LOW_AROUND_IMPACT_share": 0.0
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town05_head-on",
+    "n": 174,
+    "LOW_AT_IMPACT": 1,
+    "LOW_AROUND_IMPACT": 1,
+    "LOW_AT_IMPACT_share": 0.005747126436781609,
+    "LOW_AROUND_IMPACT_share": 0.005747126436781609
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town05_rear-end",
+    "n": 277,
+    "LOW_AT_IMPACT": 4,
+    "LOW_AROUND_IMPACT": 3,
+    "LOW_AT_IMPACT_share": 0.01444043321299639,
+    "LOW_AROUND_IMPACT_share": 0.010830324909747292
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town05_sideswipe",
+    "n": 107,
+    "LOW_AT_IMPACT": 0,
+    "LOW_AROUND_IMPACT": 0,
+    "LOW_AT_IMPACT_share": 0.0,
+    "LOW_AROUND_IMPACT_share": 0.0
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town06_head-on",
+    "n": 202,
+    "LOW_AT_IMPACT": 3,
+    "LOW_AROUND_IMPACT": 2,
+    "LOW_AT_IMPACT_share": 0.01485148514851485,
+    "LOW_AROUND_IMPACT_share": 0.009900990099009901
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town06_sideswipe",
+    "n": 159,
+    "LOW_AT_IMPACT": 6,
+    "LOW_AROUND_IMPACT": 2,
+    "LOW_AT_IMPACT_share": 0.03773584905660377,
+    "LOW_AROUND_IMPACT_share": 0.012578616352201259
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town07_rear-end",
+    "n": 272,
+    "LOW_AT_IMPACT": 1,
+    "LOW_AROUND_IMPACT": 0,
+    "LOW_AT_IMPACT_share": 0.003676470588235294,
+    "LOW_AROUND_IMPACT_share": 0.0
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town07_single",
+    "n": 13,
+    "LOW_AT_IMPACT": 0,
+    "LOW_AROUND_IMPACT": 0,
+    "LOW_AT_IMPACT_share": 0.0,
+    "LOW_AROUND_IMPACT_share": 0.0
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town07_t-bone",
+    "n": 43,
+    "LOW_AT_IMPACT": 0,
+    "LOW_AROUND_IMPACT": 0,
+    "LOW_AT_IMPACT_share": 0.0,
+    "LOW_AROUND_IMPACT_share": 0.0
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town10HD_single",
+    "n": 53,
+    "LOW_AT_IMPACT": 2,
+    "LOW_AROUND_IMPACT": 2,
+    "LOW_AT_IMPACT_share": 0.03773584905660377,
+    "LOW_AROUND_IMPACT_share": 0.03773584905660377
+   },
+   {
+    "by": "scenario_id",
+    "group": "Town10HD_t-bone",
+    "n": 131,
+    "LOW_AT_IMPACT": 1,
+    "LOW_AROUND_IMPACT": 1,
+    "LOW_AT_IMPACT_share": 0.007633587786259542,
+    "LOW_AROUND_IMPACT_share": 0.007633587786259542
+   }
+  ],
+  "type": [
+   {
+    "by": "type",
+    "group": "head-on",
+    "n": 588,
+    "LOW_AT_IMPACT": 5,
+    "LOW_AROUND_IMPACT": 3,
+    "LOW_AT_IMPACT_share": 0.008503401360544218,
+    "LOW_AROUND_IMPACT_share": 0.00510204081632653
+   },
+   {
+    "by": "type",
+    "group": "rear-end",
+    "n": 794,
+    "LOW_AT_IMPACT": 13,
+    "LOW_AROUND_IMPACT": 7,
+    "LOW_AT_IMPACT_share": 0.0163727959697733,
+    "LOW_AROUND_IMPACT_share": 0.008816120906801008
+   },
+   {
+    "by": "type",
+    "group": "sideswipe",
+    "n": 405,
+    "LOW_AT_IMPACT": 7,
+    "LOW_AROUND_IMPACT": 2,
+    "LOW_AT_IMPACT_share": 0.01728395061728395,
+    "LOW_AROUND_IMPACT_share": 0.0049382716049382715
+   },
+   {
+    "by": "type",
+    "group": "single",
+    "n": 66,
+    "LOW_AT_IMPACT": 2,
+    "LOW_AROUND_IMPACT": 2,
+    "LOW_AT_IMPACT_share": 0.030303030303030304,
+    "LOW_AROUND_IMPACT_share": 0.030303030303030304
+   },
+   {
+    "by": "type",
+    "group": "t-bone",
+    "n": 358,
+    "LOW_AT_IMPACT": 4,
+    "LOW_AROUND_IMPACT": 2,
+    "LOW_AT_IMPACT_share": 0.0111731843575419,
+    "LOW_AROUND_IMPACT_share": 0.00558659217877095
+   }
+  ],
+  "weather": [
+   {
+    "by": "weather",
+    "group": "clear",
+    "n": 515,
+    "LOW_AT_IMPACT": 12,
+    "LOW_AROUND_IMPACT": 7,
+    "LOW_AT_IMPACT_share": 0.02330097087378641,
+    "LOW_AROUND_IMPACT_share": 0.013592233009708738
+   },
+   {
+    "by": "weather",
+    "group": "night",
+    "n": 449,
+    "LOW_AT_IMPACT": 6,
+    "LOW_AROUND_IMPACT": 1,
+    "LOW_AT_IMPACT_share": 0.013363028953229399,
+    "LOW_AROUND_IMPACT_share": 0.0022271714922048997
+   },
+   {
+    "by": "weather",
+    "group": "rain",
+    "n": 342,
+    "LOW_AT_IMPACT": 2,
+    "LOW_AROUND_IMPACT": 1,
+    "LOW_AT_IMPACT_share": 0.005847953216374269,
+    "LOW_AROUND_IMPACT_share": 0.0029239766081871343
+   },
+   {
+    "by": "weather",
+    "group": "sunset",
+    "n": 461,
+    "LOW_AT_IMPACT": 5,
+    "LOW_AROUND_IMPACT": 4,
+    "LOW_AT_IMPACT_share": 0.010845986984815618,
+    "LOW_AROUND_IMPACT_share": 0.008676789587852495
+   },
+   {
+    "by": "weather",
+    "group": "wet",
+    "n": 444,
+    "LOW_AT_IMPACT": 6,
+    "LOW_AROUND_IMPACT": 3,
+    "LOW_AT_IMPACT_share": 0.013513513513513514,
+    "LOW_AROUND_IMPACT_share": 0.006756756756756757
+   }
+  ],
+  "val_fold": [
+   {
+    "by": "val_fold",
+    "group": "0",
+    "n": 770,
+    "LOW_AT_IMPACT": 15,
+    "LOW_AROUND_IMPACT": 9,
+    "LOW_AT_IMPACT_share": 0.01948051948051948,
+    "LOW_AROUND_IMPACT_share": 0.011688311688311689
+   },
+   {
+    "by": "val_fold",
+    "group": "1",
+    "n": 755,
+    "LOW_AT_IMPACT": 8,
+    "LOW_AROUND_IMPACT": 5,
+    "LOW_AT_IMPACT_share": 0.010596026490066225,
+    "LOW_AROUND_IMPACT_share": 0.006622516556291391
+   },
+   {
+    "by": "val_fold",
+    "group": "2",
+    "n": 686,
+    "LOW_AT_IMPACT": 8,
+    "LOW_AROUND_IMPACT": 2,
+    "LOW_AT_IMPACT_share": 0.011661807580174927,
+    "LOW_AROUND_IMPACT_share": 0.0029154518950437317
+   }
+  ]
+ }
+}

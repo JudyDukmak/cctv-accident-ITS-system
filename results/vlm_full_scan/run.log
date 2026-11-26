@@ -1,0 +1,51 @@
+2026-11-16T13:06:04+00:00 START/RESUME: 0 clips done, 2211 to do; power BatteryStatus 2 (2 = on AC mains), charge 80%
+W1116 16:06:07.959000 14940 .venv-vlm\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+2026-11-16T13:06:08+00:00 loading Qwen/Qwen3-VL-4B-Instruct (nf4)
+Loading weights:   0%|          | 0/713 [00:00<?, ?it/s]Loading weights:   0%|          | 1/713 [00:00<06:11,  1.91it/s]Loading weights:   1%|          | 4/713 [00:00<01:31,  7.75it/s]Loading weights:   2%|▏         | 14/713 [00:00<00:24, 28.13it/s]Loading weights:   3%|▎         | 22/713 [00:00<00:17, 39.53it/s]Loading weights:   4%|▍         | 28/713 [00:00<00:16, 42.78it/s]Loading weights:   5%|▌         | 37/713 [00:01<00:12, 52.90it/s]Loading weights:   7%|▋         | 47/713 [00:01<00:10, 62.85it/s]Loading weights:   8%|▊         | 55/713 [00:01<00:10, 65.30it/s]Loading weights:   9%|▉         | 63/713 [00:01<00:09, 66.41it/s]Loading weights:  10%|▉         | 71/713 [00:01<00:10, 61.55it/s]Loading weights:  11%|█▏        | 81/713 [00:01<00:09, 70.13it/s]Loading weights:  13%|█▎        | 91/713 [00:01<00:08, 74.15it/s]Loading weights:  14%|█▍        | 99/713 [00:01<00:08, 72.90it/s]Loading weights:  15%|█▌        | 107/713 [00:02<00:08, 71.34it/s]Loading weights:  16%|█▌        | 115/713 [00:02<00:09, 66.14it/s]Loading weights:  18%|█▊        | 125/713 [00:02<00:07, 73.84it/s]Loading weights:  19%|█▉        | 135/713 [00:02<00:07, 77.06it/s]Loading weights:  20%|██        | 143/713 [00:02<00:07, 74.46it/s]Loading weights:  21%|██        | 151/713 [00:02<00:07, 73.63it/s]Loading weights:  22%|██▏       | 159/713 [00:02<00:08, 68.17it/s]Loading weights:  24%|██▎       | 169/713 [00:02<00:07, 75.53it/s]Loading weights:  25%|██▌       | 179/713 [00:02<00:06, 79.57it/s]Loading weights:  26%|██▋       | 188/713 [00:03<00:06, 81.48it/s]Loading weights:  28%|██▊       | 197/713 [00:03<00:06, 78.37it/s]Loading weights:  29%|██▉       | 205/713 [00:03<00:06, 75.30it/s]Loading weights:  30%|██▉       | 213/713 [00:03<00:06, 74.48it/s]Loading weights:  31%|███▏      | 224/713 [00:03<00:06, 77.02it/s]Loading weights:  33%|███▎      | 234/713 [00:03<00:05, 80.77it/s]Loading weights:  34%|███▍      | 245/713 [00:03<00:05, 80.48it/s]Loading weights:  36%|███▌      | 254/713 [00:03<00:05, 82.30it/s]Loading weights:  37%|███▋      | 263/713 [00:04<00:05, 78.75it/s]Loading weights:  38%|███▊      | 271/713 [00:04<00:05, 74.81it/s]Loading weights:  39%|███▉      | 279/713 [00:04<00:05, 75.14it/s]Loading weights:  41%|████      | 289/713 [00:04<00:05, 80.31it/s]Loading weights:  42%|████▏     | 298/713 [00:04<00:05, 80.94it/s]Loading weights:  43%|████▎     | 307/713 [00:04<00:05, 78.18it/s]Loading weights:  44%|████▍     | 315/713 [00:04<00:05, 73.62it/s]Loading weights:  45%|████▌     | 323/713 [00:04<00:05, 73.89it/s]Loading weights:  47%|████▋     | 333/713 [00:04<00:04, 79.35it/s]Loading weights:  48%|████▊     | 341/713 [00:05<00:04, 78.80it/s]Loading weights:  49%|████▉     | 349/713 [00:05<00:04, 76.88it/s]Loading weights:  50%|█████     | 357/713 [00:05<00:05, 69.65it/s]Loading weights:  51%|█████▏    | 367/713 [00:05<00:04, 76.28it/s]Loading weights:  53%|█████▎    | 377/713 [00:05<00:04, 82.02it/s]Loading weights:  54%|█████▍    | 386/713 [00:05<00:03, 82.81it/s]Loading weights:  55%|█████▌    | 395/713 [00:05<00:04, 79.40it/s]Loading weights:  63%|██████▎   | 452/713 [00:05<00:01, 206.40it/s]Loading weights:  72%|███████▏  | 514/713 [00:05<00:00, 316.04it/s]Loading weights:  82%|████████▏ | 582/713 [00:06<00:00, 412.04it/s]Loading weights:  91%|█████████ | 646/713 [00:06<00:00, 464.32it/s]Loading weights:  97%|█████████▋| 694/713 [00:06<00:00, 431.80it/s]Loading weights: 100%|██████████| 713/713 [00:06<00:00, 110.89it/s]
+2026-11-16T13:06:15+00:00 model loaded in 7.8 s on NVIDIA GeForce RTX 5060 Laptop GPU
+2026-11-16T13:11:57+00:00 50/2211 clips done (last: Town05_sideswipe_wet_48, 3.2 s wall, 2.50 GPU s)
+2026-11-16T13:17:29+00:00 100/2211 clips done (last: Town05_sideswipe_sunset_31, 7.4 s wall, 5.13 GPU s)
+2026-11-16T13:23:07+00:00 150/2211 clips done (last: Town05_rear-end_wet_147, 6.2 s wall, 4.73 GPU s)
+2026-11-16T13:29:01+00:00 200/2211 clips done (last: Town05_rear-end_rain_228, 7.1 s wall, 4.80 GPU s)
+2026-11-16T13:34:51+00:00 250/2211 clips done (last: Town05_rear-end_rain_130, 6.8 s wall, 4.84 GPU s)
+2026-11-16T13:40:53+00:00 300/2211 clips done (last: Town05_rear-end_wet_233, 6.3 s wall, 4.88 GPU s)
+2026-11-16T13:46:44+00:00 350/2211 clips done (last: Town05_rear-end_sunset_223, 7.1 s wall, 5.19 GPU s)
+2026-11-16T13:52:24+00:00 400/2211 clips done (last: Town05_head-on_night_40, 7.1 s wall, 4.83 GPU s)
+2026-11-16T13:57:58+00:00 450/2211 clips done (last: Town05_head-on_rain_17, 7.8 s wall, 5.14 GPU s)
+2026-11-16T14:03:50+00:00 500/2211 clips done (last: Town05_head-on_night_03, 8.1 s wall, 5.08 GPU s)
+2026-11-16T14:09:21+00:00 550/2211 clips done (last: Town05_head-on_wet_33, 6.3 s wall, 4.78 GPU s)
+2026-11-16T14:15:10+00:00 600/2211 clips done (last: Town06_head-on_clear_04, 6.9 s wall, 4.98 GPU s)
+2026-11-16T14:21:11+00:00 650/2211 clips done (last: Town06_head-on_clear_50, 7.0 s wall, 4.86 GPU s)
+2026-11-16T14:27:24+00:00 700/2211 clips done (last: Town06_head-on_night_24, 8.0 s wall, 5.03 GPU s)
+2026-11-16T14:33:46+00:00 750/2211 clips done (last: Town06_head-on_sunset_47, 7.5 s wall, 5.30 GPU s)
+2026-11-16T14:39:35+00:00 800/2211 clips done (last: Town10HD_t-bone_sunset_01, 6.5 s wall, 4.79 GPU s)
+2026-11-16T14:45:32+00:00 850/2211 clips done (last: Town10HD_t-bone_sunset_40, 7.5 s wall, 5.05 GPU s)
+2026-11-16T14:51:26+00:00 900/2211 clips done (last: Town10HD_t-bone_wet_19, 6.6 s wall, 4.80 GPU s)
+2026-11-16T14:56:59+00:00 950/2211 clips done (last: Town07_rear-end_wet_34, 6.5 s wall, 4.92 GPU s)
+2026-11-16T15:02:22+00:00 1000/2211 clips done (last: Town07_rear-end_wet_46, 6.3 s wall, 4.69 GPU s)
+2026-11-16T15:07:59+00:00 1050/2211 clips done (last: Town07_rear-end_wet_47, 6.7 s wall, 4.90 GPU s)
+2026-11-16T15:13:46+00:00 1100/2211 clips done (last: Town07_rear-end_clear_52, 3.3 s wall, 2.34 GPU s)
+2026-11-16T15:19:30+00:00 1150/2211 clips done (last: Town07_rear-end_night_56, 9.0 s wall, 5.14 GPU s)
+2026-11-16T15:25:10+00:00 1200/2211 clips done (last: Town03_t-bone_night_22, 7.1 s wall, 5.04 GPU s)
+2026-11-16T15:30:42+00:00 1250/2211 clips done (last: Town03_t-bone_rain_04, 7.9 s wall, 5.11 GPU s)
+2026-11-16T15:36:26+00:00 1300/2211 clips done (last: Town03_t-bone_night_48, 8.0 s wall, 4.93 GPU s)
+2026-11-16T15:42:08+00:00 1350/2211 clips done (last: Town03_t-bone_sunset_16, 6.5 s wall, 4.87 GPU s)
+2026-11-16T15:48:34+00:00 1400/2211 clips done (last: Town04_sideswipe_rain_19, 7.7 s wall, 4.99 GPU s)
+2026-11-16T15:54:15+00:00 1450/2211 clips done (last: Town04_sideswipe_wet_09, 6.4 s wall, 4.86 GPU s)
+2026-11-16T16:00:09+00:00 1500/2211 clips done (last: Town10HD_single_night_13, 7.3 s wall, 4.94 GPU s)
+2026-11-16T16:05:35+00:00 1550/2211 clips done (last: Town10HD_single_night_24, 7.5 s wall, 4.76 GPU s)
+2026-11-16T16:10:58+00:00 1600/2211 clips done (last: Town03_head-on_sunset_16, 7.2 s wall, 5.24 GPU s)
+2026-11-16T16:16:52+00:00 1650/2211 clips done (last: Town03_head-on_clear_31, 6.4 s wall, 4.78 GPU s)
+2026-11-16T16:22:41+00:00 1700/2211 clips done (last: Town03_head-on_rain_08, 6.8 s wall, 4.78 GPU s)
+2026-11-16T16:28:31+00:00 1750/2211 clips done (last: Town03_head-on_sunset_04, 6.4 s wall, 4.78 GPU s)
+2026-11-16T16:34:26+00:00 1800/2211 clips done (last: Town03_head-on_night_30, 7.7 s wall, 5.10 GPU s)
+2026-11-16T16:40:05+00:00 1850/2211 clips done (last: Town04_rear-end_wet_40, 6.6 s wall, 4.74 GPU s)
+2026-11-16T16:45:58+00:00 1900/2211 clips done (last: Town04_rear-end_sunset_27, 6.7 s wall, 4.87 GPU s)
+2026-11-16T16:51:42+00:00 1950/2211 clips done (last: Town04_rear-end_sunset_18, 6.9 s wall, 4.86 GPU s)
+2026-11-16T16:57:51+00:00 2000/2211 clips done (last: Town04_rear-end_wet_28, 6.7 s wall, 4.87 GPU s)
+2026-11-16T17:03:53+00:00 2050/2211 clips done (last: Town04_rear-end_wet_20, 3.7 s wall, 2.50 GPU s)
+2026-11-16T17:09:54+00:00 2100/2211 clips done (last: Town06_sideswipe_wet_44, 3.6 s wall, 2.58 GPU s)
+2026-11-16T17:15:52+00:00 2150/2211 clips done (last: Town06_sideswipe_wet_25, 7.4 s wall, 5.29 GPU s)
+2026-11-16T17:22:00+00:00 2200/2211 clips done (last: Town06_sideswipe_night_30, 9.5 s wall, 5.14 GPU s)
+2026-11-16T17:23:10+00:00 2211/2211 clips done (last: Town06_sideswipe_wet_47, 6.9 s wall, 4.94 GPU s)
+2026-11-16T17:23:10+00:00 FINISHED: 2211 clips; power at end BatteryStatus 2 (2 = on AC mains), charge 80%

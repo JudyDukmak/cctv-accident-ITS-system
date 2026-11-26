@@ -1,0 +1,9 @@
+Town03_t-bone_rain_20: same frame on both panels (gap 0.00 s); the green box is on the two colliding vehicles.
+Town05_sideswipe_sunset_18: frames 0.05 s apart, look the same; the green box is on the white and the red car.
+Town05_rear-end_rain_142: the green box is small and far (rain haze); at this scale I cannot tell whether it holds the colliding vehicles in either frame (not judged).
+Town05_rear-end_rain_126: at 9.90 s the green box is on empty road; at t* (12.20 s) it holds the colliding vehicles.
+Town05_head-on_clear_07: the figure frame is 2.10 s after t*; at t* the green box holds the fire truck and the dark car.
+Town05_head-on_clear_42: frames 0.10 s apart; the green box is on the two dark cars at the left in both.
+Town05_sideswipe_sunset_31: at 4.00 s the green box is on empty road; at t* (7.05 s) it holds the yellow taxi and the other car.
+Town05_sideswipe_clear_00: at 4.00 s the green box is on empty road; at t* (8.65 s) it holds the yellow taxi and the red car.
+Summary: in 7 of the 8 windows the true box sits on the colliding vehicles at t* (the 8th, rain_142, is too small to judge). Where figure 6 showed the box on empty road, the shown frame was 2.3-4.65 s before t* (t* outside window A), so the box was not wrong, the frame was.
