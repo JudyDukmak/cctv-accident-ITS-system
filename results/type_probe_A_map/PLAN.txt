@@ -1,0 +1,46 @@
+TYPE PROBE A, SECOND ATTEMPT (LEAVE ONE MAP OUT): PRE-REGISTRATION (written 2026-11-25, before any probe was trained)
+Synthetic only. No real clip, label or metadata file. No GPU and no new features: the features saved by the first
+attempt in cache/type_probe_A/ are only read. The first attempt's files, every checkpoint, split and manifest are
+not changed. Nothing is committed.
+
+== Plan as given (verbatim) ==
+- Why: the first attempt (results\type_probe_A\) failed; each map has 2-3 scenarios with different types, and the scenario folds put the same map in training and test with a different type. This is a second attempt, decided after seeing the first result.
+- Split: 6 rounds, one per map (Town03, Town04, Town05, Town06, Town07, Town10HD). In each round, every clip of the test map is tested, and the probe is trained only on clips of the other 5 maps.
+- Features: for each test clip, the encoder is the Classifier fold model that did not train on that clip's scenario (seed 0, as saved). The probe for that clip is trained on the other maps' features from the same encoder. Report this as a limit: the encoder may have seen another scenario of the test map, trained for accident detection, not type.
+- Windows, head, standardisation, class-balanced weights and the L2 grid: as in the first PLAN.txt, but the inner cross-validation is also leave-one-map-out, on the training maps only.
+- Metrics: macro accuracy and accuracy, per round and pooled over all 2,211 clips; per-type recall; confusion matrices.
+- Baselines on the same clips: random guess (0.20 macro), majority type of the training maps in each round, and for the clips of fold 1, QLoRA epoch 1.
+- Success rule: pooled macro accuracy above 0.20 with a 95% bootstrap interval (resampling scenarios, 2,000 draws, seed 0) that does not include 0.20. If met, report it; do not run other seeds now.
+
+== Checked against the code and data before writing (no difference found) ==
+- 6 maps, 14 scenarios, 2-3 scenarios per map, each scenario one type (results/type_probe_A/windows.csv, from
+  synthetic_window_labels.csv): Town03 head-on (fold 2), t-bone (1); Town04 rear-end (0), sideswipe (0); Town05
+  head-on, rear-end, sideswipe (all 1); Town06 head-on (0), sideswipe (2); Town07 rear-end (2), single (1), t-bone (2);
+  Town10HD single (0), t-bone (0). Every type is on >= 2 maps, so every round's training maps hold all 5 types.
+- The saved features cover both chosen windows of all 2,211 clips for all three fold models (seed 0).
+- "The Classifier fold model that did not train on that clip's scenario" = fold model k with k = the clip's val_fold.
+  For Town04, Town05 and Town10HD that encoder saw no scenario of the test map; for Town03, Town06 and Town07 it trained
+  on another scenario of the test map (the stated limit).
+
+== Implementation details fixed now ==
+- Per round (test map M) and per encoder k among M's clips: probe trained on the clips of the other 5 maps (all
+  folds), features from encoder k, two rows per clip (t* window and frozen out-of-fold t_hat window, each the mean of
+  original and flipped features), as in the first attempt; tested on the t_hat window of M's clips with val_fold k.
+- Head as the first PLAN.txt: multinomial logistic regression, torch float64 L-BFGS, minimise
+  C * sum_i w_i CE_i + 0.5 ||W||^2, C in {0.01, 0.1, 1, 10}, class weights balanced over the classes present,
+  standardisation with the training rows' mean and SD only (also inside every inner fit). The functions are imported
+  from type_probe_A.py (fit_lr, train_predict, metrics), not copied.
+- Inner CV per (round, encoder): leave one training map out (5 inner folds); inner fit on both windows of the other 4
+  training maps, predict the held-out map's t_hat windows; pooled inner macro accuracy per C; highest wins; ties ->
+  smaller C.
+- Macro accuracy = mean per-type recall over the types present in the evaluated clips (per round: the test map's
+  2-3 types; pooled: 5 types).
+- Majority baseline per round: the most frequent type among the clips of the 5 training maps (clip counts; ties ->
+  first in alphabetical order), predicted for every clip of the test map; pooled over the 6 rounds' predictions.
+  Random guess: 0.20 macro (expected value), stated, not simulated. QLoRA epoch 1: results/qlora_train/val_epoch1.csv
+  on the 755 fold-1 clips, next to the probe on the same clips.
+- Bootstrap: the fixed pooled out-of-fold predictions (no refit); 2,000 draws with numpy default_rng(0); each draw
+  resamples the 14 scenarios with replacement (all clips of a drawn scenario, repeated as drawn); macro accuracy over
+  the types present in the draw; 95% percentile interval (2.5%, 97.5%). Success = pooled macro accuracy > 0.20 AND
+  the interval's lower end > 0.20.
+- Outputs in results/type_probe_A_map/ (never overwritten); each run's command and output in run_log_*.txt.

@@ -1,0 +1,54 @@
+TYPE PROBE A, SECOND ATTEMPT: LEAVE ONE MAP OUT (synthetic only; CPU only; no new features; the first attempt's files, checkpoints, split and manifest unchanged; nothing committed)
+PLAN.txt sha256 15d5e5314338d1b719c29625c31b31d9e1526e41830b719a66cbd716e607d8a9 (checked by every mode). Decided after seeing the first attempt's result.
+
+1. INNER CV (leave one training map out; pooled inner macro accuracy per C) AND CHOSEN C
+  test Town03    encoder fold 1: C 0.01 0.0873, C 0.1 0.1035, C 1 0.1090, C 10 0.1130  -> C 10 (184 test clips)
+  test Town03    encoder fold 2: C 0.01 0.0793, C 0.1 0.0802, C 1 0.0809, C 10 0.0822  -> C 10 (212 test clips)
+  test Town04    encoder fold 0: C 0.01 0.1496, C 0.1 0.1490, C 1 0.1487, C 10 0.1498  -> C 10 (384 test clips)
+  test Town05    encoder fold 1: C 0.01 0.0685, C 0.1 0.0657, C 1 0.0642, C 10 0.0615  -> C 0.01 (558 test clips)
+  test Town06    encoder fold 0: C 0.01 0.3469, C 0.1 0.3404, C 1 0.3399, C 10 0.3385  -> C 0.01 (202 test clips)
+  test Town06    encoder fold 2: C 0.01 0.2573, C 0.1 0.2486, C 1 0.2461, C 10 0.2504  -> C 0.01 (159 test clips)
+  test Town07    encoder fold 1: C 0.01 0.1361, C 0.1 0.1378, C 1 0.1377, C 10 0.1422  -> C 10 (13 test clips)
+  test Town07    encoder fold 2: C 0.01 0.1206, C 0.1 0.1101, C 1 0.1118, C 10 0.1147  -> C 0.01 (315 test clips)
+  test Town10HD  encoder fold 0: C 0.01 0.1657, C 0.1 0.1629, C 1 0.1631, C 10 0.1596  -> C 0.01 (184 test clips)
+
+2. PER ROUND (test map) AND POOLED; macro accuracy over the types present
+  set           n types probe macro probe acc            majority (type) maj macro  maj acc  probe recall per type
+  Town03      396     2      0.1456    0.1490                   rear-end    0.0000   0.0000  head-on 0.193, t-bone 0.098
+  Town04      384     2      0.2955    0.2917                    head-on    0.0000   0.0000  rear-end 0.282, sideswipe 0.309
+  Town05      558     3      0.2755    0.3065                   rear-end    0.3333   0.4964  head-on 0.408, rear-end 0.325, sideswipe 0.093
+  Town06      361     2      0.0056    0.0055                   rear-end    0.0000   0.0000  head-on 0.005, sideswipe 0.006
+  Town07      328     3      0.0599    0.0396                    head-on    0.0000   0.0000  rear-end 0.033, single 0.077, t-bone 0.070
+  Town10HD    184     2      0.0115    0.0163                   rear-end    0.0000   0.0000  single 0.000, t-bone 0.023
+  pooled     2211     5      0.1239    0.1628       (per-round majority)    0.0698   0.1253  head-on 0.192, rear-end 0.212, sideswipe 0.133, single 0.015, t-bone 0.067
+  random guess: macro accuracy 0.20 (expected value)
+
+  pooled confusion (rows true, columns predicted; head-on, rear-end, sideswipe, single, t-bone):
+    head-on      113   334    92     6    43
+    rear-end     437   168   113    18    58
+    sideswipe    158   172    54     8    13
+    single        41    10    14     1     0
+    t-bone        74   158   100     2    24
+  CSV: confusion_pooled_{counts,rownorm}.csv and confusion_map_<map>_{counts,rownorm}.csv; PNG: confusion.png
+
+3. FOLD-1 CLIPS (755): same clips, three predictors
+  model                                     accuracy  macro acc
+  majority of the training maps (per round)    0.3669     0.2000
+  QLoRA epoch 1 (window A)                    0.3060     0.2579
+  probe, leave one map out                    0.2517     0.2002
+
+4. SUCCESS RULE: pooled macro accuracy 0.1239; 95% bootstrap interval [0.0630, 0.1972] (2000 draws, seed 0, resampling the 14 scenarios, fixed predictions). Rule: > 0.20 and the interval excludes 0.20 -> NOT MET
+  Not met.
+
+5. FIRST ATTEMPT (results/type_probe_A/, scenario folds), side by side
+                             first: macro first: acc   second: macro second: acc
+  pooled (2211)                    0.1809     0.2261          0.1239      0.1628
+  fold-1 clips (755)               0.2434     0.3338          0.2002      0.2517
+  first attempt per fold (macro / acc): fold 0 0.2134 / 0.2442; fold 1 0.2434 / 0.3338; fold 2 0.0774 / 0.0875
+  first attempt pooled recall: head-on 0.204, rear-end 0.271, sideswipe 0.237, single 0.000, t-bone 0.193
+  second attempt pooled recall: head-on 0.192, rear-end 0.212, sideswipe 0.133, single 0.015, t-bone 0.067
+
+6. LIMITS
+  The encoder of each test clip is fold model k = its val_fold (seed 0). For Town04, Town05 and Town10HD it saw no scenario of the test map; for Town03, Town06 and Town07 it was trained on another scenario of the test map (accident detection, not type). The probe's training rows come from clips the encoder was trained on. One encoder seed; 6 maps and 14 scenarios, so the interval is wide; types are tied to maps (each map has 2-3 of the 5 types), so a round can only show 2-3 types.
+
+Files: PLAN.txt, inner_cv.csv, predictions_oof.csv, metrics.json, confusion_*.csv, confusion.png, run_log_*.txt, report.txt.

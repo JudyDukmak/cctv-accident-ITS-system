@@ -1,0 +1,48 @@
+TYPE MODEL: DINOv2 LINEAR PROBE: PRE-REGISTRATION (written 2026-11-26, before any frame or feature was computed)
+Synthetic only: no real clip, real label or real metadata file is opened, listed or read. No frozen file, checkpoint,
+split, manifest or earlier result is changed. Nothing is committed. Mains power; HF_HUB_OFFLINE=1 after the download.
+
+== Plan as given (verbatim) ==
+- Source: the benchmark paper's sim-to-real linear probe. The paper does not state the model size, image size, training subset, regularisation or class weights; the choices below are ours.
+- Encoder: facebook/dinov2-base, frozen, eval mode. Feature = the CLS token of the last layer (768 numbers), after the model's final layer norm.
+- Image: the whole video frame (1920x1080), resized to 224x224 (no centre crop, no padding), normalised with the model's own mean and std.
+- Frames: for every synthetic clip, the frame nearest t* (training) and the frame nearest the out-of-fold Classifier t_hat of C_cctv seed 0 (testing).
+- Head: logistic regression, features standardised with training statistics only, class-balanced weights, L2 with C = 1.0, fixed. No search over any setting.
+- Final model: the head trained on the t* frames of all 2,211 synthetic clips; saved with its scaler to models\type_dinov2\ for the real run.
+- Synthetic checks, for information only (they do not change any setting): (a) scenario folds 0/1/2 as the Classifier; (b) leave one map out (6 rounds). Train on t* frames of the training clips, test on t_hat frames of the test clips. Report accuracy, macro accuracy, per-type recall and confusion matrices, next to the majority baseline, QLoRA epoch 1 (fold-1 clips) and the earlier probes (results\type_probe_A\, results\type_probe_A_map\). State that both splits are biased for type, as found earlier.
+
+== Checked against the code before writing (no difference found) ==
+- facebook/dinov2-base downloaded 2026-11-26 (snapshot f9e44c814b77203eaa57a6bdbbd535f21ede1415; hidden size 768,
+  12 layers, patch 14). In transformers 5.20.2 Dinov2Model, pooler_output = layernorm(last hidden state)[:, 0] = the
+  CLS token after the final layer norm: this is the feature.
+- The model's processor (BitImageProcessor) would resize the shortest edge to 256 and centre-crop 224; the plan
+  replaces that with a whole-frame resize to 224 x 224 and keeps only the processor's normalisation (mean 0.485 0.456
+  0.406, std 0.229 0.224 0.225, rescale 1/255) and its resample filter (3 = bicubic).
+- Frame decoder of the frame audit: vlm_zero_shot.decode (PyAV, frame.to_image().convert("RGB")); with budget 10**12
+  it returns the full 1920 x 1080 frame. t* = metadata accident_time and t_hat = the frozen out-of-fold t_hat of
+  C_cctv seed 0 (results/diagnostics/C_cctv_seeds012/seed0_frozen/tta_clip_predictions_flip.csv), both through
+  vlm_zero_shot.load_clips (which checks that t_hat is out of fold).
+
+== Implementation details fixed now ==
+- Frame index nearest a time t: vlm_zero_shot.to_indices (round(t * fps), fps = no_frames / duration, clipped to
+  [0, no_frames - 1]). Resize: PIL Image.resize((224, 224), Image.BICUBIC) of the full RGB frame; then /255 and
+  (x - mean) / std. The 224 x 224 uint8 frames are kept in cache/type_dinov2/ (gitignored).
+- Encoder in float32 (no autocast), eval mode, torch.no_grad, batch 32, on the GPU; GPU time = synchronised forward time.
+- Safety check: 5 frames (numpy default_rng(0) over the 2211 x 2 frames) encoded twice in separate passes; the
+  features must be bit-identical (np.array_equal); stop otherwise.
+- Logistic regression: the torch implementation of type_probe_A.py (fit_lr / standardise / train_predict, imported),
+  multinomial, minimise C * sum_i w_i CE_i + 0.5 ||W||^2 with C = 1.0 (scikit-learn's convention; scikit-learn is not
+  installed), intercepts unpenalised, float64 L-BFGS; class weights balanced over the classes present in the training
+  rows, w_c = n / (K * n_c); standardisation with the training rows' mean and SD (SD 0 -> 1).
+- Training rows: one per clip (the t* frame). Test rows: one per clip (the t_hat frame).
+- Synthetic check (a): for k = 0, 1, 2 train on the clips with val_fold != k, test on val_fold == k; pooled over the
+  2211 clips. (b): for each of the 6 maps train on the other 5 maps' clips, test on the map's clips; pooled.
+- Metrics: accuracy; macro accuracy = mean per-type recall over the types present in the evaluated clips; per-type
+  recall; confusion matrices (counts and row-normalised). Majority baseline per fold / round = the most frequent type
+  among its training clips (ties -> alphabetical first). QLoRA epoch 1: results/qlora_train/val_epoch1.csv on the 755
+  fold-1 clips. Earlier probes: read from results/type_probe_A/metrics.json and results/type_probe_A_map/metrics.json.
+- Final model: W, b, scaler mean and SD, class order and settings in models/type_dinov2/type_head_dinov2.npz plus
+  models/type_dinov2/type_head_dinov2.json (settings, PLAN hash, training class counts, source feature file hash).
+- Contact sheet: 6 clips (numpy default_rng(0) over the sorted 2211 clips), t* frame and t_hat frame side by side at
+  224 x 224 exactly as fed to the encoder (before normalisation).
+- Outputs in results/type_dinov2/ (never overwritten); each run's command and output in run_log_*.txt.

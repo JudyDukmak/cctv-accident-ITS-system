@@ -1,0 +1,41 @@
+DINOv2 PROBE, TWO VARIANTS (information only; synthetic only; no real file; type_dinov2.py and results/type_dinov2/ unchanged; nothing committed)
+PLAN.txt sha256 1bec873718bee9ef5f491676116e12d987befc40509958b47e37b73acbf291a9. Decided in advance: if DINOv2 is later run on real clips as a reference, V1 is used.
+
+MAIN TABLE (train on t* frames, test on t_hat frames, C = 1; macro = mean recall over the types present; silhouette of the standardised t_hat features of all 2211 clips, shuffled-label reference in brackets)
+  variant                              folds macro folds acc LOMO macro LOMO acc in-sample          silh. map         silh. type
+  224 squash (results/type_dinov2)          0.0845    0.1090     0.0526   0.0728    1.0000   0.0771 (-0.0077)   0.0240 (-0.0056)
+  V1 paper default (256 + crop 224)         0.1457    0.1628     0.0704   0.0882    1.0000   0.0676 (-0.0078)   0.0215 (-0.0063)
+  V2 518 squash                             0.1847    0.1945     0.0558   0.0697    1.0000   0.0820 (-0.0079)   0.0253 (-0.0080)
+  majority baseline (per part): folds macro 0.2000 acc 0.3591; LOMO macro 0.0698 acc 0.1253; random guess macro 0.20
+  Both splits are biased for collision type (results/type_probe_A, results/type_probe_A_map); the numbers are information only and change no setting.
+
+PER PART (macro / accuracy)
+  scenario_folds: 0: 0.102/0.116 | 0.196/0.204 | 0.210/0.226; 1: 0.160/0.199 | 0.214/0.249 | 0.280/0.319; 2: 0.002/0.003 | 0.022/0.022 | 0.018/0.022   (224 | V1 | V2)
+  leave_one_map_out: Town03: 0.007/0.008 | 0.019/0.020 | 0.049/0.048; Town04: 0.064/0.057 | 0.171/0.148 | 0.046/0.044; Town05: 0.235/0.244 | 0.251/0.233 | 0.228/0.210; Town06: 0.000/0.000 | 0.000/0.000 | 0.000/0.000; Town07: 0.000/0.000 | 0.000/0.000 | 0.008/0.003; Town10HD: 0.000/0.000 | 0.000/0.000 | 0.000/0.000   (224 | V1 | V2)
+
+PER-TYPE RECALL, POOLED
+  224 squash (results/type_dinov2)     scenario_folds     head-on 0.102, rear-end 0.134, sideswipe 0.173, single 0.000, t-bone 0.014
+  224 squash (results/type_dinov2)     leave_one_map_out  head-on 0.102, rear-end 0.092, sideswipe 0.069, single 0.000, t-bone 0.000
+  V1 paper default (256 + crop 224)    scenario_folds     head-on 0.141, rear-end 0.117, sideswipe 0.333, single 0.000, t-bone 0.137
+  V1 paper default (256 + crop 224)    leave_one_map_out  head-on 0.124, rear-end 0.077, sideswipe 0.148, single 0.000, t-bone 0.003
+  V2 518 squash                        scenario_folds     head-on 0.167, rear-end 0.105, sideswipe 0.328, single 0.000, t-bone 0.324
+  V2 518 squash                        leave_one_map_out  head-on 0.136, rear-end 0.045, sideswipe 0.064, single 0.000, t-bone 0.034
+
+FOLD-1 CLIPS (755)
+  model                                 accuracy  macro acc
+  majority (rear-end)                     0.3669     0.2000
+  QLoRA epoch 1 (window A)                0.3060     0.2579
+  probe A (scenario folds)                0.3338     0.2434
+  probe A map (leave one map out)         0.2517     0.2002
+  224 squash (results/type_dinov2), scenario folds    0.1987     0.1600
+  V1 paper default (256 + crop 224), scenario folds    0.2490     0.2137
+  V2 518 squash, scenario folds           0.3192     0.2795
+
+SAFETY, GPU TIME, MEMORY
+  v1: safety 5 frames twice identical True (max |diff| 0.0e+00); same frames in the full run max |diff| 0.00e+00; batch 32; GPU 29.8 s for 4422 frames (6.73 ms per frame); peak GPU memory allocated 0.66 GB (reserved 0.81 GB)
+  v2: safety 5 frames twice identical True (max |diff| 0.0e+00); same frames in the full run max |diff| 0.00e+00; batch 32; GPU 203.4 s for 4422 frames (45.99 ms per frame); peak GPU memory allocated 2.06 GB (reserved 2.60 GB)
+  GPU NVIDIA GeForce RTX 5060 Laptop GPU; power at start BatteryStatus 2 (2 = on AC mains), charge 80%, at end BatteryStatus 2 (2 = on AC mains), charge 80%
+  features: cache\type_dinov2_variants\features.npz (sha256 e1a5c8ee6bcbbc80...)
+
+Contact sheets: contact_sheet_v1.png (processor output, de-normalised), contact_sheet_v2.png (518 x 518); same 6 clips as results/type_dinov2/contact_sheet.png.
+Files: PLAN.txt, contact_sheet_v1.png, contact_sheet_v2.png, features.json, checks.json, predictions_checks.csv, run_log_*.txt, report.txt; cache/type_dinov2_variants/ (gitignored).
