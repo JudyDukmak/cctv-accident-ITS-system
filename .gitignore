@@ -68,3 +68,4 @@ results/type_dinov2_variants/*
 
 # small saved heads of experiments
 models/
+!results/type_dinov2_variants/extra_v1_crop_coverage.txt

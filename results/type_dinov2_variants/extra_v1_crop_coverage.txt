@@ -1,0 +1,3 @@
+EXTRA, descriptive (added after the plan; not in report.txt): how much of the metadata accident box V1's centre crop keeps.
+Geometry (approximate, computed, not read from the processor): 1920x1080 -> 455x256 (shortest edge 256), centre crop 224 from x 115 -> kept x range 0.2527-0.7451 of the frame width, full height.
+Of the 2211 synthetic clips: accident centre outside the crop 130; box entirely outside 55; box partly cut 269; box fully inside 1887.
