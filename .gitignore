@@ -47,3 +47,24 @@ results/visibility_audit/check/
 gpu_check/*.log
 
 results/frame_audit
+# std and B diagnostics: never commit
+results/diagnostics/B_v2_seed0_fold0/
+results/diagnostics/std_seed0_fold0/*.png
+results/diagnostics/std_seed0_fold0/*_epoch3.csv
+
+# type-model experiments: keep only the plan and the report
+results/type_probe_A/*
+!results/type_probe_A/PLAN.txt
+!results/type_probe_A/report.txt
+results/type_probe_A_map/*
+!results/type_probe_A_map/PLAN.txt
+!results/type_probe_A_map/report.txt
+results/type_dinov2/*
+!results/type_dinov2/PLAN.txt
+!results/type_dinov2/report.txt
+results/type_dinov2_variants/*
+!results/type_dinov2_variants/PLAN.txt
+!results/type_dinov2_variants/report.txt
+
+# small saved heads of experiments
+models/
