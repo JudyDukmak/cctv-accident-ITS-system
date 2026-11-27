@@ -1,0 +1,47 @@
+command: .venv-vlm/Scripts/python.exe type_vlm8b.py --download   (2026-11-26T13:41:35Z); retry 1 after the Xet transfer error in run_log_download.txt
+Traceback (most recent call last):
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b.py", line 416, in <module>
+    main()
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b.py", line 412, in main
+    {"checks": checks, "download": download, "speed": speed, "report": report}[next(m for m in modes if getattr(a, m))]()
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b.py", line 231, in download
+    path = snapshot_download(REPO_ID, revision=REV)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\utils\_validators.py", line 89, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\utils\_http.py", line 276, in _inner
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\_snapshot_download.py", line 541, in snapshot_download
+    hf_thread_map(
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\utils\tqdm.py", line 441, in hf_thread_map
+    results[future_to_index[future]] = future.result()
+                                       ^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\ASUS\AppData\Roaming\uv\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\thread.py", line 58, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\_snapshot_download.py", line 521, in _inner_hf_hub_download
+    hf_hub_download(  # type: ignore
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\utils\_validators.py", line 89, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\utils\_http.py", line 276, in _inner
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\file_download.py", line 1047, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\file_download.py", line 1285, in _hf_hub_download_to_cache_dir
+    _download_to_tmp_and_move(
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\file_download.py", line 2017, in _download_to_tmp_and_move
+    xet_get(
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\huggingface_hub\file_download.py", line 589, in xet_get
+    with session.new_file_download_group(
+RuntimeError: Task error: File reconstruction error: CAS Client Error: Request middleware error: error sending request for url (https://us.aws.cdn.hf.co/xorbs/default/415ba0888243e023a3cce692751ab46fcdde4ebce3da4341efffa74e062efc7b)
+exit 1

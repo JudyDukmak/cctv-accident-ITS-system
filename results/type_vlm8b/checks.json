@@ -1,0 +1,122 @@
+{
+ "disk_free_gb": 418.748706816,
+ "disk_total_gb": 992.368463872,
+ "hub_revision": "10d842936325905934ea24e64325d774693f166e",
+ "hub_files": {
+  ".gitattributes": 1570,
+  "README.md": 7544,
+  "added_tokens.json": 707,
+  "chat_template.jinja": 5292,
+  "config.json": 2283,
+  "generation_config.json": 213,
+  "merges.txt": 1671853,
+  "model-00001-of-00002.safetensors": 4999093335,
+  "model-00002-of-00002.safetensors": 2227305901,
+  "model.safetensors.index.json": 208600,
+  "preprocessor_config.json": 782,
+  "special_tokens_map.json": 614,
+  "tokenizer.json": 11422654,
+  "tokenizer_config.json": 10966,
+  "video_preprocessor_config.json": 817,
+  "vocab.json": 2776833
+ },
+ "hub_total_bytes": 7242509964,
+ "metadata_columns": [
+  "rgb_path",
+  "annotations_path",
+  "type",
+  "accident_time",
+  "accident_frame",
+  "center_x",
+  "center_y",
+  "x1",
+  "y1",
+  "x2",
+  "y2",
+  "map",
+  "weather",
+  "camera_position",
+  "no_frames",
+  "duration",
+  "height",
+  "width",
+  "annotations_start_offset"
+ ],
+ "scene_layout_columns": [],
+ "scene_layout_value": "not given (no such column)",
+ "n_clips": 755,
+ "n_without_valid_epoch1_box": 0,
+ "without_valid_box": [],
+ "contact_sheet": [
+  {
+   "clip": "Town05_rear-end_wet_104",
+   "crop": {
+    "left": 261,
+    "top": 42,
+    "side": 864,
+    "shift": [
+     0,
+     0
+    ],
+    "centre_source": "epoch-1 box"
+   },
+   "true_box_in_crop_448": [
+    -114.1,
+    182.5,
+    41.5,
+    229.7
+   ],
+   "true_box_inside_crop": false
+  },
+  {
+   "clip": "Town05_sideswipe_clear_46",
+   "crop": {
+    "left": 837,
+    "top": 608,
+    "side": 288,
+    "shift": [
+     0,
+     0
+    ],
+    "centre_source": "epoch-1 box"
+   },
+   "true_box_in_crop_448": [
+    113.6,
+    172.7,
+    336.0,
+    298.7
+   ],
+   "true_box_inside_crop": true
+  },
+  {
+   "clip": "Town03_t-bone_night_37",
+   "crop": {
+    "left": 118,
+    "top": 236,
+    "side": 343,
+    "shift": [
+     0,
+     0
+    ],
+    "centre_source": "epoch-1 box"
+   },
+   "true_box_in_crop_448": [
+    87.5,
+    101.9,
+    262.5,
+    322.6
+   ],
+   "true_box_inside_crop": true
+  }
+ ],
+ "crop_side_px_quantiles": {
+  "0": 256.0,
+  "0.25": 319.0,
+  "0.5": 432.0,
+  "0.75": 541.0,
+  "1": 1080.0
+ },
+ "crop_at_min_256": 77,
+ "crop_capped_at_height": 4,
+ "crop_shifted_inside": 107
+}

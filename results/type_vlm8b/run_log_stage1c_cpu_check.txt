@@ -1,0 +1,19 @@
+command: HF_HUB_OFFLINE=1 .venv-vlm/Scripts/python.exe type_vlm8b_stage1c_cpucheck.py   (2026-11-26T22:29:49Z); load-only check of the CPU placement (no frames, no generate)
+W1127 01:29:53.008000 31772 .venv-vlm\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:   3%|▎         | 21/750 [00:00<00:03, 200.09it/s]Loading weights:   6%|▌         | 42/750 [00:00<00:04, 174.26it/s]Loading weights:   8%|▊         | 60/750 [00:00<00:04, 155.40it/s]Loading weights:  10%|█         | 78/750 [00:00<00:04, 155.72it/s]Loading weights:  13%|█▎        | 94/750 [00:00<00:04, 152.72it/s]Loading weights:  15%|█▍        | 112/750 [00:00<00:04, 156.71it/s]Loading weights:  17%|█▋        | 128/750 [00:00<00:04, 154.43it/s]Loading weights:  19%|█▉        | 145/750 [00:00<00:03, 156.71it/s]Loading weights:  21%|██▏       | 161/750 [00:01<00:03, 157.08it/s]Loading weights:  24%|██▎       | 177/750 [00:01<00:03, 153.09it/s]Loading weights:  26%|██▌       | 193/750 [00:01<00:03, 153.75it/s]Loading weights:  28%|██▊       | 211/750 [00:01<00:03, 153.33it/s]Loading weights:  31%|███       | 229/750 [00:01<00:03, 158.15it/s]Loading weights:  33%|███▎      | 245/750 [00:01<00:03, 148.98it/s]Loading weights:  35%|███▌      | 263/750 [00:01<00:03, 147.19it/s]Loading weights:  37%|███▋      | 281/750 [00:01<00:03, 155.60it/s]Loading weights:  40%|███▉      | 299/750 [00:01<00:02, 158.64it/s]Loading weights:  42%|████▏     | 317/750 [00:02<00:02, 162.06it/s]Loading weights:  45%|████▍     | 334/750 [00:02<00:02, 152.57it/s]Loading weights:  47%|████▋     | 351/750 [00:02<00:02, 154.40it/s]Loading weights:  49%|████▉     | 367/750 [00:02<00:02, 151.06it/s]Loading weights:  51%|█████     | 384/750 [00:02<00:02, 155.14it/s]Loading weights:  56%|█████▋    | 423/750 [00:02<00:01, 215.68it/s]Loading weights:  65%|██████▍   | 485/750 [00:02<00:00, 326.84it/s]Loading weights:  73%|███████▎  | 545/750 [00:02<00:00, 394.65it/s]Loading weights:  81%|████████  | 606/750 [00:02<00:00, 452.09it/s]Loading weights:  88%|████████▊ | 663/750 [00:02<00:00, 473.35it/s]Loading weights:  96%|█████████▌| 718/750 [00:03<00:00, 482.57it/s]Loading weights: 100%|██████████| 750/750 [00:03<00:00, 227.52it/s]
+Some parameters are on the meta device because they were offloaded to the cpu.
+step 1: loaded in 6.3 s; GPU allocated 5.57 GB (reserved 5.57 GB); 4-bit modules {'visual': 0, 'language_model': 252, 'other': 0}; on CPU {}
+Traceback (most recent call last):
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b_stage1c_cpucheck.py", line 59, in <module>
+    main()
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b_stage1c_cpucheck.py", line 38, in main
+    t = wm[k]
+        ~~^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\accelerate\utils\offload.py", line 127, in __getitem__
+    return self.dataset[f"{self.prefix}{key}"]
+           ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\accelerate\utils\offload.py", line 174, in __getitem__
+    weight_info = self.index[key]
+                  ~~~~~~~~~~^^^^^
+KeyError: 'model.language_model.embed_tokens.model.language_model.embed_tokens.weight'
+exit 1

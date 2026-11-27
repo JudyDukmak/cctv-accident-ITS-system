@@ -1,0 +1,22 @@
+command: HF_HUB_OFFLINE=1 .venv-vlm/Scripts/python.exe type_vlm8b_stage1b.py --speed   (2026-11-26T22:20:49Z); stage 1b, AMENDMENT_1 loading
+W1127 01:20:53.081000 29484 .venv-vlm\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+Traceback (most recent call last):
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b_stage1b.py", line 253, in <module>
+    main()
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b_stage1b.py", line 249, in main
+    speed() if a.speed else report()
+    ^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b_stage1b.py", line 108, in speed
+    model = Qwen3VLForConditionalGeneration.from_pretrained(T.REPO_ID, revision=T.REV, config=cfg, dtype=torch.bfloat16,
+            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\modeling_utils.py", line 4234, in from_pretrained
+    hf_quantizer, config, device_map = get_hf_quantizer(
+                                       ^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\quantizers\auto.py", line 354, in get_hf_quantizer
+    if pre_quantized and not AutoHfQuantizer.supports_quant_method(quantization_params_from_config):
+                             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\quantizers\auto.py", line 287, in supports_quant_method
+    quant_method = quantization_config_dict.get("quant_method", None)
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'BitsAndBytesConfig' object has no attribute 'get'
+exit 1

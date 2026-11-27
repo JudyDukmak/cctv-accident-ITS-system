@@ -1,0 +1,27 @@
+TYPE MODEL, OPTION 1 (ZERO-SHOT QWEN3-VL-8B ON A CROP): STAGE 1b REPORT (corrected loading, AMENDMENT_1.txt)
+Synthetic only; no real file; no accuracy computed and no answer compared with the true types; PLAN.txt, PROMPT.txt and the stage 1 results unchanged; nothing committed.
+PLAN.txt sha256 d00eb03c32c0e2d200c3e81637c274840d8517a3620a9f360ecde0ae112deff6; PROMPT.txt sha256 a85361c1b94c6773d9f797de809ca7d90321f755150c723ef66bdee35c5aa552; AMENDMENT_1.txt sha256 6c3dcfc329c183003c1126b63bd901462a4f3f0ccc70544974952a5b053cadb2 (now 6c3dcfc329c183003c1126b63bd901462a4f3f0ccc70544974952a5b053cadb2).
+
+LOADING (AMENDMENT_1)
+  checkpoint unsloth/Qwen3-VL-8B-Instruct-bnb-4bit @ 10d842936325905934ea24e64325d774693f166e, offline (HF_HUB_OFFLINE=1).
+  explicit BitsAndBytesConfig = the checkpoint's own quantization_config; fields that differ from it apart from the skip list: none.
+  llm_int8_skip_modules: ['embed_tokens', 'embedding', 'lm_head', 'multi_modal_projector', 'merger', 'modality_projection', 'router', 'visual', 'vision_tower', 'model.visual', 'model.visual.merger', 'model.visual.deepstack_merger_list', 'lm_head']
+    (checkpoint names + full paths in transformers 5.22.1: model.visual, model.visual.merger, model.visual.deepstack_merger_list, lm_head)
+  Passed as the model config's quantization_config (config=), because transformers 5.22.1 uses the config's quantization_config for a pre-quantised checkpoint and ignores a BitsAndBytesConfig given only as quantization_config= (merge_quantization_configs; BitsAndBytesConfig is not a loading-attributes config type). Other arguments as in PLAN.txt: dtype bfloat16, device_map {'': 0}, attn_implementation sdpa.
+  skip list in the loaded model's config: ['embed_tokens', 'embedding', 'lm_head', 'multi_modal_projector', 'merger', 'modality_projection', 'router', 'visual', 'vision_tower', 'model.visual', 'model.visual.merger', 'model.visual.deepstack_merger_list', 'lm_head']
+  CHECK after loading: 4-bit Linear modules {'visual': 0, 'language_model': 252, 'other': 0} (required: visual 0, language_model 252) -> PASS; vision-tower parameter dtypes ['torch.bfloat16']
+  model load 6.5 s (not counted per clip); GPU memory after load: allocated 6.73 GB, reserved 6.73 GB (NVIDIA GeForce RTX 5060 Laptop GPU, 7.96 GB)
+
+MEMORY AND SPEED (the same 5 clips as stage 1, numpy default_rng(1); answers parsed only)
+  power at start: BatteryStatus 2 (2 = on AC mains), charge 80%
+  448 x 448:
+    Town05_head-on_clear_38 (first clip): OUT OF MEMORY at generate (1821 input tokens; video grid t,h,w [8, 28, 28] = 448 x 448 px per frame as given to the model; peak allocated 7.08 GB); error: "CUDA out of memory. Tried to allocate 406.00 MiB. GPU 0 has a total capacity of 7.96 GiB of which 0 bytes is free. Of the allocated memory 7.08 GiB is allocated by PyTorch, and 69.14 MiB is reserved by PyTorch but unallocated."
+  336 x 336:
+    Town05_head-on_clear_38 (first clip): OUT OF MEMORY at generate (1053 input tokens; video grid t,h,w [8, 20, 20] = 320 x 320 px per frame as given to the model; peak allocated 7.06 GB); error: "CUDA out of memory. Tried to allocate 136.00 MiB. GPU 0 has a total capacity of 7.96 GiB of which 0 bytes is free. Of the allocated memory 7.05 GiB is allocated by PyTorch, and 25.51 MiB is reserved by PyTorch but unallocated."
+      note: the processor resized the 336 x 336 crops to 320 x 320 (a multiple of 32 = patch 16 x merge 2); this was not chosen by us.
+  RESULT: STOPPED: out of memory at 448 and at 336 (stopped as pre-registered). No clip finished, so there is no generate time, no per-clip frame time, no new-token count, no parsed answer and no estimate for the 755 clips; stage1b_answers.jsonl was created before the first clip and is empty (0 bytes).
+  Memory: the loaded model alone takes 6.73 GB of the 7.96 GB card, so about 1.23 GB is left for the vision tower and the language model on 16 frames, and part of that is used outside PyTorch (both errors report 0 bytes free at about 7.05-7.08 GB allocated by PyTorch).
+  Fallback used: 336 x 336 (as pre-registered), which also ran out of memory -> stopped as pre-registered.
+  power at end: BatteryStatus 2 (2 = on AC mains), charge 80%
+
+Raw answers: stage1b_answers.jsonl (clip, size, raw answer, parses; no true types). Numbers: stage1b_speed.json. Logs: run_log_stage1b_speed.txt (first attempt: stopped inside from_pretrained before any weight was loaded, AttributeError: 'BitsAndBytesConfig' object has no attribute 'get', because the config's quantization_config must be a dict), run_log_stage1b_speed_retry1.txt (the run above; same explicit config passed in dict form), run_log_stage1b_report.txt. Script: type_vlm8b_stage1b.py.

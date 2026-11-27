@@ -1,0 +1,4 @@
+AMENDMENT 2 TO THE TYPE MODEL OPTION 1 PLAN (zero-shot Qwen3-VL-8B on a crop): WHERE THE EMBEDDING TABLES ARE STORED
+Written 2026-11-26T22:26Z (2026-11-27 01:26 local, UTC+3), before stage 1c ran anything. PLAN.txt, PROMPT.txt and AMENDMENT_1.txt are not changed.
+
+Stage 1b ran out of GPU memory at 448 and 336: the loaded model takes 6.73 GB of the 7.96 GB card, of which the input word-embedding table (embed_tokens) and the output head (lm_head) are kept in bf16. Change: keep the AMENDMENT_1 loading, but place the input word-embedding table on the CPU (device_map), with every other module on the GPU. If 16 frames at 448 x 448 still run out of memory, also place lm_head on the CPU and try 448 x 448 again. If that also fails, try 16 frames at 336 x 336 with both tables on the CPU. If that fails, stop and report. Same weights, same precision, same frames and prompt; only where the two tables are stored changes. No answer had been seen when this was decided.

@@ -1,0 +1,76 @@
+TYPE MODEL, OPTION 1: ZERO-SHOT QWEN3-VL-8B ON A CROP AROUND THE QLORA BOX: PRE-REGISTRATION
+(written 2026-11-26, before any model call; stage 1 = plan, checks, download, memory and speed test only)
+Synthetic only: no real clip, real label or real metadata file is opened, listed or read. No frozen file, checkpoint,
+split, manifest or earlier result is changed. Nothing is committed. Mains power; HF_HUB_OFFLINE=1 after the download.
+
+== Plan as given ==
+- Model: unsloth/Qwen3-VL-8B-Instruct-bnb-4bit (Qwen/Qwen3-VL-8B-Instruct already quantised to 4-bit with
+  bitsandbytes), loaded as saved. Greedy decoding, max_new_tokens 64. No training of any kind.
+- Clips: the 755 fold-1 clips, window A (16 frames centred on the out-of-fold Classifier t_hat, the same frame times
+  as the QLoRA cache).
+- Crop: from the full-resolution video frames (1920x1080), a square centred on the QLoRA epoch-1 box centre
+  (results\qlora_train\ val_epoch1 answers), side = 2.5 x the longer side of that box in pixels, at least 256 px,
+  clipped to the image; the same crop for all 16 frames; resized to 448 x 448. If the epoch-1 answer has no valid
+  box, use the image centre and record it.
+- Prompt: the text in PROMPT.txt, unchanged for every clip. Output parsed as JSON {"type": ...}; the five allowed
+  types; an invalid answer counts as wrong and is recorded.
+- Scene hint: if metadata-synthetic.csv has a scene_layout (or equivalent) column, insert its value; if not, insert
+  "not given" for every synthetic clip, and record that the hint is untested on synthetic data.
+- Rule: if the answer is t-bone and the scene layout is a highway, a tunnel or a grade-separated intersection,
+  change it to rear-end (from arXiv 2605.29325, Section 3.5).
+- Metrics (stage 2): accuracy, macro accuracy, per-type recall and confusion matrix on the 755 clips, compared with
+  the majority baseline, QLoRA epoch 1, the leave-one-map-out probe and the DINOv2 variants on the same clips. Also
+  split by t* inside or outside window A.
+- Success rule (stage 2): macro accuracy above 0.20 with a 95% bootstrap interval over scenarios that excludes 0.20.
+  Because the model is not trained on synthetic data, this check is fair, but synthetic images differ from real
+  ones, so it is a sanity check, not a prediction of the real score.
+
+== Model as published (Hub, read 2026-11-26 before writing; no model call) ==
+- Revision 10d842936325905934ea24e64325d774693f166e; architecture Qwen3VLForConditionalGeneration; dtype bfloat16.
+- quantization_config from its config.json: quant_method bitsandbytes; load_in_4bit true (load_in_8bit false);
+  bnb_4bit_quant_type nf4; bnb_4bit_use_double_quant true; bnb_4bit_compute_dtype bfloat16; bnb_4bit_quant_storage
+  uint8; llm_int8_threshold 6.0; llm_int8_has_fp16_weight false; llm_int8_enable_fp32_cpu_offload false;
+  llm_int8_skip_modules [embed_tokens, embedding, lm_head, multi_modal_projector, merger, modality_projection,
+  router, visual, vision_tower] (so the vision tower, embeddings, lm_head and merger stay bfloat16).
+- Files: 16, total 7,242,509,964 bytes (6.75 GiB), of which model-00001-of-00002.safetensors 4,999,093,335 and
+  model-00002-of-00002.safetensors 2,227,305,901.
+- Loaded with Qwen3VLForConditionalGeneration.from_pretrained(repo, revision above, dtype bfloat16,
+  device_map {"": 0}, attn_implementation "sdpa"), quantisation from the saved config (no BitsAndBytesConfig
+  passed); AutoProcessor from the same repo and revision. Environment .venv-vlm (transformers 5.22.1,
+  bitsandbytes 0.50.2, torch 2.10.0+cu128).
+
+== Checked against the code and data before writing ==
+- metadata-synthetic.csv columns: rgb_path, annotations_path, type, accident_time, accident_frame, center_x,
+  center_y, x1, y1, x2, y2, map, weather, camera_position, no_frames, duration, height, width,
+  annotations_start_offset. There is NO scene layout (or equivalent) column, so {scene_layout} = "not given" for
+  every synthetic clip; the scene hint and the t-bone -> rear-end rule are therefore untested on synthetic data (the
+  rule can never fire here). The rule's source (arXiv 2605.29325, Section 3.5) is recorded as given; not checked.
+- results/qlora_train/val_epoch1.csv: 755 rows; bbox = [x1, y1, x2, y2] in 0..1000 relative coordinates; all 755
+  have valid == True and a box with non-zero width and height.
+- Window A frames: results/qlora_data/manifest.csv, fold 1, window A, column frame_indices (16 per clip).
+
+== Implementation details fixed now ==
+- Frames: vlm_zero_shot.decode(clip, frame_indices, budget 10**12) (the frame audit's decoder, PyAV, full
+  1920 x 1080 RGB); stop if a decoded frame is not width x height of the metadata.
+- Box in pixels: x = v * width / 1000, y = v * height / 1000, corners sorted (min/max). Centre = box centre.
+  Side s = max(2.5 * max(box width, box height), 256), then min(s, height) so a square fits; rounded to whole pixels.
+  "Clipped to the image" is read as: the square keeps its size and is moved (shifted) to lie inside the image, so
+  it stays square and is not distorted by the resize; the shift (if any) is recorded per clip. No valid box -> the
+  image centre, recorded (none expected).
+- Resize: PIL Image.resize((448, 448), Image.BICUBIC); uint8.
+- Model input: vlm_smoke_test.build_inputs(processor, frames (16, 448, 448, 3), frame_indices, fps, clip,
+  prompt_text_in = PROMPT.txt with {scene_layout} replaced), which passes the real frame indices and video fps as
+  video_metadata (real timestamps) and sets the size limits so frames are not resized again. generate(do_sample
+  False, max_new_tokens 64, temperature/top_p/top_k None, use_cache True).
+- Parser: strip whitespace and ``` fences; take the first {...} block; json.loads; key "type"; value stripped and
+  lower-cased must be one of head-on, rear-end, t-bone, sideswipe, single; anything else -> invalid (counts wrong).
+- Rule: applied after parsing, only if the parsed type is t-bone and scene_layout is one of highway, tunnel,
+  grade-separated intersection (never on synthetic, see above); both the raw and the final type are kept.
+- Stage 1 memory and speed test: 5 clips drawn with numpy default_rng(1) from the 755 fold-1 clips sorted by
+  rgb_path; per clip: frame preparation seconds (decode + crop + resize, CPU), generate seconds (synchronised GPU),
+  new tokens, peak GPU memory (torch.cuda.max_memory_allocated / max_memory_reserved), parse ok. Model load time is
+  recorded separately and not counted per clip. If it runs out of memory with 16 frames: stop and report; the plan
+  is not changed. Stage 1 does NOT compute or print accuracy and does not compare answers with the true types.
+- Stage 1 contact sheet: 3 clips drawn with numpy default_rng(0) from the same sorted list; the 16 cropped 448 x 448
+  frames each with the true (metadata) box drawn in green, mapped into the crop.
+- Outputs in results/type_vlm8b/ (never overwritten); run logs in run_log_*.txt.

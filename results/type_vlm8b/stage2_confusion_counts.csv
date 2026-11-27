@@ -1,0 +1,6 @@
+,pred head-on,pred rear-end,pred t-bone,pred sideswipe,pred single,pred invalid
+true head-on,0,2,151,14,7,0
+true rear-end,0,28,125,107,17,0
+true t-bone,0,1,160,21,2,0
+true sideswipe,0,6,60,39,2,0
+true single,0,0,6,2,5,0

@@ -1,0 +1,191 @@
+{
+ "hf_hub_offline": "1",
+ "steps": [
+  {
+   "step": 1,
+   "cpu": [
+    "embed_tokens"
+   ],
+   "fields_differing_from_saved_except_skip_list": {
+    "llm_int8_enable_fp32_cpu_offload": [
+     false,
+     true
+    ]
+   },
+   "device_map": {
+    "model.visual": 0,
+    "model.language_model.embed_tokens": "cpu",
+    "model.language_model.layers": 0,
+    "model.language_model.norm": 0,
+    "model.language_model.rotary_emb": 0,
+    "lm_head": 0
+   },
+   "load_s": 6.221824884414673,
+   "mem_after_load_alloc_gb": 5.570937156677246,
+   "mem_after_load_reserved_gb": 5.57421875,
+   "linear4bit_modules": {
+    "visual": 0,
+    "language_model": 252,
+    "other": 0
+   },
+   "modules_on_cpu": {},
+   "visual_param_dtypes": [
+    "torch.bfloat16"
+   ],
+   "skip_modules_in_loaded_config": [
+    "embed_tokens",
+    "embedding",
+    "lm_head",
+    "multi_modal_projector",
+    "merger",
+    "modality_projection",
+    "router",
+    "visual",
+    "vision_tower",
+    "model.visual",
+    "model.visual.merger",
+    "model.visual.deepstack_merger_list",
+    "lm_head"
+   ],
+   "hf_device_map": {
+    "model.visual": "0",
+    "model.language_model.embed_tokens": "cpu",
+    "model.language_model.layers": "0",
+    "model.language_model.norm": "0",
+    "model.language_model.rotary_emb": "0",
+    "lm_head": "0"
+   },
+   "offloaded_modules": {
+    "model.language_model.embed_tokens": {
+     "hook": "AlignDevicesHook",
+     "execution_device": "0",
+     "offload": true,
+     "param_devices_in_model": [
+      "meta"
+     ],
+     "stored_weights": {
+      "model.language_model.embed_tokens.weight": {
+       "device": "cpu",
+       "dtype": "torch.bfloat16",
+       "shape": [
+        151936,
+        4096
+       ],
+       "loader": "OffloadedWeightsLoader",
+       "held_in_cpu_state_dict": true,
+       "index_entry": {}
+      }
+     }
+    }
+   },
+   "gpu_params_by_dtype_gb": {
+    "torch.bfloat16": 2.2333607375621796,
+    "torch.uint8": 3.234375
+   }
+  },
+  {
+   "step": 2,
+   "cpu": [
+    "embed_tokens",
+    "lm_head"
+   ],
+   "fields_differing_from_saved_except_skip_list": {
+    "llm_int8_enable_fp32_cpu_offload": [
+     false,
+     true
+    ]
+   },
+   "device_map": {
+    "model.visual": 0,
+    "model.language_model.embed_tokens": "cpu",
+    "model.language_model.layers": 0,
+    "model.language_model.norm": 0,
+    "model.language_model.rotary_emb": 0,
+    "lm_head": "cpu"
+   },
+   "load_s": 6.482835292816162,
+   "mem_after_load_alloc_gb": 5.570937156677246,
+   "mem_after_load_reserved_gb": 5.57421875,
+   "linear4bit_modules": {
+    "visual": 0,
+    "language_model": 252,
+    "other": 0
+   },
+   "modules_on_cpu": {},
+   "visual_param_dtypes": [
+    "torch.bfloat16"
+   ],
+   "skip_modules_in_loaded_config": [
+    "embed_tokens",
+    "embedding",
+    "lm_head",
+    "multi_modal_projector",
+    "merger",
+    "modality_projection",
+    "router",
+    "visual",
+    "vision_tower",
+    "model.visual",
+    "model.visual.merger",
+    "model.visual.deepstack_merger_list",
+    "lm_head"
+   ],
+   "hf_device_map": {
+    "model.visual": "0",
+    "model.language_model.embed_tokens": "cpu",
+    "model.language_model.layers": "0",
+    "model.language_model.norm": "0",
+    "model.language_model.rotary_emb": "0",
+    "lm_head": "cpu"
+   },
+   "offloaded_modules": {
+    "model.language_model.embed_tokens": {
+     "hook": "AlignDevicesHook",
+     "execution_device": "0",
+     "offload": true,
+     "param_devices_in_model": [
+      "meta"
+     ],
+     "stored_weights": {
+      "model.language_model.embed_tokens.weight": {
+       "device": "cpu",
+       "dtype": "torch.bfloat16",
+       "shape": [
+        151936,
+        4096
+       ],
+       "loader": "OffloadedWeightsLoader",
+       "held_in_cpu_state_dict": true,
+       "index_entry": {}
+      }
+     }
+    },
+    "lm_head": {
+     "hook": "AlignDevicesHook",
+     "execution_device": "0",
+     "offload": true,
+     "param_devices_in_model": [
+      "meta"
+     ],
+     "stored_weights": {
+      "lm_head.weight": {
+       "device": "cpu",
+       "dtype": "torch.bfloat16",
+       "shape": [
+        151936,
+        4096
+       ],
+       "loader": "OffloadedWeightsLoader",
+       "held_in_cpu_state_dict": true,
+       "index_entry": {}
+      }
+     }
+    }
+   },
+   "gpu_params_by_dtype_gb": {
+    "torch.bfloat16": 1.0741810500621796,
+    "torch.uint8": 3.234375
+   }
+  }
+ ]
+}

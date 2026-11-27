@@ -1,0 +1,9 @@
+A traffic collision has occurred in this surveillance clip. The frames are in time order, cropped around the area of the collision, covering about 4 seconds. Scene layout: {scene_layout}.
+Collision types, pick exactly one:
+- head-on: two vehicles approach from opposite directions and collide front to front.
+- rear-end: two vehicles travel in the same direction; the rear vehicle hits the one ahead from behind.
+- t-bone: one vehicle strikes the side of another at roughly 90 degrees.
+- sideswipe: two vehicles in parallel lanes make lateral, glancing contact.
+- single: only one vehicle is involved; it hits an object, a barrier, or the roadside.
+Watch how the vehicles move before contact. You must pick the most likely type.
+Answer only with JSON: {"type": "<one of head-on, rear-end, t-bone, sideswipe, single>"}

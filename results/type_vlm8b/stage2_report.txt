@@ -1,0 +1,65 @@
+TYPE MODEL, OPTION 1 (ZERO-SHOT QWEN3-VL-8B ON A CROP): STAGE 2 REPORT
+Synthetic only (755 fold-1 window-A clips); no real file. As PLAN.txt + AMENDMENT_1 (loading) + AMENDMENT_2 step 2 (embed_tokens and lm_head stored on the CPU; 16 frames at 448 x 448); analyses (a) crop split and (b) clip bootstrap added in STAGE2_NOTE.txt before any stage-2 answer. PLAN.txt, PROMPT.txt, the amendments and earlier results unchanged; nothing committed.
+PLAN.txt sha256 d00eb03c32c0e2d200c3e81637c274840d8517a3620a9f360ecde0ae112deff6; PROMPT.txt sha256 a85361c1b94c6773d9f797de809ca7d90321f755150c723ef66bdee35c5aa552.
+
+1. RUN
+  session 2026-11-26T22:41:01Z -> 2026-11-26T23:52:46Z: 755 clips in 71.6 min (done before 0; total after 755); load 6.1 s, GPU after load 4.41 GB, 4-bit modules {'visual': 0, 'language_model': 252, 'other': 0}; power start 'BatteryStatus 2 (2 = on AC mains), charge 80%', end 'BatteryStatus 2 (2 = on AC mains), charge 80%'
+  per clip: generate mean 5.03 s (max 5.48), frames mean 0.62 s; sum 1.19 h; max peak GPU allocated 5.93 GB (reserved 7.20 GB); new tokens {7: 33, 8: 37, 9: 685}; input tokens {1821: 596, 1822: 25, 1823: 15, 1824: 13, 1825: 11, 1826: 15, 1827: 20, 1828: 10, 1829: 50}
+  scene_layout 'not given' for every clip; t-bone -> rear-end rule applied 0 times (parsed and final type differ for 0 clips).
+
+2. SCORE (755 clips; an invalid answer counts as wrong)
+  accuracy 0.307; macro accuracy 0.344
+  per-type recall: head-on 0.000 (n=174); rear-end 0.101 (n=277); t-bone 0.870 (n=184); sideswipe 0.364 (n=107); single 0.385 (n=13)
+  answer distribution: head-on 0, rear-end 37, t-bone 502, sideswipe 183, single 33, invalid 0
+  invalid answers: 0
+  most frequent raw answers: '{"type": "t-bone"}' x502; '{"type": "sideswipe"}' x183; '{"type": "rear-end"}' x37; '{"type": "single"}' x33
+  confusion matrix (rows true, columns predicted; counts / row-normalised):
+                            head-on       rear-end         t-bone      sideswipe         single        invalid
+    true head-on           0 / 0.00       2 / 0.01     151 / 0.87      14 / 0.08       7 / 0.04       0 / 0.00
+    true rear-end          0 / 0.00      28 / 0.10     125 / 0.45     107 / 0.39      17 / 0.06       0 / 0.00
+    true t-bone            0 / 0.00       1 / 0.01     160 / 0.87      21 / 0.11       2 / 0.01       0 / 0.00
+    true sideswipe         0 / 0.00       6 / 0.06      60 / 0.56      39 / 0.36       2 / 0.02       0 / 0.00
+    true single            0 / 0.00       0 / 0.00       6 / 0.46       2 / 0.15       5 / 0.38       0 / 0.00
+  files: stage2_confusion_counts.csv, stage2_confusion_rownorm.csv, stage2_confusion.png
+
+  COMPARISON on the same 755 clips (macro accuracy with the scenario and clip 95% bootstrap intervals):
+    model                            accuracy   macro   scenario CI      clip CI          per-type recall head-on/rear-end/t-bone/sideswipe/single
+    vlm8b_zero_shot                     0.307   0.344   [0.155, 0.617]   [0.286, 0.404]   0.000 / 0.101 / 0.870 / 0.364 / 0.385
+    majority_scenario_folds             0.367   0.200   [0.000, 0.500]   [0.200, 0.200]   0.000 / 1.000 / 0.000 / 0.000 / 0.000
+    majority_leave_one_map_out          0.367   0.200   [0.000, 0.500]   [0.200, 0.200]   0.000 / 1.000 / 0.000 / 0.000 / 0.000
+    qlora_epoch1                        0.306   0.258   [0.006, 0.428]   [0.238, 0.278]   0.626 / 0.007 / 0.647 / 0.009 / 0.000
+    probe_A_leave_one_map_out           0.252   0.200   [0.087, 0.277]   [0.167, 0.246]   0.408 / 0.325 / 0.098 / 0.093 / 0.077
+    dinov2_224_scenario_fold1           0.199   0.160   [0.081, 0.258]   [0.136, 0.183]   0.316 / 0.242 / 0.027 / 0.215 / 0.000
+    dinov2_224_leave_one_map_out        0.180   0.141   [0.050, 0.235]   [0.120, 0.162]   0.328 / 0.227 / 0.000 / 0.150 / 0.000
+    dinov2_v1_scenario_fold1            0.249   0.214   [0.130, 0.303]   [0.187, 0.240]   0.397 / 0.159 / 0.261 / 0.252 / 0.000
+    dinov2_v1_leave_one_map_out         0.174   0.152   [0.049, 0.251]   [0.128, 0.174]   0.379 / 0.141 / 0.005 / 0.234 / 0.000
+    dinov2_v2_scenario_fold1            0.319   0.280   [0.106, 0.441]   [0.251, 0.305]   0.448 / 0.076 / 0.630 / 0.243 / 0.000
+    dinov2_v2_leave_one_map_out         0.170   0.149   [0.051, 0.228]   [0.125, 0.172]   0.414 / 0.094 / 0.060 / 0.178 / 0.000
+    (majority_scenario_folds = the majority type of folds 0 and 2; majority_leave_one_map_out = the majority type of the other maps; *_scenario_fold1 = trained on folds 0 and 2; *_leave_one_map_out = trained on the other maps. A constant answer has macro accuracy 0.20 whenever all 5 types are present.)
+
+3. SPLITS (zero-shot model in full; other models: macro accuracy / accuracy)
+  t_star_inside_window_A:
+    False: n 260; accuracy 0.242; macro 0.339 over 5 types; recall head-on 0.000 (n=14), rear-end 0.097 (n=144), t-bone 0.724 (n=29), sideswipe 0.373 (n=67), single 0.500 (n=6); invalid 0
+      others (macro / accuracy): majority_scenario_folds 0.200 / 0.554; majority_leave_one_map_out 0.200 / 0.554; qlora_epoch1 0.232 / 0.108; probe_A_leave_one_map_out 0.137 / 0.258; dinov2_224_scenario_fold1 0.157 / 0.208; dinov2_224_leave_one_map_out 0.152 / 0.177; dinov2_v1_scenario_fold1 0.198 / 0.204; dinov2_v1_leave_one_map_out 0.145 / 0.158; dinov2_v2_scenario_fold1 0.265 / 0.185; dinov2_v2_leave_one_map_out 0.139 / 0.112
+    True: n 495; accuracy 0.341; macro 0.328 over 5 types; recall head-on 0.000 (n=160), rear-end 0.105 (n=133), t-bone 0.897 (n=155), sideswipe 0.350 (n=40), single 0.286 (n=7); invalid 0
+      others (macro / accuracy): majority_scenario_folds 0.200 / 0.269; majority_leave_one_map_out 0.200 / 0.269; qlora_epoch1 0.262 / 0.410; probe_A_leave_one_map_out 0.198 / 0.248; dinov2_224_scenario_fold1 0.173 / 0.194; dinov2_224_leave_one_map_out 0.154 / 0.182; dinov2_v1_scenario_fold1 0.213 / 0.273; dinov2_v1_leave_one_map_out 0.155 / 0.182; dinov2_v2_scenario_fold1 0.290 / 0.390; dinov2_v2_leave_one_map_out 0.161 / 0.200
+  true_box_vs_crop:
+    fully inside: n 407; accuracy 0.329; macro 0.293 over 5 types; recall head-on 0.000 (n=116), rear-end 0.102 (n=118), t-bone 0.915 (n=117), sideswipe 0.280 (n=50), single 0.167 (n=6); invalid 0
+      others (macro / accuracy): majority_scenario_folds 0.200 / 0.290; majority_leave_one_map_out 0.200 / 0.290; qlora_epoch1 0.244 / 0.349; probe_A_leave_one_map_out 0.234 / 0.278; dinov2_224_scenario_fold1 0.170 / 0.201; dinov2_224_leave_one_map_out 0.145 / 0.182; dinov2_v1_scenario_fold1 0.235 / 0.285; dinov2_v1_leave_one_map_out 0.172 / 0.197; dinov2_v2_scenario_fold1 0.261 / 0.342; dinov2_v2_leave_one_map_out 0.136 / 0.174
+    outside: n 186; accuracy 0.344; macro 0.340 over 5 types; recall head-on 0.000 (n=30), rear-end 0.059 (n=68), t-bone 0.787 (n=61), sideswipe 0.455 (n=22), single 0.400 (n=5); invalid 0
+      others (macro / accuracy): majority_scenario_folds 0.200 / 0.366; majority_leave_one_map_out 0.200 / 0.366; qlora_epoch1 0.286 / 0.360; probe_A_leave_one_map_out 0.127 / 0.172; dinov2_224_scenario_fold1 0.132 / 0.161; dinov2_224_leave_one_map_out 0.138 / 0.161; dinov2_v1_scenario_fold1 0.179 / 0.231; dinov2_v1_leave_one_map_out 0.117 / 0.134; dinov2_v2_scenario_fold1 0.283 / 0.371; dinov2_v2_leave_one_map_out 0.154 / 0.161
+    partly inside: n 162; accuracy 0.210; macro 0.479 over 5 types; recall head-on 0.000 (n=28), rear-end 0.132 (n=91), t-bone 0.833 (n=6), sideswipe 0.429 (n=35), single 1.000 (n=2); invalid 0
+      others (macro / accuracy): majority_scenario_folds 0.200 / 0.562; majority_leave_one_map_out 0.200 / 0.562; qlora_epoch1 0.262 / 0.136; probe_A_leave_one_map_out 0.176 / 0.278; dinov2_224_scenario_fold1 0.176 / 0.235; dinov2_224_leave_one_map_out 0.126 / 0.198; dinov2_v1_scenario_fold1 0.201 / 0.179; dinov2_v1_leave_one_map_out 0.128 / 0.160; dinov2_v2_scenario_fold1 0.310 / 0.204; dinov2_v2_leave_one_map_out 0.162 / 0.167
+  day_night:
+    day: n 599; accuracy 0.304; macro 0.345 over 5 types; recall head-on 0.000 (n=138), rear-end 0.082 (n=219), t-bone 0.888 (n=143), sideswipe 0.372 (n=86), single 0.385 (n=13); invalid 0
+      others (macro / accuracy): majority_scenario_folds 0.200 / 0.366; majority_leave_one_map_out 0.200 / 0.366; qlora_epoch1 0.271 / 0.319; probe_A_leave_one_map_out 0.210 / 0.265; dinov2_224_scenario_fold1 0.167 / 0.205; dinov2_224_leave_one_map_out 0.147 / 0.187; dinov2_v1_scenario_fold1 0.225 / 0.257; dinov2_v1_leave_one_map_out 0.163 / 0.184; dinov2_v2_scenario_fold1 0.298 / 0.334; dinov2_v2_leave_one_map_out 0.153 / 0.172
+    night: n 156; accuracy 0.321; macro 0.328 over 4 types; recall head-on 0.000 (n=36), rear-end 0.172 (n=58), t-bone 0.805 (n=41), sideswipe 0.333 (n=21); invalid 0
+      others (macro / accuracy): majority_scenario_folds 0.250 / 0.372; majority_leave_one_map_out 0.250 / 0.372; qlora_epoch1 0.265 / 0.256; probe_A_leave_one_map_out 0.182 / 0.199; dinov2_224_scenario_fold1 0.165 / 0.173; dinov2_224_leave_one_map_out 0.145 / 0.154; dinov2_v1_scenario_fold1 0.211 / 0.218; dinov2_v1_leave_one_map_out 0.132 / 0.135; dinov2_v2_scenario_fold1 0.263 / 0.263; dinov2_v2_leave_one_map_out 0.164 / 0.160
+  (Within a split the types are unevenly represented, so the macro accuracies of different split groups average over different sets and sizes of types; compare models within a group rather than groups with each other.)
+
+4. SUCCESS RULE (PLAN.txt): macro accuracy above 0.20 with the 95% scenario bootstrap interval excluding 0.20 (2000 draws, seed 0)
+  macro accuracy 0.344; scenario bootstrap (5 scenarios) 95% [0.155, 0.617] (mean 0.348); clip bootstrap (755 clips, added in STAGE2_NOTE.txt) 95% [0.286, 0.404] (mean 0.344)
+  RESULT: NOT MET: macro accuracy above 0.20, and the scenario interval does not exclude 0.20.
+  Caveats: fold 1 has only 5 scenarios and each is one type, so the scenario bootstrap mixes scenario and type variation and is wide; the clip bootstrap treats clips of one scenario as independent and is too narrow. The model was not trained on synthetic data, but synthetic images differ from real ones: this is a sanity check, not a prediction of the real score. The scene hint was 'not given' for every clip (no such column), so the t-bone rule never fired. The clip names and paths in stage2_answers.jsonl contain the true type, but the model never saw them (it receives only the 16 cropped frames and PROMPT.txt).
+
+5. FILES: STAGE2_NOTE.txt; stage2_answers.jsonl (per clip: raw answer, parsed type, final type, parse_ok, generate time, peak GPU memory, ...; no true types); stage2_sessions.jsonl; stage2_predictions.csv (joined with the true types and the comparison predictions); stage2_metrics.json; stage2_confusion_*.csv/png; run_log_stage2_*.txt; scripts type_vlm8b_stage2_run.py, type_vlm8b_stage2_score.py.

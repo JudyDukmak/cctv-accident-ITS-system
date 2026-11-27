@@ -1,0 +1,26 @@
+{
+ "path": "C:\\Users\\ASUS\\.cache\\huggingface\\hub\\models--unsloth--Qwen3-VL-8B-Instruct-bnb-4bit\\snapshots\\10d842936325905934ea24e64325d774693f166e",
+ "seconds": 14020.934097528458,
+ "local_files": {
+  ".gitattributes": 1570,
+  "added_tokens.json": 707,
+  "chat_template.jinja": 5292,
+  "config.json": 2283,
+  "generation_config.json": 213,
+  "merges.txt": 1671853,
+  "model-00001-of-00002.safetensors": 4999093335,
+  "model-00002-of-00002.safetensors": 2227305901,
+  "model.safetensors.index.json": 208600,
+  "preprocessor_config.json": 782,
+  "README.md": 7544,
+  "special_tokens_map.json": 614,
+  "tokenizer.json": 11422654,
+  "tokenizer_config.json": 10966,
+  "video_preprocessor_config.json": 817,
+  "vocab.json": 2776833
+ },
+ "local_total_bytes": 7242509964,
+ "missing_vs_hub": [],
+ "size_mismatch_vs_hub": [],
+ "power": "BatteryStatus 2 (2 = on AC mains), charge 80%"
+}

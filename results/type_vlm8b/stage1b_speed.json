@@ -1,0 +1,133 @@
+{
+ "amendment_sha256": "6c3dcfc329c183003c1126b63bd901462a4f3f0ccc70544974952a5b053cadb2",
+ "clips": [
+  "Town05_head-on_clear_38",
+  "Town05_rear-end_sunset_212",
+  "Town05_rear-end_wet_103",
+  "Town07_single_sunset_29",
+  "Town03_t-bone_sunset_49"
+ ],
+ "power_start": "BatteryStatus 2 (2 = on AC mains), charge 80%",
+ "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+ "gpu_total_gb": 7.95953369140625,
+ "hf_hub_offline": "1",
+ "runs": [
+  {
+   "size": 448,
+   "per_clip": [],
+   "oom": {
+    "clip": "Town05_head-on_clear_38",
+    "input_tokens": 1821,
+    "video_grid_thw": [
+     [
+      8,
+      28,
+      28
+     ]
+    ],
+    "peak_alloc_gb": 7.080922603607178,
+    "error": "CUDA out of memory. Tried to allocate 406.00 MiB. GPU 0 has a total capacity of 7.96 GiB of which 0 bytes is free. Of the allocated memory 7.08 GiB is allocated by PyTorch, and 69.14 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CON"
+   }
+  },
+  {
+   "size": 336,
+   "per_clip": [],
+   "oom": {
+    "clip": "Town05_head-on_clear_38",
+    "input_tokens": 1053,
+    "video_grid_thw": [
+     [
+      8,
+      20,
+      20
+     ]
+    ],
+    "peak_alloc_gb": 7.061464786529541,
+    "error": "CUDA out of memory. Tried to allocate 136.00 MiB. GPU 0 has a total capacity of 7.96 GiB of which 0 bytes is free. Of the allocated memory 7.05 GiB is allocated by PyTorch, and 25.51 MiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CON"
+   }
+  }
+ ],
+ "quantization_config_saved": {
+  "_load_in_4bit": true,
+  "_load_in_8bit": false,
+  "bnb_4bit_compute_dtype": "bfloat16",
+  "bnb_4bit_quant_storage": "uint8",
+  "bnb_4bit_quant_type": "nf4",
+  "bnb_4bit_use_double_quant": true,
+  "llm_int8_enable_fp32_cpu_offload": false,
+  "llm_int8_has_fp16_weight": false,
+  "llm_int8_skip_modules": [
+   "embed_tokens",
+   "embedding",
+   "lm_head",
+   "multi_modal_projector",
+   "merger",
+   "modality_projection",
+   "router",
+   "visual",
+   "vision_tower"
+  ],
+  "llm_int8_threshold": 6.0,
+  "load_in_4bit": true,
+  "load_in_8bit": false,
+  "quant_method": "bitsandbytes"
+ },
+ "quantization_config_explicit": {
+  "quant_method": "bitsandbytes",
+  "_load_in_8bit": false,
+  "_load_in_4bit": true,
+  "llm_int8_threshold": 6.0,
+  "llm_int8_skip_modules": [
+   "embed_tokens",
+   "embedding",
+   "lm_head",
+   "multi_modal_projector",
+   "merger",
+   "modality_projection",
+   "router",
+   "visual",
+   "vision_tower",
+   "model.visual",
+   "model.visual.merger",
+   "model.visual.deepstack_merger_list",
+   "lm_head"
+  ],
+  "llm_int8_enable_fp32_cpu_offload": false,
+  "llm_int8_has_fp16_weight": false,
+  "bnb_4bit_quant_type": "nf4",
+  "bnb_4bit_use_double_quant": true,
+  "bnb_4bit_compute_dtype": "bfloat16",
+  "bnb_4bit_quant_storage": "uint8",
+  "load_in_4bit": true,
+  "load_in_8bit": false
+ },
+ "fields_differing_from_saved_except_skip_list": [],
+ "load_s": 6.540938377380371,
+ "mem_after_load_alloc_gb": 6.730116844177246,
+ "mem_after_load_reserved_gb": 6.732421875,
+ "skip_modules_in_loaded_config": [
+  "embed_tokens",
+  "embedding",
+  "lm_head",
+  "multi_modal_projector",
+  "merger",
+  "modality_projection",
+  "router",
+  "visual",
+  "vision_tower",
+  "model.visual",
+  "model.visual.merger",
+  "model.visual.deepstack_merger_list",
+  "lm_head"
+ ],
+ "linear4bit_modules": {
+  "visual": 0,
+  "language_model": 252,
+  "other": 0
+ },
+ "visual_param_dtypes": [
+  "torch.bfloat16"
+ ],
+ "stopped": "out of memory at 448 and at 336 (stopped as pre-registered)",
+ "power_end": "BatteryStatus 2 (2 = on AC mains), charge 80%"
+}

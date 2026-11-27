@@ -1,0 +1,44 @@
+command: .venv-vlm/Scripts/python.exe type_vlm8b.py --report   (2026-11-26T21:59:00Z)
+TYPE MODEL, OPTION 1 (ZERO-SHOT QWEN3-VL-8B ON A CROP): STAGE 1 REPORT (synthetic only; no real file; no frozen file, checkpoint, split, manifest or earlier result changed; nothing committed; no accuracy computed)
+PLAN.txt sha256 d00eb03c32c0e2d200c3e81637c274840d8517a3620a9f360ecde0ae112deff6; PROMPT.txt sha256 a85361c1b94c6773d9f797de809ca7d90321f755150c723ef66bdee35c5aa552 (prompt used without its final newline; {scene_layout} replaced).
+
+STEP 1, CHECKS (no model)
+  a. free disk 419 GB of 992 GB
+  a2. model files on the Hub (unsloth/Qwen3-VL-8B-Instruct-bnb-4bit @ 10d842936325905934ea24e64325d774693f166e): 16 files, 7,242,509,964 bytes (6.75 GiB); download time 14021 s (6.75 GiB on disk; missing none, size mismatches none)
+  b. metadata-synthetic.csv columns: rgb_path, annotations_path, type, accident_time, accident_frame, center_x, center_y, x1, y1, x2, y2, map, weather, camera_position, no_frames, duration, height, width, annotations_start_offset
+     scene layout column: none -> scene_layout = "not given" for all 755 clips; the scene hint and the t-bone -> rear-end rule are untested on synthetic data (the rule cannot fire).
+  c. valid QLoRA epoch-1 box: 755/755 (without: 0)
+     crop side (px) over the 755: min 256, quartiles 319 / 432 / 541, max 1080; at the 256 minimum 77; capped at the image height 4; moved to fit inside the image 107
+     extra (descriptive, added after seeing the contact sheet; boxes only): true (metadata) box fully inside the crop 407, partly 162, outside 186 of 755
+  d. contact sheet: contact_sheet_crops.png (3 clips, numpy default_rng(0); 16 crops each; true box in green)
+     Town05_rear-end_wet_104: crop left 261, top 42, side 864, shift [0, 0]; true box inside the crop: False
+     Town05_sideswipe_clear_46: crop left 837, top 608, side 288, shift [0, 0]; true box inside the crop: True
+     Town03_t-bone_night_37: crop left 118, top 236, side 343, shift [0, 0]; true box inside the crop: True
+
+STEP 2, DOWNLOAD
+  done: C:\Users\ASUS\.cache\huggingface\hub\models--unsloth--Qwen3-VL-8B-Instruct-bnb-4bit\snapshots\10d842936325905934ea24e64325d774693f166e
+  attempt 1 (run_log_download.txt): command: .venv-vlm/Scripts/python.exe type_vlm8b.py --download   (2026-11-26T13:01:45Z)
+    log last written 2026-11-26T13:40:43Z; exit 1; RuntimeError: Task error: File reconstruction error: CAS Client Error: Format error: I/O error: error decoding response body
+  attempt 2 (run_log_download_retry1.txt): command: .venv-vlm/Scripts/python.exe type_vlm8b.py --download   (2026-11-26T13:41:35Z); retry 1 after the Xet transfer error in run_log_download.txt
+    log last written 2026-11-26T14:24:37Z; exit 1; RuntimeError: Task error: File reconstruction error: CAS Client Error: Request middleware error: error sending request for url (https://us.aws.cdn.hf.co/xorbs/default/415ba0888243e023a3cce692751ab46fc
+  attempt 3 (run_log_download_retry2_http.txt): command: HF_HUB_DISABLE_XET=1 .venv-vlm/Scripts/python.exe type_vlm8b.py --download   (2026-11-26T14:25:19Z); retry 2 over plain HTTP after two Xet transfer errors
+    log last written 2026-11-26T18:19:01Z; exit 0
+  The download time in a2 (14021 s = 3.89 h, 0.52 MB/s) is that of attempt 3, over plain HTTP (HF_HUB_DISABLE_XET=1), after attempts 1 and 2 failed with Xet (CAS) transfer errors; files already cached by the failed attempts were reused, so this time may slightly understate a fresh download.
+
+STEP 3, MEMORY AND SPEED (5 clips, numpy default_rng(1); answers parsed only, not compared with the true types; no accuracy)
+  RAN AND CRASHED (not out of memory); speed_test.json was not written. From run_log_speed.txt:
+    command: HF_HUB_OFFLINE=1 .venv-vlm/Scripts/python.exe type_vlm8b.py --speed   (2026-11-26T21:57:29Z)
+    FP4 quantization state not initialized. Please call .cuda() or .to(device) on the LinearFP4 layer first.
+    loaded in 8.4 s; allocated 6.74 GB; 4-bit modules {'visual': 116, 'language_model': 252, 'other': 0}
+    fix_4bit_weight_quant_state_from_module(self)
+    File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\bitsandbytes\nn\modules.py", line 498, in fix_4bit_weight_quant_state_from_module
+    assert module.weight.shape[1] == 1
+    AssertionError
+    exit 1
+  Diagnosis (read-only inspection of the downloaded checkpoint, no model call): the checkpoint stores all 351 vision-tower tensors as plain bfloat16 with no 4-bit state (e.g. model.visual.blocks.0.attn.qkv.weight [3456, 1152] BF16), and its quantization_config lists 'visual' in llm_int8_skip_modules; but loading it as pre-registered (transformers 5.22.1, bitsandbytes 0.50.2, no BitsAndBytesConfig passed) built 116 vision modules as 4-bit layers ('4-bit modules' line above), so they received bfloat16 weights without a 4-bit quantisation state and the first forward pass through the vision tower failed the bitsandbytes assertion (module.weight.shape[1] == 1). The skip list was not applied to the vision tower.
+  No clip was processed: no generate time, no per-clip peak memory and no parsed answer exist. Only the model load is measured (time and memory after load, above). speed_test_answers.jsonl was created empty (0 bytes) before the crash and is left as it is.
+  RESULT: stopped. The plan is not changed; making the model run needs a change to the pre-registered load arguments, which is a decision for the user.
+
+Raw answers of the 5 test clips: speed_test_answers.jsonl (no true types stored with them).
+Files: PLAN.txt, PROMPT.txt, checks.json, contact_sheet_crops.png, download.json, speed_test.json, speed_test_answers.jsonl, run_log_*.txt, stage1_report.txt.
+exit 0

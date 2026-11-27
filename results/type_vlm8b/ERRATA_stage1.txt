@@ -1,0 +1,14 @@
+ERRATA FOR stage1_report.txt (written 2026-11-26T22:22Z; stage1_report.txt itself is not changed)
+
+Two lines at the end of stage1_report.txt are wrong:
+
+1. "Files: PLAN.txt, PROMPT.txt, checks.json, contact_sheet_crops.png, download.json, speed_test.json, ..."
+   speed_test.json was never written. The stage 1 speed run (run_log_speed.txt) crashed with an uncaught bitsandbytes
+   AssertionError on the first clip, and speed_test.json is only written at the end of a run or on an out-of-memory
+   error.
+
+2. "Raw answers of the 5 test clips: speed_test_answers.jsonl (no true types stored with them)."
+   speed_test_answers.jsonl is empty (0 bytes): it was opened before the first clip, and the run crashed before the
+   first answer was produced. It contains no answers.
+
+The rest of stage1_report.txt, including its STEP 3 section ("RAN AND CRASHED ... No clip was processed"), stands.

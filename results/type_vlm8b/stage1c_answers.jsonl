@@ -1,0 +1,5 @@
+{"clip": "Town05_head-on_clear_38", "step": 2, "size": 448, "raw_answer": "{\"type\": \"t-bone\"}", "parse_ok": true}
+{"clip": "Town05_rear-end_sunset_212", "step": 2, "size": 448, "raw_answer": "{\"type\": \"sideswipe\"}", "parse_ok": true}
+{"clip": "Town05_rear-end_wet_103", "step": 2, "size": 448, "raw_answer": "{\"type\": \"t-bone\"}", "parse_ok": true}
+{"clip": "Town07_single_sunset_29", "step": 2, "size": 448, "raw_answer": "{\"type\": \"t-bone\"}", "parse_ok": true}
+{"clip": "Town03_t-bone_sunset_49", "step": 2, "size": 448, "raw_answer": "{\"type\": \"t-bone\"}", "parse_ok": true}

@@ -1,0 +1,5879 @@
+{
+ "n": 755,
+ "models": {
+  "vlm8b_zero_shot": {
+   "n": 755,
+   "accuracy": 0.3072847682119205,
+   "macro_accuracy": 0.343949923161215,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.0,
+    "rear-end": 0.10108303249097472,
+    "t-bone": 0.8695652173913043,
+    "sideswipe": 0.3644859813084112,
+    "single": 0.38461538461538464
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     0,
+     2,
+     151,
+     14,
+     7,
+     0
+    ],
+    [
+     0,
+     28,
+     125,
+     107,
+     17,
+     0
+    ],
+    [
+     0,
+     1,
+     160,
+     21,
+     2,
+     0
+    ],
+    [
+     0,
+     6,
+     60,
+     39,
+     2,
+     0
+    ],
+    [
+     0,
+     0,
+     6,
+     2,
+     5,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.15518967126646196,
+     0.6170255993498578
+    ],
+    "mean": 0.34825944484866445
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.2855360355789097,
+     0.40392657094660034
+    ],
+    "mean": 0.34407848108241545
+   }
+  },
+  "majority_scenario_folds": {
+   "n": 755,
+   "accuracy": 0.36688741721854307,
+   "macro_accuracy": 0.2,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.0,
+    "rear-end": 1.0,
+    "t-bone": 0.0,
+    "sideswipe": 0.0,
+    "single": 0.0
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     0,
+     174,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     277,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     184,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     107,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     13,
+     0,
+     0,
+     0,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.0,
+     0.5
+    ],
+    "mean": 0.20028333333333334
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.2,
+     0.2
+    ],
+    "mean": 0.20000000000000004
+   }
+  },
+  "majority_leave_one_map_out": {
+   "n": 755,
+   "accuracy": 0.36688741721854307,
+   "macro_accuracy": 0.2,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.0,
+    "rear-end": 1.0,
+    "t-bone": 0.0,
+    "sideswipe": 0.0,
+    "single": 0.0
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     0,
+     174,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     277,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     184,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     0,
+     107,
+     0,
+     0,
+     0,
+     0
+    ],
+    [
+     13,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.0,
+     0.5
+    ],
+    "mean": 0.20028333333333334
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.2,
+     0.2
+    ],
+    "mean": 0.20000000000000004
+   }
+  },
+  "qlora_epoch1": {
+   "n": 755,
+   "accuracy": 0.30596026490066225,
+   "macro_accuracy": 0.25794838460859987,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.6264367816091954,
+    "rear-end": 0.007220216606498195,
+    "t-bone": 0.6467391304347826,
+    "sideswipe": 0.009345794392523364,
+    "single": 0.0
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     109,
+     11,
+     45,
+     7,
+     2,
+     0
+    ],
+    [
+     263,
+     2,
+     4,
+     0,
+     8,
+     0
+    ],
+    [
+     56,
+     4,
+     119,
+     1,
+     4,
+     0
+    ],
+    [
+     103,
+     0,
+     3,
+     1,
+     0,
+     0
+    ],
+    [
+     0,
+     10,
+     3,
+     0,
+     0,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.005522003666340519,
+     0.4275072354788337
+    ],
+    "mean": 0.2579851013286346
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.2377789950012503,
+     0.278281032744642
+    ],
+    "mean": 0.2581534721809613
+   }
+  },
+  "probe_A_leave_one_map_out": {
+   "n": 755,
+   "accuracy": 0.25165562913907286,
+   "macro_accuracy": 0.20023256642174908,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.40804597701149425,
+    "rear-end": 0.3249097472924188,
+    "t-bone": 0.09782608695652174,
+    "sideswipe": 0.09345794392523364,
+    "single": 0.07692307692307693
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     71,
+     34,
+     41,
+     23,
+     5,
+     0
+    ],
+    [
+     124,
+     90,
+     51,
+     3,
+     9,
+     0
+    ],
+    [
+     9,
+     143,
+     18,
+     14,
+     0,
+     0
+    ],
+    [
+     64,
+     15,
+     10,
+     10,
+     8,
+     0
+    ],
+    [
+     7,
+     3,
+     0,
+     2,
+     1,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.08737458193979933,
+     0.2769272704201449
+    ],
+    "mean": 0.1986961161034697
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.1671298976199752,
+     0.24593751120331994
+    ],
+    "mean": 0.20100071218040422
+   }
+  },
+  "dinov2_224_scenario_fold1": {
+   "n": 755,
+   "accuracy": 0.1986754966887417,
+   "macro_accuracy": 0.16001927888243875,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.3160919540229885,
+    "rear-end": 0.24187725631768953,
+    "t-bone": 0.02717391304347826,
+    "sideswipe": 0.21495327102803738,
+    "single": 0.0
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     55,
+     47,
+     7,
+     64,
+     1,
+     0
+    ],
+    [
+     195,
+     67,
+     7,
+     1,
+     7,
+     0
+    ],
+    [
+     109,
+     2,
+     5,
+     65,
+     3,
+     0
+    ],
+    [
+     84,
+     0,
+     0,
+     23,
+     0,
+     0
+    ],
+    [
+     3,
+     3,
+     7,
+     0,
+     0,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.08070906135717189,
+     0.25764082712290515
+    ],
+    "mean": 0.157965707522341
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.13641912180714824,
+     0.1833754300074071
+    ],
+    "mean": 0.15994368757365118
+   }
+  },
+  "dinov2_224_leave_one_map_out": {
+   "n": 755,
+   "accuracy": 0.18013245033112582,
+   "macro_accuracy": 0.14091114805632374,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.3275862068965517,
+    "rear-end": 0.22743682310469315,
+    "t-bone": 0.0,
+    "sideswipe": 0.14953271028037382,
+    "single": 0.0
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     57,
+     45,
+     17,
+     54,
+     1,
+     0
+    ],
+    [
+     173,
+     63,
+     29,
+     2,
+     10,
+     0
+    ],
+    [
+     5,
+     35,
+     0,
+     59,
+     85,
+     0
+    ],
+    [
+     87,
+     2,
+     2,
+     16,
+     0,
+     0
+    ],
+    [
+     12,
+     1,
+     0,
+     0,
+     0,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.04984423676012461,
+     0.23485191342720624
+    ],
+    "mean": 0.13886639174445134
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.11971706810017843,
+     0.1623635392868835
+    ],
+    "mean": 0.14089310305755057
+   }
+  },
+  "dinov2_v1_scenario_fold1": {
+   "n": 755,
+   "accuracy": 0.24900662251655628,
+   "macro_accuracy": 0.2137205006592827,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.39655172413793105,
+    "rear-end": 0.1588447653429603,
+    "t-bone": 0.2608695652173913,
+    "sideswipe": 0.2523364485981308,
+    "single": 0.0
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     69,
+     84,
+     5,
+     16,
+     0,
+     0
+    ],
+    [
+     217,
+     44,
+     8,
+     6,
+     2,
+     0
+    ],
+    [
+     35,
+     13,
+     48,
+     88,
+     0,
+     0
+    ],
+    [
+     79,
+     1,
+     0,
+     27,
+     0,
+     0
+    ],
+    [
+     2,
+     6,
+     5,
+     0,
+     0,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.13043478260869565,
+     0.30325257931781774
+    ],
+    "mean": 0.2122800935999577
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.18654470532346706,
+     0.23973568044043303
+    ],
+    "mean": 0.21280977797317224
+   }
+  },
+  "dinov2_v1_leave_one_map_out": {
+   "n": 755,
+   "accuracy": 0.17350993377483442,
+   "macro_accuracy": 0.15183684221521615,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.3793103448275862,
+    "rear-end": 0.1407942238267148,
+    "t-bone": 0.005434782608695652,
+    "sideswipe": 0.2336448598130841,
+    "single": 0.0
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     66,
+     84,
+     8,
+     13,
+     3,
+     0
+    ],
+    [
+     205,
+     39,
+     13,
+     5,
+     15,
+     0
+    ],
+    [
+     6,
+     45,
+     1,
+     34,
+     98,
+     0
+    ],
+    [
+     75,
+     1,
+     3,
+     25,
+     3,
+     0
+    ],
+    [
+     13,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.04874300214513682,
+     0.2512498094891284
+    ],
+    "mean": 0.1492718362147876
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.1282173257257265,
+     0.1737367469231566
+    ],
+    "mean": 0.15087796600882303
+   }
+  },
+  "dinov2_v2_scenario_fold1": {
+   "n": 755,
+   "accuracy": 0.31920529801324504,
+   "macro_accuracy": 0.27950271465029997,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.4482758620689655,
+    "rear-end": 0.07581227436823104,
+    "t-bone": 0.6304347826086957,
+    "sideswipe": 0.24299065420560748,
+    "single": 0.0
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     78,
+     77,
+     2,
+     16,
+     1,
+     0
+    ],
+    [
+     248,
+     21,
+     6,
+     2,
+     0,
+     0
+    ],
+    [
+     8,
+     0,
+     116,
+     60,
+     0,
+     0
+    ],
+    [
+     70,
+     8,
+     3,
+     26,
+     0,
+     0
+    ],
+    [
+     1,
+     1,
+     11,
+     0,
+     0,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.10626764285794617,
+     0.4405670996277562
+    ],
+    "mean": 0.2796383613095777
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.2512466373526422,
+     0.3054394051409929
+    ],
+    "mean": 0.27891347585501763
+   }
+  },
+  "dinov2_v2_leave_one_map_out": {
+   "n": 755,
+   "accuracy": 0.1695364238410596,
+   "macro_accuracy": 0.1490017242972697,
+   "n_types_in_macro": 5,
+   "recall": {
+    "head-on": 0.41379310344827586,
+    "rear-end": 0.09386281588447654,
+    "t-bone": 0.059782608695652176,
+    "sideswipe": 0.17757009345794392,
+    "single": 0.0
+   },
+   "n_per_type": {
+    "head-on": 174,
+    "rear-end": 277,
+    "t-bone": 184,
+    "sideswipe": 107,
+    "single": 13
+   },
+   "n_invalid": 0,
+   "confusion": [
+    [
+     72,
+     81,
+     2,
+     16,
+     3,
+     0
+    ],
+    [
+     237,
+     26,
+     10,
+     2,
+     2,
+     0
+    ],
+    [
+     0,
+     13,
+     11,
+     137,
+     23,
+     0
+    ],
+    [
+     69,
+     9,
+     10,
+     19,
+     0,
+     0
+    ],
+    [
+     13,
+     0,
+     0,
+     0,
+     0,
+     0
+    ]
+   ],
+   "bootstrap_scenario": {
+    "unit": "scenario",
+    "n_units": 5,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.051215141526709564,
+     0.2284086709302321
+    ],
+    "mean": 0.14669544258887543
+   },
+   "bootstrap_clip": {
+    "unit": "clip",
+    "n_units": 755,
+    "n": 2000,
+    "seed": 0,
+    "ci95": [
+     0.12485342752026758,
+     0.17218416320067673
+    ],
+    "mean": 0.1486220478209509
+   }
+  }
+ },
+ "splits": {
+  "t_star_inside_window_A": {
+   "False": {
+    "vlm8b_zero_shot": {
+     "n": 260,
+     "accuracy": 0.2423076923076923,
+     "macro_accuracy": 0.33889889632298276,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 0.09722222222222222,
+      "t-bone": 0.7241379310344828,
+      "sideswipe": 0.373134328358209,
+      "single": 0.5
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       0,
+       7,
+       2,
+       5,
+       0
+      ],
+      [
+       0,
+       14,
+       61,
+       54,
+       15,
+       0
+      ],
+      [
+       0,
+       0,
+       21,
+       8,
+       0,
+       0
+      ],
+      [
+       0,
+       4,
+       36,
+       25,
+       2,
+       0
+      ],
+      [
+       0,
+       0,
+       3,
+       0,
+       3,
+       0
+      ]
+     ]
+    },
+    "majority_scenario_folds": {
+     "n": 260,
+     "accuracy": 0.5538461538461539,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       14,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       144,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       29,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       67,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       6,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "majority_leave_one_map_out": {
+     "n": 260,
+     "accuracy": 0.5538461538461539,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       14,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       144,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       29,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       67,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       6,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "qlora_epoch1": {
+     "n": 260,
+     "accuracy": 0.1076923076923077,
+     "macro_accuracy": 0.23193076081007113,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.42857142857142855,
+      "rear-end": 0.006944444444444444,
+      "t-bone": 0.7241379310344828,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       6,
+       2,
+       3,
+       2,
+       1,
+       0
+      ],
+      [
+       137,
+       1,
+       3,
+       0,
+       3,
+       0
+      ],
+      [
+       8,
+       0,
+       21,
+       0,
+       0,
+       0
+      ],
+      [
+       64,
+       0,
+       3,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       5,
+       1,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "probe_A_leave_one_map_out": {
+     "n": 260,
+     "accuracy": 0.25769230769230766,
+     "macro_accuracy": 0.13712635508826965,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.14285714285714285,
+      "rear-end": 0.3888888888888889,
+      "t-bone": 0.034482758620689655,
+      "sideswipe": 0.11940298507462686,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       2,
+       5,
+       0,
+       5,
+       2,
+       0
+      ],
+      [
+       61,
+       56,
+       23,
+       2,
+       2,
+       0
+      ],
+      [
+       1,
+       23,
+       1,
+       4,
+       0,
+       0
+      ],
+      [
+       42,
+       12,
+       3,
+       8,
+       2,
+       0
+      ],
+      [
+       6,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_scenario_fold1": {
+     "n": 260,
+     "accuracy": 0.2076923076923077,
+     "macro_accuracy": 0.1570421701018716,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.35714285714285715,
+      "rear-end": 0.2638888888888889,
+      "t-bone": 0.0,
+      "sideswipe": 0.16417910447761194,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       5,
+       3,
+       0,
+       6,
+       0,
+       0
+      ],
+      [
+       94,
+       38,
+       5,
+       1,
+       6,
+       0
+      ],
+      [
+       14,
+       0,
+       0,
+       15,
+       0,
+       0
+      ],
+      [
+       56,
+       0,
+       0,
+       11,
+       0,
+       0
+      ],
+      [
+       1,
+       1,
+       4,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_leave_one_map_out": {
+     "n": 260,
+     "accuracy": 0.17692307692307693,
+     "macro_accuracy": 0.15244314143567875,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.42857142857142855,
+      "rear-end": 0.22916666666666666,
+      "t-bone": 0.0,
+      "sideswipe": 0.1044776119402985,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       6,
+       3,
+       0,
+       5,
+       0,
+       0
+      ],
+      [
+       84,
+       33,
+       18,
+       2,
+       7,
+       0
+      ],
+      [
+       0,
+       6,
+       0,
+       14,
+       9,
+       0
+      ],
+      [
+       58,
+       1,
+       1,
+       7,
+       0,
+       0
+      ],
+      [
+       6,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_scenario_fold1": {
+     "n": 260,
+     "accuracy": 0.20384615384615384,
+     "macro_accuracy": 0.19827637265233763,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.35714285714285715,
+      "rear-end": 0.1736111111111111,
+      "t-bone": 0.20689655172413793,
+      "sideswipe": 0.2537313432835821,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       5,
+       5,
+       0,
+       4,
+       0,
+       0
+      ],
+      [
+       109,
+       25,
+       5,
+       4,
+       1,
+       0
+      ],
+      [
+       5,
+       3,
+       6,
+       15,
+       0,
+       0
+      ],
+      [
+       50,
+       0,
+       0,
+       17,
+       0,
+       0
+      ],
+      [
+       2,
+       2,
+       2,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_leave_one_map_out": {
+     "n": 260,
+     "accuracy": 0.1576923076923077,
+     "macro_accuracy": 0.14537135749822316,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.35714285714285715,
+      "rear-end": 0.14583333333333334,
+      "t-bone": 0.0,
+      "sideswipe": 0.22388059701492538,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       5,
+       6,
+       0,
+       3,
+       0,
+       0
+      ],
+      [
+       103,
+       21,
+       7,
+       3,
+       10,
+       0
+      ],
+      [
+       1,
+       8,
+       0,
+       10,
+       10,
+       0
+      ],
+      [
+       47,
+       0,
+       2,
+       15,
+       3,
+       0
+      ],
+      [
+       6,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_scenario_fold1": {
+     "n": 260,
+     "accuracy": 0.18461538461538463,
+     "macro_accuracy": 0.26524683642542624,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.35714285714285715,
+      "rear-end": 0.05555555555555555,
+      "t-bone": 0.6896551724137931,
+      "sideswipe": 0.22388059701492538,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       5,
+       7,
+       0,
+       2,
+       0,
+       0
+      ],
+      [
+       133,
+       8,
+       2,
+       1,
+       0,
+       0
+      ],
+      [
+       1,
+       0,
+       20,
+       8,
+       0,
+       0
+      ],
+      [
+       45,
+       7,
+       0,
+       15,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       6,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_leave_one_map_out": {
+     "n": 260,
+     "accuracy": 0.11153846153846154,
+     "macro_accuracy": 0.13912825037374701,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.42857142857142855,
+      "rear-end": 0.08333333333333333,
+      "t-bone": 0.034482758620689655,
+      "sideswipe": 0.14925373134328357,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 14,
+      "rear-end": 144,
+      "t-bone": 29,
+      "sideswipe": 67,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       6,
+       7,
+       0,
+       1,
+       0,
+       0
+      ],
+      [
+       124,
+       12,
+       5,
+       1,
+       2,
+       0
+      ],
+      [
+       0,
+       3,
+       1,
+       20,
+       5,
+       0
+      ],
+      [
+       45,
+       7,
+       5,
+       10,
+       0,
+       0
+      ],
+      [
+       6,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    }
+   },
+   "True": {
+    "vlm8b_zero_shot": {
+     "n": 495,
+     "accuracy": 0.3414141414141414,
+     "macro_accuracy": 0.32755032743148194,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 0.10526315789473684,
+      "t-bone": 0.896774193548387,
+      "sideswipe": 0.35,
+      "single": 0.2857142857142857
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       2,
+       144,
+       12,
+       2,
+       0
+      ],
+      [
+       0,
+       14,
+       64,
+       53,
+       2,
+       0
+      ],
+      [
+       0,
+       1,
+       139,
+       13,
+       2,
+       0
+      ],
+      [
+       0,
+       2,
+       24,
+       14,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       3,
+       2,
+       2,
+       0
+      ]
+     ]
+    },
+    "majority_scenario_folds": {
+     "n": 495,
+     "accuracy": 0.2686868686868687,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       160,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       133,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       155,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       40,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       7,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "majority_leave_one_map_out": {
+     "n": 495,
+     "accuracy": 0.2686868686868687,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       160,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       133,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       155,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       40,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       7,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "qlora_epoch1": {
+     "n": 495,
+     "accuracy": 0.4101010101010101,
+     "macro_accuracy": 0.2617053723017221,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.64375,
+      "rear-end": 0.007518796992481203,
+      "t-bone": 0.632258064516129,
+      "sideswipe": 0.025,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       103,
+       9,
+       42,
+       5,
+       1,
+       0
+      ],
+      [
+       126,
+       1,
+       1,
+       0,
+       5,
+       0
+      ],
+      [
+       48,
+       4,
+       98,
+       1,
+       4,
+       0
+      ],
+      [
+       39,
+       0,
+       0,
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       5,
+       2,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "probe_A_leave_one_map_out": {
+     "n": 495,
+     "accuracy": 0.24848484848484848,
+     "macro_accuracy": 0.1978847319912685,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.43125,
+      "rear-end": 0.2556390977443609,
+      "t-bone": 0.10967741935483871,
+      "sideswipe": 0.05,
+      "single": 0.14285714285714285
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       69,
+       29,
+       41,
+       18,
+       3,
+       0
+      ],
+      [
+       63,
+       34,
+       28,
+       1,
+       7,
+       0
+      ],
+      [
+       8,
+       120,
+       17,
+       10,
+       0,
+       0
+      ],
+      [
+       22,
+       3,
+       7,
+       2,
+       6,
+       0
+      ],
+      [
+       1,
+       3,
+       0,
+       2,
+       1,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_scenario_fold1": {
+     "n": 495,
+     "accuracy": 0.19393939393939394,
+     "macro_accuracy": 0.1725606354596168,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.3125,
+      "rear-end": 0.21804511278195488,
+      "t-bone": 0.03225806451612903,
+      "sideswipe": 0.3,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       50,
+       44,
+       7,
+       58,
+       1,
+       0
+      ],
+      [
+       101,
+       29,
+       2,
+       0,
+       1,
+       0
+      ],
+      [
+       95,
+       2,
+       5,
+       50,
+       3,
+       0
+      ],
+      [
+       28,
+       0,
+       0,
+       12,
+       0,
+       0
+      ],
+      [
+       2,
+       2,
+       3,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_leave_one_map_out": {
+     "n": 495,
+     "accuracy": 0.18181818181818182,
+     "macro_accuracy": 0.1538627819548872,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.31875,
+      "rear-end": 0.22556390977443608,
+      "t-bone": 0.0,
+      "sideswipe": 0.225,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       51,
+       42,
+       17,
+       49,
+       1,
+       0
+      ],
+      [
+       89,
+       30,
+       11,
+       0,
+       3,
+       0
+      ],
+      [
+       5,
+       29,
+       0,
+       45,
+       76,
+       0
+      ],
+      [
+       29,
+       1,
+       1,
+       9,
+       0,
+       0
+      ],
+      [
+       6,
+       1,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_scenario_fold1": {
+     "n": 495,
+     "accuracy": 0.2727272727272727,
+     "macro_accuracy": 0.21276497695852536,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.4,
+      "rear-end": 0.14285714285714285,
+      "t-bone": 0.2709677419354839,
+      "sideswipe": 0.25,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       64,
+       79,
+       5,
+       12,
+       0,
+       0
+      ],
+      [
+       108,
+       19,
+       3,
+       2,
+       1,
+       0
+      ],
+      [
+       30,
+       10,
+       42,
+       73,
+       0,
+       0
+      ],
+      [
+       29,
+       1,
+       0,
+       10,
+       0,
+       0
+      ],
+      [
+       0,
+       4,
+       3,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_leave_one_map_out": {
+     "n": 495,
+     "accuracy": 0.18181818181818182,
+     "macro_accuracy": 0.15460799175357748,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.38125,
+      "rear-end": 0.13533834586466165,
+      "t-bone": 0.0064516129032258064,
+      "sideswipe": 0.25,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       61,
+       78,
+       8,
+       10,
+       3,
+       0
+      ],
+      [
+       102,
+       18,
+       6,
+       2,
+       5,
+       0
+      ],
+      [
+       5,
+       37,
+       1,
+       24,
+       88,
+       0
+      ],
+      [
+       28,
+       1,
+       1,
+       10,
+       0,
+       0
+      ],
+      [
+       7,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_scenario_fold1": {
+     "n": 495,
+     "accuracy": 0.3898989898989899,
+     "macro_accuracy": 0.2896698399223866,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.45625,
+      "rear-end": 0.09774436090225563,
+      "t-bone": 0.6193548387096774,
+      "sideswipe": 0.275,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       73,
+       70,
+       2,
+       14,
+       1,
+       0
+      ],
+      [
+       115,
+       13,
+       4,
+       1,
+       0,
+       0
+      ],
+      [
+       7,
+       0,
+       96,
+       52,
+       0,
+       0
+      ],
+      [
+       25,
+       1,
+       3,
+       11,
+       0,
+       0
+      ],
+      [
+       1,
+       1,
+       5,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_leave_one_map_out": {
+     "n": 495,
+     "accuracy": 0.2,
+     "macro_accuracy": 0.16145585738539897,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.4125,
+      "rear-end": 0.10526315789473684,
+      "t-bone": 0.06451612903225806,
+      "sideswipe": 0.225,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 160,
+      "rear-end": 133,
+      "t-bone": 155,
+      "sideswipe": 40,
+      "single": 7
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       66,
+       74,
+       2,
+       15,
+       3,
+       0
+      ],
+      [
+       113,
+       14,
+       5,
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       10,
+       10,
+       117,
+       18,
+       0
+      ],
+      [
+       24,
+       2,
+       5,
+       9,
+       0,
+       0
+      ],
+      [
+       7,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "true_box_vs_crop": {
+   "fully inside": {
+    "vlm8b_zero_shot": {
+     "n": 407,
+     "accuracy": 0.32923832923832924,
+     "macro_accuracy": 0.2925782992901637,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 0.1016949152542373,
+      "t-bone": 0.9145299145299145,
+      "sideswipe": 0.28,
+      "single": 0.16666666666666666
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       0,
+       112,
+       4,
+       0,
+       0
+      ],
+      [
+       0,
+       12,
+       61,
+       45,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       107,
+       10,
+       0,
+       0
+      ],
+      [
+       0,
+       5,
+       30,
+       14,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       3,
+       2,
+       1,
+       0
+      ]
+     ]
+    },
+    "majority_scenario_folds": {
+     "n": 407,
+     "accuracy": 0.28992628992628994,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       116,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       118,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       117,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       50,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       6,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "majority_leave_one_map_out": {
+     "n": 407,
+     "accuracy": 0.28992628992628994,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       116,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       118,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       117,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       50,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       6,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "qlora_epoch1": {
+     "n": 407,
+     "accuracy": 0.3488943488943489,
+     "macro_accuracy": 0.24379630045907077,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.6293103448275862,
+      "rear-end": 0.00847457627118644,
+      "t-bone": 0.5811965811965812,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       73,
+       6,
+       34,
+       3,
+       0,
+       0
+      ],
+      [
+       111,
+       1,
+       2,
+       0,
+       4,
+       0
+      ],
+      [
+       40,
+       4,
+       68,
+       1,
+       4,
+       0
+      ],
+      [
+       48,
+       0,
+       2,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       4,
+       2,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "probe_A_leave_one_map_out": {
+     "n": 407,
+     "accuracy": 0.27764127764127766,
+     "macro_accuracy": 0.23413554326704533,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.4482758620689655,
+      "rear-end": 0.3389830508474576,
+      "t-bone": 0.13675213675213677,
+      "sideswipe": 0.08,
+      "single": 0.16666666666666666
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       52,
+       21,
+       30,
+       9,
+       4,
+       0
+      ],
+      [
+       53,
+       40,
+       21,
+       1,
+       3,
+       0
+      ],
+      [
+       4,
+       90,
+       16,
+       7,
+       0,
+       0
+      ],
+      [
+       30,
+       7,
+       5,
+       4,
+       4,
+       0
+      ],
+      [
+       2,
+       3,
+       0,
+       0,
+       1,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_scenario_fold1": {
+     "n": 407,
+     "accuracy": 0.20147420147420148,
+     "macro_accuracy": 0.17013229630295673,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.33620689655172414,
+      "rear-end": 0.2288135593220339,
+      "t-bone": 0.02564102564102564,
+      "sideswipe": 0.26,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       39,
+       28,
+       5,
+       43,
+       1,
+       0
+      ],
+      [
+       86,
+       27,
+       0,
+       0,
+       5,
+       0
+      ],
+      [
+       72,
+       1,
+       3,
+       38,
+       3,
+       0
+      ],
+      [
+       37,
+       0,
+       0,
+       13,
+       0,
+       0
+      ],
+      [
+       2,
+       2,
+       2,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_leave_one_map_out": {
+     "n": 407,
+     "accuracy": 0.18181818181818182,
+     "macro_accuracy": 0.1450333138515488,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.3448275862068966,
+      "rear-end": 0.22033898305084745,
+      "t-bone": 0.0,
+      "sideswipe": 0.16,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       40,
+       28,
+       12,
+       36,
+       0,
+       0
+      ],
+      [
+       76,
+       26,
+       8,
+       1,
+       7,
+       0
+      ],
+      [
+       5,
+       21,
+       0,
+       34,
+       57,
+       0
+      ],
+      [
+       39,
+       2,
+       1,
+       8,
+       0,
+       0
+      ],
+      [
+       6,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_scenario_fold1": {
+     "n": 407,
+     "accuracy": 0.28501228501228504,
+     "macro_accuracy": 0.23538725291852117,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.43103448275862066,
+      "rear-end": 0.1694915254237288,
+      "t-bone": 0.2564102564102564,
+      "sideswipe": 0.32,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       50,
+       52,
+       4,
+       10,
+       0,
+       0
+      ],
+      [
+       94,
+       20,
+       0,
+       4,
+       0,
+       0
+      ],
+      [
+       23,
+       10,
+       30,
+       54,
+       0,
+       0
+      ],
+      [
+       33,
+       1,
+       0,
+       16,
+       0,
+       0
+      ],
+      [
+       1,
+       3,
+       2,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_leave_one_map_out": {
+     "n": 407,
+     "accuracy": 0.19656019656019655,
+     "macro_accuracy": 0.1715866664668535,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.41379310344827586,
+      "rear-end": 0.13559322033898305,
+      "t-bone": 0.008547008547008548,
+      "sideswipe": 0.3,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       48,
+       53,
+       4,
+       10,
+       1,
+       0
+      ],
+      [
+       89,
+       16,
+       4,
+       2,
+       7,
+       0
+      ],
+      [
+       5,
+       30,
+       1,
+       19,
+       62,
+       0
+      ],
+      [
+       32,
+       1,
+       1,
+       15,
+       1,
+       0
+      ],
+      [
+       6,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_scenario_fold1": {
+     "n": 407,
+     "accuracy": 0.3415233415233415,
+     "macro_accuracy": 0.26117819838451045,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.46551724137931033,
+      "rear-end": 0.07627118644067797,
+      "t-bone": 0.5641025641025641,
+      "sideswipe": 0.2,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       54,
+       49,
+       1,
+       11,
+       1,
+       0
+      ],
+      [
+       106,
+       9,
+       1,
+       2,
+       0,
+       0
+      ],
+      [
+       7,
+       0,
+       66,
+       44,
+       0,
+       0
+      ],
+      [
+       34,
+       3,
+       3,
+       10,
+       0,
+       0
+      ],
+      [
+       1,
+       1,
+       4,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_leave_one_map_out": {
+     "n": 407,
+     "accuracy": 0.17444717444717445,
+     "macro_accuracy": 0.13567358519784,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.41379310344827586,
+      "rear-end": 0.0847457627118644,
+      "t-bone": 0.05982905982905983,
+      "sideswipe": 0.12,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 116,
+      "rear-end": 118,
+      "t-bone": 117,
+      "sideswipe": 50,
+      "single": 6
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       48,
+       52,
+       1,
+       12,
+       3,
+       0
+      ],
+      [
+       101,
+       10,
+       3,
+       2,
+       2,
+       0
+      ],
+      [
+       0,
+       8,
+       7,
+       91,
+       11,
+       0
+      ],
+      [
+       32,
+       3,
+       9,
+       6,
+       0,
+       0
+      ],
+      [
+       6,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    }
+   },
+   "outside": {
+    "vlm8b_zero_shot": {
+     "n": 186,
+     "accuracy": 0.34408602150537637,
+     "macro_accuracy": 0.34005084597177176,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 0.058823529411764705,
+      "t-bone": 0.7868852459016393,
+      "sideswipe": 0.45454545454545453,
+      "single": 0.4
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       1,
+       18,
+       5,
+       6,
+       0
+      ],
+      [
+       0,
+       4,
+       36,
+       19,
+       9,
+       0
+      ],
+      [
+       0,
+       1,
+       48,
+       10,
+       2,
+       0
+      ],
+      [
+       0,
+       1,
+       11,
+       10,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       3,
+       0,
+       2,
+       0
+      ]
+     ]
+    },
+    "majority_scenario_folds": {
+     "n": 186,
+     "accuracy": 0.3655913978494624,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       30,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       68,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       61,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       22,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       5,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "majority_leave_one_map_out": {
+     "n": 186,
+     "accuracy": 0.3655913978494624,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       30,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       68,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       61,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       22,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       5,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "qlora_epoch1": {
+     "n": 186,
+     "accuracy": 0.3602150537634409,
+     "macro_accuracy": 0.286130446217235,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.6,
+      "rear-end": 0.014705882352941176,
+      "t-bone": 0.7704918032786885,
+      "sideswipe": 0.045454545454545456,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       18,
+       4,
+       4,
+       2,
+       2,
+       0
+      ],
+      [
+       65,
+       1,
+       0,
+       0,
+       2,
+       0
+      ],
+      [
+       14,
+       0,
+       47,
+       0,
+       0,
+       0
+      ],
+      [
+       21,
+       0,
+       0,
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       4,
+       1,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "probe_A_leave_one_map_out": {
+     "n": 186,
+     "accuracy": 0.17204301075268819,
+     "macro_accuracy": 0.12702083515969725,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.23333333333333334,
+      "rear-end": 0.3235294117647059,
+      "t-bone": 0.03278688524590164,
+      "sideswipe": 0.045454545454545456,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       7,
+       7,
+       5,
+       10,
+       1,
+       0
+      ],
+      [
+       26,
+       22,
+       15,
+       1,
+       4,
+       0
+      ],
+      [
+       4,
+       48,
+       2,
+       7,
+       0,
+       0
+      ],
+      [
+       13,
+       4,
+       3,
+       1,
+       1,
+       0
+      ],
+      [
+       3,
+       0,
+       0,
+       2,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_scenario_fold1": {
+     "n": 186,
+     "accuracy": 0.16129032258064516,
+     "macro_accuracy": 0.13197744075275414,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.3333333333333333,
+      "rear-end": 0.2647058823529412,
+      "t-bone": 0.01639344262295082,
+      "sideswipe": 0.045454545454545456,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       10,
+       10,
+       1,
+       9,
+       0,
+       0
+      ],
+      [
+       46,
+       18,
+       3,
+       0,
+       1,
+       0
+      ],
+      [
+       33,
+       1,
+       1,
+       26,
+       0,
+       0
+      ],
+      [
+       21,
+       0,
+       0,
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       4,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_leave_one_map_out": {
+     "n": 186,
+     "accuracy": 0.16129032258064516,
+     "macro_accuracy": 0.13778966131907308,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.3333333333333333,
+      "rear-end": 0.2647058823529412,
+      "t-bone": 0.0,
+      "sideswipe": 0.09090909090909091,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       10,
+       10,
+       2,
+       7,
+       1,
+       0
+      ],
+      [
+       40,
+       18,
+       9,
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       13,
+       0,
+       22,
+       26,
+       0
+      ],
+      [
+       20,
+       0,
+       0,
+       2,
+       0,
+       0
+      ],
+      [
+       4,
+       1,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_scenario_fold1": {
+     "n": 186,
+     "accuracy": 0.23118279569892472,
+     "macro_accuracy": 0.17900090587650858,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.36666666666666664,
+      "rear-end": 0.22058823529411764,
+      "t-bone": 0.26229508196721313,
+      "sideswipe": 0.045454545454545456,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       11,
+       15,
+       1,
+       3,
+       0,
+       0
+      ],
+      [
+       47,
+       15,
+       3,
+       1,
+       2,
+       0
+      ],
+      [
+       11,
+       2,
+       16,
+       32,
+       0,
+       0
+      ],
+      [
+       21,
+       0,
+       0,
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       3,
+       2,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_leave_one_map_out": {
+     "n": 186,
+     "accuracy": 0.13440860215053763,
+     "macro_accuracy": 0.11693404634581103,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.3333333333333333,
+      "rear-end": 0.20588235294117646,
+      "t-bone": 0.0,
+      "sideswipe": 0.045454545454545456,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       10,
+       16,
+       2,
+       1,
+       1,
+       0
+      ],
+      [
+       46,
+       14,
+       4,
+       1,
+       3,
+       0
+      ],
+      [
+       1,
+       13,
+       0,
+       14,
+       33,
+       0
+      ],
+      [
+       19,
+       0,
+       1,
+       1,
+       1,
+       0
+      ],
+      [
+       5,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_scenario_fold1": {
+     "n": 186,
+     "accuracy": 0.3709677419354839,
+     "macro_accuracy": 0.2827448058209871,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.3,
+      "rear-end": 0.1323529411764706,
+      "t-bone": 0.7540983606557377,
+      "sideswipe": 0.22727272727272727,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       9,
+       15,
+       1,
+       5,
+       0,
+       0
+      ],
+      [
+       57,
+       9,
+       2,
+       0,
+       0,
+       0
+      ],
+      [
+       1,
+       0,
+       46,
+       14,
+       0,
+       0
+      ],
+      [
+       14,
+       3,
+       0,
+       5,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       5,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_leave_one_map_out": {
+     "n": 186,
+     "accuracy": 0.16129032258064516,
+     "macro_accuracy": 0.15386341719996494,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.3,
+      "rear-end": 0.17647058823529413,
+      "t-bone": 0.06557377049180328,
+      "sideswipe": 0.22727272727272727,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 30,
+      "rear-end": 68,
+      "t-bone": 61,
+      "sideswipe": 22,
+      "single": 5
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       9,
+       16,
+       1,
+       4,
+       0,
+       0
+      ],
+      [
+       54,
+       12,
+       2,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       4,
+       4,
+       41,
+       12,
+       0
+      ],
+      [
+       14,
+       3,
+       0,
+       5,
+       0,
+       0
+      ],
+      [
+       5,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    }
+   },
+   "partly inside": {
+    "vlm8b_zero_shot": {
+     "n": 162,
+     "accuracy": 0.20987654320987653,
+     "macro_accuracy": 0.4787545787545787,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 0.13186813186813187,
+      "t-bone": 0.8333333333333334,
+      "sideswipe": 0.42857142857142855,
+      "single": 1.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       1,
+       21,
+       5,
+       1,
+       0
+      ],
+      [
+       0,
+       12,
+       28,
+       43,
+       8,
+       0
+      ],
+      [
+       0,
+       0,
+       5,
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       19,
+       15,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       2,
+       0
+      ]
+     ]
+    },
+    "majority_scenario_folds": {
+     "n": 162,
+     "accuracy": 0.5617283950617284,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       28,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       91,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       6,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       35,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       2,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "majority_leave_one_map_out": {
+     "n": 162,
+     "accuracy": 0.5617283950617284,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       28,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       91,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       6,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       35,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       2,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "qlora_epoch1": {
+     "n": 162,
+     "accuracy": 0.13580246913580246,
+     "macro_accuracy": 0.2619047619047619,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.6428571428571429,
+      "rear-end": 0.0,
+      "t-bone": 0.6666666666666666,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       18,
+       1,
+       7,
+       2,
+       0,
+       0
+      ],
+      [
+       87,
+       0,
+       2,
+       0,
+       2,
+       0
+      ],
+      [
+       2,
+       0,
+       4,
+       0,
+       0,
+       0
+      ],
+      [
+       34,
+       0,
+       1,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       2,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "probe_A_leave_one_map_out": {
+     "n": 162,
+     "accuracy": 0.2777777777777778,
+     "macro_accuracy": 0.1758241758241758,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.42857142857142855,
+      "rear-end": 0.3076923076923077,
+      "t-bone": 0.0,
+      "sideswipe": 0.14285714285714285,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       12,
+       6,
+       6,
+       4,
+       0,
+       0
+      ],
+      [
+       45,
+       28,
+       15,
+       1,
+       2,
+       0
+      ],
+      [
+       1,
+       5,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       21,
+       4,
+       2,
+       5,
+       3,
+       0
+      ],
+      [
+       2,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_scenario_fold1": {
+     "n": 162,
+     "accuracy": 0.2345679012345679,
+     "macro_accuracy": 0.17597069597069598,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.21428571428571427,
+      "rear-end": 0.24175824175824176,
+      "t-bone": 0.16666666666666666,
+      "sideswipe": 0.2571428571428571,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       6,
+       9,
+       1,
+       12,
+       0,
+       0
+      ],
+      [
+       63,
+       22,
+       4,
+       1,
+       1,
+       0
+      ],
+      [
+       4,
+       0,
+       1,
+       1,
+       0,
+       0
+      ],
+      [
+       26,
+       0,
+       0,
+       9,
+       0,
+       0
+      ],
+      [
+       1,
+       0,
+       1,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_leave_one_map_out": {
+     "n": 162,
+     "accuracy": 0.19753086419753085,
+     "macro_accuracy": 0.12604395604395605,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.25,
+      "rear-end": 0.2087912087912088,
+      "t-bone": 0.0,
+      "sideswipe": 0.17142857142857143,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       7,
+       7,
+       3,
+       11,
+       0,
+       0
+      ],
+      [
+       57,
+       19,
+       12,
+       1,
+       2,
+       0
+      ],
+      [
+       0,
+       1,
+       0,
+       3,
+       2,
+       0
+      ],
+      [
+       28,
+       0,
+       1,
+       6,
+       0,
+       0
+      ],
+      [
+       2,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_scenario_fold1": {
+     "n": 162,
+     "accuracy": 0.17901234567901234,
+     "macro_accuracy": 0.20073260073260074,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.2857142857142857,
+      "rear-end": 0.0989010989010989,
+      "t-bone": 0.3333333333333333,
+      "sideswipe": 0.2857142857142857,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       8,
+       17,
+       0,
+       3,
+       0,
+       0
+      ],
+      [
+       76,
+       9,
+       5,
+       1,
+       0,
+       0
+      ],
+      [
+       1,
+       1,
+       2,
+       2,
+       0,
+       0
+      ],
+      [
+       25,
+       0,
+       0,
+       10,
+       0,
+       0
+      ],
+      [
+       1,
+       0,
+       1,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_leave_one_map_out": {
+     "n": 162,
+     "accuracy": 0.16049382716049382,
+     "macro_accuracy": 0.12835164835164833,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.2857142857142857,
+      "rear-end": 0.0989010989010989,
+      "t-bone": 0.0,
+      "sideswipe": 0.2571428571428571,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       8,
+       15,
+       2,
+       2,
+       1,
+       0
+      ],
+      [
+       70,
+       9,
+       5,
+       2,
+       5,
+       0
+      ],
+      [
+       0,
+       2,
+       0,
+       1,
+       3,
+       0
+      ],
+      [
+       24,
+       0,
+       1,
+       9,
+       1,
+       0
+      ],
+      [
+       2,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_scenario_fold1": {
+     "n": 162,
+     "accuracy": 0.2037037037037037,
+     "macro_accuracy": 0.3099267399267399,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.5357142857142857,
+      "rear-end": 0.03296703296703297,
+      "t-bone": 0.6666666666666666,
+      "sideswipe": 0.3142857142857143,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       15,
+       13,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       85,
+       3,
+       3,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       4,
+       2,
+       0,
+       0
+      ],
+      [
+       22,
+       2,
+       0,
+       11,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       2,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_leave_one_map_out": {
+     "n": 162,
+     "accuracy": 0.16666666666666666,
+     "macro_accuracy": 0.16164835164835162,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.5357142857142857,
+      "rear-end": 0.04395604395604396,
+      "t-bone": 0.0,
+      "sideswipe": 0.22857142857142856,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 28,
+      "rear-end": 91,
+      "t-bone": 6,
+      "sideswipe": 35,
+      "single": 2
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       15,
+       13,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       82,
+       4,
+       5,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       1,
+       0,
+       5,
+       0,
+       0
+      ],
+      [
+       23,
+       3,
+       1,
+       8,
+       0,
+       0
+      ],
+      [
+       2,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    }
+   }
+  },
+  "day_night": {
+   "day": {
+    "vlm8b_zero_shot": {
+     "n": 599,
+     "accuracy": 0.3038397328881469,
+     "macro_accuracy": 0.34540241536100086,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 0.0821917808219178,
+      "t-bone": 0.8881118881118881,
+      "sideswipe": 0.37209302325581395,
+      "single": 0.38461538461538464
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       1,
+       123,
+       11,
+       3,
+       0
+      ],
+      [
+       0,
+       18,
+       102,
+       87,
+       12,
+       0
+      ],
+      [
+       0,
+       0,
+       127,
+       16,
+       0,
+       0
+      ],
+      [
+       0,
+       4,
+       49,
+       32,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       6,
+       2,
+       5,
+       0
+      ]
+     ]
+    },
+    "majority_scenario_folds": {
+     "n": 599,
+     "accuracy": 0.3656093489148581,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       138,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       219,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       143,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       86,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       13,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "majority_leave_one_map_out": {
+     "n": 599,
+     "accuracy": 0.3656093489148581,
+     "macro_accuracy": 0.2,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       138,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       219,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       143,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       86,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       13,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "qlora_epoch1": {
+     "n": 599,
+     "accuracy": 0.31886477462437396,
+     "macro_accuracy": 0.27134574130294176,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.6086956521739131,
+      "rear-end": 0.0091324200913242,
+      "t-bone": 0.7272727272727273,
+      "sideswipe": 0.011627906976744186,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       84,
+       8,
+       38,
+       7,
+       1,
+       0
+      ],
+      [
+       205,
+       2,
+       4,
+       0,
+       8,
+       0
+      ],
+      [
+       33,
+       1,
+       104,
+       1,
+       4,
+       0
+      ],
+      [
+       82,
+       0,
+       3,
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       10,
+       3,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "probe_A_leave_one_map_out": {
+     "n": 599,
+     "accuracy": 0.2654424040066778,
+     "macro_accuracy": 0.21032354720458107,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.427536231884058,
+      "rear-end": 0.3515981735159817,
+      "t-bone": 0.09090909090909091,
+      "sideswipe": 0.10465116279069768,
+      "single": 0.07692307692307693
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       59,
+       29,
+       30,
+       18,
+       2,
+       0
+      ],
+      [
+       104,
+       77,
+       31,
+       0,
+       7,
+       0
+      ],
+      [
+       7,
+       109,
+       13,
+       14,
+       0,
+       0
+      ],
+      [
+       53,
+       14,
+       3,
+       9,
+       7,
+       0
+      ],
+      [
+       7,
+       3,
+       0,
+       2,
+       1,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_scenario_fold1": {
+     "n": 599,
+     "accuracy": 0.20534223706176963,
+     "macro_accuracy": 0.16697876597872444,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.3115942028985507,
+      "rear-end": 0.2511415525114155,
+      "t-bone": 0.027972027972027972,
+      "sideswipe": 0.2441860465116279,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       43,
+       35,
+       7,
+       52,
+       1,
+       0
+      ],
+      [
+       150,
+       55,
+       7,
+       0,
+       7,
+       0
+      ],
+      [
+       72,
+       2,
+       4,
+       62,
+       3,
+       0
+      ],
+      [
+       65,
+       0,
+       0,
+       21,
+       0,
+       0
+      ],
+      [
+       3,
+       3,
+       7,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_leave_one_map_out": {
+     "n": 599,
+     "accuracy": 0.18697829716193656,
+     "macro_accuracy": 0.14724942402962266,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.34057971014492755,
+      "rear-end": 0.2328767123287671,
+      "t-bone": 0.0,
+      "sideswipe": 0.16279069767441862,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       47,
+       35,
+       12,
+       43,
+       1,
+       0
+      ],
+      [
+       134,
+       51,
+       24,
+       0,
+       10,
+       0
+      ],
+      [
+       1,
+       15,
+       0,
+       48,
+       79,
+       0
+      ],
+      [
+       68,
+       2,
+       2,
+       14,
+       0,
+       0
+      ],
+      [
+       12,
+       1,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_scenario_fold1": {
+     "n": 599,
+     "accuracy": 0.2570951585976628,
+     "macro_accuracy": 0.22480022528362484,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.39855072463768115,
+      "rear-end": 0.1643835616438356,
+      "t-bone": 0.25874125874125875,
+      "sideswipe": 0.3023255813953488,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       55,
+       64,
+       5,
+       14,
+       0,
+       0
+      ],
+      [
+       168,
+       36,
+       8,
+       6,
+       1,
+       0
+      ],
+      [
+       22,
+       9,
+       37,
+       75,
+       0,
+       0
+      ],
+      [
+       59,
+       1,
+       0,
+       26,
+       0,
+       0
+      ],
+      [
+       2,
+       6,
+       5,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_leave_one_map_out": {
+     "n": 599,
+     "accuracy": 0.18363939899833054,
+     "macro_accuracy": 0.16329856734582693,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.391304347826087,
+      "rear-end": 0.1461187214611872,
+      "t-bone": 0.0,
+      "sideswipe": 0.27906976744186046,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       54,
+       65,
+       6,
+       12,
+       1,
+       0
+      ],
+      [
+       161,
+       32,
+       10,
+       4,
+       12,
+       0
+      ],
+      [
+       3,
+       16,
+       0,
+       30,
+       94,
+       0
+      ],
+      [
+       58,
+       1,
+       2,
+       24,
+       1,
+       0
+      ],
+      [
+       13,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_scenario_fold1": {
+     "n": 599,
+     "accuracy": 0.333889816360601,
+     "macro_accuracy": 0.2975390211314141,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.42028985507246375,
+      "rear-end": 0.0867579908675799,
+      "t-bone": 0.6783216783216783,
+      "sideswipe": 0.3023255813953488,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       58,
+       64,
+       2,
+       13,
+       1,
+       0
+      ],
+      [
+       192,
+       19,
+       6,
+       2,
+       0,
+       0
+      ],
+      [
+       3,
+       0,
+       97,
+       43,
+       0,
+       0
+      ],
+      [
+       51,
+       8,
+       1,
+       26,
+       0,
+       0
+      ],
+      [
+       1,
+       1,
+       11,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_leave_one_map_out": {
+     "n": 599,
+     "accuracy": 0.17195325542570952,
+     "macro_accuracy": 0.15314034414966587,
+     "n_types_in_macro": 5,
+     "recall": {
+      "head-on": 0.37681159420289856,
+      "rear-end": 0.1050228310502283,
+      "t-bone": 0.06293706293706294,
+      "sideswipe": 0.22093023255813954,
+      "single": 0.0
+     },
+     "n_per_type": {
+      "head-on": 138,
+      "rear-end": 219,
+      "t-bone": 143,
+      "sideswipe": 86,
+      "single": 13
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       52,
+       67,
+       2,
+       14,
+       3,
+       0
+      ],
+      [
+       184,
+       23,
+       9,
+       2,
+       1,
+       0
+      ],
+      [
+       0,
+       4,
+       9,
+       110,
+       20,
+       0
+      ],
+      [
+       51,
+       9,
+       7,
+       19,
+       0,
+       0
+      ],
+      [
+       13,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    }
+   },
+   "night": {
+    "vlm8b_zero_shot": {
+     "n": 156,
+     "accuracy": 0.32051282051282054,
+     "macro_accuracy": 0.3276562938043174,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 0.1724137931034483,
+      "t-bone": 0.8048780487804879,
+      "sideswipe": 0.3333333333333333
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       1,
+       28,
+       3,
+       4,
+       0
+      ],
+      [
+       0,
+       10,
+       23,
+       20,
+       5,
+       0
+      ],
+      [
+       0,
+       1,
+       33,
+       5,
+       2,
+       0
+      ],
+      [
+       0,
+       2,
+       11,
+       7,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "majority_scenario_folds": {
+     "n": 156,
+     "accuracy": 0.3717948717948718,
+     "macro_accuracy": 0.25,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       36,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       58,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       41,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       21,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "majority_leave_one_map_out": {
+     "n": 156,
+     "accuracy": 0.3717948717948718,
+     "macro_accuracy": 0.25,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.0,
+      "rear-end": 1.0,
+      "t-bone": 0.0,
+      "sideswipe": 0.0
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       0,
+       36,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       58,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       41,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       21,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "qlora_epoch1": {
+     "n": 156,
+     "accuracy": 0.2564102564102564,
+     "macro_accuracy": 0.26507452574525747,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.6944444444444444,
+      "rear-end": 0.0,
+      "t-bone": 0.36585365853658536,
+      "sideswipe": 0.0
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       25,
+       3,
+       7,
+       0,
+       1,
+       0
+      ],
+      [
+       58,
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       23,
+       3,
+       15,
+       0,
+       0,
+       0
+      ],
+      [
+       21,
+       0,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "probe_A_leave_one_map_out": {
+     "n": 156,
+     "accuracy": 0.1987179487179487,
+     "macro_accuracy": 0.1817603828747647,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.3333333333333333,
+      "rear-end": 0.22413793103448276,
+      "t-bone": 0.12195121951219512,
+      "sideswipe": 0.047619047619047616
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       12,
+       5,
+       11,
+       5,
+       3,
+       0
+      ],
+      [
+       20,
+       13,
+       20,
+       3,
+       2,
+       0
+      ],
+      [
+       2,
+       34,
+       5,
+       0,
+       0,
+       0
+      ],
+      [
+       11,
+       1,
+       7,
+       1,
+       1,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_scenario_fold1": {
+     "n": 156,
+     "accuracy": 0.17307692307692307,
+     "macro_accuracy": 0.1649645560495014,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.3333333333333333,
+      "rear-end": 0.20689655172413793,
+      "t-bone": 0.024390243902439025,
+      "sideswipe": 0.09523809523809523
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       12,
+       12,
+       0,
+       12,
+       0,
+       0
+      ],
+      [
+       45,
+       12,
+       0,
+       1,
+       0,
+       0
+      ],
+      [
+       37,
+       0,
+       1,
+       3,
+       0,
+       0
+      ],
+      [
+       19,
+       0,
+       0,
+       2,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_224_leave_one_map_out": {
+     "n": 156,
+     "accuracy": 0.15384615384615385,
+     "macro_accuracy": 0.14497810618500273,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.2777777777777778,
+      "rear-end": 0.20689655172413793,
+      "t-bone": 0.0,
+      "sideswipe": 0.09523809523809523
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       10,
+       10,
+       5,
+       11,
+       0,
+       0
+      ],
+      [
+       39,
+       12,
+       5,
+       2,
+       0,
+       0
+      ],
+      [
+       4,
+       20,
+       0,
+       11,
+       6,
+       0
+      ],
+      [
+       19,
+       0,
+       0,
+       2,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_scenario_fold1": {
+     "n": 156,
+     "accuracy": 0.21794871794871795,
+     "macro_accuracy": 0.21068291347938112,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.3888888888888889,
+      "rear-end": 0.13793103448275862,
+      "t-bone": 0.2682926829268293,
+      "sideswipe": 0.047619047619047616
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       14,
+       20,
+       0,
+       2,
+       0,
+       0
+      ],
+      [
+       49,
+       8,
+       0,
+       0,
+       1,
+       0
+      ],
+      [
+       13,
+       4,
+       11,
+       13,
+       0,
+       0
+      ],
+      [
+       20,
+       0,
+       0,
+       1,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v1_leave_one_map_out": {
+     "n": 156,
+     "accuracy": 0.1346153846153846,
+     "macro_accuracy": 0.13150807000680845,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.3333333333333333,
+      "rear-end": 0.1206896551724138,
+      "t-bone": 0.024390243902439025,
+      "sideswipe": 0.047619047619047616
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       12,
+       19,
+       2,
+       1,
+       2,
+       0
+      ],
+      [
+       44,
+       7,
+       3,
+       1,
+       3,
+       0
+      ],
+      [
+       3,
+       29,
+       1,
+       4,
+       4,
+       0
+      ],
+      [
+       17,
+       0,
+       1,
+       1,
+       2,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_scenario_fold1": {
+     "n": 156,
+     "accuracy": 0.26282051282051283,
+     "macro_accuracy": 0.2633632370806467,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.5555555555555556,
+      "rear-end": 0.034482758620689655,
+      "t-bone": 0.4634146341463415,
+      "sideswipe": 0.0
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       20,
+       13,
+       0,
+       3,
+       0,
+       0
+      ],
+      [
+       56,
+       2,
+       0,
+       0,
+       0,
+       0
+      ],
+      [
+       5,
+       0,
+       19,
+       17,
+       0,
+       0
+      ],
+      [
+       19,
+       0,
+       2,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    },
+    "dinov2_v2_leave_one_map_out": {
+     "n": 156,
+     "accuracy": 0.16025641025641027,
+     "macro_accuracy": 0.16401504532286704,
+     "n_types_in_macro": 4,
+     "recall": {
+      "head-on": 0.5555555555555556,
+      "rear-end": 0.05172413793103448,
+      "t-bone": 0.04878048780487805,
+      "sideswipe": 0.0
+     },
+     "n_per_type": {
+      "head-on": 36,
+      "rear-end": 58,
+      "t-bone": 41,
+      "sideswipe": 21
+     },
+     "n_invalid": 0,
+     "confusion": [
+      [
+       20,
+       14,
+       0,
+       2,
+       0,
+       0
+      ],
+      [
+       53,
+       3,
+       1,
+       0,
+       1,
+       0
+      ],
+      [
+       0,
+       9,
+       2,
+       27,
+       3,
+       0
+      ],
+      [
+       18,
+       0,
+       3,
+       0,
+       0,
+       0
+      ],
+      [
+       0,
+       0,
+       0,
+       0,
+       0,
+       0
+      ]
+     ]
+    }
+   }
+  }
+ },
+ "success": false,
+ "answer_distribution": {
+  "head-on": 0,
+  "rear-end": 37,
+  "t-bone": 502,
+  "sideswipe": 183,
+  "single": 33,
+  "invalid": 0
+ },
+ "rule_applied": 0,
+ "parsed_vs_final_differ": 0,
+ "invalid_answers": [],
+ "raw_answer_forms": {
+  "{\"type\": \"t-bone\"}": 502,
+  "{\"type\": \"sideswipe\"}": 183,
+  "{\"type\": \"rear-end\"}": 37,
+  "{\"type\": \"single\"}": 33
+ },
+ "timing": {
+  "gen_s_mean": 5.032996911658221,
+  "gen_s_max": 5.4767268000287,
+  "prep_s_mean": 0.6219976131489735,
+  "sum_prep_gen_h": 1.1859780183970643,
+  "peak_alloc_gb_max": 5.926393985748291,
+  "peak_reserved_gb_max": 7.19921875,
+  "new_tokens": {
+   "7": 33,
+   "8": 37,
+   "9": 685
+  },
+  "input_tokens": {
+   "1821": 596,
+   "1822": 25,
+   "1823": 15,
+   "1824": 13,
+   "1825": 11,
+   "1826": 15,
+   "1827": 20,
+   "1828": 10,
+   "1829": 50
+  }
+ },
+ "sessions": [
+  {
+   "start": "2026-11-26T22:41:01Z",
+   "done_before": 0,
+   "todo": 755,
+   "amendment_1_sha256": "6c3dcfc329c183003c1126b63bd901462a4f3f0ccc70544974952a5b053cadb2",
+   "amendment_2_sha256": "107cae45b07d03f57ca05705ff2844b5932569f5e8d64938d9141e0d7413f323",
+   "stage2_note_sha256": "66ec3044ec009d74d9d62bc3fa9449e9c6a874beb0911c4ffa613cf372edd6f5",
+   "hf_hub_offline": "1",
+   "step": {
+    "step": 2,
+    "cpu": [
+     "embed_tokens",
+     "lm_head"
+    ],
+    "size": 448
+   },
+   "power_start": "BatteryStatus 2 (2 = on AC mains), charge 80%",
+   "load_s": 6.092120885848999,
+   "mem_after_load_alloc_gb": 4.411757469177246,
+   "linear4bit_modules": {
+    "visual": 0,
+    "language_model": 252,
+    "other": 0
+   },
+   "device_map": {
+    "model.visual": 0,
+    "model.language_model.embed_tokens": "cpu",
+    "model.language_model.layers": 0,
+    "model.language_model.norm": 0,
+    "model.language_model.rotary_emb": 0,
+    "lm_head": "cpu"
+   },
+   "fields_differing_from_saved_except_skip_list": {
+    "llm_int8_enable_fp32_cpu_offload": [
+     false,
+     true
+    ]
+   },
+   "end": "2026-11-26T23:52:46Z",
+   "done_this_session": 755,
+   "seconds_this_session": 4297.6333882808685,
+   "done_total": 755,
+   "power_end": "BatteryStatus 2 (2 = on AC mains), charge 80%"
+  }
+ ]
+}

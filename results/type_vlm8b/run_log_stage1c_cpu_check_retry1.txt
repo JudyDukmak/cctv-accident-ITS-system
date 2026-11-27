@@ -1,0 +1,110 @@
+command: HF_HUB_OFFLINE=1 .venv-vlm/Scripts/python.exe type_vlm8b_stage1c_cpucheck.py   (2026-11-26T22:30:15Z); retry 1 after the weights_map key error in run_log_stage1c_cpu_check.txt (load-only check, no frames, no generate)
+W1127 01:30:19.043000 7840 .venv-vlm\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:   3%|▎         | 20/750 [00:00<00:03, 194.33it/s]Loading weights:   5%|▌         | 40/750 [00:00<00:04, 166.77it/s]Loading weights:   8%|▊         | 57/750 [00:00<00:04, 157.37it/s]Loading weights:  10%|█         | 75/750 [00:00<00:04, 163.62it/s]Loading weights:  12%|█▏        | 92/750 [00:00<00:04, 151.94it/s]Loading weights:  15%|█▍        | 109/750 [00:00<00:04, 149.04it/s]Loading weights:  17%|█▋        | 126/750 [00:00<00:04, 151.90it/s]Loading weights:  19%|█▉        | 142/750 [00:00<00:04, 151.04it/s]Loading weights:  21%|██        | 158/750 [00:01<00:03, 152.32it/s]Loading weights:  23%|██▎       | 175/750 [00:01<00:03, 152.00it/s]Loading weights:  26%|██▌       | 193/750 [00:01<00:03, 157.36it/s]Loading weights:  28%|██▊       | 210/750 [00:01<00:03, 156.90it/s]Loading weights:  30%|███       | 226/750 [00:01<00:03, 153.82it/s]Loading weights:  32%|███▏      | 242/750 [00:01<00:03, 151.44it/s]Loading weights:  34%|███▍      | 258/750 [00:01<00:03, 152.85it/s]Loading weights:  37%|███▋      | 277/750 [00:01<00:02, 159.07it/s]Loading weights:  39%|███▉      | 293/750 [00:01<00:02, 158.03it/s]Loading weights:  41%|████      | 309/750 [00:01<00:02, 154.52it/s]Loading weights:  43%|████▎     | 325/750 [00:02<00:02, 152.07it/s]Loading weights:  46%|████▌     | 343/750 [00:02<00:02, 154.77it/s]Loading weights:  48%|████▊     | 362/750 [00:02<00:02, 162.03it/s]Loading weights:  51%|█████     | 379/750 [00:02<00:02, 150.01it/s]Loading weights:  53%|█████▎    | 398/750 [00:02<00:02, 159.66it/s]Loading weights:  62%|██████▏   | 463/750 [00:02<00:00, 293.34it/s]Loading weights:  69%|██████▉   | 520/750 [00:02<00:00, 367.71it/s]Loading weights:  77%|███████▋  | 579/750 [00:02<00:00, 428.26it/s]Loading weights:  85%|████████▌ | 641/750 [00:02<00:00, 479.35it/s]Loading weights:  93%|█████████▎| 700/750 [00:03<00:00, 498.12it/s]Loading weights: 100%|██████████| 750/750 [00:03<00:00, 227.13it/s]
+Some parameters are on the meta device because they were offloaded to the cpu.
+step 1: loaded in 6.2 s; GPU allocated 5.57 GB (reserved 5.57 GB); 4-bit modules {'visual': 0, 'language_model': 252, 'other': 0}; on CPU {}
+{
+ "step": 1,
+ "hf_device_map": {
+  "model.visual": "0",
+  "model.language_model.embed_tokens": "cpu",
+  "model.language_model.layers": "0",
+  "model.language_model.norm": "0",
+  "model.language_model.rotary_emb": "0",
+  "lm_head": "0"
+ },
+ "offloaded_modules": {
+  "model.language_model.embed_tokens": {
+   "hook": "AlignDevicesHook",
+   "execution_device": "0",
+   "offload": true,
+   "param_devices_in_model": [
+    "meta"
+   ],
+   "stored_weights": {
+    "model.language_model.embed_tokens.weight": {
+     "device": "cpu",
+     "dtype": "torch.bfloat16",
+     "shape": [
+      151936,
+      4096
+     ],
+     "loader": "OffloadedWeightsLoader",
+     "held_in_cpu_state_dict": true,
+     "index_entry": {}
+    }
+   }
+  }
+ },
+ "mem_after_load_alloc_gb": 5.570937156677246,
+ "linear4bit_modules": {
+  "visual": 0,
+  "language_model": 252,
+  "other": 0
+ }
+}
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:   2%|▏         | 15/750 [00:00<00:04, 148.75it/s]Loading weights:   4%|▍         | 30/750 [00:00<00:04, 145.10it/s]Loading weights:   6%|▌         | 45/750 [00:00<00:05, 122.12it/s]Loading weights:   8%|▊         | 58/750 [00:00<00:05, 116.51it/s]Loading weights:   9%|▉         | 70/750 [00:00<00:05, 116.53it/s]Loading weights:  11%|█▏        | 86/750 [00:00<00:05, 128.73it/s]Loading weights:  13%|█▎        | 100/750 [00:00<00:05, 125.76it/s]Loading weights:  15%|█▌        | 113/750 [00:00<00:05, 124.28it/s]Loading weights:  17%|█▋        | 126/750 [00:01<00:05, 109.59it/s]Loading weights:  19%|█▉        | 141/750 [00:01<00:05, 117.35it/s]Loading weights:  21%|██        | 154/750 [00:01<00:04, 119.80it/s]Loading weights:  22%|██▏       | 167/750 [00:01<00:05, 104.51it/s]Loading weights:  24%|██▍       | 180/750 [00:01<00:05, 108.16it/s]Loading weights:  26%|██▌       | 192/750 [00:01<00:05, 107.10it/s]Loading weights:  28%|██▊       | 207/750 [00:01<00:04, 115.59it/s]Loading weights:  29%|██▉       | 219/750 [00:01<00:04, 115.82it/s]Loading weights:  31%|███       | 231/750 [00:01<00:04, 116.06it/s]Loading weights:  32%|███▏      | 243/750 [00:02<00:04, 108.85it/s]Loading weights:  34%|███▍      | 255/750 [00:02<00:04, 104.28it/s]Loading weights:  36%|███▌      | 268/750 [00:02<00:04, 106.66it/s]Loading weights:  37%|███▋      | 280/750 [00:02<00:04, 107.70it/s]Loading weights:  39%|███▉      | 291/750 [00:02<00:04, 105.15it/s]Loading weights:  40%|████      | 303/750 [00:02<00:04, 109.01it/s]Loading weights:  42%|████▏     | 314/750 [00:02<00:04, 108.39it/s]Loading weights:  43%|████▎     | 325/750 [00:02<00:03, 107.83it/s]Loading weights:  45%|████▍     | 336/750 [00:02<00:03, 104.01it/s]Loading weights:  46%|████▋     | 347/750 [00:03<00:04, 98.17it/s] Loading weights:  48%|████▊     | 358/750 [00:03<00:03, 100.56it/s]Loading weights:  50%|████▉     | 372/750 [00:03<00:03, 108.80it/s]Loading weights:  51%|█████     | 384/750 [00:03<00:03, 111.52it/s]Loading weights:  53%|█████▎    | 396/750 [00:03<00:03, 111.30it/s]Loading weights:  60%|██████    | 450/750 [00:03<00:01, 227.27it/s]Loading weights:  67%|██████▋   | 499/750 [00:03<00:00, 298.97it/s]Loading weights:  73%|███████▎  | 546/750 [00:03<00:00, 340.81it/s]Loading weights:  79%|███████▉  | 591/750 [00:03<00:00, 368.47it/s]Loading weights:  86%|████████▌ | 642/750 [00:04<00:00, 409.05it/s]Loading weights:  92%|█████████▏| 688/750 [00:04<00:00, 412.81it/s]Loading weights:  97%|█████████▋| 730/750 [00:04<00:00, 309.45it/s]Loading weights: 100%|██████████| 750/750 [00:04<00:00, 167.09it/s]
+Some parameters are on the meta device because they were offloaded to the cpu.
+step 2: loaded in 6.5 s; GPU allocated 5.57 GB (reserved 5.57 GB); 4-bit modules {'visual': 0, 'language_model': 252, 'other': 0}; on CPU {}
+{
+ "step": 2,
+ "hf_device_map": {
+  "model.visual": "0",
+  "model.language_model.embed_tokens": "cpu",
+  "model.language_model.layers": "0",
+  "model.language_model.norm": "0",
+  "model.language_model.rotary_emb": "0",
+  "lm_head": "cpu"
+ },
+ "offloaded_modules": {
+  "model.language_model.embed_tokens": {
+   "hook": "AlignDevicesHook",
+   "execution_device": "0",
+   "offload": true,
+   "param_devices_in_model": [
+    "meta"
+   ],
+   "stored_weights": {
+    "model.language_model.embed_tokens.weight": {
+     "device": "cpu",
+     "dtype": "torch.bfloat16",
+     "shape": [
+      151936,
+      4096
+     ],
+     "loader": "OffloadedWeightsLoader",
+     "held_in_cpu_state_dict": true,
+     "index_entry": {}
+    }
+   }
+  },
+  "lm_head": {
+   "hook": "AlignDevicesHook",
+   "execution_device": "0",
+   "offload": true,
+   "param_devices_in_model": [
+    "meta"
+   ],
+   "stored_weights": {
+    "lm_head.weight": {
+     "device": "cpu",
+     "dtype": "torch.bfloat16",
+     "shape": [
+      151936,
+      4096
+     ],
+     "loader": "OffloadedWeightsLoader",
+     "held_in_cpu_state_dict": true,
+     "index_entry": {}
+    }
+   }
+  }
+ },
+ "mem_after_load_alloc_gb": 5.570937156677246,
+ "linear4bit_modules": {
+  "visual": 0,
+  "language_model": 252,
+  "other": 0
+ }
+}
+exit 0

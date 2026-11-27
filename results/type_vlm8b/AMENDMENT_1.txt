@@ -1,0 +1,5 @@
+AMENDMENT 1 TO THE TYPE MODEL OPTION 1 PLAN (zero-shot Qwen3-VL-8B on a crop): MODEL LOADING
+Written 2026-11-26T22:18Z (2026-11-27 01:18 local, UTC+3), before stage 1b ran anything. PLAN.txt and PROMPT.txt are not changed.
+
+Stage 1 crashed before any answer was produced: transformers 5.22.1 built the 116 vision-tower modules as 4-bit layers although the checkpoint stores them in bf16 and its quantization_config lists 'visual' in llm_int8_skip_modules. Change: load the same checkpoint and revision with an explicit BitsAndBytesConfig that copies the checkpoint's own quantization_config (nf4, double quantisation, bf16 compute, uint8 storage) and lists in llm_int8_skip_modules both the checkpoint's names and the full module paths of the vision tower, merger and lm_head as named in this transformers version. Same weights, same quantisation of the language part; only the loading is corrected. No answer had been seen when this was decided.
+Memory fallback, fixed now: if 16 frames at 448 x 448 run out of memory, use 16 frames at 336 x 336 with the same crop. If that also runs out of memory, stop and report.

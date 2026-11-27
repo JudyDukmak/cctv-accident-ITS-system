@@ -1,0 +1,91 @@
+command: HF_HUB_OFFLINE=1 .venv-vlm/Scripts/python.exe type_vlm8b.py --speed   (2026-11-26T21:57:29Z)
+W1127 00:58:11.161000 13264 .venv-vlm\Lib\site-packages\torch\distributed\elastic\multiprocessing\redirects.py:29] NOTE: Redirects are currently not supported in Windows or MacOs.
+Loading weights:   0%|          | 0/750 [00:00<?, ?it/s]Loading weights:   2%|▏         | 17/750 [00:00<00:04, 158.68it/s]Loading weights:   5%|▍         | 34/750 [00:00<00:04, 155.29it/s]Loading weights:   7%|▋         | 50/750 [00:00<00:04, 153.11it/s]Loading weights:   9%|▉         | 68/750 [00:00<00:04, 152.64it/s]Loading weights:  11%|█         | 84/750 [00:00<00:04, 150.71it/s]Loading weights:  13%|█▎        | 101/750 [00:00<00:04, 147.13it/s]Loading weights:  15%|█▌        | 116/750 [00:00<00:04, 145.02it/s]Loading weights:  18%|█▊        | 133/750 [00:00<00:04, 143.27it/s]Loading weights:  20%|█▉        | 149/750 [00:01<00:04, 145.74it/s]Loading weights:  22%|██▏       | 166/750 [00:01<00:03, 146.43it/s]Loading weights:  24%|██▍       | 182/750 [00:01<00:03, 149.05it/s]Loading weights:  27%|██▋       | 200/750 [00:01<00:03, 151.35it/s]Loading weights:  29%|██▉       | 216/750 [00:01<00:03, 147.35it/s]Loading weights:  31%|███       | 233/750 [00:01<00:03, 147.59it/s]Loading weights:  33%|███▎      | 248/750 [00:01<00:03, 144.55it/s]Loading weights:  35%|███▌      | 266/750 [00:01<00:03, 149.69it/s]Loading weights:  37%|███▋      | 281/750 [00:01<00:03, 149.73it/s]Loading weights:  39%|███▉      | 296/750 [00:02<00:03, 136.86it/s]Loading weights:  41%|████▏     | 310/750 [00:02<00:03, 119.16it/s]Loading weights:  43%|████▎     | 323/750 [00:02<00:03, 119.75it/s]Loading weights:  45%|████▍     | 336/750 [00:02<00:03, 112.14it/s]Loading weights:  46%|████▋     | 348/750 [00:02<00:03, 109.92it/s]Loading weights:  48%|████▊     | 360/750 [00:02<00:03, 106.68it/s]Loading weights:  49%|████▉     | 371/750 [00:02<00:03, 105.07it/s]Loading weights:  51%|█████     | 384/750 [00:02<00:03, 108.11it/s]Loading weights:  53%|█████▎    | 398/750 [00:02<00:03, 116.02it/s]Loading weights:  61%|██████    | 458/750 [00:03<00:01, 249.41it/s]Loading weights:  68%|██████▊   | 511/750 [00:03<00:00, 327.03it/s]Loading weights:  74%|███████▍  | 555/750 [00:03<00:00, 352.51it/s]Loading weights:  79%|███████▉  | 592/750 [00:03<00:00, 350.93it/s]Loading weights:  84%|████████▍ | 631/750 [00:03<00:00, 353.24it/s]Loading weights:  91%|█████████ | 679/750 [00:03<00:00, 389.08it/s]Loading weights:  96%|█████████▌| 720/750 [00:03<00:00, 388.28it/s]Loading weights: 100%|██████████| 750/750 [00:03<00:00, 191.03it/s]
+FP4 quantization state not initialized. Please call .cuda() or .to(device) on the LinearFP4 layer first.
+loaded in 8.4 s; allocated 6.74 GB; 4-bit modules {'visual': 116, 'language_model': 252, 'other': 0}
+Traceback (most recent call last):
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b.py", line 432, in <module>
+    main()
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b.py", line 428, in main
+    {"checks": checks, "download": download, "speed": speed, "report": report}[next(m for m in modes if getattr(a, m))]()
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\type_vlm8b.py", line 296, in speed
+    out = model.generate(**x, max_new_tokens=MAX_NEW, do_sample=False, use_cache=True,
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\torch\utils\_contextlib.py", line 124, in decorate_context
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\generation\utils.py", line 2902, in generate
+    model_kwargs = self._maybe_prepare_encoder_kwargs_for_generation(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\generation\utils.py", line 978, in _maybe_prepare_encoder_kwargs_for_generation
+    return self._prepare_multimodal_encoder_kwargs_for_generation(model_kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\generation\utils.py", line 1048, in _prepare_multimodal_encoder_kwargs_for_generation
+    model_kwargs["mm_encoder_outputs"][modality] = encoder_fn(**encoder_kwargs)
+                                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\utils\generic.py", line 1006, in wrapper
+    return func(*args, **translated)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\models\qwen3_vl\modeling_qwen3_vl.py", line 1028, in get_video_features
+    return self.get_image_features(pixel_values_videos, video_grid_thw, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\utils\generic.py", line 1006, in wrapper
+    return func(*args, **translated)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\utils\generic.py", line 943, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\models\qwen3_vl\modeling_qwen3_vl.py", line 1040, in get_image_features
+    vision_output: BaseModelOutputWithDeepstackFeatures = self.visual(
+                                                          ^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\torch\nn\modules\module.py", line 1776, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\torch\nn\modules\module.py", line 1787, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\utils\generic.py", line 1081, in wrapper
+    output = func(self, *args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\utils\output_capturing.py", line 287, in wrapper
+    outputs = func(self, *args, **kwargs)
+              ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\models\qwen3_vl\modeling_qwen3_vl.py", line 711, in forward
+    hidden_states = blk(
+                    ^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\modeling_layers.py", line 111, in __call__
+    return super().__call__(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\torch\nn\modules\module.py", line 1776, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\torch\nn\modules\module.py", line 1787, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\models\qwen3_vl\modeling_qwen3_vl.py", line 343, in forward
+    hidden_states = hidden_states + self.attn(
+                                    ^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\torch\nn\modules\module.py", line 1776, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\torch\nn\modules\module.py", line 1787, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\transformers\models\qwen3_vl\modeling_qwen3_vl.py", line 264, in forward
+    self.qkv(hidden_states).reshape(seq_length, 3, self.num_heads, -1).permute(1, 0, 2, 3).unbind(0)
+    ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\torch\nn\modules\module.py", line 1776, in _wrapped_call_impl
+    return self._call_impl(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\torch\nn\modules\module.py", line 1787, in _call_impl
+    return forward_call(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\bitsandbytes\nn\modules.py", line 610, in forward
+    fix_4bit_weight_quant_state_from_module(self)
+  File "C:\Users\ASUS\Documents\Uni\Senior 2\cctv-accident-ITS-system\.venv-vlm\Lib\site-packages\bitsandbytes\nn\modules.py", line 498, in fix_4bit_weight_quant_state_from_module
+    assert module.weight.shape[1] == 1
+AssertionError
+exit 1

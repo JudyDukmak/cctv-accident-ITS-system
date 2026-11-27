@@ -1,0 +1,45 @@
+command: .venv-vlm/Scripts/python.exe type_vlm8b_stage1c.py --report   (2026-11-26T22:30:56Z)
+TYPE MODEL, OPTION 1 (ZERO-SHOT QWEN3-VL-8B ON A CROP): STAGE 1c REPORT (AMENDMENT_1 loading + AMENDMENT_2 embedding tables on the CPU)
+Synthetic only; no real file; no accuracy computed and no answer compared with the true types; PLAN.txt, PROMPT.txt, AMENDMENT_1.txt and all earlier results unchanged; nothing committed.
+PLAN.txt sha256 d00eb03c32c0e2d200c3e81637c274840d8517a3620a9f360ecde0ae112deff6; PROMPT.txt sha256 a85361c1b94c6773d9f797de809ca7d90321f755150c723ef66bdee35c5aa552; AMENDMENT_1.txt sha256 6c3dcfc329c183003c1126b63bd901462a4f3f0ccc70544974952a5b053cadb2; AMENDMENT_2.txt sha256 107cae45b07d03f57ca05705ff2844b5932569f5e8d64938d9141e0d7413f323.
+Checkpoint unsloth/Qwen3-VL-8B-Instruct-bnb-4bit @ 10d842936325905934ea24e64325d774693f166e, offline (HF_HUB_OFFLINE=1); NVIDIA GeForce RTX 5060 Laptop GPU (7.96 GB); power at start: BatteryStatus 2 (2 = on AC mains), charge 80%.
+Loading: as AMENDMENT_1 (explicit copy of the checkpoint's quantization_config, skip list extended with model.visual, model.visual.merger, model.visual.deepstack_merger_list, lm_head, passed in dict form as the config's quantization_config), dtype bfloat16, sdpa, and the device_map below. One more config field had to change: llm_int8_enable_fp32_cpu_offload false -> true, because transformers 5.22.1 refuses any device_map with a 'cpu' entry for a bitsandbytes model without it. In the 4-bit loader this flag only lets the device_map through and adds the CPU modules to the not-quantised list (they are on it already); it casts nothing to fp32 (the CPU tables' dtypes are checked below).
+Test: the same 5 clips as stages 1 and 1b (numpy default_rng(1)); answers parsed only.
+
+AMENDMENT_2 STEP 1: on the CPU embed_tokens; 16 frames at 448 x 448
+  device_map: {'model.visual': 0, 'model.language_model.embed_tokens': 'cpu', 'model.language_model.layers': 0, 'model.language_model.norm': 0, 'model.language_model.rotary_emb': 0, 'lm_head': 0}
+  config fields differing from the checkpoint's (apart from the skip list): {'llm_int8_enable_fp32_cpu_offload': [False, True]}
+  CHECK after loading: 4-bit Linear modules {'visual': 0, 'language_model': 252, 'other': 0} (required: visual 0, language_model 252) -> PASS; vision-tower parameter dtypes ['torch.bfloat16']
+  modules on the CPU: {}
+  model load 6.3 s (not counted per clip); GPU memory after load: allocated 5.57 GB, reserved 5.57 GB
+  Town05_head-on_clear_38: OUT OF MEMORY at generate (1821 input tokens; video grid t,h,w [8, 28, 28] = 448 x 448 px per frame as given to the model; peak allocated 7.04 GB); error: "CUDA out of memory. Tried to allocate 1.16 GiB. GPU 0 has a total capacity of 7.96 GiB of which 0 bytes is free. Of the allocated memory 5.91 GiB is allocated by PyTorch, and 1.18 GiB is reserved by PyTorch but unallocated." -> next step
+
+AMENDMENT_2 STEP 2: on the CPU embed_tokens, lm_head; 16 frames at 448 x 448
+  device_map: {'model.visual': 0, 'model.language_model.embed_tokens': 'cpu', 'model.language_model.layers': 0, 'model.language_model.norm': 0, 'model.language_model.rotary_emb': 0, 'lm_head': 'cpu'}
+  config fields differing from the checkpoint's (apart from the skip list): {'llm_int8_enable_fp32_cpu_offload': [False, True]}
+  CHECK after loading: 4-bit Linear modules {'visual': 0, 'language_model': 252, 'other': 0} (required: visual 0, language_model 252) -> PASS; vision-tower parameter dtypes ['torch.bfloat16']
+  modules on the CPU: {}
+  model load 5.5 s (not counted per clip); GPU memory after load: allocated 4.42 GB, reserved 4.44 GB
+  Town05_head-on_clear_38: frames 0.59 s (CPU), generate 5.01 s, 1821 input tokens (video grid t,h,w [8, 28, 28]), 9 new tokens, parses: True; peak GPU allocated 5.93 GB, reserved 7.17 GB
+  Town05_rear-end_sunset_212: frames 0.60 s (CPU), generate 5.05 s, 1826 input tokens (video grid t,h,w [8, 28, 28]), 9 new tokens, parses: True; peak GPU allocated 5.93 GB, reserved 7.17 GB
+  Town05_rear-end_wet_103: frames 0.41 s (CPU), generate 4.96 s, 1821 input tokens (video grid t,h,w [8, 28, 28]), 9 new tokens, parses: True; peak GPU allocated 5.93 GB, reserved 7.17 GB
+  Town07_single_sunset_29: frames 0.61 s (CPU), generate 5.04 s, 1821 input tokens (video grid t,h,w [8, 28, 28]), 9 new tokens, parses: True; peak GPU allocated 5.93 GB, reserved 7.17 GB
+  Town03_t-bone_sunset_49: frames 0.46 s (CPU), generate 4.90 s, 1821 input tokens (video grid t,h,w [8, 28, 28]), 9 new tokens, parses: True; peak GPU allocated 5.93 GB, reserved 7.17 GB
+
+WHICH MODULES ARE ON THE CPU (separate load-only check, type_vlm8b_stage1c_cpucheck.py, no frames, no generate)
+  The 'modules on the CPU: {}' lines above (and 'on CPU {}' in run_log_stage1c_speed.txt) are EMPTY BY MISTAKE: accelerate offloads the device_map's CPU entries, so in the model their parameters are on the 'meta' device and the weights are held on the CPU by the module's hook; the speed script only looked for parameters on the CPU. The check reloaded the model with the step 1 and step 2 device maps and read the hooks:
+  step 1: hf_device_map {'model.visual': '0', 'model.language_model.embed_tokens': 'cpu', 'model.language_model.layers': '0', 'model.language_model.norm': '0', 'model.language_model.rotary_emb': '0', 'lm_head': '0'}; 4-bit modules {'visual': 0, 'language_model': 252, 'other': 0}
+    model.language_model.embed_tokens: AlignDevicesHook, offload True, execution device 0 (GPU), parameters in the model on ['meta']; stored weight model.language_model.embed_tokens.weight [151936, 4096] torch.bfloat16 on cpu (held in CPU RAM: True)
+  step 2: hf_device_map {'model.visual': '0', 'model.language_model.embed_tokens': 'cpu', 'model.language_model.layers': '0', 'model.language_model.norm': '0', 'model.language_model.rotary_emb': '0', 'lm_head': 'cpu'}; 4-bit modules {'visual': 0, 'language_model': 252, 'other': 0}
+    model.language_model.embed_tokens: AlignDevicesHook, offload True, execution device 0 (GPU), parameters in the model on ['meta']; stored weight model.language_model.embed_tokens.weight [151936, 4096] torch.bfloat16 on cpu (held in CPU RAM: True)
+    lm_head: AlignDevicesHook, offload True, execution device 0 (GPU), parameters in the model on ['meta']; stored weight lm_head.weight [151936, 4096] torch.bfloat16 on cpu (held in CPU RAM: True)
+  So the tables are STORED in CPU RAM in bfloat16 and copied to GPU 0 each time the module runs (the computation itself is on the GPU); everything else is on GPU 0. The transient copy is included in the per-clip peak GPU memory above.
+  (The check's own GPU-memory-after-load for step 2, 5.57 GB, is inflated: a loop variable in the check script still held the step 1 model's GPU lm_head weight, 1.16 GiB, when step 2 was loaded. The speed run's figures above are the valid ones.)
+
+RESULT: AMENDMENT_2 step used: 2 (CPU: embed_tokens, lm_head; 448 x 448); all 5 clips finished.
+  mean per clip: frames 0.54 s + generate 4.99 s = 5.53 s (min 5.36, max 5.65); max peak GPU allocated 5.93 GB (reserved 7.17 GB); new tokens [9, 9, 9, 9, 9]; answers that parse 5/5
+  estimated time for the 755 clips: 755 x 5.53 s = 1.16 h, plus one model load; from 5 clips only, so a rough estimate.
+Power at end: BatteryStatus 2 (2 = on AC mains), charge 80%
+
+Raw answers: stage1c_answers.jsonl (clip, step, size, raw answer, parses; no true types). Numbers: stage1c_speed.json; stage1c_cpu_check.json. Logs: run_log_stage1c_speed.txt, run_log_stage1c_cpu_check.txt (first try of the check: KeyError from a wrong weights_map lookup in the check script, nothing written), run_log_stage1c_cpu_check_retry1.txt, run_log_stage1c_report.txt. Scripts: type_vlm8b_stage1c.py, type_vlm8b_stage1c_cpucheck.py.
+exit 0

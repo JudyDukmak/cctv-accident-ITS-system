@@ -1,0 +1,4 @@
+STAGE 2 NOTE (type model option 1, zero-shot Qwen3-VL-8B on a crop)
+Written 2026-11-26T22:39Z (2026-11-27 01:39 local, UTC+3), before any stage-2 answer was produced. PLAN.txt, PROMPT.txt, AMENDMENT_1.txt and AMENDMENT_2.txt are not changed.
+
+The 5 stage-1c answers were seen before stage 2 (4 of 5 were t-bone; the clip names contain the true type). Nothing in the plan, prompt or amendments was changed after seeing them. Two analyses are added now, before any stage-2 answer: (a) the split by whether the true accident box is fully inside, partly inside or outside the crop; (b) a clip-level bootstrap interval, reported next to the pre-registered scenario bootstrap, because fold 1 has only 5 scenarios and each is one type.

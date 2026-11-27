@@ -1,0 +1,248 @@
+{
+ "amendment_1_sha256": "6c3dcfc329c183003c1126b63bd901462a4f3f0ccc70544974952a5b053cadb2",
+ "amendment_2_sha256": "107cae45b07d03f57ca05705ff2844b5932569f5e8d64938d9141e0d7413f323",
+ "clips": [
+  "Town05_head-on_clear_38",
+  "Town05_rear-end_sunset_212",
+  "Town05_rear-end_wet_103",
+  "Town07_single_sunset_29",
+  "Town03_t-bone_sunset_49"
+ ],
+ "power_start": "BatteryStatus 2 (2 = on AC mains), charge 80%",
+ "gpu": "NVIDIA GeForce RTX 5060 Laptop GPU",
+ "gpu_total_gb": 7.95953369140625,
+ "hf_hub_offline": "1",
+ "steps": [
+  {
+   "step": 1,
+   "cpu": [
+    "embed_tokens"
+   ],
+   "size": 448,
+   "per_clip": [],
+   "oom": {
+    "clip": "Town05_head-on_clear_38",
+    "input_tokens": 1821,
+    "video_grid_thw": [
+     [
+      8,
+      28,
+      28
+     ]
+    ],
+    "peak_alloc_gb": 7.040466785430908,
+    "error": "CUDA out of memory. Tried to allocate 1.16 GiB. GPU 0 has a total capacity of 7.96 GiB of which 0 bytes is free. Of the allocated memory 5.91 GiB is allocated by PyTorch, and 1.18 GiB is reserved by PyTorch but unallocated. If reserved but unallocated memory is large try setting PYTORCH_ALLOC_CONF=e"
+   },
+   "fields_differing_from_saved_except_skip_list": {
+    "llm_int8_enable_fp32_cpu_offload": [
+     false,
+     true
+    ]
+   },
+   "device_map": {
+    "model.visual": 0,
+    "model.language_model.embed_tokens": "cpu",
+    "model.language_model.layers": 0,
+    "model.language_model.norm": 0,
+    "model.language_model.rotary_emb": 0,
+    "lm_head": 0
+   },
+   "load_s": 6.3132994174957275,
+   "mem_after_load_alloc_gb": 5.570937156677246,
+   "mem_after_load_reserved_gb": 5.57421875,
+   "linear4bit_modules": {
+    "visual": 0,
+    "language_model": 252,
+    "other": 0
+   },
+   "modules_on_cpu": {},
+   "visual_param_dtypes": [
+    "torch.bfloat16"
+   ],
+   "skip_modules_in_loaded_config": [
+    "embed_tokens",
+    "embedding",
+    "lm_head",
+    "multi_modal_projector",
+    "merger",
+    "modality_projection",
+    "router",
+    "visual",
+    "vision_tower",
+    "model.visual",
+    "model.visual.merger",
+    "model.visual.deepstack_merger_list",
+    "lm_head"
+   ]
+  },
+  {
+   "step": 2,
+   "cpu": [
+    "embed_tokens",
+    "lm_head"
+   ],
+   "size": 448,
+   "per_clip": [
+    {
+     "clip": "Town05_head-on_clear_38",
+     "prep_s": 0.5901751518249512,
+     "gen_s": 5.00651709997328,
+     "input_tokens": 1821,
+     "video_grid_thw": [
+      [
+       8,
+       28,
+       28
+      ]
+     ],
+     "new_tokens": 9,
+     "parse_ok": true,
+     "parse_reason": "",
+     "crop_side": 648,
+     "crop_shift": [
+      0,
+      0
+     ],
+     "peak_alloc_gb": 5.925233840942383,
+     "peak_reserved_gb": 7.166015625
+    },
+    {
+     "clip": "Town05_rear-end_sunset_212",
+     "prep_s": 0.603569507598877,
+     "gen_s": 5.046333700011019,
+     "input_tokens": 1826,
+     "video_grid_thw": [
+      [
+       8,
+       28,
+       28
+      ]
+     ],
+     "new_tokens": 9,
+     "parse_ok": true,
+     "parse_reason": "",
+     "crop_side": 429,
+     "crop_shift": [
+      0,
+      0
+     ],
+     "peak_alloc_gb": 5.92595911026001,
+     "peak_reserved_gb": 7.166015625
+    },
+    {
+     "clip": "Town05_rear-end_wet_103",
+     "prep_s": 0.4111316204071045,
+     "gen_s": 4.963558899995405,
+     "input_tokens": 1821,
+     "video_grid_thw": [
+      [
+       8,
+       28,
+       28
+      ]
+     ],
+     "new_tokens": 9,
+     "parse_ok": true,
+     "parse_reason": "",
+     "crop_side": 384,
+     "crop_shift": [
+      0,
+      0
+     ],
+     "peak_alloc_gb": 5.925233840942383,
+     "peak_reserved_gb": 7.166015625
+    },
+    {
+     "clip": "Town07_single_sunset_29",
+     "prep_s": 0.6124019622802734,
+     "gen_s": 5.040979799989145,
+     "input_tokens": 1821,
+     "video_grid_thw": [
+      [
+       8,
+       28,
+       28
+      ]
+     ],
+     "new_tokens": 9,
+     "parse_ok": true,
+     "parse_reason": "",
+     "crop_side": 547,
+     "crop_shift": [
+      0,
+      -33
+     ],
+     "peak_alloc_gb": 5.925233840942383,
+     "peak_reserved_gb": 7.166015625
+    },
+    {
+     "clip": "Town03_t-bone_sunset_49",
+     "prep_s": 0.45887112617492676,
+     "gen_s": 4.901959500042722,
+     "input_tokens": 1821,
+     "video_grid_thw": [
+      [
+       8,
+       28,
+       28
+      ]
+     ],
+     "new_tokens": 9,
+     "parse_ok": true,
+     "parse_reason": "",
+     "crop_side": 392,
+     "crop_shift": [
+      0,
+      0
+     ],
+     "peak_alloc_gb": 5.925233840942383,
+     "peak_reserved_gb": 7.166015625
+    }
+   ],
+   "oom": null,
+   "fields_differing_from_saved_except_skip_list": {
+    "llm_int8_enable_fp32_cpu_offload": [
+     false,
+     true
+    ]
+   },
+   "device_map": {
+    "model.visual": 0,
+    "model.language_model.embed_tokens": "cpu",
+    "model.language_model.layers": 0,
+    "model.language_model.norm": 0,
+    "model.language_model.rotary_emb": 0,
+    "lm_head": "cpu"
+   },
+   "load_s": 5.4831671714782715,
+   "mem_after_load_alloc_gb": 4.4214582443237305,
+   "mem_after_load_reserved_gb": 4.443359375,
+   "linear4bit_modules": {
+    "visual": 0,
+    "language_model": 252,
+    "other": 0
+   },
+   "modules_on_cpu": {},
+   "visual_param_dtypes": [
+    "torch.bfloat16"
+   ],
+   "skip_modules_in_loaded_config": [
+    "embed_tokens",
+    "embedding",
+    "lm_head",
+    "multi_modal_projector",
+    "merger",
+    "modality_projection",
+    "router",
+    "visual",
+    "vision_tower",
+    "model.visual",
+    "model.visual.merger",
+    "model.visual.deepstack_merger_list",
+    "lm_head"
+   ]
+  }
+ ],
+ "step_used": 2,
+ "power_end": "BatteryStatus 2 (2 = on AC mains), charge 80%"
+}
